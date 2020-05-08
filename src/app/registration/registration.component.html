@@ -1,0 +1,48 @@
+<mat-horizontal-stepper [linear]="false" #stepper>
+  <mat-step [stepControl]="mailFormGroup">
+    <form [formGroup]="mailFormGroup">
+      <ng-template matStepLabel>メールアドレス登録</ng-template>
+      <mat-form-field>
+        <mat-label>メールアドレス</mat-label>
+        <input matInput placeholder="support@homenoc.ad.jp" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-hint>例）axis@axishineno.net</mat-hint>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>パスワード</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint>例）password123#</mat-hint>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>パスワード確認</mat-label>
+        <input matInput [type]="hide ? 'passwordVerify' : 'text'" [formControl]="passwordVerify" required>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+<!--        <input matInput placeholder="password" [formControl]="passwordVerify" required>-->
+        <mat-hint>例）password123#</mat-hint>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>次へ</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>確認</ng-template>
+    <p>アカウント作成後、住所などの個人情報を登録していただきます。</p>
+    <p>メールアドレスの確認</p>
+    <p><b>{{mailFormGroup.get('mail').value}}</b></p>
+    <div>
+      <button mat-button matStepperPrevious>前へ</button>
+      <button mat-button (click)="registerUser()">登録</button>
+      <button mat-button (click)="stepper.reset()">リセット</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

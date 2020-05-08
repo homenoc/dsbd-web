@@ -20,9 +20,7 @@ export class AuthService {
     private commonService: CommonService,
   ) {
     this.afAuth.authState
-      .subscribe(user => {
-        this.user = user;
-      });
+      .subscribe(user => this.user = user);
   }
 
 

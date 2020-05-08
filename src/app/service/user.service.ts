@@ -16,16 +16,13 @@ export class UserService {
   }
 
   createUser(email, pass): void {
-    let auth;
     this.afAuth.createUserWithEmailAndPassword(email, pass)
       .then(result => {
-        auth = result;
-        result.user.sendEmailVerification().then();
+        result.user.sendEmailVerification().then()
+        this.commonService.openBar('メールの確認リンクを踏んでください。',10000)
       })
       .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
   }
-
-  updateUser(name,address,)
 
   getUser(uid): Promise<any> {
     const data = this.afs.collection('users').doc(uid);
