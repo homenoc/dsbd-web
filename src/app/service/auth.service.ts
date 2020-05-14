@@ -61,20 +61,11 @@ export class AuthService {
       .then((user) => {
         console.log(user);
         if (user.emailVerified) {
-          localStorage.setItem('id', user.uid);
-          this.userService.getUser(user.uid)
-            .then(r => {
-              if (r.isActive && r !== 0 && r.isAdmin) {
-                localStorage.setItem('name', r.name);
-                this.router.navigate(['/dashboard']).then();
-              } else {
-                this.commonService.openBar('以下が原因でログアウト処理を行いました。\n管理者ではない、アカウントがアクティブではありません。', 4000);
-                this.logOut();
-              }
-            });
+          localStorage.setItem('authID', user.uid);
+          this.router.navigate(['/dashboard']).then();
         } else {
-          this.commonService.openBar('以下が原因でログアウト処理を行いました。\nメール認証を行っていない', 4000);
-          this.logOut();
+          this.commonService.openBar('メール認証を行っていません。', 4000);
+          this.logOut(false);
         }
       });
   }
@@ -92,10 +83,12 @@ export class AuthService {
   }
 
 
-  logOut(): void {
+  logOut(status: boolean): void {
     localStorage.clear();
     this.afAuth.signOut().then(() => {
-      this.commonService.openBar('ログアウトしました', 2000);
+      if (status) {
+        this.commonService.openBar('ログアウトしました。', 4000);
+      }
       this.router.navigate(['/']).then();
     });
   }

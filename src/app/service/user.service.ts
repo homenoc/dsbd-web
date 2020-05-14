@@ -25,7 +25,7 @@ export class UserService {
   }
 
   getUser(uid): Promise<any> {
-    const data = this.afs.collection('users').doc(uid);
+    const data = this.afs.collection('user').doc(uid);
     return data.ref.get()
       .then(doc => {
         console.log(doc);
