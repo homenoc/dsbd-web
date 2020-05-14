@@ -11,7 +11,8 @@ import {CommonService} from "../service/common.service";
 export class RegistrationComponent implements OnInit {
 
   mailFormGroup: FormGroup;
-  hide = true;
+  hide1 = true;
+  hide2 = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,8 +41,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   registerUser() {
-    console.log(this.password.value);
-    console.log(this.passwordVerify.value);
     if (this.password.value != this.passwordVerify.value) {
       this.commonService.openBar("パスワードが異なります", 2000)
     } else {

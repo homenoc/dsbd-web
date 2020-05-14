@@ -11,22 +11,21 @@
       <br>
       <mat-form-field>
         <mat-label>パスワード</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <input matInput [type]="hide1 ? 'password' : 'text'" [formControl]="password" required>
+        <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide1">
+          <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-hint>例）password123#</mat-hint>
       </mat-form-field>
       <br>
       <mat-form-field>
         <mat-label>パスワード確認</mat-label>
-        <input matInput [type]="hide ? 'passwordVerify' : 'text'" [formControl]="passwordVerify" required>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <input matInput [type]="hide2 ? 'passwordVerify' : 'text'" [formControl]="passwordVerify" required>
+        <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide2">
+          <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-<!--        <input matInput placeholder="password" [formControl]="passwordVerify" required>-->
         <mat-hint>例）password123#</mat-hint>
       </mat-form-field>
       <div>
@@ -46,3 +45,5 @@
     </div>
   </mat-step>
 </mat-horizontal-stepper>
+
+<button mat-button color="primary">ログイン画面に戻る</button>
