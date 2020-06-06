@@ -1,49 +1,49 @@
 <mat-horizontal-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="mailFormGroup">
     <form [formGroup]="mailFormGroup">
-      <ng-template matStepLabel>メールアドレス登録</ng-template>
+      <ng-template matStepLabel>Register Account</ng-template>
       <mat-form-field>
-        <mat-label>メールアドレス</mat-label>
+        <mat-label>email address</mat-label>
         <input matInput placeholder="support@homenoc.ad.jp" [formControl]="email" required>
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-        <mat-hint>例）axis@axishineno.net</mat-hint>
+        <mat-hint>ex）test@homenoc.ad.jp</mat-hint>
       </mat-form-field>
       <br>
       <mat-form-field>
-        <mat-label>パスワード</mat-label>
+        <mat-label>password</mat-label>
         <input matInput [type]="hide1 ? 'password' : 'text'" [formControl]="password" required>
         <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide1">
           <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-hint>例）password123#</mat-hint>
+        <mat-hint>ex）password123#</mat-hint>
       </mat-form-field>
       <br>
       <mat-form-field>
-        <mat-label>パスワード確認</mat-label>
+        <mat-label>confirm password</mat-label>
         <input matInput [type]="hide2 ? 'passwordVerify' : 'text'" [formControl]="passwordVerify" required>
         <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide2">
           <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-hint>例）password123#</mat-hint>
+        <mat-hint>ex）password123#</mat-hint>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>次へ</button>
+        <button mat-button matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>確認</ng-template>
-    <p>アカウント作成後、住所などの個人情報を登録していただきます。</p>
-    <p>メールアドレスの確認</p>
+    <ng-template matStepLabel>Verify</ng-template>
+    <p>You will register your profile after registration. </p>
+<!--    <p>confirm email address</p>-->
     <p><b>{{mailFormGroup.get('mail').value}}</b></p>
     <div>
-      <button mat-button matStepperPrevious>前へ</button>
-      <button mat-button (click)="registerUser()">登録</button>
-      <button mat-button (click)="stepper.reset()">リセット</button>
+      <button mat-button matStepperPrevious>Prev</button>
+      <button mat-button (click)="registerUser()">Register</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>
 
-<button mat-button color="primary">ログイン画面に戻る</button>
+<button mat-button color="primary" routerLink="/">Login Page</button>
