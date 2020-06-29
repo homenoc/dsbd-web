@@ -19,7 +19,7 @@ export class UserService {
     this.afAuth.createUserWithEmailAndPassword(email, pass)
       .then(result => {
         result.user.sendEmailVerification().then()
-        this.commonService.openBar('メールの確認リンクを踏んでください。',10000)
+        this.commonService.openBar('Please follow the email confirmation link.。', 10000)
       })
       .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
   }
