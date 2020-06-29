@@ -17,31 +17,37 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { AgreementComponent } from './registration/agreement/agreement.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     NoticeComponent,
-    BaseComponent
+    BaseComponent,
+    AgreementComponent
   ],
-    imports: [
-        CommonModule,
-        DashboardRoutingModule,
-        MatCardModule,
-        MatSidenavModule,
-        MatButtonModule,
-        MatChipsModule,
-        MatIconModule,
-        MatProgressBarModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatInputModule,
-        FormsModule,
-        MatListModule,
-        MatRadioModule
-    ],
+  imports: [
+    CommonModule,
+    DashboardRoutingModule,
+    MatCardModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatInputModule,
+    FormsModule,
+    MatListModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatCheckboxModule
+  ],
   exports: [
     MatCardModule,
     MatSidenavModule,

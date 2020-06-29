@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {NoticeComponent} from "./notice/notice.component";
 import {BaseComponent} from "./base/base.component";
 import {DashboardComponent} from "./dashboard.component";
+import {AgreementComponent} from "./registration/agreement/agreement.component";
 
 
 const routes: Routes = [{
@@ -12,6 +13,7 @@ const routes: Routes = [{
     {path: '', redirectTo: 'notice', pathMatch: 'full'},
     {path: 'notice', component: NoticeComponent},
     {path: 'base', component: BaseComponent},
+    {path: 'registration/agreement', component: AgreementComponent}
   ]
 }
 ];
