@@ -16,16 +16,18 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getRegistrationStatus().then((d) => {
-      console.log(d);
+    this.dataService.getApplyStatus(-1).then((d) => {
+      console.log('data: ' + d);
       if (d === 0) {
-        this.router.navigate(['/question']).then();
+        this.router.navigate(['/dashboard/registration/question']).then();
       } else if (d === 2) {
-        this.router.navigate(['/agreement']).then();
-      }else if (d === 4) {
-        this.router.navigate(['/contract1']).then();
-      }else if (d === 6) {
-        this.router.navigate(['/contract2']).then();
+        this.router.navigate(['/dashboard/registration/agreement']).then();
+      } else if (d === 4) {
+        this.router.navigate(['/dashboard/registration/contract1']).then();
+      } else if (d === 6) {
+        this.router.navigate(['/dashboard/registration/contract2']).then();
+      } else if (d === -1 || undefined) {
+        this.router.navigate(['/dashboard/registration/question']).then();
       }
     })
   }

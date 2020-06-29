@@ -17,6 +17,7 @@ export class Contract1Component implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dataService.getApplyStatus(4).then();
   }
 
   public agree = false;
@@ -94,7 +95,7 @@ export class Contract1Component implements OnInit {
       this.errorBlank()
       return;
     }
-    if (this.base2.check0 === false || this.base2.check1 === false || this.base2.check2 === false || this.base2.check3 === false) {
+    if (this.base2.check0 === false && this.base2.check1 === false && this.base2.check2 === false && this.base2.check3 === false) {
       this.errorBlank()
       return;
     }
@@ -106,7 +107,7 @@ export class Contract1Component implements OnInit {
       this.errorBlank()
       return;
     }
-    if (this.base10.check0 === false || this.base10.check1 === false || this.base10.check2 === false || this.base10.check3 === false || this.base10.check4 === false) {
+    if (this.base10.check0 === false && this.base10.check1 === false && this.base10.check2 === false && this.base10.check3 === false && this.base10.check4 === false) {
       this.errorBlank()
       return;
     }

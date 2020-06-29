@@ -14,6 +14,7 @@ export class AgreementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dataService.getApplyStatus(2).then(d => console.log(d));
   }
 
   public agree = false;
