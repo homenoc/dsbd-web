@@ -53,8 +53,18 @@ export class DataService {
     });
   }
 
-  addRequestContract2() {
-
+  addRequestContract2(data: any) {
+    this.authService.getUser().then(d => {
+      this.afs.collection(`user`).doc(d.uid)
+        .collection(`personal`).doc(`contract2`).set(data, {merge: true})
+        .then(() => {
+          this.registerStatus(1);
+          this.commonService.openBar('Document successfully written!', 2000);
+        })
+        .catch((error) => {
+          // this.commonService.openBar('Error:' + error, 2000);
+        });
+    });
   }
 
   registerStatus(data: number) {
