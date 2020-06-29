@@ -52,7 +52,7 @@ export class AuthService {
 
   loginFailedProcess(error): void {
     console.log(error);
-    this.commonService.openBar('ログイン処理に失敗しました。Error: ' + error, 4000);
+    this.commonService.openBar('Failed login process... Error: ' + error, 4000);
   }
 
 
@@ -64,7 +64,7 @@ export class AuthService {
           localStorage.setItem('authID', user.uid);
           this.router.navigate(['/dashboard']).then();
         } else {
-          this.commonService.openBar('メール認証を行っていません。', 4000);
+          this.commonService.openBar('Email verification is required...', 4000);
           this.logOut(false);
         }
       });
@@ -79,6 +79,8 @@ export class AuthService {
 
 
   loginCheck() {
+    console.log("test")
+    console.log(this.user)
     return this.user !== null;
   }
 
@@ -87,7 +89,7 @@ export class AuthService {
     localStorage.clear();
     this.afAuth.signOut().then(() => {
       if (status) {
-        this.commonService.openBar('ログアウトしました。', 4000);
+        this.commonService.openBar('Logout!。', 4000);
       }
       this.router.navigate(['/']).then();
     });
