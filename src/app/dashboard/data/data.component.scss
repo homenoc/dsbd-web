@@ -1,0 +1,37 @@
+.main {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+.form {
+  margin-left: 10px;
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+
+  .mat-radio-button {
+    margin-bottom: 2px;
+    margin-right: 10px;
+  }
+
+  .mat-checkbox {
+    margin: 0 10px;
+  }
+}
+
+.full-width {
+  width: 90%;
+}
+
+.large-width {
+  width: 80%;
+}
+
+.small-width {
+  width: 30%;
+}
+
+.example-card {
+  max-width: 400px;
+}

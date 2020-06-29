@@ -6,7 +6,6 @@ import {DashboardComponent} from './dashboard.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {NoticeComponent} from './notice/notice.component';
-import {BaseComponent} from './base/base.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
@@ -23,17 +22,20 @@ import {AgreementComponent} from './registration/agreement/agreement.component';
 import {QuestionComponent} from './registration/question/question.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
 import {Contract2Component} from './registration/contract2/contract2.component';
+import { DataComponent } from './data/data.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     NoticeComponent,
-    BaseComponent,
     AgreementComponent,
     QuestionComponent,
     Contract1Component,
-    Contract2Component
+    Contract2Component,
+    DataComponent,
+    RegistrationComponent
   ],
   imports: [
     CommonModule,
