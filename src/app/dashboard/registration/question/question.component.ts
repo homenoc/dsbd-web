@@ -31,7 +31,7 @@ export class QuestionComponent implements OnInit {
     if (this.base1.value == '' || this.base2.value == '' || this.base3.value == '' || this.base4.value == '') {
       this.commonService.openBar('The field is blank.', 2000)
     } else {
-      this.dataService.addUserComment({
+      this.dataService.addRequestComment({
         data1: this.base1.value,
         data2: this.base2.value,
         data3: this.base3.value,

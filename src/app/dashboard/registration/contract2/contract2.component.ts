@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
+import {DataService} from "../../../service/data.service";
+import {CommonService} from "../../../service/common.service";
 
 @Component({
   selector: 'app-contract2',
@@ -8,7 +10,10 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class Contract2Component implements OnInit {
 
-  constructor() {
+  constructor(
+    private dataService: DataService,
+    private commonService: CommonService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -70,8 +75,60 @@ export class Contract2Component implements OnInit {
 
   public agree = false;
 
-  requestUserInfo() {
+  errorBlank() {
+    this.commonService.openBar('The field is blank.', 2000);
+  }
 
+  requestData() {
+    if (this.base5.value === '') {
+      this.errorBlank()
+      return;
+    }
+
+    const doc = {};
+    doc['data100'] = this.base1_ja.value.address;
+    doc['data101'] = this.base1_ja.value.organization;
+    doc['data102'] = this.base1_ja.value.organization_f;
+    doc['data110'] = this.base1_en.value.address;
+    doc['data111'] = this.base1_en.value.organization;
+    doc['data200'] = this.base2V4Check;
+    doc['data201'] = this.base2V4.value;
+    doc['data202'] = this.base2V4Name.value;
+    doc['data210'] = this.base2V6Check;
+    doc['data211'] = this.base2V6.value;
+    doc['data212'] = this.base2V6Name.value;
+    doc['data310'] = this.base3_ja.value.name;
+    doc['data311'] = this.base3_ja.value.organization;
+    doc['data312'] = this.base3_ja.value.postalCode;
+    doc['data313'] = this.base3_ja.value.address;
+    doc['data314'] = this.base3_ja.value.department;
+    doc['data315'] = this.base3_ja.value.position;
+    doc['data316'] = this.base3_ja.value.tel;
+    doc['data317'] = this.base3_ja.value.fax;
+    doc['data318'] = this.base3_ja.value.email;
+    doc['data320'] = this.base3_en.value.name;
+    doc['data321'] = this.base3_en.value.organization;
+    doc['data322'] = this.base3_en.value.address;
+    doc['data323'] = this.base3_en.value.department;
+    doc['data324'] = this.base3_en.value.position;
+    doc['data400'] = this.base4Check;
+    doc['data410'] = this.base4_ja.value.name;
+    doc['data411'] = this.base4_ja.value.organization;
+    doc['data412'] = this.base4_ja.value.postalCode;
+    doc['data413'] = this.base4_ja.value.address;
+    doc['data414'] = this.base4_ja.value.department;
+    doc['data415'] = this.base4_ja.value.position;
+    doc['data416'] = this.base4_ja.value.tel;
+    doc['data417'] = this.base4_ja.value.fax;
+    doc['data418'] = this.base4_ja.value.email;
+    doc['data420'] = this.base4_en.value.name;
+    doc['data421'] = this.base4_en.value.organization;
+    doc['data422'] = this.base4_en.value.address;
+    doc['data423'] = this.base4_en.value.department;
+    doc['data424'] = this.base4_en.value.position;
+    doc['data500'] = this.base5.value;
+
+    this.dataService.addRequestContract2(doc);
   }
 
 }
