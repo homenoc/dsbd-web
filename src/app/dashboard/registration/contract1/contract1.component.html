@@ -297,32 +297,32 @@
     </mat-form-field>
     <br><br>
   </form>
+  <h2>9. Usage Bandwidth</h2>
+  <p>Please tell us Bandwidth to be used in this connection.</p>
   <form [formGroup]="base9">
-    <h2>9. Usage Bandwidth</h2>
-    <p>Please tell us Bandwidth to be used in this connection.</p>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="small-width">
       <mat-label>Average upstream bandwidth</mat-label>
       <label>
-        <input matInput placeholder="1000 Kbps" value="0 Kbps" formControlName="aveTx">
+        <textarea matInput rows="1" placeholder="1000 Kbps" formControlName="aveUpstream"></textarea>
       </label>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="small-width">
       <mat-label>Maximum upstream bandwidth</mat-label>
       <label>
-        <input matInput placeholder="10000 Kbps" value="0 Kbps" formControlName="maxTx">
+        <textarea matInput rows="1" placeholder="10000 Kbps" value="0 Kbps" formControlName="maxUpstream"></textarea>
       </label>
     </mat-form-field>
     <br>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="small-width">
       <mat-label>Average downlink bandwidth</mat-label>
       <label>
-        <input matInput placeholder="1000 Kbps" value="0 Kbps" formControlName="aveTx">
+        <textarea matInput rows="1" placeholder="1000 Kbps" value="0 Kbps" formControlName="aveDownlink"></textarea>
       </label>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="small-width">
       <mat-label>Maximum downlink bandwidth</mat-label>
       <label>
-        <input matInput placeholder="10000 Kbps" value="0 Kbps" formControlName="maxRx">
+        <textarea matInput rows="1" placeholder="10000 Kbps" value="0 Kbps" formControlName="maxDownlink"></textarea>
       </label>
     </mat-form-field>
   </form>
@@ -366,13 +366,11 @@
   </form>
   <form>
     <h2>12. Monitoring</h2>
-    <p><b>Please let us know the NOC that terminates this connection.</b></p>
-    <mat-form-field class="example-full-width">
-      <mat-label>NOC</mat-label>
-      <label>
-        <input matInput placeholder="NOC" value="NOC03" [formControl]="base12">
-      </label>
-    </mat-form-field>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="base12">
+      <mat-radio-button class="radio" value="1">Required</mat-radio-button>
+      <mat-radio-button class="radio" value="2">Not Required</mat-radio-button>
+    </mat-radio-group>
+    <br>
     <p>・Even when monitoring, the notification will be best-effort.</p>
     <p>・Please select "Not required" if frequent disconnection occurs.</p>
     <br><br>

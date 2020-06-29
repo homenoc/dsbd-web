@@ -61,16 +61,16 @@ export class Contract1Component implements OnInit {
   base7EndDate = new FormControl();
   base8 = new FormControl('');
   base9 = new FormGroup({
-    aveTX: new FormControl(''),
-    maxTX: new FormControl(''),
-    aveRX: new FormControl(''),
-    maxRX: new FormControl(''),
+    aveUpstream: new FormControl(''),
+    maxUpstream: new FormControl(''),
+    aveDownlink: new FormControl(''),
+    maxDownlink: new FormControl(''),
   });
   base9Etc: any;
   base10 = {check0: false, check1: false, check2: false, check3: false, check4: false};
   base10Other = new FormControl('');
   base11 = new FormControl('');
-  base12 = new FormControl('');
+  base12: any;
   base13: any;
 
   base4check = false;
