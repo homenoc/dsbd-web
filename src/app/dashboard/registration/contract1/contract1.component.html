@@ -127,9 +127,9 @@
   </form>
   <h2>4. Administrator for connection location</h2>
   <section>
-    <mat-checkbox [(ngModel)]="base4check">Same data as number 3</mat-checkbox>
+    <mat-checkbox [(ngModel)]="base4Check">Same data as number 3</mat-checkbox>
   </section>
-  <form *ngIf="base4check == false" [formGroup]="base4">
+  <form *ngIf="base4Check == false" [formGroup]="base4">
     <h3>0．Organization Name</h3>
     <mat-form-field class="small-width">
       <label>
@@ -184,8 +184,8 @@
     <br><br>
   </form>
   <h2>5. Technical director </h2>
-  <mat-checkbox [(ngModel)]="base5check">Same data as number 3</mat-checkbox>
-  <form *ngIf="base5check == false" [formGroup]="base5">
+  <mat-checkbox [(ngModel)]="base5Check">Same data as number 3</mat-checkbox>
+  <form *ngIf="base5Check == false" [formGroup]="base5">
     <h3>0．Organization Name</h3>
     <mat-form-field class="small-width">
       <label>

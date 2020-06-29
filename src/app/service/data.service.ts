@@ -17,7 +17,7 @@ export class DataService {
   ) {
   }
 
-  addUserComment(data: any) {
+  addRequestComment(data: any) {
     const doc = {};
     doc['data1'] = data['data1'];
     doc['data2'] = data['data2'];
@@ -39,7 +39,21 @@ export class DataService {
   }
 
 
-  addUserData() {
+  addRequestContract1(data: any) {
+    this.authService.getUser().then(d => {
+      this.afs.collection(`user`).doc(d.uid)
+        .collection(`personal`).doc(`contract1`).set(data, {merge: true})
+        .then(() => {
+          this.registerStatus(1);
+          this.commonService.openBar('Document successfully written!', 2000);
+        })
+        .catch((error) => {
+          // this.commonService.openBar('Error:' + error, 2000);
+        });
+    });
+  }
+
+  addRequestContract2() {
 
   }
 
@@ -72,6 +86,19 @@ export class DataService {
           this.commonService.openBar('Error:' + error, 2000);
         });
     }).catch();
+  }
+
+  //0:question 1: check 2:agreement 3:check 4:contract1 5:check 6:contract2 7:check 8:finish
+  getRegistrationStatus(): Promise<any> {
+    return this.authService.getUser().then(d => {
+      const data = this.afs.collection('user').doc(d.uid).collection('admin').doc('base')
+      data.ref.get().then((doc) => {
+        return doc.data().registration
+      })
+        .catch((error) => {
+          console.log('Error:' + error);
+        });
+    })
   }
 
   getData(): Promise<any> {
@@ -107,5 +134,16 @@ export class DataService {
       .catch((error) => {
         this.commonService.openBar('Error:' + error, 2000);
       });
+  }
+
+  getUserNotice(): Promise<any> {
+    return this.authService.getUser().then(d => {
+      const data = this.afs.collection('user').doc(d.uid).collection('notice');
+      return data.ref.get()
+        .then(doc => {
+          return doc;
+        })
+        .catch();
+    })
   }
 }
