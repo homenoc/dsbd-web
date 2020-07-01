@@ -29,6 +29,8 @@ import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { SettingComponent } from './setting/setting.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 @NgModule({
@@ -65,6 +67,8 @@ import { SettingComponent } from './setting/setting.component';
     MatTableModule,
     MatSortModule,
     MatGridListModule,
+    MatTabsModule,
+    MatExpansionModule,
   ],
   exports: [
     MatCardModule,

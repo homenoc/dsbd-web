@@ -8,6 +8,7 @@ import {Contract1Component} from "./registration/contract1/contract1.component";
 import {Contract2Component} from "./registration/contract2/contract2.component";
 import {DataComponent} from "./data/data.component";
 import {RegistrationComponent} from "./registration/registration.component";
+import {SettingComponent} from "./setting/setting.component";
 
 
 const routes: Routes = [{
@@ -17,6 +18,7 @@ const routes: Routes = [{
     {path: '', redirectTo: 'notice', pathMatch: 'full'},
     {path: 'notice', component: NoticeComponent},
     {path: 'data', component: DataComponent},
+    {path: 'setting', component: SettingComponent},
     {path: 'registration/agreement', component: AgreementComponent},
     {path: 'registration/question', component: QuestionComponent},
     {path: 'registration/contract1', component: Contract1Component},

@@ -8,6 +8,8 @@
         <a mat-list-item routerLink="notice">Notice</a>
         <a mat-list-item *ngIf="release !==1" routerLink="registration">Registration</a>
         <a mat-list-item *ngIf="0 < release" routerLink="data">Data</a>
+        <a mat-list-item *ngIf="0 < release" routerLink="setting">Setting</a>
+
       </mat-nav-list>
     </ng-container>
     <br>
