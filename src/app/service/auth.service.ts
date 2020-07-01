@@ -60,8 +60,10 @@ export class AuthService {
     this.afAuth.currentUser
       .then((user) => {
         console.log(user);
+        localStorage.clear();
         if (user.emailVerified) {
           localStorage.setItem('authID', user.uid);
+          console.log(user);
           this.router.navigate(['/dashboard']).then();
         } else {
           this.commonService.openBar('Email verification is required...', 4000);
