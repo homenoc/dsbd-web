@@ -22,8 +22,12 @@ import {AgreementComponent} from './registration/agreement/agreement.component';
 import {QuestionComponent} from './registration/question/question.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
 import {Contract2Component} from './registration/contract2/contract2.component';
-import { DataComponent } from './data/data.component';
-import { RegistrationComponent } from './registration/registration.component';
+import {DataComponent} from './data/data.component';
+import {RegistrationComponent} from './registration/registration.component';
+import {MatTableModule} from "@angular/material/table";
+import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 
 @NgModule({
@@ -54,7 +58,11 @@ import { RegistrationComponent } from './registration/registration.component';
     MatListModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CdkTableModule,
+    MatTableModule,
+    MatSortModule,
+    MatGridListModule,
   ],
   exports: [
     MatCardModule,
@@ -68,7 +76,12 @@ import { RegistrationComponent } from './registration/registration.component';
     MatToolbarModule,
     MatInputModule,
     FormsModule,
-  ]
+    CdkTableModule,
+    MatListModule,
+    MatTableModule,
+    CdkColumnDef
+  ],
+  providers: [CdkColumnDef]
 })
 export class DashboardModule {
 }

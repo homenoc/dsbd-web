@@ -2,36 +2,55 @@
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 20px;
-}
 
-.form {
-  margin-left: 10px;
-  min-width: 150px;
-  max-width: 600px;
-  width: 100%;
-
-  .mat-radio-button {
-    margin-bottom: 2px;
-    margin-right: 10px;
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
   }
 
-  .mat-checkbox {
-    margin: 0 10px;
+  .card{
+    margin-bottom: 20px;
   }
+
+  table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 80%;
+
+  }
+
+  td, th {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  th {
+    background: #EFEFEF;
+  }
+
+  tr:first-child th {
+    border-top: 5px solid #005ab3;
+  }
+
+  tr:first-child td {
+    border-top: 5px solid #ccc;
+  }
+
 }
 
-.full-width {
-  width: 90%;
+
+.parent {
+  overflow: hidden;
+  margin-right: -20px;
 }
 
-.large-width {
-  width: 80%;
-}
-
-.small-width {
+.child1 {
+  float: left;
   width: 30%;
 }
 
-.example-card {
-  max-width: 400px;
+.child2 {
+  float: left;
+  width: 190px;
+  margin-right: 20px;
 }
