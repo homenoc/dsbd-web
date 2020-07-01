@@ -28,6 +28,7 @@ import {MatTableModule} from "@angular/material/table";
 import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { SettingComponent } from './setting/setting.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
     Contract1Component,
     Contract2Component,
     DataComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    SettingComponent
   ],
   imports: [
     CommonModule,

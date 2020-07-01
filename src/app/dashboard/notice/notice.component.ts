@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {DataService} from "../../service/data.service";
 
 @Component({
   selector: 'app-notice',
@@ -7,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NoticeComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
-
+  constructor(
+    private dataService: DataService,
+  ) {
   }
 
+  public data: any;
+
+  ngOnInit(): void {
+    this.dataService.getUserNotice().then(data => this.data = data);
+  }
 }

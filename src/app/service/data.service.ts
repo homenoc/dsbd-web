@@ -67,7 +67,7 @@ export class DataService {
     const doc = {};
     doc['lock'] = data;
 
-    this.afs.collection(`user`).doc(localStorage.getItem('authID')).set(doc, {merge: true})
+    this.afs.collection(`user`).doc(localStorage.getItem('authID')).collection('personal').doc('common').set(doc, {merge: true})
       .then(() => {
         this.router.navigate(['/dashboard/registration']).then();
       })
@@ -91,6 +91,18 @@ export class DataService {
       });
   }
 
+  //0:Not release 1:Release 2:Release and Registration
+  getStatus(): Promise<number> {
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
+    return data1.ref.get().then((doc) => {
+      console.log(doc.data());
+      if (doc.data().release == undefined) {
+        return 0;
+      }
+      return doc.data().release;
+    }).catch(err => console.log(err));
+  }
+
   //-1:MainPage 0:question 1: check 2:agreement 3:check 4:contract1 5:check 6:contract2 7:check 8:finish
   getApplyStatus(d: any): Promise<any> {
     const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
@@ -101,7 +113,7 @@ export class DataService {
       }
 
       if (d === doc1.data().registration || d === -1) {
-        const data2 = this.afs.collection('user').doc(localStorage.getItem('authID'))
+        const data2 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('common')
         return data2.ref.get()
           .then((doc2) => {
             if (d === -1 && doc2.data().lock) {
@@ -146,24 +158,6 @@ export class DataService {
       });
   }
 
-  getData(): Promise<any> {
-    return this.authService.getUser().then(d => {
-      console.log(d.uid);
-      const data = this.afs.collection('user').doc(localStorage.getItem('authID'))
-      return data.ref.get()
-        .then((doc) => {
-          return doc.data();
-        })
-        .catch((error) => {
-          this.commonService.openBar('Error:' + error, 2000);
-        });
-    })
-      .catch((error) => {
-        this.commonService.openBar('Error:' + error, 2000);
-      });
-  }
-
-
   getPersonal(): Promise<any> {
     const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal')
     return data.ref.get()
@@ -183,6 +177,6 @@ export class DataService {
       .then(doc => {
         return doc;
       })
-      .catch();
+      .catch(err => console.log(err));
   }
 }
