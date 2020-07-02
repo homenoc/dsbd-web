@@ -19,11 +19,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ) {
   }
 
-  public release = 0;
+  public release = false;
+  public registration = false;
 
   ngOnInit() {
     this.dataService.getStatus().then(d => {
-        this.release = d;
+      if (d / 10 >= 1) {
+        this.release = true;
+      }
+      if (1 < d % 10 && d % 10 < 7) {
+        this.registration = true;
+      }
     })
   }
 

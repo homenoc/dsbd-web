@@ -91,40 +91,42 @@ export class DataService {
       });
   }
 
-  //0:Not release 1:Release 2:Release and Registration
+  //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
   getStatus(): Promise<number> {
     const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
     return data1.ref.get().then((doc) => {
-      console.log(doc.data());
-      if (doc.data().release == undefined) {
-        return 0;
+      // console.log(doc.data());
+      // console.log(doc.data().status)
+      if (doc.data().status == undefined) {
+        return 1;
       }
-      return doc.data().release;
+      return doc.data().status;
     }).catch(err => console.log(err));
   }
 
-  //-1:MainPage 0:question 1: check 2:agreement 3:check 4:contract1 5:check 6:contract2 7:check 8:finish
+  //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
   getApplyStatus(d: any): Promise<any> {
     const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
     return data1.ref.get().then((doc1) => {
-      console.log(doc1.data());
+      // console.log(doc1.data());
       if (doc1.data() === undefined) {
         this.router.navigate(['/dashboard/registration/question']).then();
       }
 
-      if (d === doc1.data().registration || d === -1) {
+      if (doc1.data().status == undefined && d === 1 || d === doc1.data().status || d === -1) {
         const data2 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('common')
         return data2.ref.get()
           .then((doc2) => {
-            if (d === -1 && doc2.data().lock) {
+            // console.log('lock: ' + doc2.data().lock)
+            if (d === -1 && doc2.data().lock == true) {
               return -2;
             } else if (d === -1) {
-              return doc1.data().registration;
+              return doc1.data().status;
             }
-            if (doc2.data().lock) {
+            if (doc2.data().lock == true) {
               this.router.navigate(['/dashboard/registration']).then();
               return false;
-            } else {
+            } else if (doc2.data()) {
               return true;
             }
           })
@@ -143,18 +145,6 @@ export class DataService {
       .catch((error) => {
         console.log('Error:' + error);
         return 0;
-      });
-  }
-
-  getRegistrationStatus(): Promise<any> {
-    const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
-    return data.ref.get().then((doc) => {
-      console.log(doc.data());
-      return doc.data().registration;
-    })
-      .catch((error) => {
-        console.log('Error:' + error);
-        return -1;
       });
   }
 

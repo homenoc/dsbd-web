@@ -28,9 +28,9 @@ export class UserService {
     const data = this.afs.collection('user').doc(uid);
     return data.ref.get()
       .then(doc => {
-        console.log(doc);
+        // console.log(doc);
         if (doc.exists) {
-          console.log('User data: ', doc.data());
+          // console.log('User data: ', doc.data());
           if (doc.data().isActive) {
             return doc.data();
           } else {

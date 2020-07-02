@@ -37,7 +37,7 @@ export class DataComponent implements OnInit {
   ngOnInit() {
     this.dataService.getUserNetData().then(d => {
       d.forEach(d => {
-        console.log(d.id + '=>' + d.data());
+        // console.log(d.id + '=>' + d.data());
         this.data.push({
           as: d.data().as,
           assign: d.data().assign,
@@ -53,17 +53,6 @@ export class DataComponent implements OnInit {
           linkInfov4: {our: d.data().v4_your, your: d.data().v4_our},
           linkInfov6: {our: d.data().v6_your, your: d.data().v6_our},
         })
-        // this.id = d.id;
-        // this.service = d.data().as;
-        // this.ipv4 = d.data().v4.split(',');
-        // this.ipv6 = d.data().v6.split(',');
-        // this.service = d.data().service;
-        // this.name = d.data().name;
-        // this.fee = d.data().fee;
-        // this.assign = d.data().assign;
-
-        // this.contract = {service: d.data().service, name: d.data().name, fee: d.data().fee, assign: d.data().assign}
-        // console.log(this.contract.service)
       })
     })
   }

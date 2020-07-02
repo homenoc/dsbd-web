@@ -17,7 +17,7 @@ export class Contract1Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(4).then();
+    this.dataService.getApplyStatus(5).then();
   }
 
   public agree = false;
@@ -87,10 +87,6 @@ export class Contract1Component implements OnInit {
   }
 
   requestData() {
-    console.log(this.base1);
-    console.log(this.base22.value);
-    console.log(this.base23.value);
-
     if (this.base1 === undefined) {
       this.errorBlank()
       return;

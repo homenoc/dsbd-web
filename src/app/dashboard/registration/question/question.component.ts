@@ -17,7 +17,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(0).then();
+    this.dataService.getApplyStatus(1).then();
   }
 
   public base1 = new FormControl();

@@ -17,7 +17,7 @@ export class Contract2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(6).then();
+    this.dataService.getApplyStatus(7).then();
   }
 
   base1_ja = new FormGroup({

@@ -17,16 +17,15 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getApplyStatus(-1).then((d) => {
-      console.log('data: ' + d);
-      if (d === 0) {
+      if (d === 1) {
         this.router.navigate(['/dashboard/registration/question']).then();
-      } else if (d === 2) {
+      } else if (d === 3) {
         this.router.navigate(['/dashboard/registration/agreement']).then();
-      } else if (d === 4) {
+      } else if (d === 5) {
         this.router.navigate(['/dashboard/registration/contract1']).then();
-      } else if (d === 6) {
+      } else if (d === 7) {
         this.router.navigate(['/dashboard/registration/contract2']).then();
-      } else if (d === -1 || undefined) {
+      } else if (d === -1 || d === undefined) {
         this.router.navigate(['/dashboard/registration/question']).then();
       }
     })
