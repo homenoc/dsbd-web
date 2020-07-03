@@ -93,7 +93,7 @@ export class DataService {
 
   //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
   getStatus(): Promise<number> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'))
     return data1.ref.get().then((doc) => {
       // console.log(doc.data());
       // console.log(doc.data().status)
@@ -106,14 +106,14 @@ export class DataService {
 
   //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
   getApplyStatus(d: any): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('admin').doc('base')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'))
     return data1.ref.get().then((doc1) => {
       // console.log(doc1.data());
       if (doc1.data() === undefined) {
         this.router.navigate(['/dashboard/registration/question']).then();
       }
 
-      if (doc1.data().status == undefined && d === 1 || d === doc1.data().status || d === -1) {
+      if (doc1.data().status == undefined && d === 1 || d === doc1.data().status % 10 || d === -1) {
         const data2 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('common')
         return data2.ref.get()
           .then((doc2) => {

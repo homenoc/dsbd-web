@@ -1,23 +1,23 @@
 <div class="main">
   <h2>1. How to connection</h2>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="base1">
-    <mat-radio-button value="1">L2 EtherIP</mat-radio-button>
+    <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="2">L2 Cross Connect(Campus Connection)</mat-radio-button>
+    <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 Cross Connect(Campus Connection)</mat-radio-button>
     <br>
-    <mat-radio-button value="3">L3 Static Tunnel</mat-radio-button>
+    <mat-radio-button value="L3 Static Tunnel">L3 Static Tunnel</mat-radio-button>
     <br>
-    <mat-radio-button value="4">L3 Static EtherIP</mat-radio-button>
+    <mat-radio-button value="L3 Static EtherIP">L3 Static EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="5">L3 Static Local Attachment</mat-radio-button>
+    <mat-radio-button value="L3 Static Local Attachment">L3 Static Local Attachment</mat-radio-button>
     <br>
-    <mat-radio-button value="6">L3 BGP Tunnel</mat-radio-button>
+    <mat-radio-button value="L3 BGP Tunnel">L3 BGP Tunnel</mat-radio-button>
     <br>
-    <mat-radio-button value="7">L3 BGP EtherIP</mat-radio-button>
+    <mat-radio-button value="L3 BGP EtherIP">L3 BGP EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="8">L3 BGP Local Attachment</mat-radio-button>
+    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP Local Attachment</mat-radio-button>
     <br>
-    <mat-radio-button value="9">Other</mat-radio-button>
+    <mat-radio-button value="">Other</mat-radio-button>
   </mat-radio-group>
   <form class="form" *ngIf="base1 == 9">
     <br>
@@ -242,19 +242,19 @@
   <br><br>
   <h2>6. Installation status of NTT FLETS line at connection location</h2>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="base6">
-    <mat-radio-button value="1">Yes.(I am contract <b>FLETSv6 Option</b> and I can connect to the IPv6 Internet by
+    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">Yes.(I am contract <b>FLETSv6 Option</b> and I can connect to the IPv6 Internet by
       IPoE.)
     </mat-radio-button>
     <br>
-    <mat-radio-button value="2">Yes.(I am contract <b>FLETSv6 Option</b> and I can't connect to the IPv6 Internet by
+    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">Yes.(I am contract <b>FLETSv6 Option</b> and I can't connect to the IPv6 Internet by
       IPoE.)
     </mat-radio-button>
     <br>
-    <mat-radio-button value="3">Yes.(I haven't contract <b>FLETSv6 Option</b>.)</mat-radio-button>
+    <mat-radio-button value="Yes. not support FLETSv6 Option">Yes.(I haven't contract <b>FLETSv6 Option</b>.)</mat-radio-button>
     <br>
-    <mat-radio-button value="4">No.(But, there is a IPv6 address available for the connection.)</mat-radio-button>
+    <mat-radio-button value="No. support ipv6">No.(But, there is a IPv6 address available for the connection.)</mat-radio-button>
     <br>
-    <mat-radio-button value="5">No.(But, there isn't a IPv6 address available for the connection.)
+    <mat-radio-button value="No. not supported ipv6">No.(But, there isn't a IPv6 address available for the connection.)
     </mat-radio-button>
   </mat-radio-group>
   <br>
