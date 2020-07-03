@@ -1,0 +1,52 @@
+<div class="main">
+  <form class="form">
+    <h2>Thank you for activity our organization! <br>
+      Please tell your request and background.
+    </h2>
+    <h3>1．What is the purpose of using our network service ?<br>
+      Limited to research, learning and personal use. Commercial use is prohibited. </h3>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput rows="7" placeholder="Ex. It makes me feel..." [formControl]="base1" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>2. Do you want to allocate IP addresses ?
+      If you have public IPs and AS numbers assigned by the RIR, it is possible to use them within our network
+      connection. </h3>
+    <mat-form-field class="full-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="7" placeholder="Ex. It makes me feel..." [formControl]="base2" required></textarea>
+      </label>>
+    </mat-form-field>
+    <br>
+    <h3>3. What is the expected traffic volume for this connection ?</h3>
+    <mat-form-field class="full-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="7" placeholder="Ex. It makes me feel..." [formControl]="base3" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>4. If you have a website or SNS about network technology, please let us know.<br>
+      We will use this information as a reference when assessing whether to permit use.
+    </h3>
+    <mat-form-field class="full-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="7" placeholder="Ex. It makes me feel..." [formControl]="base4" required></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br>
+  <br>
+  <section>
+    <mat-checkbox [(ngModel)]="agree">Do you agree this terms of use ?</mat-checkbox>
+  </section>
+  <br>
+  <button mat-raised-button color="primary" (click)="requestComment()" [disabled]="agree == false">Agree</button>
+  <br>
+  <br>
+  <br>
+</div>

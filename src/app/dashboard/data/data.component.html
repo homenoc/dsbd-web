@@ -1,0 +1,92 @@
+<div class="main">
+  <ng-container *ngFor="let d of data">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>{{d.id}}</mat-card-title>
+        <mat-card-subtitle>AS{{d.as}}</mat-card-subtitle>
+        <mat-card-subtitle></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+
+        <br><br>
+        <table border="1">
+          <tr>
+            <th>IPv4</th>
+          </tr>
+          <tr *ngFor="let ip of d.ipv4">
+            <td>{{ ip }}</td>
+          </tr>
+        </table>
+        <br>
+        <table border="1">
+          <tr>
+            <th>IPv6</th>
+          </tr>
+          <tr *ngFor="let ip of d.ipv6">
+            <td>{{ ip }}</td>
+          </tr>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="2">Contract</th>
+          </tr>
+          <tr>
+            <th>Service</th>
+            <td>{{d.service}}</td>
+          </tr>
+          <tr>
+            <th>UserName</th>
+            <td>{{d.name}}</td>
+          </tr>
+          <tr>
+            <th>Fee</th>
+            <td>{{d.fee}}</td>
+          </tr>
+          <tr>
+            <th>Assign IP Address</th>
+            <td>{{d.assign}}</td>
+          </tr>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="3">Connection Infomation</th>
+          </tr>
+          <tr>
+            <th>Connection</th>
+            <td colspan="2">{{d.connection}}</td>
+          </tr>
+          <tr>
+            <th>NOC</th>
+            <td colspan="2">{{d.noc}}</td>
+          </tr>
+          <tr>
+            <th>Terminated address</th>
+            <td colspan="2">{{d.terminatedAddress}}</td>
+          </tr>
+          <tr>
+            <th colspan="3">Link Infomation</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Link Info(IPv4)</th>
+            <th>Link Info(IPv6)</th>
+          </tr>
+          <tr>
+            <th>Our Organization</th>
+            <td>{{d.linkInfov4.our}}</td>
+            <td>{{d.linkInfov6.our}}</td>
+          </tr>
+          <tr>
+            <th>Your Organization</th>
+            <td>{{d.linkInfov4.your}}</td>
+            <td>{{d.linkInfov6.your}}</td>
+          </tr>
+        </table>
+        <br><br>
+        <p><b>We will issue the documents electronically.</b></p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>

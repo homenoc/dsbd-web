@@ -1,0 +1,394 @@
+<div class="main">
+  <h2>1. How to connection</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="base1">
+    <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 Cross Connect(Campus Connection)</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static Tunnel">L3 Static Tunnel</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static EtherIP">L3 Static EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static Local Attachment">L3 Static Local Attachment</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP Tunnel">L3 BGP Tunnel</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP EtherIP">L3 BGP EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP Local Attachment</mat-radio-button>
+    <br>
+    <mat-radio-button value="">Other</mat-radio-button>
+  </mat-radio-group>
+  <form class="form" *ngIf="base1 == 9">
+    <br>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput placeholder="Ex. static route other..." [formControl]="base1_Other"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br><br>
+  <h2>2. IP Address</h2>
+  <mat-checkbox [(ngModel)]="base2.check0">Hope to assign IPv4 address</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base2.check1">Hope to assign IPv6 address</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base2.check2">IPv4: Use PI Address(Provider in dependent)</mat-checkbox>
+  <br>
+  <form *ngIf="base2.check2" [formGroup]="base22">
+    <br>
+    <h3>IPv4 Address</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput placeholder="Ex. x.x.x.x/x" formControlName="ip"></textarea>
+      </label>
+    </mat-form-field>
+    <p>AS Number</p>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput placeholder="Ex. AS59105" formControlName="as"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br>
+  <mat-checkbox [(ngModel)]="base2.check3">IPv6: Use PI Address(Provider in dependent)</mat-checkbox>
+  <br>
+  <form *ngIf="base2.check3" [formGroup]="base23">
+    <br>
+    <h3>IPv6 Address</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput placeholder="Ex. x.x.x.x.x.x.x.x/x" formControlName="ip"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>AS Number</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput placeholder="Ex. AS59105" formControlName="as"></textarea>
+      </label>
+    </mat-form-field>
+    <br><br>
+  </form>
+  <form [formGroup]="base3">
+    <h2>3. Administrator</h2>
+    <h3>0．Organization Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="2" placeholder="Ex. HomeNOC" formControlName="organization"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>1. First Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. first" formControlName="firstName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>2. Last Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. last" formControlName="lastName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>3. Address</h3>
+    <mat-form-field class="large-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="3" placeholder="Ex. address" formControlName="address"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>4. E-Mail</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. test@homenoc.ad.jp" formControlName="email"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>5. Phone</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. +81 000-0000-0000" formControlName="phone"></textarea>
+      </label>
+    </mat-form-field>
+    <h3>6. Country</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. Japan" formControlName="country"></textarea>
+      </label>
+    </mat-form-field>
+    <br><br>
+  </form>
+  <h2>4. Administrator for connection location</h2>
+  <section>
+    <mat-checkbox [(ngModel)]="base4Check">Same data as number 3</mat-checkbox>
+  </section>
+  <form *ngIf="base4Check == false" [formGroup]="base4">
+    <h3>0．Organization Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="2" placeholder="Ex. HomeNOC" formControlName="organization"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>1. First Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. first" formControlName="firstName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>2. Last Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. last" formControlName="lastName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>3. Address</h3>
+    <mat-form-field class="large-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="3" placeholder="Ex. address" formControlName="address"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>4. E-Mail</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. test@homenoc.ad.jp" formControlName="email"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>5. Phone</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. +81 000-0000-0000" formControlName="phone"></textarea>
+      </label>
+    </mat-form-field>
+    <h3>6. Country</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. Japan" formControlName="country"></textarea>
+      </label>
+    </mat-form-field>
+    <br><br>
+  </form>
+  <h2>5. Technical director </h2>
+  <mat-checkbox [(ngModel)]="base5Check">Same data as number 3</mat-checkbox>
+  <form *ngIf="base5Check == false" [formGroup]="base5">
+    <h3>0．Organization Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="2" placeholder="Ex. HomeNOC" formControlName="organization"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>1. First Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. first" formControlName="firstName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>2. Last Name</h3>
+    <mat-form-field class="small-width">
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. last" formControlName="lastName"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>3. Address</h3>
+    <mat-form-field class="large-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="3" placeholder="Ex. address" formControlName="address"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>4. E-Mail</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. test@homenoc.ad.jp" formControlName="email"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <h3>5. Phone</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. +81 000-0000-0000" formControlName="phone"></textarea>
+      </label>
+    </mat-form-field>
+    <h3>6. Country</h3>
+    <mat-form-field class="small-width">
+      <mat-label>Leave a comment</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="Ex. Japan" formControlName="country"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <p>We will contact you mainly if you fill out this form.</p>
+  <br><br>
+  <h2>6. Installation status of NTT FLETS line at connection location</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="base6">
+    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">Yes.(I am contract <b>FLETSv6 Option</b> and I can connect to the IPv6 Internet by
+      IPoE.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">Yes.(I am contract <b>FLETSv6 Option</b> and I can't connect to the IPv6 Internet by
+      IPoE.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="Yes. not support FLETSv6 Option">Yes.(I haven't contract <b>FLETSv6 Option</b>.)</mat-radio-button>
+    <br>
+    <mat-radio-button value="No. support ipv6">No.(But, there is a IPv6 address available for the connection.)</mat-radio-button>
+    <br>
+    <mat-radio-button value="No. not supported ipv6">No.(But, there isn't a IPv6 address available for the connection.)
+    </mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <p><b>We use IPv6 Address for EtherIP and tunnel connections.</b></p>
+  <p><b>We recommend use NTT Frets to because of high speed communication.</b></p>
+  <br><br>
+  <h2>7. Preferred date period of use</h2>
+  <p><b>Sorry, we may not be able to meet your request.</b></p>
+  <h3>Scheduled start date for connection</h3>
+  <mat-checkbox [(ngModel)]="base7StartIndefinite">Undecided</mat-checkbox>
+  <br>
+  <mat-form-field class="small-width" *ngIf="base7StartIndefinite == false">
+    <mat-label>Choose a date</mat-label>
+    <label>
+      <input matInput [matDatepicker]="picker1" [formControl]="base7StartDate">
+    </label>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <h3>Scheduled end date for connection</h3>
+  <mat-checkbox [(ngModel)]="base7EndIndefinite">Undecided</mat-checkbox>
+  <br>
+  <mat-form-field class="small-width" *ngIf="base7EndIndefinite == false">
+    <mat-label>Choose a date</mat-label>
+    <label>
+      <input matInput [matDatepicker]="picker2" [formControl]="base7EndDate">
+    </label>
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+  <br><br>
+  <form>
+    <h2>8. Purpose of use</h2>
+    <p><b>NOTE: We reserve the right to refuse your use when if it is not the purpose of our use</b></p>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput rows="5" placeholder="Ex. homenoc" [formControl]="base8"></textarea>
+      </label>
+    </mat-form-field>
+    <br><br>
+  </form>
+  <h2>9. Usage Bandwidth</h2>
+  <p>Please tell us Bandwidth to be used in this connection.</p>
+  <form [formGroup]="base9">
+    <mat-form-field class="small-width">
+      <mat-label>Average upstream bandwidth</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="1000 Kbps" formControlName="aveUpstream"></textarea>
+      </label>
+    </mat-form-field>
+    <mat-form-field class="small-width">
+      <mat-label>Maximum upstream bandwidth</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="10000 Kbps" value="0 Kbps" formControlName="maxUpstream"></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="small-width">
+      <mat-label>Average downlink bandwidth</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="1000 Kbps" value="0 Kbps" formControlName="aveDownlink"></textarea>
+      </label>
+    </mat-form-field>
+    <mat-form-field class="small-width">
+      <mat-label>Maximum downlink bandwidth</mat-label>
+      <label>
+        <textarea matInput rows="1" placeholder="10000 Kbps" value="0 Kbps" formControlName="maxDownlink"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <h3>Do you have transfer of a large amount communications to a particular AS ? (Normally 10Mbps and above.)</h3>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="base9Etc">
+    <mat-radio-button class="radio" value="1">Yes</mat-radio-button>
+    <mat-radio-button class="radio" value="2">No</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  <h2>10. Advertise route from our organization</h2>
+  <mat-checkbox [(ngModel)]="base10.check0">BGP IPv4 FullRoute</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base10.check1">BGP IPv6 FullRoute</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base10.check2">BGP IPv4 DefaultRoute</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base10.check3">BGP IPv6 DefaultRoute</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="base10.check4">Other</mat-checkbox>
+  <br>
+  <form *ngIf="base10.check4">
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput placeholder="Ex. static route other..." [(ngModel)]="base10Other"></textarea>
+      </label>
+    </mat-form-field>
+    <br><br>
+  </form>
+  <form>
+    <h2>11. Termination NOC</h2>
+    <p><b>Please let us know the NOC that terminates this connection.</b></p>
+    <mat-form-field class="example-full-width">
+      <mat-label>NOC</mat-label>
+      <label>
+        <input matInput placeholder="NOC" value="" [formControl]="base11">
+      </label>
+    </mat-form-field>
+    <p>NOC List https://www.homenoc.ad.jp/en/tech/backbone/</p>
+    <p>It may be changed due to equipment reasons.</p>
+    <br><br>
+  </form>
+  <h2>12. Monitoring</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="base12">
+    <mat-radio-button class="radio" value="1">Required</mat-radio-button>
+    <mat-radio-button class="radio" value="2">Not Required</mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <p>・Even when monitoring, the notification will be best-effort.</p>
+  <p>・Please select "Not required" if frequent disconnection occurs.</p>
+  <br><br>
+  <h2>13. Contract documents</h2>
+  <p><b>Please let us know how to deliver the contract.</b></p>
+  <p>※ This document is based on the Telecommunications Business Act of Japan.</p>
+  <p>Telecommunications carriers in japan have an obligation to issue contract documents.</p>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="base13">
+    <mat-radio-button class="radio" value="E-Mail">E-Mail</mat-radio-button>
+    <mat-radio-button class="radio" value="Air Mail">Air Mail (Paper contract)</mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <br>
+  <section>
+    <mat-checkbox [(ngModel)]="agree">Do you agree this terms of use ?</mat-checkbox>
+  </section>
+  <br>
+  <button mat-button (click)="requestData()" [disabled]="agree == false">Request</button>
+  <br>
+  <br>
+  <br>
+</div>
