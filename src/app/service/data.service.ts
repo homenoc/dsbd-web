@@ -30,11 +30,11 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`question`).set(doc, {merge: true})
       .then(() => {
-        // this.lockRegisterData(true);question
+        this.router.navigate(['/dashboard/registration']).then();
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
-        // this.commonService.openBar('Error:' + error, 2000);
+        this.commonService.openBar('Error:' + error, 2000);
       });
   }
 
@@ -43,11 +43,11 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`contract1`).set(data, {merge: true})
       .then(() => {
-        // this.lockRegisterData(true);
+        this.router.navigate(['/dashboard/registration']).then();
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
-        // this.commonService.openBar('Error:' + error, 2000);
+        this.commonService.openBar('Error:' + error, 2000);
       });
   }
 
@@ -55,11 +55,11 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`contract2`).set(data, {merge: true})
       .then(() => {
-        // this.lockRegisterData(true);
+        this.router.navigate(['/dashboard/registration']).then();
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
-        // this.commonService.openBar('Error:' + error, 2000);
+        this.commonService.openBar('Error:' + error, 2000);
       });
   }
 
@@ -71,11 +71,11 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`term`).set(doc, {merge: true})
       .then(() => {
-        // this.lockRegisterData(true);
+        this.router.navigate(['/dashboard/registration']).then();
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
-        // this.commonService.openBar('Error:' + error, 2000);
+        this.commonService.openBar('Error:' + error, 2000);
       });
   }
 

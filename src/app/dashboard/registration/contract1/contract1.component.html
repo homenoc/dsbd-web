@@ -6,7 +6,7 @@
     <p><b>It may take some time.</b></p>
     <br><br>
   </ng-container>
-  <ng-container *ngIf="lock===false">
+  <ng-container *ngIf="!lock">
     <h2>1. How to connection</h2>
     <mat-radio-group aria-label="Select an option" [(ngModel)]="base1">
       <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>

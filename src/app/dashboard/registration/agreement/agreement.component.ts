@@ -15,7 +15,10 @@ export class AgreementComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getPersonalTerm().then((doc) => {
-      if (doc !== 0 || doc.lock) {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
         this.lock = false;
       }
     });

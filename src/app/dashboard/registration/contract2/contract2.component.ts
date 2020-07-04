@@ -18,7 +18,10 @@ export class Contract2Component implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getPersonalContract2().then((doc) => {
-      if (doc !== 0 || doc.lock) {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
         this.lock = false;
       }
     });
