@@ -97,9 +97,6 @@ export class DataService {
     return data1.ref.get().then((doc) => {
       // console.log(doc.data());
       // console.log(doc.data().status)
-      if (doc.data().status == undefined) {
-        return 1;
-      }
       return doc.data().status;
     }).catch(err => console.log(err));
   }
