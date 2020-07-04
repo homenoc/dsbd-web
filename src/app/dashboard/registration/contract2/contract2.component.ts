@@ -17,9 +17,14 @@ export class Contract2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(7).then();
+    this.dataService.getPersonalContract2().then((doc) => {
+      if (doc !== 0 || doc.lock) {
+        this.lock = false;
+      }
+    });
   }
 
+  lock = true;
   base1_ja = new FormGroup({
     address: new FormControl(''),
     organization: new FormControl(''),
@@ -128,6 +133,7 @@ export class Contract2Component implements OnInit {
     doc['data423'] = this.base4_en.value.department;
     doc['data424'] = this.base4_en.value.position;
     doc['data500'] = this.base5.value;
+    doc['lock'] = true;
 
     this.dataService.addRequestContract2(doc);
   }

@@ -30,7 +30,7 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`question`).set(doc, {merge: true})
       .then(() => {
-        this.lockRegisterData(true);
+        // this.lockRegisterData(true);question
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
@@ -43,7 +43,7 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`contract1`).set(data, {merge: true})
       .then(() => {
-        this.lockRegisterData(true);
+        // this.lockRegisterData(true);
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
@@ -55,35 +55,23 @@ export class DataService {
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`contract2`).set(data, {merge: true})
       .then(() => {
-        this.lockRegisterData(true);
+        // this.lockRegisterData(true);
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
         // this.commonService.openBar('Error:' + error, 2000);
-      });
-  }
-
-  lockRegisterData(data: boolean) {
-    const doc = {};
-    doc['lock'] = data;
-
-    this.afs.collection(`user`).doc(localStorage.getItem('authID')).collection('personal').doc('common').set(doc, {merge: true})
-      .then(() => {
-        this.router.navigate(['/dashboard/registration']).then();
-      })
-      .catch((error) => {
-        console.log(error);
       });
   }
 
   agreeTerm(result: boolean) {
     const doc = {};
     doc['agree'] = result;
+    doc['lock'] = true;
 
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`term`).set(doc, {merge: true})
       .then(() => {
-        this.lockRegisterData(true);
+        // this.lockRegisterData(true);
         this.commonService.openBar('Document successfully written!', 2000);
       })
       .catch((error) => {
@@ -91,47 +79,54 @@ export class DataService {
       });
   }
 
+  getPersonalQuestion(): Promise<any> {
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('question')
+    return data1.ref.get().then((doc) => {
+      return doc.data();
+    }).catch(err => {
+      console.log(err);
+      return 0;
+    });
+  }
+
+  getPersonalTerm(): Promise<any> {
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('term')
+    return data1.ref.get().then((doc) => {
+      return doc.data();
+    }).catch(err => {
+      console.log(err);
+      return 0;
+    });
+  }
+
+  getPersonalContract1(): Promise<any> {
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract1')
+    return data1.ref.get().then((doc) => {
+      return doc.data();
+    }).catch(err => {
+      console.log(err);
+      return 0;
+    });
+  }
+
+  getPersonalContract2(): Promise<any> {
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract2')
+    return data1.ref.get().then((doc) => {
+      return doc.data();
+    }).catch(err => {
+      console.log(err);
+      return 0;
+    });
+  }
+
   //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
-  getStatus(): Promise<number> {
+  getStatus(): Promise<any> {
     const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'))
     return data1.ref.get().then((doc) => {
       // console.log(doc.data());
       // console.log(doc.data().status)
       return doc.data().status;
     }).catch(err => console.log(err));
-  }
-
-  //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
-  getApplyStatus(d: any): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'))
-    return data1.ref.get().then((doc1) => {
-      // console.log(doc1.data());
-      if (doc1.data() === undefined) {
-        this.router.navigate(['/dashboard/registration/question']).then();
-      }
-
-      if (doc1.data().status == undefined && d === 1 || d === doc1.data().status % 10 || d === -1) {
-        const data2 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('common')
-        return data2.ref.get()
-          .then((doc2) => {
-            // console.log('lock: ' + doc2.data().lock)
-            if (d === -1 && doc2.data().lock == true) {
-              return -2;
-            } else if (d === -1) {
-              return doc1.data().status;
-            }
-            if (doc2.data().lock == true) {
-              this.router.navigate(['/dashboard/registration']).then();
-              return false;
-            } else if (doc2.data()) {
-              return true;
-            }
-          })
-      } else {
-        this.router.navigate(['/dashboard/registration']).then();
-        return false
-      }
-    });
   }
 
   getUserNetData(): Promise<any> {
