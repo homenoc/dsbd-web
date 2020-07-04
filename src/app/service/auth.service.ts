@@ -59,7 +59,7 @@ export class AuthService {
   loginProcess(): void {
     this.afAuth.currentUser
       .then((user) => {
-        // console.log(user);
+        console.log(user);
         localStorage.clear();
         if (user.emailVerified) {
           localStorage.setItem('authID', user.uid);
@@ -71,19 +71,6 @@ export class AuthService {
         }
       });
   }
-
-  getUser() {
-    return this.afAuth.currentUser
-      .then(d => {
-        return d;
-      });
-  }
-
-
-  loginCheck() {
-    return this.user !== null;
-  }
-
 
   logOut(status: boolean): void {
     localStorage.clear();

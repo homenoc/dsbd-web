@@ -9,6 +9,7 @@ import {Contract2Component} from "./registration/contract2/contract2.component";
 import {DataComponent} from "./data/data.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {SettingComponent} from "./setting/setting.component";
+import {AuthGuard} from "../guard/auth.guard";
 
 
 const routes: Routes = [{
@@ -24,10 +25,9 @@ const routes: Routes = [{
     {path: 'registration/contract1', component: Contract1Component},
     {path: 'registration/contract2', component: Contract2Component},
     {path: 'registration', component: RegistrationComponent},
-
-  ]
-}
-];
+  ],
+  canActivate: [AuthGuard]
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
