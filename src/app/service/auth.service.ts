@@ -72,19 +72,6 @@ export class AuthService {
       });
   }
 
-  getUser() {
-    return this.afAuth.currentUser
-      .then(d => {
-        return d;
-      });
-  }
-
-
-  loginCheck() {
-    return this.user !== null;
-  }
-
-
   logOut(status: boolean): void {
     localStorage.clear();
     this.afAuth.signOut().then(() => {

@@ -17,11 +17,17 @@ export class Contract1Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(5).then();
+    this.dataService.getPersonalContract1().then((doc) => {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
+        this.lock = false;
+      }
+    });
   }
-
   public agree = false;
-
+  lock = true;
   base1: any;
   base1_Other = new FormControl('');
   base2 = {check0: false, check1: false, check2: false, check3: false};
@@ -166,6 +172,7 @@ export class Contract1Component implements OnInit {
     doc['data110'] = this.base11.value;
     doc['data120'] = this.base12;
     doc['data130'] = this.base13;
+    doc['lock'] = true;
     this.dataService.addRequestContract1(doc);
 
   }

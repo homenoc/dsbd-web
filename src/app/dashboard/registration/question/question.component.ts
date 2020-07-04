@@ -17,13 +17,21 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(1).then();
+    this.dataService.getPersonalQuestion().then((doc) => {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
+        this.lock = false;
+      }
+    });
   }
 
   public base1 = new FormControl();
   public base2 = new FormControl();
   public base3 = new FormControl();
   public base4 = new FormControl();
+  public lock = true;
 
   public agree = false;
 

@@ -14,10 +14,18 @@ export class AgreementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getApplyStatus(3).then();
+    this.dataService.getPersonalTerm().then((doc) => {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
+        this.lock = false;
+      }
+    });
   }
 
   public agree = false;
+  public lock = true;
 
   requestTerm(d: boolean) {
     this.dataService.agreeTerm(d);
