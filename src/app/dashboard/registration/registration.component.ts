@@ -17,7 +17,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getApplyStatus(-1).then((d) => {
-      console.log(d)
+      // console.log(d)
       if (d % 10 === 1) {
         this.router.navigate(['/dashboard/registration/question']).then();
       } else if (d % 10 === 3) {

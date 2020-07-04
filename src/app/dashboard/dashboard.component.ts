@@ -29,6 +29,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
       if (1 < d % 10 && d % 10 <= 7) {
         this.registration = true;
+      } else if (d === undefined) {
+        this.registration = true;
       }
     })
   }
