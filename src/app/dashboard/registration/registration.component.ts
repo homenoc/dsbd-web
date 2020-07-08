@@ -20,11 +20,11 @@ export class RegistrationComponent implements OnInit {
       // console.log(d)
       if (d % 10 === 1 || d === undefined) {
         this.router.navigate(['/dashboard/registration/question']).then();
-      } else if (d % 10 === 3) {
+      } else if (d % 10 === 2) {
         this.router.navigate(['/dashboard/registration/agreement']).then();
-      } else if (d % 10 === 5) {
+      } else if (d % 10 === 3) {
         this.router.navigate(['/dashboard/registration/contract1']).then();
-      } else if (d % 10 === 7) {
+      } else if (d % 10 === 4) {
         this.router.navigate(['/dashboard/registration/contract2']).then();
       }
     })
