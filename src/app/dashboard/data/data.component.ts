@@ -50,8 +50,8 @@ export class DataComponent implements OnInit {
           connection: d.data().connection,
           noc: d.data().noc,
           terminatedAddress: d.data().terminatedAddress,
-          linkInfov4: {our: d.data().v4_your, your: d.data().v4_our},
-          linkInfov6: {our: d.data().v6_your, your: d.data().v6_our},
+          linkInfov4: {our: d.data().v4_our, your: d.data().v4_your},
+          linkInfov6: {our: d.data().v6_our, your: d.data().v6_your},
         })
       })
     })
