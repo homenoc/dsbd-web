@@ -26,7 +26,7 @@
     "@angular/service-worker": "^10.1.5",
     "firebase": "^7.23.0",
     "ng-recaptcha": "^5.0.0",
-    "rxjs": "~6.5.4",
+    "rxjs": "~6.6.3",
     "tslib": "^1.14.1",
     "zone.js": "~0.10.2"
   },
