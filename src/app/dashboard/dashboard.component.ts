@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from "../service/auth.service";
-import {SidenavService} from "../service/sidenav.service";
-import {MatSidenav} from "@angular/material/sidenav";
-import {DataService} from "../service/data.service";
+import {AuthService} from '../service/auth.service';
+import {SidenavService} from '../service/sidenav.service';
+import {MatSidenav} from '@angular/material/sidenav';
+import {DataService} from '../service/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       } else if (d === undefined) {
         this.registration = true;
       }
-    })
+    });
   }
 
   ngAfterViewInit(): void {

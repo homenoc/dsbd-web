@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from "@angular/fire/auth";
-import {CommonService} from "./common.service";
-import {AngularFirestore} from "@angular/fire/firestore";
+import {AngularFireAuth} from '@angular/fire/auth';
+import {CommonService} from './common.service';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,8 @@ export class UserService {
   createUser(email, pass): void {
     this.afAuth.createUserWithEmailAndPassword(email, pass)
       .then(result => {
-        result.user.sendEmailVerification().then()
-        this.commonService.openBar('Please follow the email confirmation link.。', 10000)
+        result.user.sendEmailVerification().then();
+        this.commonService.openBar('Please follow the email confirmation link.。', 10000);
       })
       .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
   }

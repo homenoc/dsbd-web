@@ -1,9 +1,9 @@
 import {Injectable, NgZone} from '@angular/core';
-import {Router} from "@angular/router";
-import {AngularFireAuth} from "@angular/fire/auth";
-import {auth} from "firebase";
-import {CommonService} from "./common.service";
-import {UserService} from "./user.service";
+import {Router} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {auth} from 'firebase';
+import {CommonService} from './common.service';
+import {UserService} from './user.service';
 
 
 @Injectable({

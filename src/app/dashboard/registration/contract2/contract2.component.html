@@ -10,7 +10,7 @@
     <h2>1. IP address user</h2>
     <h3>Japanese</h3>
     <p><b>Please fill out the form in Japanese.</b></p>
-    <form class="form" [formGroup]="base1_ja">
+    <form class="form" [formGroup]="base1Ja">
       <mat-form-field class="large-width">
         <mat-label>Address(Japanese)</mat-label>
         <label>
@@ -32,7 +32,7 @@
     </form>
     <h3>English</h3>
     <p><b>Please fill out the form in English.</b></p>
-    <form class="form" [formGroup]="base1_en">
+    <form class="form" [formGroup]="base1En">
       <mat-form-field class="large-width">
         <mat-label>Address(English)</mat-label>
         <label>
@@ -84,7 +84,7 @@
     <h2>3. Operations Staff</h2>
     <h3>Japanese</h3>
     <p><b>Please fill out the form in Japanese.</b></p>
-    <form [formGroup]="base3_ja">
+    <form [formGroup]="base3Ja">
       <mat-form-field class="small-width">
         <mat-label>Name(japanese)/JPNIC Handles</mat-label>
         <label>
@@ -145,7 +145,7 @@
         </label>
       </mat-form-field>
     </form>
-    <form [formGroup]="base3_en">
+    <form [formGroup]="base3En">
       <h3>English</h3>
       <p><b>Please fill out the form in English.</b></p>
       <mat-form-field class="small-width">
@@ -188,7 +188,7 @@
     <ng-container *ngIf="base4Check ==false">
       <h3>Japanese</h3>
       <p><b>Please fill out the form in Japanese.</b></p>
-      <form [formGroup]="base4_ja">
+      <form [formGroup]="base4Ja">
         <mat-form-field class="small-width">
           <mat-label>Name(japanese)/JPNIC Handles</mat-label>
           <label>
@@ -249,7 +249,7 @@
           </label>
         </mat-form-field>
       </form>
-      <form [formGroup]="base4_en">
+      <form [formGroup]="base4En">
         <h3>English</h3>
         <p><b>Please fill out the form in English.</b></p>
         <mat-form-field class="small-width">

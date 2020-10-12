@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {DataService} from "../../../service/data.service";
-import {CommonService} from "../../../service/common.service";
+import {FormControl, FormGroup} from '@angular/forms';
+import {DataService} from '../../../service/data.service';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-contract1',
@@ -16,20 +16,10 @@ export class Contract1Component implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
-    this.dataService.getPersonalContract1().then((doc) => {
-      if (doc === undefined) {
-        this.lock = false;
-      }
-      if (!doc.lock) {
-        this.lock = false;
-      }
-    });
-  }
   public agree = false;
   lock = true;
   base1: any;
-  base1_Other = new FormControl('');
+  base1Other = new FormControl('');
   base2 = {check0: false, check1: false, check2: false, check3: false};
   base22 = new FormGroup({
     ip: new FormControl(''),
@@ -88,91 +78,106 @@ export class Contract1Component implements OnInit {
   base4Check = false;
   base5Check = false;
 
+  ngOnInit(): void {
+    this.dataService.getPersonalContract1().then((doc) => {
+      if (doc === undefined) {
+        this.lock = false;
+      }
+      if (!doc.lock) {
+        this.lock = false;
+      }
+    });
+  }
+
   errorBlank() {
     this.commonService.openBar('The field is blank.', 2000);
   }
 
   requestData() {
     if (this.base1 === undefined) {
-      this.errorBlank()
+      this.errorBlank();
       return;
     }
     if (this.base2.check0 === false && this.base2.check1 === false && this.base2.check2 === false && this.base2.check3 === false) {
-      this.errorBlank()
+      this.errorBlank();
       return;
     }
-    if (this.base3.value.organization === '' || this.base3.value.firstName === '' || this.base3.value.lastName === '' || this.base3.value.address === '' || this.base3.value.email === '' || this.base3.value.phone === '' || this.base3.value.country === '') {
-      this.errorBlank()
+    if (this.base3.value.organization === '' || this.base3.value.firstName === '' ||
+      this.base3.value.lastName === '' || this.base3.value.address === '' || this.base3.value.email === '' ||
+      this.base3.value.phone === '' || this.base3.value.country === '') {
+      this.errorBlank();
       return;
     }
     if (this.base6 === undefined || this.base8.value === '') {
-      this.errorBlank()
+      this.errorBlank();
       return;
     }
-    if (this.base10.check0 === false && this.base10.check1 === false && this.base10.check2 === false && this.base10.check3 === false && this.base10.check4 === false) {
-      this.errorBlank()
+    if (this.base10.check0 === false && this.base10.check1 === false &&
+      this.base10.check2 === false && this.base10.check3 === false && this.base10.check4 === false) {
+      this.errorBlank();
       return;
     }
     if (this.base12 === undefined || this.base13 === undefined) {
-      this.errorBlank()
+      this.errorBlank();
       return;
     }
 
-    const doc = {};
-    doc['data10'] = this.base1;
-    doc['data11'] = this.base1_Other.value;
-    doc['data20'] = this.base2.check0;
-    doc['data21'] = this.base2.check1;
-    doc['data22'] = this.base2.check2;
-    doc['data220'] = this.base22.value.ip;
-    doc['data221'] = this.base22.value.as;
-    doc['data23'] = this.base2.check3;
-    doc['data230'] = this.base23.value.ip;
-    doc['data231'] = this.base23.value.as;
-    doc['data31'] = this.base3.value.organization;
-    doc['data32'] = this.base3.value.firstName;
-    doc['data33'] = this.base3.value.lastName;
-    doc['data34'] = this.base3.value.address;
-    doc['data35'] = this.base3.value.email;
-    doc['data36'] = this.base3.value.phone;
-    doc['data37'] = this.base3.value.country;
-    doc['data40'] = this.base4Check;
-    doc['data41'] = this.base4.value.organization;
-    doc['data42'] = this.base4.value.firstName;
-    doc['data43'] = this.base4.value.lastName;
-    doc['data44'] = this.base4.value.address;
-    doc['data45'] = this.base4.value.email;
-    doc['data46'] = this.base4.value.phone;
-    doc['data47'] = this.base4.value.country;
-    doc['data50'] = this.base5Check;
-    doc['data51'] = this.base5.value.organization;
-    doc['data52'] = this.base5.value.firstName;
-    doc['data53'] = this.base5.value.lastName;
-    doc['data54'] = this.base5.value.address;
-    doc['data55'] = this.base5.value.email;
-    doc['data56'] = this.base5.value.phone;
-    doc['data57'] = this.base5.value.country;
-    doc['data60'] = this.base6;
-    doc['data70'] = this.base7StartIndefinite;
-    doc['data71'] = this.base7StartDate.value;
-    doc['data72'] = this.base7EndIndefinite;
-    doc['data73'] = this.base7EndDate.value;
-    doc['data80'] = this.base8.value;
-    doc['data90'] = this.base9.value.aveUpstream;
-    doc['data91'] = this.base9.value.maxUpstream;
-    doc['data92'] = this.base9.value.aveDownlink;
-    doc['data93'] = this.base9.value.maxDownlink;
-    doc['data94'] = this.base9Etc;
-    doc['data100'] = this.base10.check0;
-    doc['data101'] = this.base10.check1;
-    doc['data102'] = this.base10.check2;
-    doc['data103'] = this.base10.check3;
-    doc['data104'] = this.base10.check4;
-    doc['data105'] = this.base10Other.value;
-    doc['data110'] = this.base11.value;
-    doc['data120'] = this.base12;
-    doc['data130'] = this.base13;
-    doc['lock'] = true;
+    const doc = {
+      data10: this.base1,
+      data11: this.base1Other.value,
+      data20: this.base2.check0,
+      data21: this.base2.check1,
+      data22: this.base2.check2,
+      data220: this.base22.value.ip,
+      data221: this.base22.value.as,
+      data23: this.base2.check3,
+      data230: this.base23.value.ip,
+      data231: this.base23.value.as,
+      data31: this.base3.value.organization,
+      data32: this.base3.value.firstName,
+      data33: this.base3.value.lastName,
+      data34: this.base3.value.address,
+      data35: this.base3.value.email,
+      data36: this.base3.value.phone,
+      data37: this.base3.value.country,
+      data40: this.base4Check,
+      data41: this.base4.value.organization,
+      data42: this.base4.value.firstName,
+      data43: this.base4.value.lastName,
+      data44: this.base4.value.address,
+      data45: this.base4.value.email,
+      data46: this.base4.value.phone,
+      data47: this.base4.value.country,
+      data50: this.base5Check,
+      data51: this.base5.value.organization,
+      data52: this.base5.value.firstName,
+      data53: this.base5.value.lastName,
+      data54: this.base5.value.address,
+      data55: this.base5.value.email,
+      data56: this.base5.value.phone,
+      data57: this.base5.value.country,
+      data60: this.base6,
+      data70: this.base7StartIndefinite,
+      data71: this.base7StartDate.value,
+      data72: this.base7EndIndefinite,
+      data73: this.base7EndDate.value,
+      data80: this.base8.value,
+      data90: this.base9.value.aveUpstream,
+      data91: this.base9.value.maxUpstream,
+      data92: this.base9.value.aveDownlink,
+      data93: this.base9.value.maxDownlink,
+      data94: this.base9Etc,
+      data100: this.base10.check0,
+      data101: this.base10.check1,
+      data102: this.base10.check2,
+      data103: this.base10.check3,
+      data104: this.base10.check4,
+      data105: this.base10Other.value,
+      data110: this.base11.value,
+      data120: this.base12,
+      data130: this.base13,
+      lock: true,
+    };
     this.dataService.addRequestContract1(doc);
 
   }

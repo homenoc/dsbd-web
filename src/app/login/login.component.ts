@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
-import {AuthService} from "../service/auth.service";
+import {FormControl, Validators} from '@angular/forms';
+import {AuthService} from '../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +14,12 @@ export class LoginComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
-  }
-
   public hide = true;
   public email = new FormControl('', [Validators.required, Validators.email]);
   public password = new FormControl();
+
+  ngOnInit(): void {
+  }
 
   getErrorMessage() {
     if (this.email.hasError('required')) {

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
-import {CommonService} from "../../service/common.service";
-import {AngularFireAuth} from "@angular/fire/auth";
+import {FormControl, Validators} from '@angular/forms';
+import {CommonService} from '../../service/common.service';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-setting',
@@ -29,7 +29,7 @@ export class SettingComponent implements OnInit {
 
   changeMail(): void {
     this.afAuth.currentUser.then(r => {
-      r.verifyBeforeUpdateEmail(this.email.value).then(() => this.commonService.openBar('Updated email address!', 2000))
+      r.verifyBeforeUpdateEmail(this.email.value).then(() => this.commonService.openBar('Updated email address!', 2000));
     })
       .catch(error => this.commonService.openBar('Error: ' + error, 200));
   }

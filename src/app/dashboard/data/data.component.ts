@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {DataService} from "../../service/data.service";
+import {Component, OnInit} from '@angular/core';
+import {DataService} from '../../service/data.service';
 
 
+// tslint:disable-next-line:class-name
 class dataStruct {
   public id: string;
   public as: number;
@@ -14,8 +15,8 @@ class dataStruct {
   public connection: string;
   public noc: string;
   public terminatedAddress: string;
-  public linkInfov4: { our: string, your: string };
-  public linkInfov6: { our: string, your: string };
+  public linkInfoV4: { our: string, your: string };
+  public linkInfoV6: { our: string, your: string };
 
 }
 
@@ -36,6 +37,7 @@ export class DataComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getUserNetData().then(d => {
+      // tslint:disable-next-line:no-shadowed-variable
       d.forEach(d => {
         // console.log(d.id + '=>' + d.data());
         this.data.push({
@@ -50,10 +52,10 @@ export class DataComponent implements OnInit {
           connection: d.data().connection,
           noc: d.data().noc,
           terminatedAddress: d.data().terminatedAddress,
-          linkInfov4: {our: d.data().v4_our, your: d.data().v4_your},
-          linkInfov6: {our: d.data().v6_our, your: d.data().v6_your},
-        })
-      })
-    })
+          linkInfoV4: {our: d.data().v4_our, your: d.data().v4_your},
+          linkInfoV6: {our: d.data().v6_our, your: d.data().v6_your},
+        });
+      });
+    });
   }
 }

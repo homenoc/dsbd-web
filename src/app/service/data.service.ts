@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from "@angular/fire/firestore";
-import {AngularFireAuth} from "@angular/fire/auth";
-import {CommonService} from "./common.service";
-import {AuthService} from "./auth.service";
-import {Router} from "@angular/router";
+import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {CommonService} from './common.service';
+import {AuthService} from './auth.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +20,18 @@ export class DataService {
   }
 
   addRequestComment(data: any) {
-    const doc = {};
-    doc['data1'] = data['data1'];
-    doc['data2'] = data['data2'];
-    doc['data3'] = data['data3'];
-    doc['data4'] = data['data4'];
-    doc['lock'] = true;
+    const doc = {
+      data1: undefined,
+      data2: undefined,
+      data3: undefined,
+      data4: undefined,
+      lock: undefined
+    };
+    doc.data1 = data.data1;
+    doc.data2 = data.data2;
+    doc.data3 = data.data3;
+    doc.data4 = data.data4;
+    doc.lock = true;
 
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`question`).set(doc, {merge: true})
@@ -64,9 +70,12 @@ export class DataService {
   }
 
   agreeTerm(result: boolean) {
-    const doc = {};
-    doc['agree'] = result;
-    doc['lock'] = true;
+    const doc = {
+      agree: undefined,
+      lock: undefined
+    };
+    doc.agree = result;
+    doc.lock = true;
 
     this.afs.collection(`user`).doc(localStorage.getItem('authID'))
       .collection(`personal`).doc(`term`).set(doc, {merge: true})
@@ -80,7 +89,7 @@ export class DataService {
   }
 
   getPersonalQuestion(): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('question')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('question');
     return data1.ref.get().then((doc) => {
       return doc.data();
     }).catch(err => {
@@ -90,7 +99,7 @@ export class DataService {
   }
 
   getPersonalTerm(): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('term')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('term');
     return data1.ref.get().then((doc) => {
       return doc.data();
     }).catch(err => {
@@ -100,7 +109,7 @@ export class DataService {
   }
 
   getPersonalContract1(): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract1')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract1');
     return data1.ref.get().then((doc) => {
       return doc.data();
     }).catch(err => {
@@ -110,7 +119,7 @@ export class DataService {
   }
 
   getPersonalContract2(): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract2')
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal').doc('contract2');
     return data1.ref.get().then((doc) => {
       return doc.data();
     }).catch(err => {
@@ -119,9 +128,9 @@ export class DataService {
     });
   }
 
-  //1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
+  // 1:question 2: check 3:agreement 4:check 5:contract1 6:check 7:contract2 8:check 9:finish 10:Release 11:question ...
   getStatus(): Promise<any> {
-    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'))
+    const data1 = this.afs.collection('user').doc(localStorage.getItem('authID'));
     return data1.ref.get().then((doc) => {
       // console.log(doc.data());
       // console.log(doc.data().status)
@@ -130,7 +139,7 @@ export class DataService {
   }
 
   getUserNetData(): Promise<any> {
-    const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('data')
+    const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('data');
     return data.ref.get().then((doc) => {
       return doc;
     })
@@ -141,7 +150,7 @@ export class DataService {
   }
 
   getPersonal(): Promise<any> {
-    const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal')
+    const data = this.afs.collection('user').doc(localStorage.getItem('authID')).collection('personal');
     return data.ref.get()
       .then((doc) => {
         return doc;

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../../service/data.service";
+import {DataService} from '../../../service/data.service';
 
 @Component({
   selector: 'app-agreement',
@@ -13,6 +13,9 @@ export class AgreementComponent implements OnInit {
   ) {
   }
 
+  public agree = false;
+  public lock = true;
+
   ngOnInit(): void {
     this.dataService.getPersonalTerm().then((doc) => {
       if (doc === undefined) {
@@ -23,9 +26,6 @@ export class AgreementComponent implements OnInit {
       }
     });
   }
-
-  public agree = false;
-  public lock = true;
 
   requestTerm(d: boolean) {
     this.dataService.agreeTerm(d);
