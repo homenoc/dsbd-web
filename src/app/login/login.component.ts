@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {AuthService} from '../service/auth.service';
+import {environment} from '../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {CommonService} from '../service/common.service';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private commonService: CommonService,
+    private http: HttpClient,
   ) {
   }
 
@@ -19,6 +24,17 @@ export class LoginComponent implements OnInit {
   public password = new FormControl();
 
   ngOnInit(): void {
+    sessionStorage.setItem('ClientID', this.commonService.random(30));
+    this.http.get(environment.base.url + environment.base.path + '/token/init', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID')
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      sessionStorage.setItem('TmpKey', response.token);
+    }).catch(r => console.log(r));
   }
 
   getErrorMessage() {
@@ -30,18 +46,6 @@ export class LoginComponent implements OnInit {
 
   loginMail() {
     this.authService.loginWithMail(this.email.value, this.password.value);
-  }
-
-  loginGoogle() {
-    this.authService.loginWithGoogle();
-  }
-
-  loginTwitter() {
-    this.authService.loginWithTwitter();
-  }
-
-  registerUser() {
-    // this.userService.
   }
 
 }
