@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {CommonService} from './common.service';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {environment} from '../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,39 +12,74 @@ import {AngularFirestore} from '@angular/fire/firestore';
 export class UserService {
 
   constructor(
+    public router: Router,
     private afAuth: AngularFireAuth,
     public afs: AngularFirestore,
     private commonService: CommonService,
+    private http: HttpClient
   ) {
   }
 
-  createUser(email, pass): void {
-    this.afAuth.createUserWithEmailAndPassword(email, pass)
-      .then(result => {
-        result.user.sendEmailVerification().then();
-        this.commonService.openBar('Please follow the email confirmation link.。', 10000);
-      })
-      .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
+  createUser(userName, mail, password): void {
+    this.http.post(environment.base.url + environment.base.path + '/token', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        name: userName,
+        email: mail,
+        pass: password
+      },
+    }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status) {
+        this.router.navigate(['/dashboard']).then();
+      } else {
+        this.commonService.openBar(response.error, 4000);
+      }
+    }).catch(error => console.log(error));
   }
 
   getUser(uid): Promise<any> {
-    const data = this.afs.collection('user').doc(uid);
-    return data.ref.get()
-      .then(doc => {
-        // console.log(doc);
-        if (doc.exists) {
-          // console.log('User data: ', doc.data());
-          if (doc.data().isActive) {
-            return doc.data();
-          } else {
-            return 0;
-          }
-        } else {
-          console.error('No matching invoice found');
-          return 0;
-        }
-      })
-      .catch();
+    return this.http.post(environment.base.url + environment.base.path + '/user/' + uid, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+      body: {},
+    }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status) {
+        return response;
+        // this.router.navigate(['/dashboard']).then();
+      } else {
+        this.commonService.openBar(response.error, 4000);
+        return response;
+      }
+    }).catch(error => console.log(error));
+  }
+
+  getLoginUser(): Promise<any> {
+    return this.http.get(environment.base.url + environment.base.path + '/user', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status) {
+        return response;
+        // this.router.navigate(['/dashboard']).then();
+      } else {
+        this.commonService.openBar(response.error, 4000);
+        return response;
+      }
+    }).catch(error => console.log(error));
   }
 }
 
