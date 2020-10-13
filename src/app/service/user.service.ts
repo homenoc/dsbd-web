@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {CommonService} from './common.service';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -13,8 +11,6 @@ export class UserService {
 
   constructor(
     public router: Router,
-    private afAuth: AngularFireAuth,
-    public afs: AngularFirestore,
     private commonService: CommonService,
     private http: HttpClient
   ) {
