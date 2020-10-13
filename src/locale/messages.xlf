@@ -2,6 +2,13 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="404" datatype="html">
+        <source>404 Not Found.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/not-found/not-found.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="login" datatype="html">
         <source>Login</source>
         <context-group purpose="location">
@@ -13,18 +20,53 @@
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="E-Mail_Address" datatype="html">
-        <source>E-Mail Address</source>
+      <trans-unit id="user_registration" datatype="html">
+        <source>Register Account</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/login/login.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Password" datatype="html">
-        <source>Password</source>
+      <trans-unit id="next" datatype="html">
+        <source>Next</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/login/login.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verify" datatype="html">
+        <source>Verify</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registration_mail_comment" datatype="html">
+        <source>You will register your profile after registration. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="prev" datatype="html">
+        <source>Prev</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="register" datatype="html">
+        <source>Register</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reset" datatype="html">
+        <source>Reset</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/registration/registration.component.html</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notice" datatype="html">
