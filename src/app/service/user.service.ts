@@ -3,6 +3,7 @@ import {CommonService} from './common.service';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
+import * as shaJS from 'sha.js';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class UserService {
   }
 
   createUser(userName, mail, password): void {
+    const passHash: string = shaJS('sha256').update(password).digest('hex');
     this.http.post(environment.base.url + environment.base.path + '/token', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -24,7 +26,7 @@ export class UserService {
       body: {
         name: userName,
         email: mail,
-        pass: password
+        pass: passHash
       },
     }).toPromise().then(r => {
       const response: any = r;
