@@ -5,20 +5,21 @@
     <!--    </mat-nav-list>-->
     <ng-container>
       <mat-nav-list>
-        <a mat-list-item routerLink="notice">Notification</a>
-        <a mat-list-item *ngIf="registration" routerLink="registration">Registration</a>
-        <a mat-list-item *ngIf="release" routerLink="data">Data</a>
+        <a mat-list-item routerLink="notice" i18n="@@notice">Notice</a>
+        <a mat-list-item *ngIf="registration" routerLink="registration" i18n="@@registration">Registration</a>
+        <a mat-list-item *ngIf="release" routerLink="data" i18n="@@info">Info</a>
         <br>
-        <a mat-list-item *ngIf="release" routerLink="setting">Setting</a>
+        <a mat-list-item *ngIf="release" routerLink="setting" i18n="@@setting">Setting</a>
 
       </mat-nav-list>
       <br>
       <br>
-      <p class="version"><b>version: 1.1</b></p>
+      <p class="version"><b>version: 2.0a</b></p>
     </ng-container>
     <br>
     <br>
-    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut(true)">Logout</button>
+    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut()" i18n="@@logout">Logout
+    </button>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>
