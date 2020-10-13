@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="login" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="E-Mail_Address" datatype="html">
+        <source>E-Mail Address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Password" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notice" datatype="html">
+        <source>Notice</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registration" datatype="html">
+        <source>Registration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="info" datatype="html">
+        <source>Info</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setting" datatype="html">
+        <source>Setting</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logout" datatype="html">
+        <source>Logout
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
