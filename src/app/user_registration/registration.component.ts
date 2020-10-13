@@ -42,9 +42,9 @@ export class RegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.password.value !== this.passwordVerify.value) {
-      this.commonService.openBar('パスワードが異なります', 2000);
+      this.commonService.openBar('Password is wrong\n', 2000);
     } else {
-      this.userService.createUser(this.email.value, this.password.value);
+      // this.userService.createUser(this.email.value, this.password.value);
     }
   }
 
