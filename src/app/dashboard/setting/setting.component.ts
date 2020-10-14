@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {CommonService} from '../../service/common.service';
-import {AngularFireAuth} from '@angular/fire/auth';
+import {UserService} from '../../service/user.service';
+import * as shaJS from 'sha.js';
+
 
 @Component({
   selector: 'app-setting',
@@ -12,38 +14,41 @@ export class SettingComponent implements OnInit {
 
   constructor(
     private commonService: CommonService,
-    private afAuth: AngularFireAuth,
+    private userService: UserService,
   ) {
   }
 
-  hide = false;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl();
-  passwordVerify = new FormControl();
-  id: string;
+  public hide = false;
+  public email = new FormControl('', [Validators.required, Validators.email]);
+  public password = new FormControl();
+  public passwordVerify = new FormControl();
+  public name: string;
 
 
   ngOnInit(): void {
-    this.id = localStorage.getItem('authID');
+    this.name = sessionStorage.getItem('name');
   }
 
   changeMail(): void {
-    this.afAuth.currentUser.then(r => {
-      r.verifyBeforeUpdateEmail(this.email.value).then(() => this.commonService.openBar('Updated email address!', 2000));
-    })
-      .catch(error => this.commonService.openBar('Error: ' + error, 200));
+    const body = {
+      email: this.email.value
+    };
+    this.userService.update(0, body).then(response => {
+      console.log(response);
+    });
   }
 
   changePass(): void {
     if (this.password.value === this.passwordVerify.value) {
-      this.afAuth.currentUser.then(r => {
-        r.updatePassword(this.password.value)
-          .then(() => this.commonService.openBar('Updated password!', 2000))
-          .catch(error => this.commonService.openBar('Error: ' + error, 200));
-      }).catch(error => this.commonService.openBar('Error: ' + error, 200));
+      const passHash: string = shaJS('sha256').update(this.password.value).digest('hex');
+      const body = {
+        pass: passHash
+      };
+      this.userService.update(0, body).then(response => {
+        console.log(response);
+      });
     } else {
       this.commonService.openBar('The password is wrong.', 2000);
     }
   }
-
 }
