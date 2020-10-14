@@ -5,12 +5,12 @@
   <mat-card-content>
     <form (ngSubmit)="loginMail()" class="login-form" #loginForm="ngForm">
       <mat-form-field>
-        <mat-label i18n="@@E-Mail_Address">E-Mail Address</mat-label>
+        <mat-label>E-Mail Address</mat-label>
         <input matInput placeholder="test@homenoc.ad.jp" [formControl]="email" required>
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-label i18n="@@Password">Password</mat-label>
+        <mat-label>Password</mat-label>
         <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
       </mat-form-field>
       <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid" i18n="@@login">Login
@@ -21,3 +21,6 @@
 
 <br>
 <br>
+<div class="button">
+  <button mat-raised-button color="primary" routerLink="/registration">Register Page</button>
+</div>
