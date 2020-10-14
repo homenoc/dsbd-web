@@ -48,7 +48,7 @@ export class RegistrationComponent implements OnInit {
       if (this.password.value === '' || this.email.value === '' || this.name.value === '') {
         this.commonService.openBar('value is empty', 2000);
       } else {
-        this.userService.createUser(this.name.value, this.email.value, this.password.value);
+        this.userService.create(this.name.value, this.email.value, this.password.value);
       }
     }
   }
