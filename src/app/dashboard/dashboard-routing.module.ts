@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {NoticeComponent} from './notice/notice.component';
 import {DashboardComponent} from './dashboard.component';
-import {AgreementComponent} from './registration/agreement/agreement.component';
+import {InitComponent} from './registration/init/init.component';
 import {QuestionComponent} from './registration/question/question.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
 import {Contract2Component} from './registration/contract2/contract2.component';
@@ -20,10 +20,10 @@ const routes: Routes = [{
     {path: 'notice', component: NoticeComponent},
     {path: 'data', component: DataComponent},
     {path: 'setting', component: SettingComponent},
-    {path: 'registration/agreement', component: AgreementComponent},
-    {path: 'registration/question', component: QuestionComponent},
-    {path: 'registration/contract1', component: Contract1Component},
-    {path: 'registration/contract2', component: Contract2Component},
+    {path: 'user_registration/init', component: InitComponent},
+    {path: 'user_registration/question', component: QuestionComponent},
+    {path: 'user_registration/contract1', component: Contract1Component},
+    {path: 'user_registration/contract2', component: Contract2Component},
     {path: 'registration', component: RegistrationComponent},
   ],
   canActivate: [AuthGuard]

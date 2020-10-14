@@ -18,7 +18,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {AgreementComponent} from './registration/agreement/agreement.component';
+import {InitComponent} from './registration/init/init.component';
 import {QuestionComponent} from './registration/question/question.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
 import {Contract2Component} from './registration/contract2/contract2.component';
@@ -37,7 +37,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
   declarations: [
     DashboardComponent,
     NoticeComponent,
-    AgreementComponent,
+    InitComponent,
     QuestionComponent,
     Contract1Component,
     Contract2Component,

@@ -21,6 +21,7 @@ export class RegistrationComponent implements OnInit {
   ) {
   }
 
+  name = new FormControl();
   email = new FormControl();
   password = new FormControl();
   passwordVerify = new FormControl();
@@ -44,7 +45,11 @@ export class RegistrationComponent implements OnInit {
     if (this.password.value !== this.passwordVerify.value) {
       this.commonService.openBar('Password is wrong\n', 2000);
     } else {
-      // this.userService.createUser(this.email.value, this.password.value);
+      if (this.password.value === '' || this.email.value === '' || this.name.value === '') {
+        this.commonService.openBar('value is empty', 2000);
+      } else {
+        this.userService.createUser(this.name.value, this.email.value, this.password.value);
+      }
     }
   }
 

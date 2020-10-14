@@ -1,10 +1,28 @@
 <mat-horizontal-stepper [linear]="false" #stepper>
+  <mat-step>
+    <ng-template matStepLabel i18n="@@user_registration">Notes</ng-template>
+    <mat-label>無意味な登録や虚偽の申請を行った場合は、申請をお断りさせていただきます。</mat-label>
+    <br>
+    <br>
+    <div>
+      <button mat-button matStepperNext i18n="@@next">Next</button>
+    </div>
+  </mat-step>
   <mat-step [stepControl]="mailFormGroup">
     <form [formGroup]="mailFormGroup">
       <ng-template matStepLabel i18n="@@user_registration">Register Account</ng-template>
+      <mat-label>日本人の方は名前は日本語でお願いします。</mat-label>
+      <br>
       <mat-form-field>
         <mat-label>E-Mail Address</mat-label>
         <input matInput placeholder="support@homenoc.ad.jp" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-hint>ex）test@homenoc.ad.jp</mat-hint>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Your Name(full name)</mat-label>
+        <input matInput placeholder="ex)Yuto Yoneda" [formControl]="name" required>
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
         <mat-hint>ex）test@homenoc.ad.jp</mat-hint>
       </mat-form-field>
@@ -29,6 +47,7 @@
         <mat-hint>ex）password123#</mat-hint>
       </mat-form-field>
       <div>
+        <button mat-button matStepperPrevious i18n="@@prev">Prev</button>
         <button mat-button matStepperNext i18n="@@next">Next</button>
       </div>
     </form>
