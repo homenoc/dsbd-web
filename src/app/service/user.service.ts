@@ -17,18 +17,18 @@ export class UserService {
   ) {
   }
 
-  createUser(userName, mail, password): void {
+  create(userName, mail, password): void {
     const passHash: string = shaJS('sha256').update(password).digest('hex');
-    this.http.post(environment.base.url + environment.base.path + '/token', {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      body: {
+    this.http.post(environment.base.url + environment.base.path + '/user',
+      {
         name: userName,
         email: mail,
         pass: passHash
-      },
-    }).toPromise().then(r => {
+      }, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      }).toPromise().then(r => {
       const response: any = r;
       console.log('response: ' + JSON.stringify(response));
       if (response.status) {
@@ -36,10 +36,13 @@ export class UserService {
       } else {
         this.commonService.openBar(response.error, 4000);
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log(error);
+      return {status: false};
+    });
   }
 
-  getUser(uid): Promise<any> {
+  get(uid): Promise<any> {
     return this.http.post(environment.base.url + environment.base.path + '/user/' + uid, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -49,7 +52,6 @@ export class UserService {
       body: {},
     }).toPromise().then(r => {
       const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
       if (response.status) {
         return response;
         // this.router.navigate(['/dashboard']).then();
@@ -57,7 +59,10 @@ export class UserService {
         this.commonService.openBar(response.error, 4000);
         return response;
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log(error);
+      return {status: false};
+    });
   }
 
   getLoginUser(): Promise<any> {
@@ -69,7 +74,6 @@ export class UserService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
       if (response.status) {
         return response;
         // this.router.navigate(['/dashboard']).then();
@@ -77,7 +81,33 @@ export class UserService {
         this.commonService.openBar(response.error, 4000);
         return response;
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log(error);
+      return {status: false};
+    });
+  }
+
+  update(uid, data): Promise<any> {
+    return this.http.put(environment.base.url + environment.base.path + '/user/' + uid,
+      data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          USER_TOKEN: sessionStorage.getItem('ClientID'),
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(r => {
+      const response: any = r;
+      if (response.status) {
+        return response;
+        // this.router.navigate(['/dashboard']).then();
+      } else {
+        this.commonService.openBar(response.error, 4000);
+        return response;
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false};
+    });
   }
 }
 
