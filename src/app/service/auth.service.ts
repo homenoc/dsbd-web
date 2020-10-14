@@ -20,7 +20,8 @@ export class AuthService {
 
   loginWithMail(email: string, pass: string): void {
     console.log('E-Mail: ' + email);
-    const hash: string = shaJS('sha256').update(pass + sessionStorage.getItem('TmpKey')).digest('hex');
+    const passHash: string = shaJS('sha256').update(pass).digest('hex')
+    const hash: string = shaJS('sha256').update(passHash + sessionStorage.getItem('TmpKey')).digest('hex');
     console.log('hash: ' + hash);
     this.http.get(environment.base.url + environment.base.path + '/token', {
       headers: new HttpHeaders({
@@ -45,7 +46,10 @@ export class AuthService {
       } else {
         this.commonService.openBar(response.error, 4000);
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log('error: ' + JSON.stringify(error.error.error));
+      this.commonService.openBar(JSON.stringify(error.error.error), 5000);
+    });
   }
 
   logOut(): void {
