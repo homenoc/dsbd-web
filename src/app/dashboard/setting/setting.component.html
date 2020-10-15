@@ -1,50 +1,142 @@
 <mat-card class="card">
-  <mat-card-subtitle>Name: {{name}}</mat-card-subtitle>
+  <mat-card-subtitle>
+    <b>Name: {{userInfo.name}}&nbsp;&nbsp;&nbsp;ID: {{userInfo.ID}}&nbsp;&nbsp;&nbsp;GID: {{userInfo.gid}}</b>
+  </mat-card-subtitle>
 </mat-card>
-<h3 class="left"><b>This page has not been tested.</b></h3>
+<ng-container *ngIf="lock">
+  <h2>Please tell me about your information.</h2>
+</ng-container>
 <mat-tab-group>
   <mat-tab label="User setting">
     <ng-template matTabContent>
+      <br>
+      <ng-container *ngIf="!lock">
+        <mat-accordion>
+          <mat-expansion-panel class="card">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Change E-Mail Address</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>email address</mat-label>
+              <input matInput [type]="hide ? 'email' : 'text'" [formControl]="email">
+            </mat-form-field>
+            <br>
+            <button mat-stroked-button color="primary" (click)="changeMail()">Update</button>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <br>
+        <mat-accordion>
+          <mat-expansion-panel class="card">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Change Password</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+              <mat-label>Password Verify</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordVerify">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <br>
+            <button mat-stroked-button color="primary" (click)="changePass()">Update</button>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <br>
+      </ng-container>
       <mat-accordion>
         <mat-expansion-panel class="card">
           <mat-expansion-panel-header>
-            <mat-panel-title>Change email address</mat-panel-title>
+            <mat-panel-title>Change Info</mat-panel-title>
           </mat-expansion-panel-header>
           <mat-form-field appearance="fill">
-            <mat-label>email address</mat-label>
-            <input matInput [type]="hide ? 'email' : 'text'" [formControl]="email">
-          </mat-form-field>
-          <br>
-          <button mat-stroked-button color="primary" (click)="changeMail()">Update</button>
-          <br>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <mat-accordion>
-        <mat-expansion-panel class="card">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Change password</mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-form-field appearance="fill">
-            <mat-label>pass</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+            <mat-label>Org</mat-label>
+            <input matInput [type]="hide ? 'org' : 'text'" [formControl]="org">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>pass verify</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordVerify">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+            <mat-label>PostCode</mat-label>
+            <input matInput [type]="hide ? 'postcode' : 'text'" [formControl]="postcode">
           </mat-form-field>
           <br>
-          <button mat-stroked-button color="primary" (click)="changePass()">Update</button>
+          <mat-form-field appearance="fill">
+            <mat-label>Address</mat-label>
+            <input matInput [type]="hide ? 'address' : 'text'" [formControl]="address">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Phone</mat-label>
+            <input matInput [type]="hide ? 'phone' : 'text'" [formControl]="phone">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <input matInput [type]="hide ? 'country' : 'text'" [formControl]="country">
+          </mat-form-field>
+          <br>
+          <button mat-stroked-button color="primary" (click)="changeInfo()">Update</button>
         </mat-expansion-panel>
       </mat-accordion>
+      <br>
     </ng-template>
+  </mat-tab>
+  <mat-tab label="User Information">
+    <br>
+    <div class="main">
+      <table>
+        <tr>
+          <th colspan="2">User Information</th>
+        </tr>
+        <tr>
+          <th>User Create Date</th>
+          <td>{{userInfo.CreatedAt}}</td>
+        </tr>
+        <tr>
+          <th>User Update Date</th>
+          <td>{{userInfo.UpdatedAt}}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{userInfo.name}}</td>
+        </tr>
+        <tr>
+          <th>Org</th>
+          <td>{{userInfo.org}}</td>
+        </tr>
+        <tr>
+          <th>PostCode</th>
+          <td>{{userInfo.postcode}}</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>{{userInfo.address}}</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>{{userInfo.phone}}</td>
+        </tr>
+        <tr>
+          <th>Country</th>
+          <td>{{userInfo.country}}</td>
+        </tr>
+        <tr>
+          <th>User Status</th>
+          <td>{{userInfo.status}}</td>
+        </tr>
+        <tr>
+          <th>User Level</th>
+          <td>{{userInfo.status}}</td>
+        </tr>
+      </table>
+    </div>
   </mat-tab>
 </mat-tab-group>

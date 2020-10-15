@@ -18,15 +18,44 @@ export class SettingComponent implements OnInit {
   ) {
   }
 
-  public hide = false;
+  public hide = true;
   public email = new FormControl('', [Validators.required, Validators.email]);
   public password = new FormControl();
   public passwordVerify = new FormControl();
+  public org = new FormControl();
+  public postcode = new FormControl();
+  public address = new FormControl();
+  public phone = new FormControl();
+  public country = new FormControl();
   public name: string;
+  public lock = true;
+  public userInfo: any = {};
 
 
   ngOnInit(): void {
     this.name = sessionStorage.getItem('name');
+    this.userService.getLoginUser().then(d => {
+      if (d.status) {
+        if (d.data.status !== 0) {
+          this.lock = false;
+        }
+        console.log(d.data);
+        this.userInfo = d.data;
+      }
+    });
+  }
+
+  changeInfo(): void {
+    const body = {
+      org: this.org.value,
+      postcode: this.postcode.value,
+      address: this.org.value,
+      phone: this.phone.value,
+      country: this.country.value
+    };
+    this.userService.update(0, body).then(response => {
+      console.log('response: ' + response);
+    });
   }
 
   changeMail(): void {
@@ -34,7 +63,7 @@ export class SettingComponent implements OnInit {
       email: this.email.value
     };
     this.userService.update(0, body).then(response => {
-      console.log(response);
+      console.log('response: ' + JSON.stringify(response));
     });
   }
 
@@ -45,7 +74,7 @@ export class SettingComponent implements OnInit {
         pass: passHash
       };
       this.userService.update(0, body).then(response => {
-        console.log(response);
+        console.log('response: ' + JSON.stringify(response));
       });
     } else {
       this.commonService.openBar('The password is wrong.', 2000);
