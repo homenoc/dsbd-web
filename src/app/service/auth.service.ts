@@ -38,7 +38,13 @@ export class AuthService {
         this.userService.getLoginUser().then(d => {
           if (d.status) {
             sessionStorage.setItem('name', d.data.name);
-            this.router.navigate(['/dashboard']).then();
+            if (d.data.status === 0) {
+              this.router.navigate(['/dashboard/setting']).then();
+            } else if (d.data.status >= 100) {
+              this.commonService.openBar('This account is locked.', 4000);
+            } else {
+              this.router.navigate(['/dashboard']).then();
+            }
           } else {
             this.commonService.openBar(d.error, 4000);
           }
@@ -53,7 +59,6 @@ export class AuthService {
   }
 
   logOut(): void {
-    sessionStorage.clear();
     this.http.delete(environment.base.url + environment.base.path + '/token', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
