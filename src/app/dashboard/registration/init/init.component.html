@@ -1,0 +1,84 @@
+<div class="main">
+  <a href="https://www.homenoc.ad.jp/usage/terms/">terms</a>
+  <br>
+  <section>
+    <mat-checkbox [(ngModel)]="agree">Do you agree this terms of use ?</mat-checkbox>
+  </section>
+  <br>
+  <form class="form">
+    <h2>0. Question</h2>
+    <p><b>Please tell your request and background</b></p>
+    <mat-form-field class="textarea-form">
+          <textarea matInput rows="40" placeholder="Ex. It makes me feel..." [formControl]="question"
+                    required></textarea>
+    </mat-form-field>
+  </form>
+  <br>
+  <h2>1. Organization Name</h2>
+  <h3>グループの管理者は現在登録しているアカウントになります。</h3>
+  <mat-form-field>
+    <input class="full-width" matInput placeholder="Org" type="text"
+           [formControl]="org"/>
+  </mat-form-field>
+  <br>
+  <h2>2. Administrator</h2>
+  <h3>グループの管理者は現在登録しているアカウントになります。</h3>
+  <p><b>グループの管理者の権限移譲に関しましては、運営委員の許可必要です。専用フォームでお問い合わせください。</b></p>
+  <br>
+  <h2>3. Technical director</h2>
+  <h3>技術責任者は各種ユーザ登録が必要となります。</h3>
+  <p><b>メールアドレスを記入いただくことで、各メールアドレスに仮のパスワードと本人確認メールを送信します。</b></p>
+  <p><b>ログインページにて、ログインしていただき各種情報を登録する必要があります。</b></p>
+  <section>
+    <mat-checkbox [(ngModel)]="admin">現在ログインしているユーザを技術管理者にする</mat-checkbox>
+  </section>
+  <form [formGroup]="techUser">
+    <div formArrayName="tech">
+      <div *ngFor="let option of tech.controls; let i = index">
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="E-Mail Address" type="text"
+                   formControlName="email"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="Name(FullName)" type="text"
+                   formControlName="name"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <button mat-raised-button color="warn" (click)="removeOptionForm(i)">削除</button>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="addOptionForm()">追加</button>
+  </form>
+  <br>
+  <h2>4. Usage Bandwidth</h2>
+  <p>Please tell us Bandwidth to be used in this connection.</p>
+  <mat-form-field class="textarea-form">
+          <textarea matInput rows="25" placeholder="Ex. It makes me feel..." [formControl]="bandwidth"
+                    required></textarea>
+  </mat-form-field>
+  <br>
+  <h2>5. Contract documents</h2>
+  <p><b>Please let us know how to deliver the contract.</b></p>
+  <p>※ This document is based on the Telecommunications Business Act of Japan.</p>
+  <p>Telecommunications carriers in japan have an obligation to issue contract documents.</p>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="contract">
+    <mat-radio-button class="radio" value="E-Mail">E-Mail</mat-radio-button>
+    &nbsp;&nbsp;&nbsp;
+    <mat-radio-button class="radio" value="Air Mail">Air Mail (Paper contract)</mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="button">
+    <button mat-raised-button color="warn" disabled>Save</button>
+    &nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" (click)="request()" [disabled]="agree == false">Request</button>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
