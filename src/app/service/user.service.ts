@@ -3,7 +3,6 @@ import {CommonService} from './common.service';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
-import * as shaJS from 'sha.js';
 
 @Injectable({
   providedIn: 'root'
@@ -17,28 +16,39 @@ export class UserService {
   ) {
   }
 
-  create(userName, mail, password): void {
-    const passHash: string = shaJS('sha256').update(password).digest('hex');
-    this.http.post(environment.base.url + environment.base.path + '/user',
-      {
-        name: userName,
-        email: mail,
-        pass: passHash
-      }, {
+  create(body, type): Promise<any> {
+    let header = {};
+    if (type === 0) {
+      header = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-        }),
-      }).toPromise().then(r => {
+        })
+      };
+    } else if (type === 1) {
+      header = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          USER_TOKEN: sessionStorage.getItem('ClientID'),
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        })
+      };
+    }
+    return this.http.post(environment.base.url + environment.base.path + '/user',
+      body, header).toPromise().then(r => {
       const response: any = r;
       console.log('response: ' + JSON.stringify(response));
-      if (response.status) {
-        this.router.navigate(['/dashboard']).then();
+      if (response.status === true) {
+        return response;
       } else {
-        this.commonService.openBar(response.error, 4000);
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
       }
     }).catch(error => {
       console.log(error);
-      return {status: false};
+      return {status: false, error};
     });
   }
 
@@ -52,16 +62,18 @@ export class UserService {
       body: {},
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status) {
+      if (response.status === true) {
         return response;
-        // this.router.navigate(['/dashboard']).then();
       } else {
-        this.commonService.openBar(response.error, 4000);
-        return response;
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
       }
     }).catch(error => {
       console.log(error);
-      return {status: false};
+      return {status: false, error};
     });
   }
 
@@ -74,16 +86,18 @@ export class UserService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status) {
+      if (response.status === true) {
         return response;
-        // this.router.navigate(['/dashboard']).then();
       } else {
-        this.commonService.openBar(response.error, 4000);
-        return response;
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
       }
     }).catch(error => {
       console.log(error);
-      return {status: false};
+      return {status: false, error};
     });
   }
 
@@ -97,16 +111,18 @@ export class UserService {
         }),
       }).toPromise().then(r => {
       const response: any = r;
-      if (response.status) {
+      if (response.status === true) {
         return response;
-        // this.router.navigate(['/dashboard']).then();
       } else {
-        this.commonService.openBar(response.error, 4000);
-        return response;
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
       }
     }).catch(error => {
       console.log(error);
-      return {status: false};
+      return {status: false, error};
     });
   }
 }
