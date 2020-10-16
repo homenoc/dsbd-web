@@ -19,7 +19,6 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {InitComponent} from './registration/init/init.component';
-import {QuestionComponent} from './registration/question/question.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
 import {Contract2Component} from './registration/contract2/contract2.component';
 import {DataComponent} from './data/data.component';
@@ -31,6 +30,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {SettingComponent} from './setting/setting.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { NetworkComponent } from './registration/network/network.component';
 
 
 @NgModule({
@@ -38,12 +38,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
     DashboardComponent,
     NoticeComponent,
     InitComponent,
-    QuestionComponent,
     Contract1Component,
     Contract2Component,
     DataComponent,
     RegistrationComponent,
-    SettingComponent
+    SettingComponent,
+    NetworkComponent
   ],
   imports: [
     CommonModule,
