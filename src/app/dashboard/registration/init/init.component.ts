@@ -27,7 +27,7 @@ export class InitComponent implements OnInit {
   public org = new FormControl();
   public techUser: FormGroup;
   public bandwidth = new FormControl();
-  public contract = new FormControl();
+  public contract;
   private questionTemplateEn = '1．What is the purpose of using our network service ? \n' +
     'Limited to research, learning and personal use. Commercial use is prohibited. \n\n\n\n\n\n\n\n\n\n\n' +
     '2. Do you want to allocate IP addresses ?\n' +
@@ -87,20 +87,19 @@ export class InitComponent implements OnInit {
         return;
       }
     }
-    if (this.contract.value === '' || this.question.value === '' || this.org.value === null ||
+    if (this.contract === '' || this.question.value === '' || this.org.value === null ||
       this.bandwidth.value === null) {
       this.commonService.openBar('invalid..', 5000);
       return;
     }
 
     // main
-
     this.groupService.register({
       Agree: this.agree,
       Question: this.question.value,
       Org: this.org.value,
       Bandwidth: this.bandwidth.value,
-      Contract: this.contract.value
+      Contract: this.contract
     }).then(d => {
       if (!d.status) {
         console.log('group service response: ' + JSON.stringify(d));
@@ -125,7 +124,6 @@ export class InitComponent implements OnInit {
 
       this.userService.getLoginUser().then((doc) => {
         groupID = doc.data.gid;
-
         for (const t of this.techUser.value.tech) {
           console.log('groupID:' + groupID);
           this.userService.create({
