@@ -4,6 +4,7 @@ import {LoginComponent} from './login/login.component';
 import {RegistrationComponent} from './user_registration/registration.component';
 import {AuthGuard} from './guard/auth.guard';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {ErrorComponent} from './error/error.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: '', loadChildren: './dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
+  {path: 'error', component: ErrorComponent},
   {path: '**', component: NotFoundComponent},
 
 ];

@@ -59,6 +59,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {ErrorComponent} from './error/error.component';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import {NotFoundComponent} from './not-found/not-found.component';
     LoginComponent,
     RegistrationComponent,
     NotFoundComponent,
+    ErrorComponent,
   ],
   imports: [
     HttpClientModule,
