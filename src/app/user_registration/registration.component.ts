@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../service/user.service';
 import {CommonService} from '../service/common.service';
+import * as shaJS from 'sha.js';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -18,6 +20,7 @@ export class RegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private commonService: CommonService,
+    private router: Router
   ) {
   }
 
@@ -48,10 +51,20 @@ export class RegistrationComponent implements OnInit {
       if (this.password.value === '' || this.email.value === '' || this.name.value === '') {
         this.commonService.openBar('value is empty', 2000);
       } else {
-        this.userService.create(this.name.value, this.email.value, this.password.value);
+        const passHash: string = shaJS('sha256').update(this.password.value).digest('hex');
+        this.userService.create({
+          name: this.name.value,
+          email: this.email.value,
+          pass: passHash
+        }, 0).then((result) => {
+          if (!result.status) {
+            console.log('response: ' + JSON.stringify(result));
+            sessionStorage.setItem('error', 'user service(admin) response: ' + JSON.stringify(result));
+            this.router.navigate(['/error']).then();
+            return;
+          }
+        });
       }
     }
   }
-
-
 }
