@@ -3,6 +3,7 @@ import {FormControl, Validators} from '@angular/forms';
 import {CommonService} from '../../service/common.service';
 import {UserService} from '../../service/user.service';
 import * as shaJS from 'sha.js';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class SettingComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private userService: UserService,
+    private router: Router,
   ) {
   }
 
@@ -54,7 +56,13 @@ export class SettingComponent implements OnInit {
       country: this.country.value
     };
     this.userService.update(0, body).then(response => {
-      console.log('response: ' + response);
+      console.log('response: ' + JSON.stringify(response));
+      if (response) {
+        this.commonService.openBar('OK', 5000);
+      } else {
+        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
+        this.router.navigate(['/error']).then();
+      }
     });
   }
 
@@ -64,6 +72,12 @@ export class SettingComponent implements OnInit {
     };
     this.userService.update(0, body).then(response => {
       console.log('response: ' + JSON.stringify(response));
+      if (response) {
+        this.commonService.openBar('OK', 5000);
+      } else {
+        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
+        this.router.navigate(['/error']).then();
+      }
     });
   }
 
@@ -75,6 +89,12 @@ export class SettingComponent implements OnInit {
       };
       this.userService.update(0, body).then(response => {
         console.log('response: ' + JSON.stringify(response));
+        if (response) {
+          this.commonService.openBar('OK', 5000);
+        } else {
+          sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
+          this.router.navigate(['/error']).then();
+        }
       });
     } else {
       this.commonService.openBar('The password is wrong.', 2000);
