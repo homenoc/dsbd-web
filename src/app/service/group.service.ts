@@ -16,7 +16,33 @@ export class GroupService {
   ) {
   }
 
-  getGroup(): Promise<any> {
+  register(body): Promise<any> {
+    return this.http.post(environment.base.url + environment.base.path + '/group',
+      body, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          USER_TOKEN: sessionStorage.getItem('ClientID'),
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false};
+    });
+  }
+
+  get(): Promise<any> {
     return this.http.get(environment.base.url + environment.base.path + '/group', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -26,16 +52,18 @@ export class GroupService {
     }).toPromise().then(r => {
       const response: any = r;
       console.log('response: ' + JSON.stringify(response));
-      if (response.status) {
+      if (response.status === true) {
         return response;
-        // this.router.navigate(['/dashboard']).then();
       } else {
-        this.commonService.openBar(response.error, 4000);
-        return response;
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
       }
     }).catch(error => {
       console.log(error);
-      return {status: false};
+      return {status: false, error};
     });
   }
 }
