@@ -66,5 +66,6 @@ export class RegistrationComponent implements OnInit {
         });
       }
     }
+    this.router.navigate(['/registration/finish']).then();
   }
 }
