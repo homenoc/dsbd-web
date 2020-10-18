@@ -60,6 +60,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {ErrorComponent} from './error/error.component';
+import {FinishComponent} from './user_registration/finish/finish.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {ErrorComponent} from './error/error.component';
     RegistrationComponent,
     NotFoundComponent,
     ErrorComponent,
+    FinishComponent,
   ],
   imports: [
     HttpClientModule,
