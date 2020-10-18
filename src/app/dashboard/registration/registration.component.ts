@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../service/data.service";
-import {Router, RouterModule} from "@angular/router";
+import {Router} from '@angular/router';
+import {UserService} from '../../service/user.service';
+import {GroupService} from '../../service/group.service';
 
 @Component({
   selector: 'app-registration',
@@ -10,25 +11,34 @@ import {Router, RouterModule} from "@angular/router";
 export class RegistrationComponent implements OnInit {
 
   constructor(
-    private dataService: DataService,
+    private groupService: GroupService,
+    private userService: UserService,
     private router: Router,
   ) {
   }
 
+  public loading = true;
+
   ngOnInit(): void {
-    this.dataService.getStatus().then((d) => {
-      // console.log(d)
-      if (d % 10 === 1 || d === undefined) {
-        this.router.navigate(['/dashboard/registration/question']).then();
-      } else if (d % 10 === 2) {
-        this.router.navigate(['/dashboard/registration/agreement']).then();
-      } else if (d % 10 === 3) {
-        this.router.navigate(['/dashboard/registration/contract1']).then();
-      } else if (d % 10 === 4) {
-        this.router.navigate(['/dashboard/registration/contract2']).then();
+    this.userService.getLoginUser().then((user) => {
+        if (user.status) {
+          if (user.data.gid === 0) {
+            this.router.navigate(['/dashboard/registration/init']).then();
+          } else {
+            this.groupService.get().then((group) => {
+              console.log(group.data[0]);
+              if (group.status) {
+                console.log(group.data[0].status);
+                if (10 < group.data[0].status && group.data[0].status < 300) {
+                }
+                // if(group.data.);
+              }
+            });
+          }
+        }
+        // this.router.navigate(['/dashboard/user_registration/contract1']).then();
+        // this.router.navigate(['/dashboard/user_registration/contract2']).then();
       }
-    })
+    );
   }
-
-
 }
