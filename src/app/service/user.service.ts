@@ -53,13 +53,36 @@ export class UserService {
   }
 
   get(uid): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/user/' + uid, {
+    return this.http.get(environment.base.url + environment.base.path + '/user/' + uid, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
         ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
       }),
-      body: {},
+    }).toPromise().then(r => {
+      const response: any = r;
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
+  }
+
+  getGroup(): Promise<any> {
+    return this.http.get(environment.base.url + environment.base.path + '/user/all', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
     }).toPromise().then(r => {
       const response: any = r;
       if (response.status === true) {
