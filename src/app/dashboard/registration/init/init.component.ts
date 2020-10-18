@@ -55,7 +55,7 @@ export class InitComponent implements OnInit {
     this.question.setValue(this.questionTemplateJa);
     this.bandwidth.setValue(this.bandwidthTemplateEn);
     this.techUser = this.formBuilder.group({
-      tech: this.formBuilder.array([])
+      ip: this.formBuilder.array([])
     });
   }
 
@@ -66,16 +66,16 @@ export class InitComponent implements OnInit {
     });
   }
 
-  get tech(): FormArray {
+  get ip(): FormArray {
     return this.techUser.get('tech') as FormArray;
   }
 
   addOptionForm() {
-    this.tech.push(this.optionForm);
+    this.ip.push(this.optionForm);
   }
 
   removeOptionForm(idx: number) {
-    this.tech.removeAt(idx);
+    this.ip.removeAt(idx);
   }
 
   request() {
@@ -111,7 +111,7 @@ export class InitComponent implements OnInit {
       if (this.admin) {
         this.userService.update(0, {
           status: 1,
-          tech: true
+          ip: true
         }).then(user => {
           if (!user.status) {
             console.log('user service(admin) response: ' + JSON.stringify(user));
@@ -128,7 +128,7 @@ export class InitComponent implements OnInit {
           console.log('groupID:' + groupID);
           this.userService.create({
             gid: groupID,
-            tech: true,
+            ip: true,
             level: 2,
             email: t.email,
             name: t.name

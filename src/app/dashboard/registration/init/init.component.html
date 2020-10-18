@@ -9,8 +9,7 @@
     <h2>0. Question</h2>
     <p><b>Please tell your request and background</b></p>
     <mat-form-field class="textarea-form">
-          <textarea matInput rows="40" placeholder="Ex. It makes me feel..." [formControl]="question"
-                    required></textarea>
+      <textarea matInput rows="40" placeholder="Ex. It makes me feel..." [formControl]="question" required></textarea>
     </mat-form-field>
   </form>
   <br>
@@ -34,7 +33,7 @@
   </section>
   <form [formGroup]="techUser">
     <div formArrayName="tech">
-      <div *ngFor="let option of tech.controls; let i = index">
+      <div *ngFor="let option of ip.controls; let i = index">
         <mat-form-field>
           <div [formGroupName]="i">
             <input class="full-width" matInput placeholder="E-Mail Address" type="text"
