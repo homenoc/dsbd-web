@@ -25,9 +25,16 @@ export class SettingComponent implements OnInit {
   public password = new FormControl();
   public passwordVerify = new FormControl();
   public org = new FormControl();
+  public orgEn = new FormControl();
   public postcode = new FormControl();
   public address = new FormControl();
-  public phone = new FormControl();
+  public addressEn = new FormControl();
+  public dept = new FormControl();
+  public deptEn = new FormControl();
+  public pos = new FormControl();
+  public posEn = new FormControl();
+  public tel = new FormControl();
+  public fax = new FormControl();
   public country = new FormControl();
   public name: string;
   public lock = true;
@@ -50,9 +57,16 @@ export class SettingComponent implements OnInit {
   changeInfo(): void {
     const body = {
       org: this.org.value,
+      org_en: this.orgEn.value,
       postcode: this.postcode.value,
       address: this.org.value,
-      phone: this.phone.value,
+      address_en: this.addressEn.value,
+      dept: this.dept.value,
+      dept_en: this.deptEn.value,
+      pos: this.pos.value,
+      pos_en: this.posEn.value,
+      tel: this.tel.value,
+      fax: this.fax.value,
       country: this.country.value
     };
     this.userService.update(0, body).then(response => {

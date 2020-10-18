@@ -64,6 +64,11 @@
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
+            <mat-label>OrgEn</mat-label>
+            <input matInput [type]="hide ? 'org_en' : 'text'" [formControl]="orgEn">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
             <mat-label>PostCode</mat-label>
             <input matInput [type]="hide ? 'postcode' : 'text'" [formControl]="postcode">
           </mat-form-field>
@@ -74,8 +79,38 @@
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Phone</mat-label>
-            <input matInput [type]="hide ? 'phone' : 'text'" [formControl]="phone">
+            <mat-label>Address(English)</mat-label>
+            <input matInput [type]="hide ? 'addressEn' : 'text'" [formControl]="addressEn">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Department</mat-label>
+            <input matInput [type]="hide ? 'dept' : 'text'" [formControl]="dept">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Department(English)</mat-label>
+            <input matInput [type]="hide ? 'deptEn' : 'text'" [formControl]="deptEn">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Position</mat-label>
+            <input matInput [type]="hide ? 'pos' : 'text'" [formControl]="pos">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Position(English)</mat-label>
+            <input matInput [type]="hide ? 'posEn' : 'text'" [formControl]="posEn">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Tel</mat-label>
+            <input matInput [type]="hide ? 'tel' : 'text'" [formControl]="tel">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Fax</mat-label>
+            <input matInput [type]="hide ? 'fax' : 'text'" [formControl]="fax">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
@@ -109,12 +144,20 @@
           <td>{{userInfo.name}}</td>
         </tr>
         <tr>
+          <th>Name(English)</th>
+          <td>{{userInfo.name_en}}</td>
+        </tr>
+        <tr>
           <th>E-Mail</th>
           <td>{{userInfo.email}}</td>
         </tr>
         <tr>
           <th>Org</th>
           <td>{{userInfo.org}}</td>
+        </tr>
+        <tr>
+          <th>Org(English)</th>
+          <td>{{userInfo.org_en}}</td>
         </tr>
         <tr>
           <th>PostCode</th>
@@ -125,8 +168,33 @@
           <td>{{userInfo.address}}</td>
         </tr>
         <tr>
-          <th>Phone</th>
-          <td>{{userInfo.phone}}</td>
+          <th>Address(English)</th>
+          <td>{{userInfo.address_en}}</td>
+        </tr>
+        <tr>
+          <th>Department</th>
+          <td>{{userInfo.dept}}</td>
+        </tr>
+        <tr>
+          <th>Department(English)</th>
+          <td>{{userInfo.dept_en}}</td>
+        </tr>
+        <tr>
+          <th>Position</th>
+          <td>{{userInfo.pos}}</td>
+        </tr>
+        <tr>
+          <th>Position(English)</th>
+          <td>{{userInfo.pos_en}}</td>
+        </tr>
+        <tr>
+          <th>Tel</th>
+          <td>{{userInfo.tel}}</td>
+        </tr>
+        <tr>
+        <tr>
+          <th>Fax</th>
+          <td>{{userInfo.fax}}</td>
         </tr>
         <tr>
           <th>Country</th>
