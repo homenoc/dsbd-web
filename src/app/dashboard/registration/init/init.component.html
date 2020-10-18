@@ -33,7 +33,7 @@
   </section>
   <form [formGroup]="techUser">
     <div formArrayName="tech">
-      <div *ngFor="let option of ip.controls; let i = index">
+      <div *ngFor="let option of userProcess.controls; let i = index">
         <mat-form-field>
           <div [formGroupName]="i">
             <input class="full-width" matInput placeholder="E-Mail Address" type="text"
@@ -42,8 +42,14 @@
         &nbsp;&nbsp;&nbsp;
         <mat-form-field>
           <div [formGroupName]="i">
-            <input class="full-width" matInput placeholder="Name(FullName)" type="text"
+            <input class="full-width" matInput placeholder="Name(Japanese)" type="text"
                    formControlName="name"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="Name(English)" type="text"
+                   formControlName="name_en"/></div>
         </mat-form-field>
         &nbsp;&nbsp;&nbsp;
         <button mat-raised-button color="warn" (click)="removeOptionForm(i)">削除</button>
