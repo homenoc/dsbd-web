@@ -1,0 +1,32 @@
+<div class="main">
+  <h2>1. How to connection</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="connection">
+    <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 Cross Connect(Campus Connection)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static Tunnel">L3 Static Tunnel</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static EtherIP">L3 Static EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 Static Local Attachment">L3 Static Local Attachment</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP Tunnel">L3 BGP Tunnel</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP EtherIP">L3 BGP EtherIP</mat-radio-button>
+    <br>
+    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP Local Attachment</mat-radio-button>
+    <br>
+    <mat-radio-button value="Etc">Other</mat-radio-button>
+  </mat-radio-group>
+  <form class="form" *ngIf="connection == 'Etc'">
+    <br>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput placeholder="Ex. static route other..." [formControl]="connectionEtc"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br><br>
+</div>

@@ -30,7 +30,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {SettingComponent} from './setting/setting.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { NetworkComponent } from './registration/network/network.component';
+import {JPNICDetailDialog, NetworkComponent} from './registration/network/network.component';
+import {ConnectionComponent} from './registration/connection/connection.component';
 
 
 @NgModule({
@@ -43,7 +44,9 @@ import { NetworkComponent } from './registration/network/network.component';
     DataComponent,
     RegistrationComponent,
     SettingComponent,
-    NetworkComponent
+    NetworkComponent,
+    ConnectionComponent,
+    JPNICDetailDialog,
   ],
   imports: [
     CommonModule,
@@ -86,6 +89,9 @@ import { NetworkComponent } from './registration/network/network.component';
     MatListModule,
     MatTableModule,
     CdkColumnDef
+  ],
+  entryComponents: [
+    JPNICDetailDialog
   ],
   providers: [CdkColumnDef]
 })
