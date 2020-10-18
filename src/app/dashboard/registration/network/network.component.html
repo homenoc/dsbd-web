@@ -1,0 +1,149 @@
+<div class="main">
+  <h2>1.1. Advertise route from our organization</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="bgp">
+    <mat-radio-button value="BGP IPv4 FullRoute">BGP IPv4 FullRoute</mat-radio-button>
+    <br>
+    <mat-radio-button value="BGP IPv6 FullRoute">BGP IPv6 FullRoute</mat-radio-button>
+    <br>
+    <mat-radio-button value="BGP IPv4 DefaultRoute">BGP IPv4 DefaultRoute</mat-radio-button>
+    <br>
+    <mat-radio-button value="BGP IPv6 DefaultRoute">BGP IPv6 DefaultRoute</mat-radio-button>
+    <br>
+    <mat-radio-button value="Other">Other</mat-radio-button>
+    <br>
+  </mat-radio-group>
+  <form class="form" *ngIf="bgp === 'Other'">
+    <br>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput placeholder="Ex. static route other..." [formControl]="bgpEtc"></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br><br>
+  <h2>1.2. IP Address</h2>
+  <section>
+    <mat-checkbox [(ngModel)]="pi">We have PI Address</mat-checkbox>
+  </section>
+  <br>
+  <p>1セグメントずつ入力してください</p>
+
+  <br><br>
+  <h2>1.3. Preferred date period of use</h2>
+  <form>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="10" placeholder="Ex. It makes me feel..." [formControl]="date" required></textarea>
+    </mat-form-field>
+  </form>
+  <br><br>
+  <ng-container *ngIf="!pi">
+    <h2>2.1. JPNIC User管理</h2>
+    <p>JPNICに申請する際に、管理者</p>
+    <button mat-raised-button color="primary" (click)="openDialog()">ユーザ管理</button>
+    <br><br>
+    <h2>2.2. IP address user</h2>
+    <h3>Japanese</h3>
+    <p><b>Please fill out the form in Japanese.</b></p>
+    <form class="form" [formGroup]="jpnicJa">
+      <mat-form-field class="large-width">
+        <mat-label>Address(Japanese)</mat-label>
+        <label>
+          <textarea matInput placeholder="Address" formControlName="address" required></textarea>
+        </label>
+      </mat-form-field>
+      <mat-form-field class="large-width">
+        <mat-label>Organization Name(Japanese)</mat-label>
+        <label>
+          <input matInput placeholder="Ex) HomeNOC" value="" formControlName="organization" required>
+        </label>
+      </mat-form-field>
+      <mat-form-field class="large-width">
+        <mat-label>Organization Name(Furigana)</mat-label>
+        <label>
+          <input matInput placeholder="1000 Kbps" value="" formControlName="organization_f" required>
+        </label>
+      </mat-form-field>
+    </form>
+    <h3>English</h3>
+    <p><b>Please fill out the form in English.</b></p>
+    <form class="form" [formGroup]="jpnicEn">
+      <mat-form-field class="large-width">
+        <mat-label>Address(English)</mat-label>
+        <label>
+          <textarea matInput placeholder="Address" formControlName="address" required></textarea>
+        </label>
+      </mat-form-field>
+      <mat-form-field class="large-width">
+        <mat-label>Organization Name(English)</mat-label>
+        <label>
+          <input matInput placeholder="EX) HomeNOC" value="" formControlName="organization" required>
+        </label>
+      </mat-form-field>
+    </form>
+    <br><br>
+    <h2>5. Assign IP address and Network Name</h2>
+    <mat-checkbox [(ngModel)]="checkV4">Hope to assign IPv4 address</mat-checkbox>
+    <form *ngIf="checkV4" [formGroup]="jpnicV4">
+      <br>
+      <mat-form-field class="small-width">
+        <mat-label>IPv4 Network Name</mat-label>
+        <label>
+          <input matInput placeholder="Ex. HOMENOCV4" formControlName="name">
+        </label>
+      </mat-form-field>
+      &nbsp;&nbsp;
+      <mat-form-field class="small-width">
+        <mat-label>IPv4 Subnet</mat-label>
+        <label>
+          <input matInput placeholder="Ex. /x" formControlName="subnet">
+        </label>
+      </mat-form-field>
+    </form>
+    <br>
+    <mat-checkbox [(ngModel)]="checkV6">Hope to assign IPv6 address</mat-checkbox>
+    <form *ngIf="checkV6" [formGroup]="jpnicV6">
+      <mat-form-field class="small-width">
+        <mat-label>IPv6 Network Name</mat-label>
+        <label>
+          <input matInput placeholder="Ex. HOMENOCV6" formControlName="name">
+        </label>
+      </mat-form-field>
+      &nbsp;&nbsp;
+      <mat-form-field class="small-width">
+        <mat-label>IPv6 Subnet</mat-label>
+        <label>
+          <input matInput placeholder="Ex. /x" formControlName="subnet">
+        </label>
+      </mat-form-field>
+    </form>
+    <br><br>
+    <h2>6. Operations Staff</h2>
+      <form [formGroup]="ip">
+        <div formArrayName="ip">
+          <div *ngFor="let option of ipAddress.controls; let i = index">
+            <mat-form-field>
+              <div [formGroupName]="i">
+                <input class="full-width" matInput placeholder="IP Address" type="text"
+                       formControlName="ip"/></div>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <button mat-raised-button color="warn" (click)="removeOptionForm(i)">IP削除</button>
+          </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="addOptionForm()">IP追加</button>
+      </form>
+    <br><br>
+    <h2>8. IPv4 Network Plan</h2>
+    <form>
+      <mat-form-field class=" textarea-form">
+        <textarea matInput rows="30" placeholder="Ex. It makes me feel..." [formControl]="plan" required></textarea>
+      </mat-form-field>
+    </form>
+    <br><br>
+  </ng-container>
+  <br>
+  <button mat-button (click)="request()">Request</button>
+  <br>
+  <br>
+  <br>
+</div>
