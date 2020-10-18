@@ -20,7 +20,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {InitComponent} from './registration/init/init.component';
 import {Contract1Component} from './registration/contract1/contract1.component';
-import {Contract2Component} from './registration/contract2/contract2.component';
 import {DataComponent} from './data/data.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {MatTableModule} from '@angular/material/table';
@@ -30,7 +29,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {SettingComponent} from './setting/setting.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {JPNICDetailDialog, NetworkComponent} from './registration/network/network.component';
+import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 
 
@@ -40,13 +39,11 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     NoticeComponent,
     InitComponent,
     Contract1Component,
-    Contract2Component,
     DataComponent,
     RegistrationComponent,
     SettingComponent,
     NetworkComponent,
     ConnectionComponent,
-    // JPNICDetailDialog,
   ],
   imports: [
     CommonModule,
@@ -91,7 +88,6 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     CdkColumnDef
   ],
   entryComponents: [
-    // JPNICDetailDialog
   ],
   providers: [CdkColumnDef]
 })
