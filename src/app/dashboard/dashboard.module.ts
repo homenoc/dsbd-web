@@ -46,7 +46,7 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     SettingComponent,
     NetworkComponent,
     ConnectionComponent,
-    JPNICDetailDialog,
+    // JPNICDetailDialog,
   ],
   imports: [
     CommonModule,
@@ -91,7 +91,7 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     CdkColumnDef
   ],
   entryComponents: [
-    JPNICDetailDialog
+    // JPNICDetailDialog
   ],
   providers: [CdkColumnDef]
 })
