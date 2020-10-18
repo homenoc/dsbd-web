@@ -14,8 +14,10 @@ export class NoticeComponent implements OnInit {
   }
 
   public data: any;
+  public name: string;
 
   ngOnInit(): void {
-    this.dataService.getUserNotice().then(data => this.data = data);
+    this.name = sessionStorage.getItem('name');
+    // this.dataService.getUserNotice().then(data => this.data = data);
   }
 }
