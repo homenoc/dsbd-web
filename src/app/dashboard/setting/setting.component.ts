@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CommonService} from '../../service/common.service';
 import {UserService} from '../../service/user.service';
 import * as shaJS from 'sha.js';
 import {Router} from '@angular/router';
+import {GroupService} from '../../service/group.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class SettingComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private userService: UserService,
+    private groupService: GroupService,
     private router: Router,
   ) {
   }
@@ -39,6 +41,12 @@ export class SettingComponent implements OnInit {
   public name: string;
   public lock = true;
   public userInfo: any = {};
+  public groupInfo: any = {};
+  public group = new FormGroup({
+    email: new FormControl(''),
+    name: new FormControl(''),
+    nameEn: new FormControl(''),
+  });
 
 
   ngOnInit(): void {
@@ -49,6 +57,12 @@ export class SettingComponent implements OnInit {
           this.lock = false;
         }
         this.userInfo = d.data;
+      }
+    });
+    this.groupService.get().then(d => {
+      console.log(d.group);
+      if (d.status) {
+        this.groupInfo = d.group;
       }
     });
   }
@@ -109,5 +123,30 @@ export class SettingComponent implements OnInit {
     } else {
       this.commonService.openBar('The password is wrong.', 2000);
     }
+  }
+
+  addEmail(): void {
+    if (this.group.value.email === '' || this.group.value.name === '' || this.group.value.nameEn === '') {
+      this.commonService.openBar('valid', 5000);
+      return;
+    }
+
+    this.userService.create({
+      gid: this.groupInfo.ID,
+      user: true, level: 2,
+      email: this.group.value.email,
+      name: this.group.value.name,
+      name_en: this.group.value.nameEn
+    }, 1).then(response => {
+      if (response.status) {
+        this.commonService.openBar('OK', 5000);
+      } else {
+        console.log('user service(techUser) response: ' + JSON.stringify(response));
+        sessionStorage.setItem('error', 'user service(techUser) response: ' + JSON.stringify(response));
+        this.router.navigate(['/error']).then();
+        return;
+      }
+    });
+
   }
 }
