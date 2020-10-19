@@ -44,9 +44,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.registration = true;
           }
           this.groupService.get().then((group) => {
-            if (group.status) {
-              if (group.data.status < 1000) {
+            console.log(group);
+            if (group.status === true) {
+              if (100 <= group.group.status && group.group.status <= 500) {
                 this.info = true;
+              }
+              if (2 <= group.group.status && group.group.status < 300) {
+                this.registration = true;
               }
             }
           }).catch();
