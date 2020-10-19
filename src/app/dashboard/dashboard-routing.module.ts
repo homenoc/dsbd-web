@@ -3,7 +3,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {NoticeComponent} from './notice/notice.component';
 import {DashboardComponent} from './dashboard.component';
 import {InitComponent} from './registration/init/init.component';
-import {Contract1Component} from './registration/contract1/contract1.component';
 import {DataComponent} from './data/data.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {SettingComponent} from './setting/setting.component';
@@ -23,7 +22,6 @@ const routes: Routes = [{
     {path: 'registration/init', component: InitComponent},
     {path: 'registration/network', component: NetworkComponent},
     {path: 'registration/connection', component: ConnectionComponent},
-    {path: 'registration/contract1', component: Contract1Component},
     {path: 'registration', component: RegistrationComponent},
   ],
   canActivate: [AuthGuard]
