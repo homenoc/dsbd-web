@@ -1,6 +1,6 @@
 <div class="main">
   <h2>1. How to connection</h2>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="connection">
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="connection" name="" required>
     <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
     <br>
     <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 Cross Connect(Campus Connection)
@@ -29,4 +29,74 @@
     </mat-form-field>
   </form>
   <br><br>
+  <h2>2. Installation status of NTT FLETS line at connection location</h2>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="" required>
+    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">Yes.(I am contract <b>FLETSv6 Option</b> and I can
+      connect to the IPv6 Internet by
+      IPoE.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">Yes.(I am contract <b>FLETSv6
+      Option</b> and I can't connect to the IPv6 Internet by
+      IPoE.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="Yes. not support FLETSv6 Option">Yes.(I haven't contract <b>FLETSv6 Option</b>.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="No. support ipv6">No.(But, there is a IPv6 address available for the connection.)
+    </mat-radio-button>
+    <br>
+    <mat-radio-button value="No. not supported ipv6">No.(But, there isn't a IPv6 address available for the
+      connection.)
+    </mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <p><b>We use IPv6 Address for EtherIP and tunnel connections.</b></p>
+  <p><b>We recommend use NTT Frets to because of high speed communication.</b></p>
+  <br><br>
+  <h2>3. Termination NOC</h2>
+  <p><b>Please let us know the NOC that terminates this connection.</b></p>
+    <h4>NOC</h4>
+    <mat-form-field appearance="fill">
+      <mat-label>NOC</mat-label>
+      <mat-select [(ngModel)]="noc" name="" required>
+        <mat-option value="NOC01">NOC01(Kanagawa Yokohama)</mat-option>
+        <mat-option value="NOC02">NOC02(Chiba Ichikawa)</mat-option>
+        <mat-option value="POP03">POP03(Tokyo NishiShinjyuku)</mat-option>
+        <mat-option value="NOC05">NOC05(Tokyo Shibuya)</mat-option>
+        <mat-option value="NOC51">NOC51(Osaka Kaizuka)</mat-option>
+        <mat-option value="POP52">POP52(Osaka Dojima)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  <p>NOC List https://www.homenoc.ad.jp/en/tech/backbone/</p>
+  <p>It may be changed due to equipment reasons.</p>
+  <br><br>
+  <h2>4. 終端先ユーザ</h2>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="">
+      <ng-container *ngFor="let u of user.data">
+        <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
+        <br>
+      </ng-container>
+    </mat-radio-group>
+  <br><br>
+  <h2>5. 終端先IPアドレス</h2>
+  <form>
+    <mat-form-field class="small-width">
+      <mat-label>IP Address</mat-label>
+      <input matInput placeholder="2001:xxxx:xxxx::xxxx/64" [formControl]="termIP">
+    </mat-form-field>
+  </form>
+  <br><br>
+  <h2>6. Monitoring</h2>
+  <mat-checkbox [(ngModel)]="monitor">Required</mat-checkbox>
+  <br>
+  <p>・Even when monitoring, the notification will be best-effort.</p>
+  <p>・Please select "Not required" if frequent disconnection occurs.</p>
+  <br><br>
+  <br>
+  <button mat-button (click)="request()">Request</button>
+  <br>
+  <br>
+  <br>
 </div>
