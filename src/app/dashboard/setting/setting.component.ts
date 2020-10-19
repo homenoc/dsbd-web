@@ -48,7 +48,6 @@ export class SettingComponent implements OnInit {
         if (d.data.status !== 0) {
           this.lock = false;
         }
-        console.log(d.data);
         this.userInfo = d.data;
       }
     });
@@ -70,7 +69,6 @@ export class SettingComponent implements OnInit {
       country: this.country.value
     };
     this.userService.update(0, body).then(response => {
-      console.log('response: ' + JSON.stringify(response));
       if (response) {
         this.commonService.openBar('OK', 5000);
       } else {
@@ -85,7 +83,6 @@ export class SettingComponent implements OnInit {
       email: this.email.value
     };
     this.userService.update(0, body).then(response => {
-      console.log('response: ' + JSON.stringify(response));
       if (response) {
         this.commonService.openBar('OK', 5000);
       } else {
@@ -102,7 +99,6 @@ export class SettingComponent implements OnInit {
         pass: passHash
       };
       this.userService.update(0, body).then(response => {
-        console.log('response: ' + JSON.stringify(response));
         if (response) {
           this.commonService.openBar('OK', 5000);
         } else {

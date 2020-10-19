@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../service/user.service';
 import {GroupService} from '../../service/group.service';
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-registration',
@@ -13,6 +14,7 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private groupService: GroupService,
     private userService: UserService,
+    private authService: AuthService,
     private router: Router,
   ) {
   }
@@ -26,18 +28,14 @@ export class RegistrationComponent implements OnInit {
             this.router.navigate(['/dashboard/registration/init']).then();
           } else {
             this.groupService.get().then((group) => {
-              console.log(group.data[0]);
               if (group.status) {
-                console.log(group.data[0].status);
-                if (10 < group.data[0].status && group.data[0].status < 300) {
+                if (1000 <= group.group.status) {
+                  this.authService.logOut();
                 }
-                // if(group.info.);
               }
             });
           }
         }
-        // this.router.navigate(['/dashboard/user_registration/contract1']).then();
-        // this.router.navigate(['/dashboard/user_registration/contract2']).then();
       }
     );
   }
