@@ -19,7 +19,7 @@ export class ConnectionComponent implements OnInit {
   public termIP = new FormControl();
   public monitor: boolean;
   public user = {data: []};
-  public termUser: number;
+  public termUser: any;
 
 
   constructor(
@@ -58,18 +58,23 @@ export class ConnectionComponent implements OnInit {
       return;
     }
 
-    this.connectionService.add({
-      user_id: this.termUser,
+    const body = {
+      user_id: parseInt(this.termUser, 10),
       service: this.connection,
       ntt: this.ntt,
       noc: this.noc,
-      term_ip: this.termIP,
+      term_ip: this.termIP.value,
       monitor: this.monitor
-    }).then(response => {
-      if (response) {
-        this.user = response;
+    };
+
+    this.connectionService.add(body).then(response => {
+      console.log('---response---');
+      console.log(response);
+      if (response.result) {
+        this.commonService.openBar('申請完了', 5000);
+        this.router.navigate(['/dashboard']).then();
       } else {
-        sessionStorage.setItem('error', 'connection segment\n' + 'response: ' + JSON.stringify(response));
+        sessionStorage.setItem('error', 'Process 1\n' + 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
         return;
       }
