@@ -55,7 +55,7 @@ export class InitComponent implements OnInit {
     this.question.setValue(this.questionTemplateJa);
     this.bandwidth.setValue(this.bandwidthTemplateEn);
     this.techUser = this.formBuilder.group({
-      user: this.formBuilder.array([])
+      tech: this.formBuilder.array([])
     });
   }
 
