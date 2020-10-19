@@ -6,7 +6,8 @@
     <ng-container>
       <mat-nav-list>
         <a mat-list-item *ngIf="notice" routerLink="notice" i18n="@@notice">Notice</a>
-        <a mat-list-item *ngIf="request" routerLink="registration" i18n="@@registration">Request</a>
+        <a mat-list-item *ngIf="registration" routerLink="registration" i18n="@@registration">request</a>
+        <a mat-list-item routerLink="support" i18n="@@registration">Support</a>
         <a mat-list-item *ngIf="info" routerLink="info" i18n="@@info">Info</a>
         <br>
         <a mat-list-item routerLink="setting" i18n="@@setting">Setting</a>

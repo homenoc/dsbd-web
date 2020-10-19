@@ -31,6 +31,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {MatSelectModule} from '@angular/material/select';
+import {SupportComponent} from './support/support.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {MatSelectModule} from '@angular/material/select';
     SettingComponent,
     NetworkComponent,
     ConnectionComponent,
+    SupportComponent,
   ],
   imports: [
     CommonModule,
