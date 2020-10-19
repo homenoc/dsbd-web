@@ -19,7 +19,6 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {InitComponent} from './registration/init/init.component';
-import {Contract1Component} from './registration/contract1/contract1.component';
 import {DataComponent} from './data/data.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {MatTableModule} from '@angular/material/table';
@@ -39,7 +38,6 @@ import {MatSelectModule} from '@angular/material/select';
     DashboardComponent,
     NoticeComponent,
     InitComponent,
-    Contract1Component,
     DataComponent,
     RegistrationComponent,
     SettingComponent,
