@@ -1,3 +1,6 @@
+<button mat-button (click)="request()">Request</button>
+
+
 <div class="main">
   <h2>1.1. Advertise route from our organization</h2>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="route" name="" required>
@@ -123,20 +126,21 @@
     <br><br>
     <h2>2.3. Operations Staff</h2>
     <mat-radio-group aria-label="Select an option" [(ngModel)]="admin" name="">
-      <ng-template *ngIf="user !==null">
-        <ng-template *ngFor="let u of user.data">
+      <ng-container *ngIf="users !==null">
+        <ng-container *ngFor="let u of users.data">
           <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
           <br>
-        </ng-template>
-      </ng-template>
+        </ng-container>
+      </ng-container>
     </mat-radio-group>
     <br><br>
     <h2>2.4. Technical Staff</h2>
-    <ng-template *ngIf="user !==null">
-      <ng-template *ngFor="let u of user.data">
+    <ng-container *ngIf="users !==null">
+      <ng-container *ngFor="let u of users.data">
         <mat-checkbox [(ngModel)]="u.select">{{u.ID}}: {{u.name}}</mat-checkbox>
-      </ng-template>
-    </ng-template>
+        <br>
+      </ng-container>
+    </ng-container>
     <br><br>
     <h2>2.5. IPv4 Network Plan</h2>
     <form>
