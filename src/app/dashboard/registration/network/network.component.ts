@@ -184,14 +184,13 @@ export class NetworkComponent implements OnInit {
     };
 
     console.log(body);
-    console.log(JSON.stringify(body));
 
     this.networkService.add(body).then(response => {
       console.log('---response---');
       console.log(response);
-      if (response) {
+      if (response.result) {
         this.commonService.openBar('申請完了', 5000);
-        // this.router.navigate(['/dashboard']).then();
+        this.router.navigate(['/dashboard']).then();
       } else {
         sessionStorage.setItem('error', 'Process 1\n' + 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
