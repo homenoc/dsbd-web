@@ -51,7 +51,6 @@ export class GroupService {
       })
     }).toPromise().then(r => {
       const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
       if (response.status === true) {
         return response;
       } else {
