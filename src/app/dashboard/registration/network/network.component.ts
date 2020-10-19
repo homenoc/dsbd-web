@@ -104,7 +104,7 @@ export class NetworkComponent implements OnInit {
     name: new FormControl(''),
     subnet: new FormControl(''),
   });
-  public user: any;
+  public users = {data: []};
   public admin: any;
 
 
@@ -123,11 +123,11 @@ export class NetworkComponent implements OnInit {
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
-      console.log('---response---');
-      console.log(response);
       if (response) {
-        this.user = response;
-        // this.commonService.openBar('OK', 5000);
+        this.users = response;
+        // this.users = user.data;
+        console.log('---response---');
+        console.log(this.users);
       } else {
         sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
@@ -142,7 +142,7 @@ export class NetworkComponent implements OnInit {
 
   request() {
     // TODO: #1 Issue
-    console.log(this.user);
+    console.log(this.users);
     if (this.route === '' || this.date.value === null) {
       this.commonService.openBar('invalid..', 5000);
       return;
@@ -158,7 +158,15 @@ export class NetworkComponent implements OnInit {
       }
     }
 
-    this.networkService.add({
+    const tech: any[] = new Array();
+
+    for (const u of this.users.data) {
+      tech.push(u.ID);
+    }
+
+    const body = {
+      admin_id: parseInt(this.admin, 10),
+      tech_id: tech,
       org: this.jpnicJa.value.org,
       org_en: this.jpnicEn.value.org,
       postcode: this.jpnicJa.value.postcode,
@@ -166,55 +174,24 @@ export class NetworkComponent implements OnInit {
       address_en: this.jpnicEn.value.address,
       route: this.route,
       pi: this.pi,
-      asn: this.asn,
+      asn: this.asn.value,
       v4: this.jpnicV4.value.subnet,
       v6: this.jpnicV6.value.subnet,
       v4_name: this.jpnicV4.value.name,
       v6_name: this.jpnicV6.value.name,
-      date: this.date,
-      plan: this.plan,
-    }).then(response => {
+      date: this.date.value,
+      plan: this.plan.value,
+    };
+
+    console.log(body);
+    console.log(JSON.stringify(body));
+
+    this.networkService.add(body).then(response => {
       console.log('---response---');
       console.log(response);
       if (response) {
-        this.user = response;
-        if (!this.pi) {
-          this.jpnicAdminService.add({
-            network_id: response.network.ID,
-            user_id: this.admin,
-          }).then(responseJpnicAdmin => {
-            if (responseJpnicAdmin) {
-              this.user = responseJpnicAdmin;
-              let count = 0;
-              for (const u of this.user.data) {
-                if (u.select === true) {
-                  console.log(u);
-                  this.jpnicTechService.add({
-                    network_id: response.network.ID,
-                    user_id: u.ID,
-                  }).then(responseJpnicTech => {
-                    if (responseJpnicTech) {
-                      this.user = responseJpnicTech;
-                      count++;
-                    } else {
-                      sessionStorage.setItem('error', 'Process 3\n' + 'response: ' + JSON.stringify(response));
-                      this.router.navigate(['/error']).then();
-                      return;
-                    }
-                  });
-                }
-              }
-              if (count === this.user.data.length) {
-                this.commonService.openBar('申請完了', 5000);
-                this.router.navigate(['/dashboard']).then();
-              }
-            } else {
-              sessionStorage.setItem('error', 'Process 2\n' + 'response: ' + JSON.stringify(response));
-              this.router.navigate(['/error']).then();
-              return;
-            }
-          });
-        }
+        this.commonService.openBar('申請完了', 5000);
+        // this.router.navigate(['/dashboard']).then();
       } else {
         sessionStorage.setItem('error', 'Process 1\n' + 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
