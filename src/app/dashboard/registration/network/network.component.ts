@@ -1,7 +1,11 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {UserService} from '../../../service/user.service';
+import {Router} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
+import {NetworkService} from '../../../service/network.service';
+import {JpnicAdminService} from '../../../service/jpnic-admin.service';
+import {JpnicTechService} from '../../../service/jpnic-tech.service';
 
 @Component({
   selector: 'app-network',
@@ -11,12 +15,14 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class NetworkComponent implements OnInit {
 
   public ip: FormGroup;
-  public bgp: string;
+  public route: string;
   public bgpEtc = new FormControl();
   public pi = false;
+  public asn = new FormControl();
   public date = new FormControl();
   public plan = new FormControl();
-  private dateJa = '要望に答えられない可能性があります。\n\n#接続開始日\n\n\n#接続終了日\n\n\n';
+  private dateJa = '要望に答えられない可能性があります。\n（接続終了期限が未定の場合は「未定」と記入してください。）\n\n' +
+    '#接続開始日\n\n\n#接続終了日\n\n\n';
   private dateEn = 'Sorry, we may not be able to meet your request.\n\n' + '#Scheduled start date for connection\n\n\n' +
     'Scheduled end date for connection\n\n\n';
   private planJa = '      [Subnet Number1]\n' +
@@ -80,13 +86,13 @@ export class NetworkComponent implements OnInit {
     '    temporary connection means that the always IP address is not used. (ex Assign IP Address by DHCP.\n' +
     '    The utilization rate is calculated by including the network address and broadcast address.\n';
   jpnicJa = new FormGroup({
+    org: new FormControl(''),
+    postcode: new FormControl(''),
     address: new FormControl(''),
-    organization: new FormControl(''),
-    organization_f: new FormControl(''),
   });
   jpnicEn = new FormGroup({
+    org: new FormControl(''),
     address: new FormControl(''),
-    organization: new FormControl(''),
   });
   checkV4 = false;
   checkV6 = false;
@@ -98,99 +104,122 @@ export class NetworkComponent implements OnInit {
     name: new FormControl(''),
     subnet: new FormControl(''),
   });
-  public dialog: MatDialog;
+  public user: any;
+  public admin: any;
 
 
   constructor(
     private formBuilder: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private commonService: CommonService,
+    private networkService: NetworkService,
+    private jpnicAdminService: JpnicAdminService,
+    private jpnicTechService: JpnicTechService
   ) {
   }
 
   ngOnInit(): void {
-    this.ip = this.formBuilder.group({
-      ip: this.formBuilder.array([])
-    });
+    // Groupに属するユーザをすべて取得する
+    // Todo: #2 Issue
+    this.userService.getGroup().then(response => {
+      console.log('---response---');
+      console.log(response);
+      if (response) {
+        this.user = response;
+        // this.commonService.openBar('OK', 5000);
+      } else {
+        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
+        this.router.navigate(['/error']).then();
+      }
+    }).catch();
+    {
+
+    }
     this.date.setValue(this.dateJa);
     this.plan.setValue(this.planEn);
   }
 
-  get optionForm(): FormGroup {
-    return this.formBuilder.group({
-      ip: [''],
-      pi: this.pi,
-      as: ['']
-    });
-  }
-
-  get ipAddress(): FormArray {
-    return this.ip.get('ip') as FormArray;
-  }
-
-  addOptionForm() {
-    this.ipAddress.push(this.optionForm);
-  }
-
-  removeOptionForm(idx: number) {
-    this.ipAddress.removeAt(idx);
-  }
-
   request() {
-  }
+    // TODO: #1 Issue
+    console.log(this.user);
+    if (this.route === '' || this.date.value === null) {
+      this.commonService.openBar('invalid..', 5000);
+      return;
+    }
+    if (this.pi) {
+      if (this.asn.value === '') {
+        this.commonService.openBar('asn invalid..', 5000);
+        return;
+      }
+    } else {
+      if (this.admin === '') {
+        this.commonService.openBar('no select (operation staff)', 5000);
+      }
+    }
 
-  openDialog(): void {
-
-    const dialogRef = this.dialog.open(JPNICDetailDialog, {
-      width: '450px',
+    this.networkService.add({
+      org: this.jpnicJa.value.org,
+      org_en: this.jpnicEn.value.org,
+      postcode: this.jpnicJa.value.postcode,
+      address: this.jpnicJa.value.address,
+      address_en: this.jpnicEn.value.address,
+      route: this.route,
+      pi: this.pi,
+      asn: this.asn,
+      v4: this.jpnicV4.value.subnet,
+      v6: this.jpnicV6.value.subnet,
+      v4_name: this.jpnicV4.value.name,
+      v6_name: this.jpnicV6.value.name,
+      date: this.date,
+      plan: this.plan,
+    }).then(response => {
+      console.log('---response---');
+      console.log(response);
+      if (response) {
+        this.user = response;
+        if (!this.pi) {
+          this.jpnicAdminService.add({
+            network_id: response.network.ID,
+            user_id: this.admin,
+          }).then(responseJpnicAdmin => {
+            if (responseJpnicAdmin) {
+              this.user = responseJpnicAdmin;
+              let count = 0;
+              for (const u of this.user.data) {
+                if (u.select === true) {
+                  console.log(u);
+                  this.jpnicTechService.add({
+                    network_id: response.network.ID,
+                    user_id: u.ID,
+                  }).then(responseJpnicTech => {
+                    if (responseJpnicTech) {
+                      this.user = responseJpnicTech;
+                      count++;
+                    } else {
+                      sessionStorage.setItem('error', 'Process 3\n' + 'response: ' + JSON.stringify(response));
+                      this.router.navigate(['/error']).then();
+                      return;
+                    }
+                  });
+                }
+              }
+              if (count === this.user.data.length) {
+                this.commonService.openBar('申請完了', 5000);
+                this.router.navigate(['/dashboard']).then();
+              }
+            } else {
+              sessionStorage.setItem('error', 'Process 2\n' + 'response: ' + JSON.stringify(response));
+              this.router.navigate(['/error']).then();
+              return;
+            }
+          });
+        }
+      } else {
+        sessionStorage.setItem('error', 'Process 1\n' + 'response: ' + JSON.stringify(response));
+        this.router.navigate(['/error']).then();
+        return;
+      }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-    });
   }
-}
-
-
-@Component({
-  selector: 'jpnic-detail-dialog',
-  templateUrl: 'jpnic.html',
-  styleUrls: ['jpnic.scss']
-})
-export class JPNICDetailDialog implements OnInit {
-
-  public model;
-  public shiftForm: FormGroup;
-
-
-  constructor(
-    public dialogRef: MatDialogRef<JPNICDetailDialog>,
-    // private _formBuilder: FormBuilder,
-    // private _snackBar: MatSnackBar,
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    // console.log(data);
-    this.model = {
-      comment: ''
-    };
-    this.createForm();
-  }
-
-  onSubmit(): void {
-  }
-
-  ngOnInit(): void {
-  }
-
-  createForm(): void {
-    // this.shiftForm = this._formBuilder.group(this.model);
-    // this.shiftForm.setValue(this.model);
-  }
-
-  pushButton(count) {
-
-    this.shiftForm.setValue(this.model);
-  }
-
-  // ngOnDestroy() {
-  //   console.log('end');
-  // }
 }
