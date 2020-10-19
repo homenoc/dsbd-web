@@ -19,7 +19,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {InitComponent} from './registration/init/init.component';
-import {DataComponent} from './data/data.component';
+import {InfoComponent} from './info/info.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {MatTableModule} from '@angular/material/table';
 import {CdkColumnDef, CdkTableModule} from '@angular/cdk/table';
@@ -38,7 +38,7 @@ import {MatSelectModule} from '@angular/material/select';
     DashboardComponent,
     NoticeComponent,
     InitComponent,
-    DataComponent,
+    InfoComponent,
     RegistrationComponent,
     SettingComponent,
     NetworkComponent,
