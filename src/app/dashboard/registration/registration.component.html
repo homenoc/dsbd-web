@@ -1,32 +1,15 @@
-<ng-container *ngIf="loading">
-  <div class="main">
-    <h1>Loading...</h1>
+<div class="main">
+  <ng-container *ngIf="type === 1">
+    <h1>審査中</h1>
     <br>
     <br>
-    <p><b>It may take some time.</b></p>
-  </div>
-</ng-container>
-
-<ng-container>
-  <div class="main">
-    <h1>追加申請手続き</h1>
-    <mat-tab-group>
-      <mat-tab label="拠点追加">
-        <p>拠点追加につきましてはこちらのフォームをご利用ください。</p>
-        <br>
-      </mat-tab>
-      <mat-tab label="IPアドレス追加割当">
-        <p>IPアドレスの追加割当につきましては、こちらのフォームをご利用ください。</p>
-        <p>利用状況、用途によりましては、追加割当に応じることができない可能性がありますが、ご了承ください。</p>
-        <br>
-      </mat-tab>
-      <mat-tab label="メンテナンス申告">
-        <p>拠点のメンテナンスの申告はこちらのフォームをご利用ください。</p>
-        <br>
-      </mat-tab>
-      <mat-tab label="その他">
-        <br>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-</ng-container>
+    <p><b>審査には時間がかかる可能性があります。</b></p>
+    <p><b>一ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
+  </ng-container>
+  <ng-container *ngIf="type === 2">
+    <h1>開通作業</h1>
+    <br>
+    <br>
+    <p><b>開通作業の際に、ネットワーク構成によってはかなり時間がかかる可能性があります。</b></p>
+  </ng-container>
+</div>
