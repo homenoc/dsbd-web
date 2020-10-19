@@ -9,6 +9,7 @@ import {SettingComponent} from './setting/setting.component';
 import {AuthGuard} from '../guard/auth.guard';
 import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
+import {SupportComponent} from './support/support.component';
 
 
 const routes: Routes = [{
@@ -17,6 +18,7 @@ const routes: Routes = [{
   children: [
     {path: '', redirectTo: 'notice', pathMatch: 'full'},
     {path: 'notice', component: NoticeComponent},
+    {path: 'support', component: SupportComponent},
     {path: 'info', component: InfoComponent},
     {path: 'setting', component: SettingComponent},
     {path: 'registration/init', component: InitComponent},

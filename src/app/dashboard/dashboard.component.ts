@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   public notice = false;
   public info = false;
-  public request = false;
+  public registration = false;
   public gid = 0;
 
 
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         } else {
           this.notice = true;
           if (user.data.gid === 0) {
-            this.request = true;
+            this.registration = true;
           }
           this.groupService.get().then((group) => {
             if (group.status) {
