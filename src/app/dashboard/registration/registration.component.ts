@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
                 console.log(group.data[0].status);
                 if (10 < group.data[0].status && group.data[0].status < 300) {
                 }
-                // if(group.data.);
+                // if(group.info.);
               }
             });
           }

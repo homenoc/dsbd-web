@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {NoticeComponent} from './notice/notice.component';
 import {DashboardComponent} from './dashboard.component';
 import {InitComponent} from './registration/init/init.component';
-import {DataComponent} from './data/data.component';
+import {InfoComponent} from './info/info.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {SettingComponent} from './setting/setting.component';
 import {AuthGuard} from '../guard/auth.guard';
@@ -17,7 +17,7 @@ const routes: Routes = [{
   children: [
     {path: '', redirectTo: 'notice', pathMatch: 'full'},
     {path: 'notice', component: NoticeComponent},
-    {path: 'data', component: DataComponent},
+    {path: 'info', component: InfoComponent},
     {path: 'setting', component: SettingComponent},
     {path: 'registration/init', component: InitComponent},
     {path: 'registration/network', component: NetworkComponent},
