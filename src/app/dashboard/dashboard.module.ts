@@ -31,6 +31,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     MatGridListModule,
     MatTabsModule,
     MatExpansionModule,
+    MatSelectModule,
   ],
   exports: [
     MatCardModule,
@@ -87,8 +89,7 @@ import {ConnectionComponent} from './registration/connection/connection.componen
     MatTableModule,
     CdkColumnDef
   ],
-  entryComponents: [
-  ],
+  entryComponents: [],
   providers: [CdkColumnDef]
 })
 export class DashboardModule {

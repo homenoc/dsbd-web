@@ -9,6 +9,7 @@ import {RegistrationComponent} from './registration/registration.component';
 import {SettingComponent} from './setting/setting.component';
 import {AuthGuard} from '../guard/auth.guard';
 import {NetworkComponent} from './registration/network/network.component';
+import {ConnectionComponent} from './registration/connection/connection.component';
 
 
 const routes: Routes = [{
@@ -21,6 +22,7 @@ const routes: Routes = [{
     {path: 'setting', component: SettingComponent},
     {path: 'registration/init', component: InitComponent},
     {path: 'registration/network', component: NetworkComponent},
+    {path: 'registration/connection', component: ConnectionComponent},
     {path: 'registration/contract1', component: Contract1Component},
     {path: 'registration', component: RegistrationComponent},
   ],
