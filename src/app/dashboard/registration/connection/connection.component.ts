@@ -36,7 +36,7 @@ export class ConnectionComponent implements OnInit {
     this.userService.getGroup().then(response => {
       console.log('---response---');
       console.log(response);
-      if (response) {
+      if (response.status) {
         this.user = response;
         // this.commonService.openBar('OK', 5000);
       } else {
@@ -69,7 +69,7 @@ export class ConnectionComponent implements OnInit {
 
     this.connectionService.add(body).then(response => {
       console.log('---response---');
-      console.log(response);
+      console.log(response.status);
       if (response.result) {
         this.commonService.openBar('申請完了', 5000);
         this.router.navigate(['/dashboard']).then();
