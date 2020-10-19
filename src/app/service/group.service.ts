@@ -3,6 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {CommonService} from './common.service';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class GroupService {
   constructor(
     public router: Router,
     private commonService: CommonService,
+    private authService: AuthService,
     private http: HttpClient
   ) {
   }
@@ -52,6 +54,9 @@ export class GroupService {
     }).toPromise().then(r => {
       const response: any = r;
       if (response.status === true) {
+        if (1000 <= response.group.status) {
+          this.authService.logOut();
+        }
         return response;
       } else {
         return {

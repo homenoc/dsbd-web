@@ -188,7 +188,7 @@ export class NetworkComponent implements OnInit {
     this.networkService.add(body).then(response => {
       console.log('---response---');
       console.log(response);
-      if (response.result) {
+      if (response.status) {
         this.commonService.openBar('申請完了', 5000);
         this.router.navigate(['/dashboard']).then();
       } else {

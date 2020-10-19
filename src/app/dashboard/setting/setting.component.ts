@@ -69,7 +69,7 @@ export class SettingComponent implements OnInit {
       country: this.country.value
     };
     this.userService.update(0, body).then(response => {
-      if (response) {
+      if (response.status) {
         this.commonService.openBar('OK', 5000);
       } else {
         sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
@@ -83,7 +83,7 @@ export class SettingComponent implements OnInit {
       email: this.email.value
     };
     this.userService.update(0, body).then(response => {
-      if (response) {
+      if (response.status) {
         this.commonService.openBar('OK', 5000);
       } else {
         sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
@@ -99,7 +99,7 @@ export class SettingComponent implements OnInit {
         pass: passHash
       };
       this.userService.update(0, body).then(response => {
-        if (response) {
+        if (response.status) {
           this.commonService.openBar('OK', 5000);
         } else {
           sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
