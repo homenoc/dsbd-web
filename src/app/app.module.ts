@@ -8,9 +8,6 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {RegistrationComponent} from './user_registration/registration.component';
 import {environment} from '../environments/environment';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
@@ -77,9 +74,6 @@ import {FinishComponent} from './user_registration/finish/finish.component';
     BrowserModule,
     DashboardModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
