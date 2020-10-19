@@ -19,10 +19,8 @@ export class AuthService {
   }
 
   loginWithMail(email: string, pass: string): void {
-    console.log('E-Mail: ' + email);
     const passHash: string = shaJS('sha256').update(pass).digest('hex')
     const hash: string = shaJS('sha256').update(passHash + sessionStorage.getItem('TmpKey')).digest('hex');
-    console.log('hash: ' + hash);
     this.http.get(environment.base.url + environment.base.path + '/token', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -32,7 +30,6 @@ export class AuthService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
       if (response.status) {
         sessionStorage.setItem('AccessToken', response.token[0].access_token);
         this.userService.getLoginUser().then(d => {
