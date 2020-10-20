@@ -19,7 +19,7 @@ export class GroupService {
   }
 
   register(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group',
+    return this.http.post(environment.api.url + environment.api.path + '/group',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export class GroupService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group', {
+    return this.http.get(environment.api.url + environment.api.path + '/group', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

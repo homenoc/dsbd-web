@@ -50,7 +50,7 @@ export class SupportService {
   }
 
   register(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/support',
+    return this.http.post(environment.api.url + environment.api.path + '/support',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export class SupportService {
   }
 
   get(id): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/support/' + id, {
+    return this.http.get(environment.api.url + environment.api.path + '/support/' + id, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -101,7 +101,7 @@ export class SupportService {
   }
 
   getAll(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/support', {
+    return this.http.get(environment.api.url + environment.api.path + '/support', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

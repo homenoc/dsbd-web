@@ -17,7 +17,7 @@ export class JpnicTechService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group/network/jpnic/tech',
+    return this.http.post(environment.api.url + environment.api.path + '/group/network/jpnic/tech',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class JpnicTechService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/network/jpnic/tech', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/network/jpnic/tech', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
