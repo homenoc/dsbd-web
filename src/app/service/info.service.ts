@@ -17,7 +17,7 @@ export class InfoService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/info', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/info', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

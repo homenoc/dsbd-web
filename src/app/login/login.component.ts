@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     sessionStorage.setItem('ClientID', this.commonService.random(30));
-    this.http.get(environment.base.url + environment.base.path + '/token/init', {
+    this.http.get(environment.api.url + environment.api.path + '/token/init', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID')

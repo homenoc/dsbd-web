@@ -17,7 +17,7 @@ export class JpnicService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group/network/jpnic',
+    return this.http.post(environment.api.url + environment.api.path + '/group/network/jpnic',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class JpnicService {
   }
 
   delete(id): Promise<any> {
-    return this.http.delete(environment.base.url + environment.base.path + '/group/network/jpnic/' + id,
+    return this.http.delete(environment.api.url + environment.api.path + '/group/network/jpnic/' + id,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export class JpnicService {
   }
 
   get(id): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/network/jpnic/' + id, {
+    return this.http.get(environment.api.url + environment.api.path + '/group/network/jpnic/' + id, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -93,7 +93,7 @@ export class JpnicService {
   }
 
   getAll(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/network/jpnic/all', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/network/jpnic/all', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -118,7 +118,7 @@ export class JpnicService {
   }
 
   update(uid, body): Promise<any> {
-    return this.http.put(environment.base.url + environment.base.path + '/group/network/jpnic/' + uid,
+    return this.http.put(environment.api.url + environment.api.path + '/group/network/jpnic/' + uid,
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

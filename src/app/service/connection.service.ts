@@ -17,7 +17,7 @@ export class ConnectionService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group/connection',
+    return this.http.post(environment.api.url + environment.api.path + '/group/connection',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class ConnectionService {
   }
 
   get(uid): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/connection/' + uid, {
+    return this.http.get(environment.api.url + environment.api.path + '/group/connection/' + uid, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

@@ -1,7 +1,12 @@
 export const environment = {
   production: false,
-  base: {
+  api: {
     url: 'http://localhost:8080',
-    path: '/api/v1'
+    path: '/api/v1',
+  },
+  websocket: {
+    url: 'ws://localhost:8080',
+    path: '/ws/v1'
   }
+
 };

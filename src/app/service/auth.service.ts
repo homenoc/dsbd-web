@@ -21,7 +21,7 @@ export class AuthService {
   loginWithMail(email: string, pass: string): void {
     const passHash: string = shaJS('sha256').update(pass).digest('hex')
     const hash: string = shaJS('sha256').update(passHash + sessionStorage.getItem('TmpKey')).digest('hex');
-    this.http.get(environment.base.url + environment.base.path + '/token', {
+    this.http.get(environment.api.url + environment.api.path + '/token', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   logOut(): void {
-    this.http.delete(environment.base.url + environment.base.path + '/token', {
+    this.http.delete(environment.api.url + environment.api.path + '/token', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

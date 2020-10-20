@@ -17,7 +17,7 @@ export class NoticeService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/notice', {
+    return this.http.get(environment.api.url + environment.api.path + '/notice', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),

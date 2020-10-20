@@ -17,7 +17,7 @@ export class NetworkService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group/network',
+    return this.http.post(environment.api.url + environment.api.path + '/group/network',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class NetworkService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/group/network', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/network', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -67,7 +67,7 @@ export class NetworkService {
   }
 
   confirm(body): Promise<any> {
-    return this.http.post(environment.base.url + environment.base.path + '/group/network/confirm',
+    return this.http.post(environment.api.url + environment.api.path + '/group/network/confirm',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

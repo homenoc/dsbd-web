@@ -33,7 +33,7 @@ export class UserService {
         })
       };
     }
-    return this.http.post(environment.base.url + environment.base.path + '/user',
+    return this.http.post(environment.api.url + environment.api.path + '/user',
       body, header).toPromise().then(r => {
       const response: any = r;
       console.log('response: ' + JSON.stringify(response));
@@ -53,7 +53,7 @@ export class UserService {
   }
 
   get(uid): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/user/' + uid, {
+    return this.http.get(environment.api.url + environment.api.path + '/user/' + uid, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -77,7 +77,7 @@ export class UserService {
   }
 
   getGroup(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/user/all', {
+    return this.http.get(environment.api.url + environment.api.path + '/user/all', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -101,7 +101,7 @@ export class UserService {
   }
 
   getLoginUser(): Promise<any> {
-    return this.http.get(environment.base.url + environment.base.path + '/user', {
+    return this.http.get(environment.api.url + environment.api.path + '/user', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -125,7 +125,7 @@ export class UserService {
   }
 
   update(uid, data): Promise<any> {
-    return this.http.put(environment.base.url + environment.base.path + '/user/' + uid,
+    return this.http.put(environment.api.url + environment.api.path + '/user/' + uid,
       data, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
