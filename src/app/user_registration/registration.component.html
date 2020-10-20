@@ -21,10 +21,17 @@
       </mat-form-field>
       <br>
       <mat-form-field>
-        <mat-label>Your Name(full name)</mat-label>
-        <input matInput placeholder="ex)Yuto Yoneda" [formControl]="name" required>
+        <mat-label>Your Name(Japanese full name)</mat-label>
+        <input matInput placeholder="ex)米田 悠人" [formControl]="name" required>
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-        <mat-hint>ex）test@homenoc.ad.jp</mat-hint>
+        <mat-hint>ex）米田 悠人</mat-hint>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Your Name(English full name)</mat-label>
+        <input matInput placeholder="ex)Yuto Yoneda" [formControl]="nameEn" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-hint>ex）Yuto Yoneda</mat-hint>
       </mat-form-field>
       <br>
       <mat-form-field>

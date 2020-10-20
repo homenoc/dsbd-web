@@ -25,6 +25,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   name = new FormControl();
+  nameEn = new FormControl();
   email = new FormControl();
   password = new FormControl();
   passwordVerify = new FormControl();
@@ -48,12 +49,13 @@ export class RegistrationComponent implements OnInit {
     if (this.password.value !== this.passwordVerify.value) {
       this.commonService.openBar('Password is wrong\n', 2000);
     } else {
-      if (this.password.value === '' || this.email.value === '' || this.name.value === '') {
+      if (this.password.value === '' || this.email.value === '' || this.name.value === '' || this.nameEn.value === '') {
         this.commonService.openBar('value is empty', 2000);
       } else {
         const passHash: string = shaJS('sha256').update(this.password.value).digest('hex');
         this.userService.create({
           name: this.name.value,
+          name_en: this.nameEn.value,
           email: this.email.value,
           pass: passHash
         }, 0).then((result) => {
