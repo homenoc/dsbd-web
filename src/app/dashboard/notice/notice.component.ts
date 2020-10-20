@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {NoticeService} from "../../service/notice.service";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-notice',
@@ -8,14 +10,23 @@ import {Component, OnInit} from '@angular/core';
 export class NoticeComponent implements OnInit {
 
   constructor(
+    private noticeService: NoticeService,
+    private commonService: CommonService
   ) {
   }
 
-  public data: any;
+  public info: any;
   public name: string;
 
   ngOnInit(): void {
     this.name = sessionStorage.getItem('name');
-    // this.dataService.getUserNotice().then(data => this.data = data);
+    this.noticeService.get().then(response => {
+      const info = response;
+      if (info.status) {
+        this.info = info.notice;
+      } else {
+        this.commonService.openBar('no data', 5000);
+      }
+    });
   }
 }
