@@ -1,0 +1,20 @@
+<div class="left">
+  <br>
+  <h1>Chat</h1>
+  <ng-container *ngFor="let d of chat">
+    <p>({{d.CreatedAt}}): {{d.data}}</p>
+  </ng-container>
+  <ng-container *ngFor="let d of this.supportService.chatMessage">
+    <b>{{d.user_id}}</b><p>({{d.CreatedAt}}):{{d.message}}</p>
+  </ng-container>
+  <form>
+    <mat-form-field class="large-width">
+      <mat-label>Comment</mat-label>
+      <input matInput placeholder="" [formControl]="comment" name="">
+    </mat-form-field>
+  </form>
+  <br>
+  <br>
+  <button mat-button (click)="sendMessage()">Send</button>
+  <br>
+</div>
