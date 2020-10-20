@@ -35,25 +35,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.userService.getLoginUser().then(user => {
       if (user.status) {
         if (user.data.status === 0) {
+          this.registration = true;
           this.router.navigate(['/dashboard/setting']).then();
         } else if (user.data.status >= 100) {
           this.authService.logOut();
         } else {
           this.notice = true;
-          if (user.data.gid === 0) {
-            this.registration = true;
+          if (user.data.gid !== 0) {
+            this.groupService.get().then((group) => {
+              console.log(group);
+              if (group.status === true) {
+                if (100 <= group.group.status && group.group.status <= 500) {
+                  this.info = true;
+                }
+                if (2 <= group.group.status && group.group.status < 300) {
+                  this.registration = true;
+                }
+              }
+            }).catch();
           }
-          this.groupService.get().then((group) => {
-            console.log(group);
-            if (group.status === true) {
-              if (100 <= group.group.status && group.group.status <= 500) {
-                this.info = true;
-              }
-              if (2 <= group.group.status && group.group.status < 300) {
-                this.registration = true;
-              }
-            }
-          }).catch();
         }
       } else {
         this.commonService.openBar(user.error, 4000);
