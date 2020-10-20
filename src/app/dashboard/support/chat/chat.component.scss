@@ -1,0 +1,41 @@
+.card {
+  margin: 4px 10px 4px 10px;
+}
+
+.sub {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.left {
+  margin-left: 10px;
+}
+
+.main {
+  table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  td, th {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  th {
+    background: #EFEFEF;
+  }
+
+  tr:first-child th {
+    border-top: 5px solid #005ab3;
+  }
+
+  tr:first-child td {
+    border-top: 5px solid #ccc;
+  }
+}
+
+.large-width {
+  width: 80%;
+}

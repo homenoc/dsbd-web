@@ -32,6 +32,7 @@ import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {MatSelectModule} from '@angular/material/select';
 import {SupportComponent} from './support/support.component';
+import { ChatComponent } from './support/chat/chat.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import {SupportComponent} from './support/support.component';
     NetworkComponent,
     ConnectionComponent,
     SupportComponent,
+    ChatComponent,
   ],
   imports: [
     CommonModule,
