@@ -24,7 +24,7 @@ export class SupportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.supportService.get().then(response => {
+    this.supportService.getAll().then(response => {
       console.log(response);
       const info = response;
       if (info.status) {
@@ -49,7 +49,7 @@ export class SupportComponent implements OnInit {
 
     const body = {
       title: this.title.value,
-      data: this.data.value
+      data: this.data.value,
     };
     this.supportService.register(body).then(response => {
       const info = response;
