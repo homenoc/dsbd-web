@@ -1,7 +1,12 @@
 <mat-horizontal-stepper [linear]="false" #stepper>
   <mat-step>
     <ng-template matStepLabel i18n="@@user_registration">Notes</ng-template>
-    <mat-label>無意味な登録や虚偽の申請を行った場合は、申請をお断りさせていただきます。</mat-label>
+    <mat-label>ご利用にあたっては当団体のプライバシーポリシーと会則に同意いただく必要がございます。</mat-label>
+    <br>
+    <br>
+    <mat-label>会則：https://www.homenoc.ad.jp/rules/</mat-label>
+    <br>
+    <mat-label>プライバシーポリシー：https://www.homenoc.ad.jp/rules/privacy/</mat-label>
     <br>
     <br>
     <div>
@@ -11,7 +16,9 @@
   <mat-step [stepControl]="mailFormGroup">
     <form [formGroup]="mailFormGroup">
       <ng-template matStepLabel i18n="@@user_registration">Register Account</ng-template>
-      <mat-label>日本人の方は名前は日本語でお願いします。</mat-label>
+      <mat-label>日本人の方は日本語と英語の両方でお名前を入力してください。</mat-label>
+      <br>
+      <mat-label>If you are not Japanese, please enter only your English name.</mat-label>
       <br>
       <mat-form-field>
         <mat-label>E-Mail Address</mat-label>
@@ -61,7 +68,7 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel i18n="@@verify">Verify</ng-template>
-    <p i18n="@@registration_mail_comment">You will register your profile after registration. </p>
+    <p i18n="@@registration_mail_comment">以下の内容でアカウント登録を行います。 </p>
     <!--    <p>confirm email address</p>-->
     <p><b>{{mailFormGroup.get('mail').value}}</b></p>
     <div>

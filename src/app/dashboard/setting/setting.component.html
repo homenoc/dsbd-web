@@ -4,20 +4,21 @@
   </mat-card-subtitle>
 </mat-card>
 <ng-container *ngIf="lock">
-  <h2>Please tell me about your information.</h2>
+  <h2>登録情報の設定と変更</h2>
+  <mat-label>ご利用者様（ユーザ情報）とご所属（グループ情報）の設定と変更が行えます。</mat-label>
 </ng-container>
 <mat-tab-group>
-  <mat-tab label="User setting">
+  <mat-tab label="ユーザ情報の設定">
     <ng-template matTabContent>
       <br>
       <ng-container *ngIf="!lock">
         <mat-accordion>
           <mat-expansion-panel class="card">
             <mat-expansion-panel-header>
-              <mat-panel-title>Change E-Mail Address</mat-panel-title>
+              <mat-panel-title>メールアドレスの変更</mat-panel-title>
             </mat-expansion-panel-header>
             <mat-form-field appearance="fill">
-              <mat-label>email address</mat-label>
+              <mat-label>Email address</mat-label>
               <input matInput [type]="hide ? 'email' : 'text'" [formControl]="email">
             </mat-form-field>
             <br>
@@ -28,7 +29,7 @@
         <mat-accordion>
           <mat-expansion-panel class="card">
             <mat-expansion-panel-header>
-              <mat-panel-title>Change Password</mat-panel-title>
+              <mat-panel-title>パスワードの変更</mat-panel-title>
             </mat-expansion-panel-header>
             <mat-form-field appearance="fill">
               <mat-label>Password</mat-label>
@@ -56,65 +57,65 @@
       <mat-accordion>
         <mat-expansion-panel class="card">
           <mat-expansion-panel-header>
-            <mat-panel-title>Change Info</mat-panel-title>
+            <mat-panel-title>ユーザ情報の設定</mat-panel-title>
           </mat-expansion-panel-header>
           <mat-form-field appearance="fill">
-            <mat-label>Org</mat-label>
+            <mat-label>組織名</mat-label>
             <input matInput [type]="hide ? 'org' : 'text'" [formControl]="org">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>OrgEn</mat-label>
+            <mat-label>組織名(English)</mat-label>
             <input matInput [type]="hide ? 'org_en' : 'text'" [formControl]="orgEn">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>PostCode</mat-label>
+            <mat-label>郵便番号</mat-label>
             <input matInput [type]="hide ? 'postcode' : 'text'" [formControl]="postcode">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Address</mat-label>
+            <mat-label>住所</mat-label>
             <input matInput [type]="hide ? 'address' : 'text'" [formControl]="address">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Address(English)</mat-label>
+            <mat-label>住所(English)</mat-label>
             <input matInput [type]="hide ? 'addressEn' : 'text'" [formControl]="addressEn">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Department</mat-label>
+            <mat-label>部署名</mat-label>
             <input matInput [type]="hide ? 'dept' : 'text'" [formControl]="dept">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Department(English)</mat-label>
+            <mat-label>部署名(English)</mat-label>
             <input matInput [type]="hide ? 'deptEn' : 'text'" [formControl]="deptEn">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Position</mat-label>
+            <mat-label>役職</mat-label>
             <input matInput [type]="hide ? 'pos' : 'text'" [formControl]="pos">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Position(English)</mat-label>
+            <mat-label>役職(English)</mat-label>
             <input matInput [type]="hide ? 'posEn' : 'text'" [formControl]="posEn">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Tel</mat-label>
+            <mat-label>電話番号</mat-label>
             <input matInput [type]="hide ? 'tel' : 'text'" [formControl]="tel">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Fax</mat-label>
+            <mat-label>FAX番号</mat-label>
             <input matInput [type]="hide ? 'fax' : 'text'" [formControl]="fax">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>Country</mat-label>
+            <mat-label>居住国</mat-label>
             <input matInput [type]="hide ? 'country' : 'text'" [formControl]="country">
           </mat-form-field>
           <br>
@@ -124,80 +125,80 @@
       <br>
     </ng-template>
   </mat-tab>
-  <mat-tab label="User Information">
+  <mat-tab label="ユーザ情報">
     <br>
     <div class="main">
       <table>
         <tr>
-          <th colspan="2">User Information</th>
+          <th colspan="2">ユーザ情報</th>
         </tr>
         <tr>
-          <th>User Create Date</th>
+          <th>ユーザ作成日</th>
           <td>{{userInfo.CreatedAt}}</td>
         </tr>
         <tr>
-          <th>User Update Date</th>
+          <th>ユーザ情報の最終更新日</th>
           <td>{{userInfo.UpdatedAt}}</td>
         </tr>
         <tr>
-          <th>Name</th>
+          <th>名前</th>
           <td>{{userInfo.name}}</td>
         </tr>
         <tr>
-          <th>Name(English)</th>
+          <th>名前(English)</th>
           <td>{{userInfo.name_en}}</td>
         </tr>
         <tr>
-          <th>E-Mail</th>
+          <th>Email address</th>
           <td>{{userInfo.email}}</td>
         </tr>
         <tr>
-          <th>Org</th>
+          <th>組織名</th>
           <td>{{userInfo.org}}</td>
         </tr>
         <tr>
-          <th>Org(English)</th>
+          <th>組織名(English)</th>
           <td>{{userInfo.org_en}}</td>
         </tr>
         <tr>
-          <th>PostCode</th>
+          <th>郵便番号</th>
           <td>{{userInfo.postcode}}</td>
         </tr>
         <tr>
-          <th>Address</th>
+          <th>住所</th>
           <td>{{userInfo.address}}</td>
         </tr>
         <tr>
-          <th>Address(English)</th>
+          <th>住所(English)</th>
           <td>{{userInfo.address_en}}</td>
         </tr>
         <tr>
-          <th>Department</th>
+          <th>部署名</th>
           <td>{{userInfo.dept}}</td>
         </tr>
         <tr>
-          <th>Department(English)</th>
+          <th>部署名(English)</th>
           <td>{{userInfo.dept_en}}</td>
         </tr>
         <tr>
-          <th>Position</th>
+          <th>役職</th>
           <td>{{userInfo.pos}}</td>
         </tr>
         <tr>
-          <th>Position(English)</th>
+          <th>役職(English)</th>
           <td>{{userInfo.pos_en}}</td>
         </tr>
         <tr>
-          <th>Tel</th>
+          <th>電話番号</th>
           <td>{{userInfo.tel}}</td>
         </tr>
         <tr>
         <tr>
-          <th>Fax</th>
+          <th>FAX番号</th>
           <td>{{userInfo.fax}}</td>
         </tr>
         <tr>
-          <th>Country</th>
+          <th>居住国</th>
           <td>{{userInfo.country}}</td>
         </tr>
         <tr>
@@ -211,24 +212,24 @@
       </table>
     </div>
   </mat-tab>
-  <mat-tab label="Group Setting">
+  <mat-tab label="グループ情報の設定">
     <br>
     <mat-accordion>
       <mat-expansion-panel class="card">
         <mat-expansion-panel-header>
-          <mat-panel-title>Change E-Mail Address</mat-panel-title>
+          <mat-panel-title>ユーザの追加</mat-panel-title>
         </mat-expansion-panel-header>
         <form [formGroup]="group">
           <mat-form-field>
-            <input class="full-width" matInput placeholder="E-Mail Address" type="text" formControlName="email"/>
+            <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
           </mat-form-field>
           &nbsp;&nbsp;&nbsp;
           <mat-form-field>
-            <input class="full-width" matInput placeholder="Name(Japanese)" type="text" formControlName="name"/>
+            <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
           </mat-form-field>
           &nbsp;&nbsp;&nbsp;
           <mat-form-field>
-            <input class="full-width" matInput placeholder="Name(English)" type="text" formControlName="nameEn"/>
+            <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
           </mat-form-field>
         </form>
         <br>
@@ -237,12 +238,12 @@
     </mat-accordion>
     <br>
   </mat-tab>
-  <mat-tab label="Group Information">
+  <mat-tab label="グループ情報">
     <br>
     <div class="main">
       <table>
         <tr>
-          <th colspan="2">Group Information</th>
+          <th colspan="2">グループ情報</th>
         </tr>
         <tr>
           <th>ID</th>

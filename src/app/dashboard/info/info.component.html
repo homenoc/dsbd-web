@@ -29,67 +29,68 @@
         <br>
         <table>
           <tr>
-            <th colspan="2">Contract</th>
+            <th colspan="2">契約内容</th>
           </tr>
           <tr>
-            <th>Service</th>
+            <th>サービス種別</th>
             <td>{{d.service}}</td>
           </tr>
           <tr>
-            <th>User ID</th>
+            <th>ユーザID</th>
             <td>{{d.user_id}}</td>
           </tr>
           <tr>
-            <th>Fee</th>
+            <th>利用料金</th>
             <td>{{d.fee}}</td>
           </tr>
           <tr>
-            <th>Assign IP Address</th>
+            <th>当団体からのIPアドレスの割当</th>
             <td>{{d.assign}}</td>
           </tr>
         </table>
         <br>
         <table>
           <tr>
-            <th colspan="3">Connection Infomation</th>
+            <th colspan="3">接続情報</th>
           </tr>
           <tr>
-            <th>Connection</th>
+            <th>接続方式</th>
             <td colspan="2">{{d.service}}</td>
           </tr>
           <tr>
-            <th>NOC</th>
+            <th>接続NOC</th>
             <td colspan="2">{{d.noc}}</td>
           </tr>
           <tr>
-            <th>Terminated address(Your organization side)</th>
+            <th>トンネル終端アドレス（貴団体側）</th>
             <td colspan="2">{{d.term_ip}}</td>
           </tr>
           <tr>
-            <th>Terminated address(HomeNOC Side)</th>
+            <th>トンネル終端アドレス（当団体側）</th>
             <td colspan="2">{{d.noc_ip}}</td>
           </tr>
           <tr>
-            <th colspan="3">Link Infomation</th>
+            <th colspan="3">当団体との間の境界アドレス</th>
           </tr>
           <tr>
             <th></th>
-            <th>Link Info(IPv4)</th>
-            <th>Link Info(IPv6)</th>
+            <th>IPv4アドレス</th>
+            <th>IPv6アドレス</th>
           </tr>
           <tr>
-            <th>Our Organization</th>
+            <th>当団体側</th>
             <td>{{d.link_v4_our}}</td>
             <td>{{d.link_v6_our}}</td>
           </tr>
           <tr>
-            <th>Your Organization</th>
+            <th>貴団体側</th>
             <td>{{d.link_v4_your}}</td>
             <td>{{d.link_v6_your}}</td>
           </tr>
         </table>
         <br><br>
-        <p><b>We will issue the documents electronically.</b></p>
+        <p><b>本ページは電気通信事業法 第26条2（書面の交付義務）に基づく書面となります。</b></p>
+        <p><b>なお、郵送での書面交付をご希望頂いた方は、お送りします書面が正式書面となり、本画面の表示は参考情報となります。</b></p>
       </mat-card-content>
     </mat-card>
   </ng-container>
