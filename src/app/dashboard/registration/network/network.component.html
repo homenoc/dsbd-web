@@ -1,15 +1,18 @@
 <div class="main">
-  <h2>1.1. Advertise route from our organization</h2>
+  <h2>1. 当団体から広報する経路をお選び下さい（BGPの方のみ）</h2>
+  <mat-label>特定のAS-Pathのみなど特殊な経路広報をご希望の場合、その他を選択してサポートまでお問合せください</mat-label>
+  <br>
+  <br>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="route" name="" required>
-    <mat-radio-button value="BGP IPv4 FullRoute">BGP IPv4 FullRoute</mat-radio-button>
+    <mat-radio-button value="BGP IPv4 FullRoute">BGP IPv4 フルルート</mat-radio-button>
     <br>
-    <mat-radio-button value="BGP IPv6 FullRoute">BGP IPv6 FullRoute</mat-radio-button>
+    <mat-radio-button value="BGP IPv6 FullRoute">BGP IPv6 フルルート</mat-radio-button>
     <br>
-    <mat-radio-button value="BGP IPv4 DefaultRoute">BGP IPv4 DefaultRoute</mat-radio-button>
+    <mat-radio-button value="BGP IPv4 DefaultRoute">BGP IPv4 デフォルトルート</mat-radio-button>
     <br>
-    <mat-radio-button value="BGP IPv6 DefaultRoute">BGP IPv6 DefaultRoute</mat-radio-button>
+    <mat-radio-button value="BGP IPv6 DefaultRoute">BGP IPv6 デフォルトルート</mat-radio-button>
     <br>
-    <mat-radio-button value="Other">Other</mat-radio-button>
+    <mat-radio-button value="Other">その他</mat-radio-button>
     <br>
   </mat-radio-group>
   <form class="form" *ngIf="route === 'Other'">
@@ -21,9 +24,9 @@
     </mat-form-field>
   </form>
   <br><br>
-  <h2>1.2. IP Address</h2>
+  <h2>2. IPアドレス</h2>
   <section>
-    <mat-checkbox [(ngModel)]="pi">We have PI Address</mat-checkbox>
+    <mat-checkbox [(ngModel)]="pi">PIアドレスの利用を希望する</mat-checkbox>
   </section>
   <br>
   <p>1セグメントずつ入力してください</p>
@@ -36,16 +39,19 @@
     </mat-form-field>
   </ng-container>
   <br><br>
-  <h2>1.3. Preferred date period of use</h2>
+  <h2>3. 利用終了日</h2>
+  <mat-label>一時的な検証やイベントネットワークでの利用など、利用終了日が決まっている場合はお知らせください</mat-label>
+  <br>
+  <mat-label>利用終了日が決まっていない場合は未定を選択してください</mat-label>
+  <br>
   <form>
     <mat-form-field class="textarea-form">
-      <textarea matInput rows="10" placeholder="Ex. It makes me feel..." [formControl]="date" required></textarea>
+      <textarea matInput rows="10" [formControl]="date" required></textarea>
     </mat-form-field>
   </form>
   <br><br>
-
   <ng-container *ngIf="!pi">
-    <h2>2.1. Assign IP address and Network Name</h2>
+    <h2>4. Assign IP address and Network Name</h2>
     <mat-checkbox [(ngModel)]="checkV4">Hope to assign IPv4 address</mat-checkbox>
     <form *ngIf="checkV4" [formGroup]="jpnicV4">
       <br>

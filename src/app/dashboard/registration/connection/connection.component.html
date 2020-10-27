@@ -1,24 +1,27 @@
 <div class="main">
-  <h2>1. How to connection</h2>
+  <h2>1. 接続方式をお選びください</h2>
+  <mat-label>各接続方式については https://www.homenoc.ad.jp/type/ のご説明をご確認ください</mat-label>
+  <br>
+  <br>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="connection" name="" required>
     <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 Cross Connect(Campus Connection)
+    <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 構内接続（当団体のPOPと同一データセンターでの接続）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="L3 Static Tunnel">L3 Static Tunnel</mat-radio-button>
+    <mat-radio-button value="L3 Static Tunnel">L3 StaticRouting (GRE/IPIP)</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 Static EtherIP">L3 Static EtherIP</mat-radio-button>
+    <mat-radio-button value="L3 Static EtherIP">L3 StaticRouting EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 Static Local Attachment">L3 Static Local Attachment</mat-radio-button>
+    <mat-radio-button value="L3 Static Local Attachment">L3 StaticRouting 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 BGP Tunnel">L3 BGP Tunnel</mat-radio-button>
+    <mat-radio-button value="L3 BGP Tunnel">L3 BGP (GRE/IPIP)</mat-radio-button>
     <br>
     <mat-radio-button value="L3 BGP EtherIP">L3 BGP EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP Local Attachment</mat-radio-button>
+    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
     <br>
-    <mat-radio-button value="Etc">Other</mat-radio-button>
+    <mat-radio-button value="Etc">上記以外の方式</mat-radio-button>
   </mat-radio-group>
   <form class="form" *ngIf="connection == 'Etc'">
     <br>
@@ -29,48 +32,45 @@
     </mat-form-field>
   </form>
   <br><br>
-  <h2>2. Installation status of NTT FLETS line at connection location</h2>
+  <h2>2. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</h2>
+  <mat-label>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</mat-label>
+  <br>
+  <mat-label>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</mat-label>
+  <br>
+  <br>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="" required>
-    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">Yes.(I am contract <b>FLETSv6 Option</b> and I can
-      connect to the IPv6 Internet by
-      IPoE.)
+    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">はい（IPoEによりIPv6インターネットへ接続できます）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">Yes.(I am contract <b>FLETSv6
-      Option</b> and I can't connect to the IPv6 Internet by
-      IPoE.)
+    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">はい（IPoEによりIPv6インターネットへ接続できません）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="Yes. not support FLETSv6 Option">Yes.(I haven't contract <b>FLETSv6 Option</b>.)
+    <mat-radio-button value="Yes. not support FLETSv6 Option">はい（フレッツv6オプションの契約がありません）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="No. support ipv6">No.(But, there is a IPv6 address available for the connection.)
+    <mat-radio-button value="No. support ipv6">いいえ（フレッツ以外のIPv6インターネット接続が利用可能です）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="No. not supported ipv6">No.(But, there isn't a IPv6 address available for the
-      connection.)
+    <mat-radio-button value="No. not supported ipv6">いいえ（IPv6インターネット接続は利用できません）
     </mat-radio-button>
   </mat-radio-group>
   <br>
-  <p><b>We use IPv6 Address for EtherIP and tunnel connections.</b></p>
-  <p><b>We recommend use NTT Frets to because of high speed communication.</b></p>
-  <br><br>
-  <h2>3. Termination NOC</h2>
-  <p><b>Please let us know the NOC that terminates this connection.</b></p>
-    <h4>NOC</h4>
+  <br>
+  <h2>3. 接続終端NOCをお選びください</h2>
+  <mat-label>当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください</mat-label>
+  <br>
     <mat-form-field appearance="fill">
       <mat-label>NOC</mat-label>
       <mat-select [(ngModel)]="noc" name="" required>
-        <mat-option value="NOC01">NOC01(Kanagawa Yokohama)</mat-option>
-        <mat-option value="NOC02">NOC02(Chiba Ichikawa)</mat-option>
-        <mat-option value="POP03">POP03(Tokyo NishiShinjyuku)</mat-option>
-        <mat-option value="NOC05">NOC05(Tokyo Shibuya)</mat-option>
-        <mat-option value="NOC51">NOC51(Osaka Kaizuka)</mat-option>
-        <mat-option value="POP52">POP52(Osaka Dojima)</mat-option>
+        <mat-option value="NOC01">NOC01(神奈川県 横浜)</mat-option>
+        <mat-option value="NOC02">NOC02(千葉県　市川)</mat-option>
+        <mat-option value="POP03">POP03(東京都　西新宿)</mat-option>
+        <mat-option value="NOC05">NOC05(東京都　渋谷)</mat-option>
+        <mat-option value="NOC51">NOC51(大阪府　貝塚)</mat-option>
+        <mat-option value="POP52">POP52(大阪府　堂島)</mat-option>
+        <mat-option value="None">どこでも良い</mat-option>
       </mat-select>
     </mat-form-field>
-  <p>NOC List https://www.homenoc.ad.jp/en/tech/backbone/</p>
-  <p>It may be changed due to equipment reasons.</p>
   <br><br>
   <h2>4. 終端先ユーザ</h2>
     <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="">
@@ -80,7 +80,8 @@
       </ng-container>
     </mat-radio-group>
   <br><br>
-  <h2>5. 終端先IPアドレス</h2>
+  <h2>5. トンネル終端IPアドレス</h2>
+  <mat-label>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</mat-label>
   <form>
     <mat-form-field class="small-width">
       <mat-label>IP Address</mat-label>
@@ -88,12 +89,14 @@
     </mat-form-field>
   </form>
   <br><br>
-  <h2>6. Monitoring</h2>
-  <mat-checkbox [(ngModel)]="monitor">Required</mat-checkbox>
+  <h2>6. ネットワーク監視</h2>
+  <mat-label>当団体によるネットワーク監視をご希望の場合はチェックを入れて下さい</mat-label>
   <br>
-  <p>・Even when monitoring, the notification will be best-effort.</p>
-  <p>・Please select "Not required" if frequent disconnection occurs.</p>
-  <br><br>
+  <mat-label>検証用などで頻繁に接続断が発生する予定の場合は当団体からの監視はお断りいたします</mat-label>
+  <br>
+  <br>
+  <mat-checkbox [(ngModel)]="monitor">希望する</mat-checkbox>
+  <br>
   <br>
   <button mat-button (click)="request()">Request</button>
   <br>
