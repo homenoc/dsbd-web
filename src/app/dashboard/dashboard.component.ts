@@ -36,13 +36,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.userService.getLoginUser().then(user => {
       if (user.status) {
         if (user.data.status === 0) {
-          this.registration = true;
+          this.registration = false;
           this.router.navigate(['/dashboard/setting']).then();
         } else if (user.data.status >= 100) {
           this.authService.logOut();
         } else {
+          this.registration = true;
           this.notice = true;
-          console.log(user.data)
+          console.log(user.data);
           if (user.data.group_id !== 0) {
             this.groupService.get().then((group) => {
               console.log(group);
