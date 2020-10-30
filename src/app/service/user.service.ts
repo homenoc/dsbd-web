@@ -47,7 +47,10 @@ export class UserService {
         };
       }
     }).catch(error => {
-      console.log(error);
+      if (error.status === 401) {
+        sessionStorage.clear();
+        this.router.navigate(['/']).then();
+      }
       return {status: false, error};
     });
   }
@@ -71,7 +74,10 @@ export class UserService {
         };
       }
     }).catch(error => {
-      console.log(error);
+      if (error.status === 401) {
+        sessionStorage.clear();
+        this.router.navigate(['/']).then();
+      }
       return {status: false, error};
     });
   }
@@ -119,7 +125,10 @@ export class UserService {
         };
       }
     }).catch(error => {
-      console.log(error);
+      if (error.status === 401) {
+        sessionStorage.clear();
+        this.router.navigate(['/']).then();
+      }
       return {status: false, error};
     });
   }
