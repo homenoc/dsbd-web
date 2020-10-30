@@ -1,11 +1,14 @@
 <mat-card class="card">
   <mat-card-subtitle>
-    <b>Name: {{userInfo.name}}&nbsp;&nbsp;&nbsp;ID: {{userInfo.ID}}&nbsp;&nbsp;&nbsp;GID: {{userInfo.gid}}</b>
+    <b>Name: {{userInfo.name}}&nbsp;&nbsp;&nbsp;ID: {{userInfo.ID}}&nbsp;&nbsp;&nbsp;GID: {{userInfo.group_id}}</b>
   </mat-card-subtitle>
 </mat-card>
-<ng-container *ngIf="lock">
+<ng-container *ngIf="lock && userInfo.group_id != 0">
   <h2>登録情報の設定と変更</h2>
   <mat-label>ご利用者様（ユーザ情報）とご所属（グループ情報）の設定と変更が行えます。</mat-label>
+</ng-container>
+<ng-container *ngIf="userInfo.group_id == 0">
+  <h2>Webシステムご利用前に、下記のユーザ情報の設定欄から記入お願いします。</h2>
 </ng-container>
 <mat-tab-group>
   <mat-tab label="ユーザ情報の設定">
@@ -212,56 +215,58 @@
       </table>
     </div>
   </mat-tab>
-  <mat-tab label="グループ情報の設定">
-    <br>
-    <mat-accordion>
-      <mat-expansion-panel class="card">
-        <mat-expansion-panel-header>
-          <mat-panel-title>ユーザの追加</mat-panel-title>
-        </mat-expansion-panel-header>
-        <form [formGroup]="group">
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
-          </mat-form-field>
-        </form>
-        <br>
-        <button mat-stroked-button color="primary" (click)="addEmail()">Update</button>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <br>
-  </mat-tab>
-  <mat-tab label="グループ情報">
-    <br>
-    <div class="main">
-      <table>
-        <tr>
-          <th colspan="2">グループ情報</th>
-        </tr>
-        <tr>
-          <th>ID</th>
-          <td>{{groupInfo.ID}}</td>
-        </tr>
-        <tr>
-          <th>User Create Date</th>
-          <td>{{groupInfo.CreatedAt}}</td>
-        </tr>
-        <tr>
-          <th>User Update Date</th>
-          <td>{{groupInfo.UpdatedAt}}</td>
-        </tr>
-        <tr>
-          <th>Status</th>
-          <td>{{userInfo.status}}</td>
-        </tr>
-      </table>
-    </div>
-  </mat-tab>
+  <ng-container *ngIf="userInfo.group_id != 0">
+    <mat-tab label="グループ情報の設定">
+      <br>
+      <mat-accordion>
+        <mat-expansion-panel class="card">
+          <mat-expansion-panel-header>
+            <mat-panel-title>ユーザの追加</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="group">
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
+            </mat-form-field>
+          </form>
+          <br>
+          <button mat-stroked-button color="primary" (click)="addEmail()">Update</button>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+    </mat-tab>
+    <mat-tab label="グループ情報">
+      <br>
+      <div class="main">
+        <table>
+          <tr>
+            <th colspan="2">グループ情報</th>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <td>{{groupInfo.ID}}</td>
+          </tr>
+          <tr>
+            <th>User Create Date</th>
+            <td>{{groupInfo.CreatedAt}}</td>
+          </tr>
+          <tr>
+            <th>User Update Date</th>
+            <td>{{groupInfo.UpdatedAt}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{userInfo.status}}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+  </ng-container>
 </mat-tab-group>
