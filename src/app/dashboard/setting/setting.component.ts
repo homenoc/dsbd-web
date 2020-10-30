@@ -132,7 +132,7 @@ export class SettingComponent implements OnInit {
     }
 
     this.userService.create({
-      gid: this.groupInfo.ID,
+      group_id: this.groupInfo.ID,
       user: true, level: 2,
       email: this.group.value.email,
       name: this.group.value.name,
