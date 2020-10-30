@@ -57,12 +57,13 @@ export class SettingComponent implements OnInit {
           this.lock = false;
         }
         this.userInfo = d.data;
-      }
-    });
-    this.groupService.get().then(d => {
-      console.log(d.group);
-      if (d.status) {
-        this.groupInfo = d.group;
+        if (this.userInfo.group_id !== 0) {
+          this.groupService.get().then(group => {
+            if (group.status) {
+              this.groupInfo = d.group;
+            }
+          });
+        }
       }
     });
   }
@@ -133,7 +134,8 @@ export class SettingComponent implements OnInit {
 
     this.userService.create({
       group_id: this.groupInfo.ID,
-      user: true, level: 2,
+      user: true,
+      level: 2,
       email: this.group.value.email,
       name: this.group.value.name,
       name_en: this.group.value.nameEn
