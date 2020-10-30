@@ -39,8 +39,11 @@ export class GroupService {
         };
       }
     }).catch(error => {
-      console.log(error);
-      return {status: false};
+      if (error.status === 401) {
+        sessionStorage.clear();
+        this.router.navigate(['/']).then();
+      }
+      return {status: false, error};
     });
   }
 
@@ -66,7 +69,10 @@ export class GroupService {
         };
       }
     }).catch(error => {
-      console.log(error);
+      if (error.status === 401) {
+        sessionStorage.clear();
+        this.router.navigate(['/']).then();
+      }
       return {status: false, error};
     });
   }
