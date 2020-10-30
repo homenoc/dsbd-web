@@ -1,4 +1,7 @@
 <div class="main">
+  <ng-container *ngIf="lock">
+    <h2>本登録の前に、設定からユーザ情報の設定をしてください。</h2>
+  </ng-container>
   <ng-container *ngIf="type === 1">
     <h1>審査中</h1>
     <br>
