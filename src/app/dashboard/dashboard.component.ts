@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public notice = false;
   public info = false;
   public registration = false;
+  public support = false;
   public gid = 0;
 
 
@@ -41,7 +42,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.authService.logOut();
         } else {
           this.notice = true;
-          if (user.data.gid !== 0) {
+          console.log(user.data)
+          if (user.data.group_id !== 0) {
             this.groupService.get().then((group) => {
               console.log(group);
               if (group.status === true) {
@@ -53,6 +55,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 }
               }
             }).catch();
+          } else {
+            this.support = false;
           }
         }
       } else {

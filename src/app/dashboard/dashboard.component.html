@@ -9,7 +9,7 @@
         <a mat-list-item *ngIf="info" routerLink="info" i18n="@@info">接続情報</a>
         <br>
         <a mat-list-item *ngIf="registration" routerLink="registration" i18n="@@registration">接続申込</a>
-        <a mat-list-item routerLink="support" i18n="@@registration">サポート</a>
+        <a mat-list-item *ngIf="support" routerLink="support" i18n="@@registration">サポート</a>
         <br>
         <br>
         <a mat-list-item routerLink="setting" i18n="@@setting">設定</a>
