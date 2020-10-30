@@ -70,7 +70,9 @@
     <ng-template matStepLabel i18n="@@verify">Verify</ng-template>
     <p i18n="@@registration_mail_comment">以下の内容でアカウント登録を行います。 </p>
     <!--    <p>confirm email address</p>-->
-    <p><b>{{mailFormGroup.get('mail').value}}</b></p>
+    <p><b>Email: {{email.value}}</b></p>
+    <p><b>名前: {{name.value}}</b></p>
+    <p><b>名前(English): {{nameEn.value}}</b></p>
     <div>
       <button mat-button matStepperPrevious i18n="@@prev">Prev</button>
       <button mat-button (click)="registerUser()" i18n="@@register">Register</button>
