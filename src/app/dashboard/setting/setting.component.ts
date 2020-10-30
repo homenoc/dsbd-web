@@ -72,7 +72,7 @@ export class SettingComponent implements OnInit {
       org: this.org.value,
       org_en: this.orgEn.value,
       postcode: this.postcode.value,
-      address: this.org.value,
+      address: this.address.value,
       address_en: this.addressEn.value,
       dept: this.dept.value,
       dept_en: this.deptEn.value,
