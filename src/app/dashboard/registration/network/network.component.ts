@@ -191,7 +191,7 @@ export class NetworkComponent implements OnInit {
       }
     }
 
-    //date定義
+    // date定義
     let date: string;
     if (this.dateEndUnlimited) {
       date = '接続開始日: ' + this.dateStart + '\n接続終了日: 未定';
