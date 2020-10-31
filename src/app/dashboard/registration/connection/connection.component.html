@@ -3,7 +3,7 @@
   <mat-label>各接続方式については https://www.homenoc.ad.jp/type/ のご説明をご確認ください</mat-label>
   <br>
   <br>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="connection" name="" required>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="connection" name="connection" required>
     <mat-radio-button value="L2 EtherIP">L2 EtherIP</mat-radio-button>
     <br>
     <mat-radio-button value="L2 Cross Connect(Campus Connection)">L2 構内接続（当団体のPOPと同一データセンターでの接続）
@@ -38,20 +38,20 @@
   <mat-label>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</mat-label>
   <br>
   <br>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="" required>
-    <mat-radio-button value="Yes. FLETSv6 Option(Internet OK)">はい（IPoEによりIPv6インターネットへ接続できます）
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="ntt" required>
+    <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続可能）">はい（IPoEによりIPv6インターネットへ接続できます）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="Yes. FLETSv6 Option(Not connection of Internet.)">はい（IPoEによりIPv6インターネットへ接続できません）
+    <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続不可）">はい（IPoEによりIPv6インターネットへ接続できません）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="Yes. not support FLETSv6 Option">はい（フレッツv6オプションの契約がありません）
+    <mat-radio-button value="はい（フレッツv6オプションの契約なし）">はい（フレッツv6オプションの契約がありません）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="No. support ipv6">いいえ（フレッツ以外のIPv6インターネット接続が利用可能です）
+    <mat-radio-button value="いいえ（フレッツ以外でインターネットに接続可能）">いいえ（フレッツ以外のIPv6インターネット接続が利用可能です）
     </mat-radio-button>
     <br>
-    <mat-radio-button value="No. not supported ipv6">いいえ（IPv6インターネット接続は利用できません）
+    <mat-radio-button value="いいえ（IPv6でのインターネット接続不可）">いいえ（IPv6インターネット接続は利用できません）
     </mat-radio-button>
   </mat-radio-group>
   <br>
@@ -68,12 +68,12 @@
         <mat-option value="NOC05">NOC05(東京都　渋谷)</mat-option>
         <mat-option value="NOC51">NOC51(大阪府　貝塚)</mat-option>
         <mat-option value="POP52">POP52(大阪府　堂島)</mat-option>
-        <mat-option value="None">どこでも良い</mat-option>
+        <mat-option value="どこでもOK">どこでも良い</mat-option>
       </mat-select>
     </mat-form-field>
   <br><br>
   <h2>4. 終端先ユーザ</h2>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="">
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
       <ng-container *ngFor="let u of user.data">
         <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
         <br>
