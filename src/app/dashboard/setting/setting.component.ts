@@ -60,7 +60,7 @@ export class SettingComponent implements OnInit {
         if (this.userInfo.group_id !== 0) {
           this.groupService.get().then(group => {
             if (group.status) {
-              this.groupInfo = d.group;
+              this.groupInfo = group.group;
             }
           });
         }
