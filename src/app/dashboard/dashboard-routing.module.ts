@@ -11,6 +11,7 @@ import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
+import {BugComponent} from "./bug/bug.component";
 
 
 const routes: Routes = [{
@@ -27,6 +28,7 @@ const routes: Routes = [{
     {path: 'registration/network', component: NetworkComponent},
     {path: 'registration/connection', component: ConnectionComponent},
     {path: 'registration', component: RegistrationComponent},
+    {path: 'bug', component: BugComponent},
   ],
   canActivate: [AuthGuard]
 }];

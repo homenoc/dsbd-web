@@ -33,6 +33,7 @@ import {ConnectionComponent} from './registration/connection/connection.componen
 import {MatSelectModule} from '@angular/material/select';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
+import {BugComponent} from './bug/bug.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import {ChatComponent} from './support/chat/chat.component';
     ConnectionComponent,
     SupportComponent,
     ChatComponent,
+    BugComponent,
   ],
   imports: [
     CommonModule,
