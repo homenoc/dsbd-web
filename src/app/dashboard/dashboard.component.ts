@@ -42,14 +42,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.authService.logOut();
         } else {
           this.registration = true;
-          this.notice = true;
           console.log(user.data);
           if (user.data.group_id !== 0) {
             this.groupService.get().then((group) => {
+              this.support = true;
               console.log(group);
               if (group.status === true) {
                 if (100 <= group.group.status && group.group.status <= 500) {
                   this.info = true;
+                  this.notice = true;
                 }
                 if (2 <= group.group.status && group.group.status < 300) {
                   this.registration = true;
