@@ -1,42 +1,91 @@
 <div class="main">
   <h2>1. 当団体から広報する経路をお選び下さい（BGPの方のみ）</h2>
-  <mat-label>特定のAS-Pathのみなど特殊な経路広報をご希望の場合、その他を選択してサポートまでお問合せください</mat-label>
+  <section>
+    <mat-checkbox [(ngModel)]="routeV4Check">IPv4でBGPの経路広告を希望する</mat-checkbox>
+  </section>
+  <section>
+    <mat-checkbox [(ngModel)]="routeV6Check">IPv6でBGPの経路広告を希望する</mat-checkbox>
+  </section>
   <br>
+  <ng-container *ngIf="routeV4Check">
+    <h3>1.1. IPv4</h3>
+    <mat-label>特定のAS-Pathのみなど特殊な経路広報をご希望の場合、その他を選択してサポートまでお問合せください</mat-label>
+    <br>
+    <br>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="routeV4" name="route_v4" required>
+      <mat-radio-button value="BGP IPv4 FullRoute">BGP IPv4 フルルート</mat-radio-button>
+      <br>
+      <mat-radio-button value="BGP IPv4 DefaultRoute">BGP IPv4 デフォルトルート</mat-radio-button>
+      <br>
+      <mat-radio-button value="Other">その他</mat-radio-button>
+      <br>
+    </mat-radio-group>
+    <form class="form" *ngIf="routeV4 === 'Other'">
+      <br>
+      <mat-form-field class="full-width">
+        <label>
+          <textarea matInput placeholder="Ex. static route other..." [formControl]="routeV4Etc"></textarea>
+        </label>
+      </mat-form-field>
+    </form>
+    <br>
+  </ng-container>
   <br>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="route" name="" required>
-    <mat-radio-button value="BGP IPv4 FullRoute">BGP IPv4 フルルート</mat-radio-button>
+  <ng-container *ngIf="routeV6Check">
+    <h3>1.2. IPv6</h3>
+    <mat-label>特定のAS-Pathのみなど特殊な経路広報をご希望の場合、その他を選択してサポートまでお問合せください</mat-label>
     <br>
-    <mat-radio-button value="BGP IPv6 FullRoute">BGP IPv6 フルルート</mat-radio-button>
     <br>
-    <mat-radio-button value="BGP IPv4 DefaultRoute">BGP IPv4 デフォルトルート</mat-radio-button>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="routeV6" name="route_v6" required>
+      <mat-radio-button value="BGP IPv6 FullRoute">BGP IPv6 フルルート</mat-radio-button>
+      <br>
+      <mat-radio-button value="BGP IPv6 DefaultRoute">BGP IPv6 デフォルトルート</mat-radio-button>
+      <br>
+      <mat-radio-button value="Other">その他</mat-radio-button>
+      <br>
+    </mat-radio-group>
+    <form class="form" *ngIf="routeV6 === 'Other'">
+      <br>
+      <mat-form-field class="full-width">
+        <label>
+          <textarea matInput placeholder="Ex. static route other..." [formControl]="routeV6Etc"></textarea>
+        </label>
+      </mat-form-field>
+    </form>
     <br>
-    <mat-radio-button value="BGP IPv6 DefaultRoute">BGP IPv6 デフォルトルート</mat-radio-button>
-    <br>
-    <mat-radio-button value="Other">その他</mat-radio-button>
-    <br>
-  </mat-radio-group>
-  <form class="form" *ngIf="route === 'Other'">
-    <br>
-    <mat-form-field class="full-width">
-      <label>
-        <textarea matInput placeholder="Ex. static route other..." [formControl]="bgpEtc"></textarea>
-      </label>
-    </mat-form-field>
-  </form>
-  <br><br>
+  </ng-container>
+  <br>
   <h2>2. IPアドレス</h2>
   <section>
     <mat-checkbox [(ngModel)]="pi">PIアドレスの利用を希望する</mat-checkbox>
   </section>
   <br>
-  <p>1セグメントずつ入力してください</p>
   <ng-container *ngIf="pi">
+    <p>1セグメントずつ入力してください</p>
     <mat-form-field class="small-width">
       <mat-label>ASN</mat-label>
       <label>
         <input matInput placeholder="AS59105" [formControl]="asn">
       </label>
     </mat-form-field>
+    <br>
+    <form [formGroup]="jpnicV4">
+      <mat-form-field class="small-width">
+        <mat-label>IPv4</mat-label>
+        <label>
+          <input matInput placeholder="AS59105" formControlName="subnet">
+        </label>
+      </mat-form-field>
+    </form>
+    <br>
+    <form [formGroup]="jpnicV6">
+      <mat-form-field class="small-width">
+        <mat-label>IPv6</mat-label>
+        <label>
+          <input matInput placeholder="AS59105" formControlName="subnet">
+        </label>
+      </mat-form-field>
+    </form>
   </ng-container>
   <br><br>
   <h2>3. 利用終了日</h2>
@@ -44,11 +93,25 @@
   <br>
   <mat-label>利用終了日が決まっていない場合は未定を選択してください</mat-label>
   <br>
-  <form>
-    <mat-form-field class="textarea-form">
-      <textarea matInput rows="10" [formControl]="date" required></textarea>
+  <mat-form-field appearance="fill">
+    <mat-label>接続開始日</mat-label>
+    <input matInput [matDatepicker]="dpStart" (dateChange)="addEventStart($event)">
+    <mat-datepicker-toggle matSuffix [for]="dpStart"></mat-datepicker-toggle>
+    <mat-datepicker #dpStart></mat-datepicker>
+  </mat-form-field>
+  <br>
+  <p>接続終了日は未定の場合はここにチェックしてください。</p>
+  <section>
+    <mat-checkbox [(ngModel)]="dateEndUnlimited">接続終了日が未定</mat-checkbox>
+  </section>
+  <ng-container *ngIf="!dateEndUnlimited">
+    <mat-form-field appearance="fill">
+      <mat-label>接続終了日</mat-label>
+      <input matInput [matDatepicker]="dpEnd" (dateChange)="addEventEnd($event)">
+      <mat-datepicker-toggle matSuffix [for]="dpEnd"></mat-datepicker-toggle>
+      <mat-datepicker #dpEnd></mat-datepicker>
     </mat-form-field>
-  </form>
+  </ng-container>
   <br><br>
   <ng-container *ngIf="!pi">
     <h2>4. Assign IP address and Network Name</h2>
@@ -87,7 +150,7 @@
       </mat-form-field>
     </form>
     <br><br>
-    <h2>2.2. JPNIC Information</h2>
+    <h2>5. JPNIC Information</h2>
     <h3>Japanese</h3>
     <p><b>Please fill out the form in Japanese.</b></p>
     <form class="form" [formGroup]="jpnicJa">
@@ -127,8 +190,14 @@
       </mat-form-field>
     </form>
     <br><br>
-    <h2>2.3. Operations Staff</h2>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="admin" name="">
+    <h2>6,7のOperators StaffとTechnical Staffの項目について</h2>
+    <h4>技術スタッフを増やしたい場合</h4>
+    <p>「設定ー＞グループの情報の設定ー＞ユーザの追加」より可能です。</p>
+    <p>Group Handleをご希望の方は、「設定ー＞グループの情報の設定ー＞グループハンドル用のユーザ追加」より可能です。</p>
+    <p><b>注意: 必ず本人確認メールの認証と追加したユーザの初期登録を済ませてから本ページの登録をお願いします。</b></p>
+    <p><b>初期登録が済んでいない場合は、ユーザ一覧に載らないのでご注意ください。</b></p>
+    <h2>6. Operations Staff</h2>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="admin" name="op_staff">
       <ng-container *ngIf="users !==null">
         <ng-container *ngFor="let u of users.data">
           <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
@@ -137,7 +206,8 @@
       </ng-container>
     </mat-radio-group>
     <br><br>
-    <h2>2.4. Technical Staff</h2>
+    <h2>7. Technical Staff</h2>
+    <br>
     <ng-container *ngIf="users !==null">
       <ng-container *ngFor="let u of users.data">
         <mat-checkbox [(ngModel)]="u.select">{{u.ID}}: {{u.name}}</mat-checkbox>
@@ -145,7 +215,7 @@
       </ng-container>
     </ng-container>
     <br><br>
-    <h2>2.5. IPv4 Network Plan</h2>
+    <h2>8. IPv4 Network Plan</h2>
     <form>
       <mat-form-field class=" textarea-form">
         <textarea matInput rows="30" placeholder="Ex. It makes me feel..." [formControl]="plan" required></textarea>
