@@ -4,6 +4,7 @@ import {AuthService} from '../service/auth.service';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CommonService} from '../service/common.service';
+import {interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +23,20 @@ export class LoginComponent implements OnInit {
   public hide = true;
   public email = new FormControl('', [Validators.required, Validators.email]);
   public password = new FormControl();
+  private updateSubscription: Subscription;
+
 
   ngOnInit(): void {
+    this.getTmpToken();
+    // ユーザの20分ごとに一時Tokenを更新
+    this.updateSubscription = interval(1200000).subscribe(
+      (val) => {
+        this.getTmpToken();
+      });
+  }
+
+  getTmpToken() {
+    sessionStorage.clear();
     sessionStorage.setItem('ClientID', this.commonService.random(30));
     this.http.get(environment.api.url + environment.api.path + '/token/init', {
       headers: new HttpHeaders({
