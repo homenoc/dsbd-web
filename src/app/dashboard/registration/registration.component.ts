@@ -50,6 +50,9 @@ export class RegistrationComponent implements OnInit {
                   if (status === 14 || status === 24 || status === 114 || status === 124) {
                     this.type = 3;
                   }
+                  if (status === 500) {
+                    this.type = 10;
+                  }
                 }
               });
             }
