@@ -4,8 +4,8 @@ import {UserService} from '../../../service/user.service';
 import {Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {NetworkService} from '../../../service/network.service';
-import {JpnicAdminService} from '../../../service/jpnic-admin.service';
-import {JpnicTechService} from '../../../service/jpnic-tech.service';
+import {GroupService} from '../../../service/group.service';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-network',
@@ -15,16 +15,15 @@ import {JpnicTechService} from '../../../service/jpnic-tech.service';
 export class NetworkComponent implements OnInit {
 
   public ip: FormGroup;
-  public route: string;
-  public bgpEtc = new FormControl();
+  public routeV4: string;
+  public routeV4Etc = new FormControl();
+  public routeV6: string;
+  public routeV6Etc = new FormControl();
+  public routeV4Check = false;
+  public routeV6Check = false;
   public pi = false;
   public asn = new FormControl();
-  public date = new FormControl();
   public plan = new FormControl();
-  private dateJa = '要望に答えられない可能性があります。\n（接続終了期限が未定の場合は「未定」と記入してください。）\n\n' +
-    '#接続開始日\n\n\n#接続終了日\n\n\n';
-  private dateEn = 'Sorry, we may not be able to meet your request.\n\n' + '#Scheduled start date for connection\n\n\n' +
-    'Scheduled end date for connection\n\n\n';
   private planJa = '      [Subnet Number1]\n' +
     '      目的: \n\n' +
     '      ----使用IPアドレス----\n' +
@@ -106,25 +105,44 @@ export class NetworkComponent implements OnInit {
   });
   public users = {data: []};
   public admin: any;
-
+  dateStart: string;
+  dateEnd: string;
+  dateEndUnlimited = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private groupService: GroupService,
     private router: Router,
     private commonService: CommonService,
     private networkService: NetworkService,
-    private jpnicAdminService: JpnicAdminService,
-    private jpnicTechService: JpnicTechService
   ) {
   }
 
   ngOnInit(): void {
+    // アクセス制御
+    this.userService.getLoginUser().then(user => {
+      if (user.status && user.data.group_id === 0 && user.data.status === 0) {
+        this.router.navigate(['/dashboard/registration']).then();
+      }
+    });
+    this.groupService.get().then(group => {
+      const status: number = group.group.status;
+      if (group.status && !(status === 2 || status === 11 || status === 21 || status === 111 || status === 121)) {
+        this.router.navigate(['/dashboard/registration']).then();
+      }
+    });
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
       if (response) {
         this.users = response;
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.users.data.length; i++) {
+          if (this.users.data[i].group_handle) {
+            this.users.data[i].name += ' (GroupHandle)';
+          }
+        }
         // this.users = user.data;
         console.log('---response---');
         console.log(this.users);
@@ -136,14 +154,21 @@ export class NetworkComponent implements OnInit {
     {
 
     }
-    this.date.setValue(this.dateJa);
-    this.plan.setValue(this.planEn);
+    this.plan.setValue(this.planJa);
+  }
+
+  addEventStart(event: MatDatepickerInputEvent<Date>) {
+    this.dateStart = event.value.getFullYear() + '/' + (event.value.getMonth() + 1) + '/' + event.value.getDate();
+  }
+
+  addEventEnd(event: MatDatepickerInputEvent<Date>) {
+    this.dateEnd = event.value.getFullYear() + '/' + (event.value.getMonth() + 1) + '/' + event.value.getDate();
   }
 
   request() {
     // TODO: #1 Issue
     console.log(this.users);
-    if (this.route === '' || this.date.value === null) {
+    if (this.routeV4 === '' || this.routeV6 === '') {
       this.commonService.openBar('invalid..', 5000);
       return;
     }
@@ -161,7 +186,17 @@ export class NetworkComponent implements OnInit {
     const tech: any[] = new Array();
 
     for (const u of this.users.data) {
-      tech.push(u.ID);
+      if (u.select) {
+        tech.push(u.ID);
+      }
+    }
+
+    //date定義
+    let date: string;
+    if (this.dateEndUnlimited) {
+      date = '接続開始日: ' + this.dateStart + '\n接続終了日: 未定';
+    } else {
+      date = '接続開始日: ' + this.dateStart + '\n接続終了日: ' + this.dateEnd;
     }
 
     const body = {
@@ -172,14 +207,15 @@ export class NetworkComponent implements OnInit {
       postcode: this.jpnicJa.value.postcode,
       address: this.jpnicJa.value.address,
       address_en: this.jpnicEn.value.address,
-      route: this.route,
+      route_v4: this.routeV4,
+      route_v6: this.routeV6,
       pi: this.pi,
       asn: this.asn.value,
       v4: this.jpnicV4.value.subnet,
       v6: this.jpnicV6.value.subnet,
       v4_name: this.jpnicV4.value.name,
       v6_name: this.jpnicV6.value.name,
-      date: this.date.value,
+      date,
       plan: this.plan.value,
     };
 
