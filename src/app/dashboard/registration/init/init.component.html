@@ -5,72 +5,130 @@
     <mat-checkbox [(ngModel)]="agree">上のリンク先の実験ネットワーク利用規約をお読みになり同意いただける場合はチェックを入れて下さい。</mat-checkbox>
   </section>
   <br>
-  <form class="form">
-    <h2>0. Question</h2>
-    <p><b>Please tell your request and background</b></p>
+  <form class="form" [formGroup]="question">
+    <h2>1. どこで当団体のことを知りましたか？ </h2>
+    <p><b>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</b></p>
     <mat-form-field class="textarea-form">
-      <textarea matInput rows="40" placeholder="Ex. It makes me feel..." [formControl]="question" required></textarea>
+      <textarea matInput rows="4" placeholder="Ex. It makes me feel..." formControlName="question1" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>2. どのような用途で当団体のネットワークに接続しますか？ </h2>
+    <p>例）研究目的、勉強、自宅サーバ用途（商用利用は固くお断りいたします）</p>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" placeholder="Ex. It makes me feel..." formControlName="question2" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>3. アドレスを当団体から割り当てる必要はありますか？ </h2>
+    <p>PIアドレスやAS番号をお持ちの方は、それらをご利用頂くことも可能です。</p>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" placeholder="Ex. It makes me feel..." formControlName="question3" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>4. 貴方が情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。</h2>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" placeholder="Ex. It makes me feel..." formControlName="question3" required></textarea>
     </mat-form-field>
   </form>
   <br>
-  <h2>1. Organization Name</h2>
+  <h2>5. 組織名</h2>
+  <p>個人利用で特に組織名が無い方は「個人」とご記入ください。</p>
   <mat-form-field>
     <input class="full-width" matInput placeholder="Org" type="text" [formControl]="org"/>
   </mat-form-field>
   <br>
-  <h2>管理責任者</h2>
+  <h2>6. 管理責任者</h2>
   <h3>グループの管理者は現在登録しているアカウントになります。</h3>
   <p><b>グループの管理者の権限移譲に関しましては、運営委員の許可必要です。専用フォームでお問い合わせください。</b></p>
   <br>
-  <h2>技術責任者</h2>
-    <h3>技術責任者は各種ユーザ登録が必要となります。</h3>
-    <p><b>メールアドレスを記入いただくことで、各メールアドレスに仮のパスワードと本人確認メールを送信します。</b></p>
-    <p><b>ログインページにて、ログインしていただき各種情報を登録する必要があります。</b></p>
-    <section>
-      <mat-checkbox [(ngModel)]="admin">現在ログインしているユーザを技術管理者にする</mat-checkbox>
-    </section>
-    <form [formGroup]="techUser">
-      <div formArrayName="tech">
-        <div *ngFor="let option of userProcess.controls; let i = index">
-          <mat-form-field>
-            <div [formGroupName]="i">
-              <input class="full-width" matInput placeholder="E-Mail Address" type="text"
-                     formControlName="email"/></div>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <div [formGroupName]="i">
-              <input class="full-width" matInput placeholder="Name(Japanese)" type="text"
-                     formControlName="name"/></div>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <div [formGroupName]="i">
-              <input class="full-width" matInput placeholder="Name(English)" type="text"
-                     formControlName="name_en"/></div>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <button mat-raised-button color="warn" (click)="removeOptionForm(i)">削除</button>
-        </div>
+  <h2>7. 技術責任者</h2>
+  <h3>技術責任者は各種ユーザ登録が必要となります。</h3>
+  <p><b>メールアドレスを記入いただくことで、各メールアドレスに仮のパスワードと本人確認メールを送信します。</b></p>
+  <p><b>ログインページにて、ログインしていただき各種情報を登録する必要があります。</b></p>
+  <section>
+    <mat-checkbox [(ngModel)]="admin">現在ログインしているユーザを技術管理者にする</mat-checkbox>
+  </section>
+  <form [formGroup]="techUser">
+    <div formArrayName="tech">
+      <div *ngFor="let option of userProcess.controls; let i = index">
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="E-Mail Address" type="text"
+                   formControlName="email"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="Name(Japanese)" type="text"
+                   formControlName="name"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <mat-form-field>
+          <div [formGroupName]="i">
+            <input class="full-width" matInput placeholder="Name(English)" type="text"
+                   formControlName="name_en"/></div>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <button mat-raised-button color="warn" (click)="removeOptionForm(i)">削除</button>
       </div>
-      <button mat-raised-button color="primary" (click)="addOptionForm()">追加</button>
-    </form>
-    <br>
-  <h2>4. Usage Bandwidth</h2>
-  <p>Please tell us Bandwidth to be used in this connection.</p>
-  <mat-form-field class="textarea-form">
-            <textarea matInput rows="25" placeholder="Ex. It makes me feel..." [formControl]="bandwidth"
-                      required></textarea>
-  </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="addOptionForm()">追加</button>
+  </form>
   <br>
-  <h2>5. Contract documents</h2>
-  <p><b>Please let us know how to deliver the contract.</b></p>
-  <p>※ This document is based on the Telecommunications Business Act of Japan.</p>
-  <p>Telecommunications carriers in japan have an obligation to issue contract documents.</p>
+  <h2>8. ご利用帯域について教えてください。</h2>
+  <p>本接続で利用する帯域をお知らせください。</p>
+  <p>また、特定のASに対する大量通信がある場合は詳細をお知らせください。</p>
+  <p>利用帯域が分からない場合は申し込み時点での想定をご記入ください。</p>
+  <p>設備都合などによりご希望の帯域を提供できない場合がございます。 </p>
+  <br>
+  <form [formGroup]="bandwidth">
+    <mat-form-field appearance="fill">
+      <mat-label>平均上り利用帯域</mat-label>
+      <input matInput type="number" placeholder="Ex. 10" formControlName="aveUpstream" min="0">
+      <span matSuffix>Kbps</span>
+      <mat-error *ngIf="bandwidth.value.aveUpstream.invalid">Min: 10Kbps</mat-error>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field appearance="fill">
+      <mat-label>最大上り利用帯域</mat-label>
+      <input matInput type="number" placeholder="Ex. 100" formControlName="maxUpstream" min="0">
+      <span matSuffix>Kbps</span>
+      <mat-error *ngIf="bandwidth.value.maxUpstream.invalid">Min: 100Kbps</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>平均下り利用帯域</mat-label>
+      <input matInput type="number" placeholder="Ex. 10" formControlName="aveDownstream" min="0">
+      <span matSuffix>Kbps</span>
+      <mat-error *ngIf="bandwidth.value.aveDownstream.invalid">Min: 10Kbps</mat-error>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field appearance="fill">
+      <mat-label>最大下り利用帯域</mat-label>
+      <input matInput type="number" placeholder="Ex. 100" formControlName="maxDownstream" min="0">
+      <span matSuffix>Kbps</span>
+      <mat-error *ngIf="bandwidth.value.maxDownstream.invalid">Min: 100Kbps</mat-error>
+    </mat-form-field>
+    <br>
+  </form>
+  <mat-checkbox [(ngModel)]="bandwidthAs">特定のASに対する大量通信があるのか？</mat-checkbox>
+  <form [formGroup]="bandwidth">
+    <ng-container *ngIf="bandwidthAs">
+      <mat-form-field>
+        <input class="full-width" matInput placeholder="AS番号" type="text" formControlName="asn"/>
+      </mat-form-field>
+    </ng-container>
+    <br>
+    <p><b>※ 大量通信とは平均20Mbps程度の通信が常時発生する状況を指します</b></p>
+    <br>
+  </form>
+  <br>
+  <h2>9. 契約書</h2>
+  <p><b>当団体は電気通信事業者として届出を行っておりますため、利用開始時に電気通信事業法 第26条2（書面の交付義務）に基づき、</b></p>
+  <p><b>ご利用内容をお知らせいたしますので、ご希望の交付方法をお知らせください。</b></p>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="contract">
-    <mat-radio-button class="radio" value="E-Mail">E-Mail</mat-radio-button>
+    <mat-radio-button class="radio" value="E-Mail">電子交付を希望する</mat-radio-button>
     &nbsp;&nbsp;&nbsp;
-    <mat-radio-button class="radio" value="Air Mail">Air Mail (Paper contract)</mat-radio-button>
+    <mat-radio-button class="radio" value="Air Mail">書面の郵送を希望する</mat-radio-button>
   </mat-radio-group>
   <br>
   <br>
