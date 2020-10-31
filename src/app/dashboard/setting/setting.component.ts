@@ -126,7 +126,7 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  addEmail(): void {
+  addGroupUser(groupHandle: boolean): void {
     if (this.group.value.email === '' || this.group.value.name === '' || this.group.value.nameEn === '') {
       this.commonService.openBar('valid', 5000);
       return;
@@ -138,7 +138,8 @@ export class SettingComponent implements OnInit {
       level: 2,
       email: this.group.value.email,
       name: this.group.value.name,
-      name_en: this.group.value.nameEn
+      name_en: this.group.value.nameEn,
+      group_handle: groupHandle
     }, 1).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
@@ -149,6 +150,5 @@ export class SettingComponent implements OnInit {
         return;
       }
     });
-
   }
 }
