@@ -4,6 +4,7 @@ import {CommonService} from '../../../service/common.service';
 import {ConnectionService} from '../../../service/connection.service';
 import {UserService} from '../../../service/user.service';
 import {Router} from '@angular/router';
+import {GroupService} from '../../../service/group.service';
 
 @Component({
   selector: 'app-connection',
@@ -26,11 +27,24 @@ export class ConnectionComponent implements OnInit {
     private commonService: CommonService,
     private connectionService: ConnectionService,
     private userService: UserService,
+    private groupService: GroupService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    // アクセス制御
+    this.userService.getLoginUser().then(user => {
+      if (user.status && user.data.group_id === 0 && user.data.status === 0) {
+        this.router.navigate(['/dashboard/registration']).then();
+      }
+    });
+    this.groupService.get().then(group => {
+      const status: number = group.group.status;
+      if (group.status && !(status === 13 || status === 23 || status === 113 || status === 123)) {
+        this.router.navigate(['/dashboard/registration']).then();
+      }
+    });
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
@@ -70,7 +84,7 @@ export class ConnectionComponent implements OnInit {
     this.connectionService.add(body).then(response => {
       console.log('---response---');
       console.log(response.status);
-      if (response.result) {
+      if (response.status) {
         this.commonService.openBar('申請完了', 5000);
         this.router.navigate(['/dashboard']).then();
       } else {
@@ -79,8 +93,5 @@ export class ConnectionComponent implements OnInit {
         return;
       }
     });
-
-
   }
-
 }
