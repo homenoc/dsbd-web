@@ -217,59 +217,85 @@
     </div>
   </mat-tab>
   <ng-container *ngIf="userInfo.group_id != 0">
-    <ng-container *ngIf="3 < groupInfo.status &&groupInfo.status < 1000">
-      <mat-tab label="グループ情報の設定">
-        <br>
-        <mat-accordion>
-          <mat-expansion-panel class="card">
-            <mat-expansion-panel-header>
-              <mat-panel-title>ユーザの追加</mat-panel-title>
-            </mat-expansion-panel-header>
-            <form [formGroup]="group">
-              <mat-form-field>
-                <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
-              </mat-form-field>
-              &nbsp;&nbsp;&nbsp;
-              <mat-form-field>
-                <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
-              </mat-form-field>
-              &nbsp;&nbsp;&nbsp;
-              <mat-form-field>
-                <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
-              </mat-form-field>
-            </form>
-            <br>
-            <button mat-stroked-button color="primary" (click)="addEmail()">Update</button>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <br>
-      </mat-tab>
-      <mat-tab label="グループ情報">
-        <br>
-        <div class="main">
-          <table>
-            <tr>
-              <th colspan="2">グループ情報</th>
-            </tr>
-            <tr>
-              <th>ID</th>
-              <td>{{groupInfo.ID}}</td>
-            </tr>
-            <tr>
-              <th>User Create Date</th>
-              <td>{{groupInfo.CreatedAt}}</td>
-            </tr>
-            <tr>
-              <th>User Update Date</th>
-              <td>{{groupInfo.UpdatedAt}}</td>
-            </tr>
-            <tr>
-              <th>Status</th>
-              <td>{{userInfo.status}}</td>
-            </tr>
-          </table>
-        </div>
-      </mat-tab>
-    </ng-container>
+    <mat-tab label="グループ情報の設定">
+      <br>
+      <mat-accordion>
+        <mat-expansion-panel class="card">
+          <mat-expansion-panel-header>
+            <mat-panel-title>ユーザの追加</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="group">
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
+            </mat-form-field>
+          </form>
+          <br>
+          <button mat-stroked-button color="primary" (click)="addGroupUser(false)">Update</button>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <mat-accordion>
+        <mat-expansion-panel class="card">
+          <mat-expansion-panel-header>
+            <mat-panel-title>グループハンドル用のユーザ追加</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>グループハンドル用のユーザでは、システム上一つのユーザアカウントとみなしているため、</p>
+          <p>すでに登録されているユーザと同一のメールアドレスは登録できないので注意してください。</p>
+          <form [formGroup]="group">
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="グループ名" type="text" formControlName="name"/>
+            </mat-form-field>
+            &nbsp;&nbsp;&nbsp;
+            <mat-form-field>
+              <input class="full-width" matInput placeholder="グループ名(English)" type="text" formControlName="nameEn"/>
+            </mat-form-field>
+          </form>
+          <br>
+          <button mat-stroked-button color="primary" (click)="addGroupUser(true)">Update</button>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <ng-container *ngIf="3 < groupInfo.status &&groupInfo.status < 1000">
+      </ng-container>
+      <br>
+    </mat-tab>
+    <mat-tab label="グループ情報">
+      <br>
+      <div class="main">
+        <table>
+          <tr>
+            <th colspan="2">グループ情報</th>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <td>{{groupInfo.ID}}</td>
+          </tr>
+          <tr>
+            <th>User Create Date</th>
+            <td>{{groupInfo.CreatedAt}}</td>
+          </tr>
+          <tr>
+            <th>User Update Date</th>
+            <td>{{groupInfo.UpdatedAt}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{userInfo.status}}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
   </ng-container>
 </mat-tab-group>
