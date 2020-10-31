@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../service/user.service';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CommonService} from '../../../service/common.service';
 import {GroupService} from '../../../service/group.service';
 import {Router} from '@angular/router';
@@ -23,39 +23,34 @@ export class InitComponent implements OnInit {
 
   public agree = false;
   public admin = false;
-  public question = new FormControl();
+  public question = new FormGroup({
+    question1: new FormControl(),
+    question2: new FormControl(),
+    question3: new FormControl(),
+    question4: new FormControl()
+  });
+  public bandwidthAs = false;
+  public bandwidth = new FormGroup({
+    aveUpstream: new FormControl(10, Validators.min(0)),
+    maxUpstream: new FormControl(100, Validators.min(0)),
+    aveDownstream: new FormControl(10, Validators.min(0)),
+    maxDownstream: new FormControl(100, Validators.min(0)),
+    asn: new FormControl()
+  });
   public org = new FormControl();
   public techUser: FormGroup;
-  public bandwidth = new FormControl();
   public contract;
-  private questionTemplateEn = '1．What is the purpose of using our network service ? \n' +
-    'Limited to research, learning and personal use. Commercial use is prohibited. \n\n\n\n\n\n\n\n\n\n\n' +
-    '2. Do you want to allocate IP addresses ?\n' +
-    'If you have public IPs and AS numbers assigned by the RIR, it is possible to use them within our network ' +
-    'connection. \n\n\n\n\n\n\n\n\n\n\n' +
-    '3. What is the expected traffic volume for this connection ? \n\n\n\n\n\n\n\n\n\n\n' +
-    '4. If you have a website or SNS about network technology, please let us know.\n' +
-    'We will use this information as a reference when assessing whether to permit use.\n\n\n\n\n\n\n\n\n\n\n';
-  private questionTemplateJa = '0. どこで当団体のことを知りましたか？ \n' +
-    '当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。 \n\n\n\n\n\n\n\n\n\n\n' +
-    '1．どのような用途で当団体のネットワークに接続しますか？ \n' +
-    '例）研究目的、勉強、個人用途.（商用利用は禁止です。） \n\n\n\n\n\n\n\n\n\n\n' +
-    '2. IPアドレスを当団体から割り当てる必要はありますか？　\n\n\n\n\n\n\n\n\n\n\n' +
-    '3. どの程度トラフィックを出しますか？ \n\n\n\n\n\n\n\n\n\n\n' +
-    '4. 技術の情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。\n\n\n\n\n\n\n\n\n\n\n';
-  private bandwidthTemplateJa = ``;
-  private bandwidthTemplateEn = `Average upstream bandwidth\nex) Upstream bandwidth: 1000 Kbps\n\nUpstream bandwidth:\n\n` +
-    'Maximum upstream bandwidth\nex) Maximum bandwidth: 5000 Kbps\n\nMaximum bandwidth:\n\n' +
-    'Average downlink bandwidth\nex) Upstream bandwidth: 1000 Kbps\n\nUpstream bandwidth:\n\n' +
-    'Maximum downlink bandwidth\nex) Maximum bandwidth: 5000 Kbps\n\nMaximum bandwidth:\n\n' +
-    'Do you have transfer of a large amount communications to a particular AS ? (Normally 10Mbps and above.)\n\n' +
-    'yes or no\n\n';
 
   ngOnInit(): void {
-    this.question.setValue(this.questionTemplateJa);
-    this.bandwidth.setValue(this.bandwidthTemplateEn);
     this.techUser = this.formBuilder.group({
       tech: this.formBuilder.array([])
+    });
+    // アクセス制御
+    this.userService.getLoginUser().then(user => {
+      if (user.status && user.data.group_id !== 0 && user.data.status === 0) {
+        this.commonService.openBar('すでに登録済みです。', 5000);
+        this.router.navigate(['/dashboard/registration']).then();
+      }
     });
   }
 
@@ -80,6 +75,27 @@ export class InitComponent implements OnInit {
   }
 
   request() {
+    const question1 = '1. どこで当団体のことを知りましたか？\n';
+    const question2 = '\n\n2. どのような用途で当団体のネットワークに接続しますか？\n';
+    const question3 = '\n\n3. アドレスを当団体から割り当てる必要はありますか？\n';
+    const question4 = '\n\n4. 貴方が情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。';
+
+    const bandwidth1 = '平均上り利用帯域: ';
+    const bandwidth2 = '\n最大上り利用帯域: ';
+    const bandwidth3 = '\n平均下り利用帯域: ';
+    const bandwidth4 = '\n最大下り利用帯域: ';
+    const bandwidth5 = '\n特定のASに対する大量通信があるのか？\n';
+
+    let bandwidth = '';
+    if (this.bandwidthAs) {
+      bandwidth = bandwidth1 + this.bandwidth.value.aveUpstream + bandwidth2 + this.bandwidth.value.maxUpstream
+        + bandwidth3 + this.bandwidth.value.aveDownstream + bandwidth4 + this.bandwidth.value.maxDownstream
+        + bandwidth5 + this.bandwidth.value.asn;
+    } else {
+      bandwidth = bandwidth1 + this.bandwidth.value.aveUpstream + bandwidth2 + this.bandwidth.value.maxUpstream
+        + bandwidth3 + this.bandwidth.value.aveDownstream + bandwidth4 + this.bandwidth.value.maxDownstream;
+    }
+
     let groupID = 0;
     // check
     for (const t of this.techUser.value.tech) {
@@ -97,9 +113,10 @@ export class InitComponent implements OnInit {
     // main
     this.groupService.register({
       Agree: this.agree,
-      Question: this.question.value,
+      Question: question1 + this.question.value.question1 + question2 + this.question.value.question2 +
+        question3 + this.question.value.question3 + question4 + this.question.value.question4,
       Org: this.org.value,
-      Bandwidth: this.bandwidth.value,
+      Bandwidth: bandwidth,
       Contract: this.contract
     }).then(d => {
       if (!d.status) {
@@ -124,11 +141,11 @@ export class InitComponent implements OnInit {
       }
 
       this.userService.getLoginUser().then((doc) => {
-        groupID = doc.data.gid;
+        groupID = doc.data.group_id;
         for (const t of this.techUser.value.tech) {
           console.log('groupID:' + groupID);
           this.userService.create({
-            gid: groupID,
+            group_id: groupID,
             user: true,
             level: 2,
             email: t.email,
