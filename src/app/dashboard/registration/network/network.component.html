@@ -24,7 +24,7 @@
       <br>
       <mat-form-field class="full-width">
         <label>
-          <textarea matInput placeholder="Ex. static route other..." [formControl]="routeV4Etc"></textarea>
+          <textarea matInput placeholder="こちらにご記入ください" [formControl]="routeV4Etc"></textarea>
         </label>
       </mat-form-field>
     </form>
@@ -48,7 +48,7 @@
       <br>
       <mat-form-field class="full-width">
         <label>
-          <textarea matInput placeholder="Ex. static route other..." [formControl]="routeV6Etc"></textarea>
+          <textarea matInput placeholder="こちらにご記入ください" [formControl]="routeV6Etc"></textarea>
         </label>
       </mat-form-field>
     </form>
@@ -61,7 +61,7 @@
   </section>
   <br>
   <ng-container *ngIf="pi">
-    <p>1セグメントずつ入力してください</p>
+    <p>複数をお持ちの場合はコロンで区切って1セグメントずつ入力してください</p>
     <mat-form-field class="small-width">
       <mat-label>ASN</mat-label>
       <label>
@@ -73,16 +73,15 @@
       <mat-form-field class="small-width">
         <mat-label>IPv4</mat-label>
         <label>
-          <input matInput placeholder="AS59105" formControlName="subnet">
+          <input matInput placeholder="192.0.2.0/24" formControlName="subnet">
         </label>
       </mat-form-field>
     </form>
-    <br>
     <form [formGroup]="jpnicV6">
       <mat-form-field class="small-width">
         <mat-label>IPv6</mat-label>
         <label>
-          <input matInput placeholder="AS59105" formControlName="subnet">
+          <input matInput placeholder="2001:db8::/32" formControlName="subnet">
         </label>
       </mat-form-field>
     </form>
@@ -114,12 +113,12 @@
   </ng-container>
   <br><br>
   <ng-container *ngIf="!pi">
-    <h2>4. Assign IP address and Network Name</h2>
-    <mat-checkbox [(ngModel)]="checkV4">Hope to assign IPv4 address</mat-checkbox>
+    <h2>4. 割り当てを希望するIPアドレスをお知らせください</h2>
+    <p>ネットワーク名は半角英数字とハイフンで12文字以内で入力してください</p>
+    <mat-checkbox [(ngModel)]="checkV4">IPv4アドレスのアサインを希望する</mat-checkbox>
     <form *ngIf="checkV4" [formGroup]="jpnicV4">
-      <br>
       <mat-form-field class="small-width">
-        <mat-label>IPv4 Network Name</mat-label>
+        <mat-label>IPv4ネットワーク名</mat-label>
         <label>
           <input matInput placeholder="Ex. HOMENOCV4" formControlName="name">
         </label>
@@ -133,10 +132,10 @@
       </mat-form-field>
     </form>
     <br>
-    <mat-checkbox [(ngModel)]="checkV6">Hope to assign IPv6 address</mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkV6">IPv6アドレスのアサインを希望する</mat-checkbox>
     <form *ngIf="checkV6" [formGroup]="jpnicV6">
       <mat-form-field class="small-width">
-        <mat-label>IPv6 Network Name</mat-label>
+        <mat-label>IPv6ネットワーク名</mat-label>
         <label>
           <input matInput placeholder="Ex. HOMENOCV6" formControlName="name">
         </label>
@@ -150,31 +149,31 @@
       </mat-form-field>
     </form>
     <br><br>
-    <h2>5. JPNIC Information</h2>
-    <h3>Japanese</h3>
-    <p><b>Please fill out the form in Japanese.</b></p>
+    <h2>5. JPNICへ登録する情報についてお知らせください</h2>
+    <h3>日本語</h3>
+    <p><b>日本語で入力してください</b></p>
     <form class="form" [formGroup]="jpnicJa">
       <mat-form-field class="large-width">
-        <mat-label>Organization Name(Japanese)</mat-label>
+        <mat-label>組織名(日本語)</mat-label>
         <label>
           <textarea matInput placeholder="Org" formControlName="org" required></textarea>
         </label>
       </mat-form-field>
       <mat-form-field class="large-width">
-        <mat-label>Organization Postcode(Japanese)</mat-label>
+        <mat-label>郵便番号</mat-label>
         <label>
           <textarea matInput placeholder="Postcode" formControlName="postcode" required></textarea>
         </label>
       </mat-form-field>
       <mat-form-field class="large-width">
-        <mat-label>Organization Address(Japanese)</mat-label>
+        <mat-label>住所(日本語)</mat-label>
         <label>
           <textarea matInput placeholder="Address" formControlName="address" required></textarea>
         </label>
       </mat-form-field>
     </form>
     <h3>English</h3>
-    <p><b>Please fill out the form in English.</b></p>
+    <p><b>英語で入力してください</b></p>
     <form class="form" [formGroup]="jpnicEn">
       <mat-form-field class="large-width">
         <mat-label>Organization Name(English)</mat-label>
@@ -190,13 +189,8 @@
       </mat-form-field>
     </form>
     <br><br>
-    <h2>6,7のOperators StaffとTechnical Staffの項目について</h2>
-    <h4>技術スタッフを増やしたい場合</h4>
-    <p>「設定ー＞グループの情報の設定ー＞ユーザの追加」より可能です。</p>
-    <p>Group Handleをご希望の方は、「設定ー＞グループの情報の設定ー＞グループハンドル用のユーザ追加」より可能です。</p>
-    <p><b>注意: 必ず本人確認メールの認証と追加したユーザの初期登録を済ませてから本ページの登録をお願いします。</b></p>
-    <p><b>初期登録が済んでいない場合は、ユーザ一覧に載らないのでご注意ください。</b></p>
-    <h2>6. Operations Staff</h2>
+    <h2>6. 管理責任者</h2>
+    <p>割り当てるIPアドレスの管理責任者をお選びください</p>
     <mat-radio-group aria-label="Select an option" [(ngModel)]="admin" name="op_staff">
       <ng-container *ngIf="users !==null">
         <ng-container *ngFor="let u of users.data">
@@ -205,27 +199,36 @@
         </ng-container>
       </ng-container>
     </mat-radio-group>
-    <br><br>
-    <h2>7. Technical Staff</h2>
     <br>
+    <h2>7. 技術連絡担当者</h2>
+    <p>割り当てるIPアドレスの技術連絡担当者をお選びください</p>
     <ng-container *ngIf="users !==null">
       <ng-container *ngFor="let u of users.data">
         <mat-checkbox [(ngModel)]="u.select">{{u.ID}}: {{u.name}}</mat-checkbox>
         <br>
       </ng-container>
     </ng-container>
-    <br><br>
-    <h2>8. IPv4 Network Plan</h2>
+    <br>
+    <h2>6,7項の管理責任者と技術連絡担当者の項目について</h2>
+    <p>技術スタッフを増やしたい場合は、「設定ー＞グループの情報の設定ー＞ユーザの追加」より可能です。
+      <br>
+      Group Handleをご希望の方は、「設定ー＞グループの情報の設定ー＞グループハンドル用のユーザ追加」より可能です。</p>
+    <p>必ず本人確認メールの認証と追加したユーザの初期登録を済ませてから本ページの登録をお願いします。
+      <br>
+      初期登録が済んでいない場合は、ユーザ一覧に表示されないのでご注意ください。</p>
+    <br>
+    <h2>8. IPv4ネットワークプラン</h2>
+    <p>IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。
+    <br>
+    最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。
+      <br>
+      以下のフォームにIPアドレスの利用計画をご記入ください。</p>
     <form>
       <mat-form-field class=" textarea-form">
-        <textarea matInput rows="30" placeholder="Ex. It makes me feel..." [formControl]="plan" required></textarea>
+        <textarea matInput rows="30" [formControl]="plan" required></textarea>
       </mat-form-field>
     </form>
-    <br><br>
+    <br>
   </ng-container>
-  <br>
   <button mat-button (click)="request()">Request</button>
-  <br>
-  <br>
-  <br>
 </div>
