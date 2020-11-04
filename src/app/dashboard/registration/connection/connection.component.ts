@@ -72,7 +72,8 @@ export class ConnectionComponent implements OnInit {
       return;
     }
 
-    if (this.connection === 'L2 構内接続' || this.connection === 'L3 構内接続') {
+    if (this.connection === 'L2 構内接続' || this.connection === 'L3 StaticRouting 構内接続' ||
+      this.connection === 'L3 BGP 構内接続') {
       this.ntt = '構内接続のため必要なし';
       this.termIP.setValue('構内接続のため必要なし');
     }

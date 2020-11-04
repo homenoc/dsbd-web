@@ -37,13 +37,13 @@
     <br>
     <mat-radio-button value="L3 Static EtherIP">L3 StaticRouting EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 構内接続">L3 StaticRouting 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
+    <mat-radio-button value="L3 StaticRouting 構内接続">L3 StaticRouting 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
     <br>
     <mat-radio-button value="L3 BGP (GRE/IPIP)">L3 BGP (GRE/IPIP)</mat-radio-button>
     <br>
     <mat-radio-button value="L3 BGP EtherIP">L3 BGP EtherIP</mat-radio-button>
     <br>
-    <mat-radio-button value="L3 BGP Local Attachment">L3 BGP 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
+    <mat-radio-button value="L3 BGP 構内接続">L3 BGP 構内接続（当団体のPOPと同一データセンターでの接続）</mat-radio-button>
     <br>
     <mat-radio-button value="Etc">上記以外の方式</mat-radio-button>
   </mat-radio-group>
@@ -56,7 +56,8 @@
     </mat-form-field>
   </form>
   <br><br>
-  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 構内接続')">
+  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 StaticRouting 構内接続'&&
+   this.connection != 'L3 BGP 構内接続');">
     <h2>4. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</h2>
     <mat-label>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</mat-label>
     <br>
@@ -82,7 +83,8 @@
     <br>
     <br>
   </ng-container>
-  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 構内接続')">
+  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 StaticRouting 構内接続'&&
+   this.connection != 'L3 BGP 構内接続');">
     <h2>5. トンネル終端IPアドレス</h2>
     <mat-label>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</mat-label>
     <form>
@@ -93,7 +95,8 @@
     </form>
     <br><br>
   </ng-container>
-  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 構内接続');else hide">
+  <ng-container *ngIf="(this.connection != 'L2 構内接続' && this.connection != 'L3 StaticRouting 構内接続'&&
+   this.connection != 'L3 BGP 構内接続');else hide">
     <h2>6. ネットワーク監視</h2>
   </ng-container>
   <ng-template #hide>
