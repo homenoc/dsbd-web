@@ -33,7 +33,7 @@
   </form>
   <br><br>
   <h2>2. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</h2>
-  <mat-label>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</mat-label>
+  <mat-label>接続方式に構内接続をご希望の方は「構内接続はこちら」という項目を選んでください。</mat-label>
   <br>
   <mat-label>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</mat-label>
   <br>
@@ -53,32 +53,34 @@
     <br>
     <mat-radio-button value="いいえ（IPv6でのインターネット接続不可）">いいえ（IPv6インターネット接続は利用できません）
     </mat-radio-button>
+    <br>
+    <mat-radio-button value="構内接続">構内接続の方はこちら</mat-radio-button>
   </mat-radio-group>
   <br>
   <br>
   <h2>3. 接続終端NOCをお選びください</h2>
   <mat-label>当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください</mat-label>
   <br>
-    <mat-form-field appearance="fill">
-      <mat-label>NOC</mat-label>
-      <mat-select [(ngModel)]="noc" name="" required>
-        <mat-option value="NOC01">NOC01(神奈川県 横浜)</mat-option>
-        <mat-option value="NOC02">NOC02(千葉県　市川)</mat-option>
-        <mat-option value="POP03">POP03(東京都　西新宿)</mat-option>
-        <mat-option value="NOC05">NOC05(東京都　渋谷)</mat-option>
-        <mat-option value="NOC51">NOC51(大阪府　貝塚)</mat-option>
-        <mat-option value="POP52">POP52(大阪府　堂島)</mat-option>
-        <mat-option value="どこでもOK">どこでも良い</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>NOC</mat-label>
+    <mat-select [(ngModel)]="noc" name="" required>
+      <mat-option value="NOC01">NOC01(神奈川県 横浜)</mat-option>
+      <mat-option value="NOC02">NOC02(千葉県　市川)</mat-option>
+      <mat-option value="POP03">POP03(東京都　西新宿)</mat-option>
+      <mat-option value="NOC05">NOC05(東京都　渋谷)</mat-option>
+      <mat-option value="NOC51">NOC51(大阪府　貝塚)</mat-option>
+      <mat-option value="POP52">POP52(大阪府　堂島)</mat-option>
+      <mat-option value="どこでもOK">どこでも良い</mat-option>
+    </mat-select>
+  </mat-form-field>
   <br><br>
   <h2>4. 終端先ユーザ</h2>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
-      <ng-container *ngFor="let u of user.data">
-        <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
-        <br>
-      </ng-container>
-    </mat-radio-group>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
+    <ng-container *ngFor="let u of user.data">
+      <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
+      <br>
+    </ng-container>
+  </mat-radio-group>
   <br><br>
   <h2>5. トンネル終端IPアドレス</h2>
   <mat-label>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</mat-label>
