@@ -72,6 +72,11 @@ export class ConnectionComponent implements OnInit {
       return;
     }
 
+    if (this.connection === 'L2 構内接続' || this.connection === 'L3 構内接続') {
+      this.ntt = '構内接続のため必要なし';
+      this.termIP.setValue('構内接続のため必要なし');
+    }
+
     const body = {
       user_id: parseInt(this.termUser, 10),
       service: this.connection,
