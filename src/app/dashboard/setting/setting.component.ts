@@ -86,6 +86,7 @@ export class SettingComponent implements OnInit {
     this.userService.update(0, body).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
