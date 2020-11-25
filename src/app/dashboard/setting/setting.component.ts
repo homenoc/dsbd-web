@@ -24,6 +24,7 @@ export class SettingComponent implements OnInit {
 
   public hide = true;
   public email = new FormControl('', [Validators.required, Validators.email]);
+  public emailVerify = new FormControl('', [Validators.required, Validators.email]);
   public password = new FormControl();
   public passwordVerify = new FormControl();
   public org = new FormControl();
@@ -95,6 +96,11 @@ export class SettingComponent implements OnInit {
   }
 
   changeMail(): void {
+    if (this.email.value !== this.emailVerify.value) {
+      this.commonService.openBar('メールアドレスが一致しません', 5000);
+      return;
+    }
+
     const body = {
       email: this.email.value
     };
