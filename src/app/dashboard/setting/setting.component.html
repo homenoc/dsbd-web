@@ -25,6 +25,10 @@
               <mat-label>Email address</mat-label>
               <input matInput [type]="hide ? 'email' : 'text'" [formControl]="email">
             </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Email address(確認用)</mat-label>
+              <input matInput [type]="hide ? 'email' : 'text'" [formControl]="emailVerify">
+            </mat-form-field>
             <br>
             <button mat-stroked-button color="primary" (click)="changeMail()">Update</button>
           </mat-expansion-panel>
