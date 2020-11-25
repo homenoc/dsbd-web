@@ -96,6 +96,11 @@ export class SettingComponent implements OnInit {
   }
 
   changeMail(): void {
+    if (this.email.value === '' || this.emailVerify.value === '') {
+      this.commonService.openBar('データがありません。', 5000);
+      return;
+    }
+
     if (this.email.value !== this.emailVerify.value) {
       this.commonService.openBar('メールアドレスが一致しません', 5000);
       return;
