@@ -28,6 +28,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.supportService.chatMessage = null;
     this.ticketID = +this.route.snapshot.paramMap.get('id');
     this.supportService.openWebSocket(this.ticketID);
     this.userService.getGroup().then(responseUser => {
@@ -63,6 +64,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public getName(id): string {
+    if (id === 0) {
+      return '運営';
+    }
+
     for (const u of this.user) {
       if (u.ID === id) {
         return u.name;
