@@ -3,15 +3,17 @@
   <h1>Chat</h1>
   <br>
   <ng-container *ngFor="let d of chat">
-    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}): {{d.data}}</p>
+    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}):</p>
+    <p>{{d.data}}</p>
   </ng-container>
   <ng-container *ngFor="let d of this.supportService.chatMessage">
-    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}):  {{d.message}}</p>
+    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}):</p>
+    <p>{{d.message}}</p>
   </ng-container>
   <form>
     <mat-form-field class="large-width">
       <mat-label>Comment</mat-label>
-      <input matInput placeholder="" [formControl]="comment" name="">
+      <textarea matInput rows="3" placeholder="" [formControl]="comment" name=""></textarea>
     </mat-form-field>
   </form>
   <br>
