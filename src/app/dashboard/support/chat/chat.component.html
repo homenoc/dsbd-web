@@ -1,15 +1,41 @@
+<div class="talk">
+  <div class="left">
+    <!--  Issue #37-->
+    <br>
+    <h1>Chat</h1>
+    <br>
+    <ng-container *ngFor="let d of chat">
+      <ng-container *ngIf="d.admin">
+        <div class="talk_right">
+          <p>({{d.CreatedAt}}):<br>------------------------------------<br>{{d.data}}</p>
+        </div>
+        <br>
+      </ng-container>
+      <ng-container *ngIf="!d.admin">
+        <div class="talk_left">
+          <p>{{this.getName(d.user_id)}} ({{d.CreatedAt}}):<br>------------------------------------<br>{{d.data}}</p>
+        </div>
+        <br>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngFor="let d of this.supportService.chatMessage">
+      <ng-container *ngIf="d.admin">
+        <div class="talk_right">
+          <p>({{d.CreatedAt}}):<br>------------------------------------<br>{{d.data}}</p>
+        </div>
+        <br>
+      </ng-container>
+      <ng-container *ngIf="!d.admin">
+        <div class="talk_left">
+          <p>{{this.getName(d.user_id)}} ({{d.CreatedAt}}):<br>------------------------------------<br>{{d.data}}</p>
+        </div>
+        <br>
+      </ng-container>
+    </ng-container>
+    <br>
+  </div>
+</div>
 <div class="left">
-  <br>
-  <h1>Chat</h1>
-  <br>
-  <ng-container *ngFor="let d of chat">
-    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}):</p>
-    <p>{{d.data}}</p>
-  </ng-container>
-  <ng-container *ngFor="let d of this.supportService.chatMessage">
-    <p>{{this.getName(d.user_id)}}({{d.CreatedAt}}):</p>
-    <p>{{d.message}}</p>
-  </ng-container>
   <form>
     <mat-form-field class="large-width">
       <mat-label>Comment</mat-label>
@@ -19,5 +45,6 @@
   <br>
   <br>
   <button mat-button (click)="sendMessage()">Send</button>
+  <br>
   <br>
 </div>
