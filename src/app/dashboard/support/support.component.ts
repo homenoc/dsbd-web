@@ -57,6 +57,7 @@ export class SupportComponent implements OnInit {
       if (info.status) {
         this.info = info.support_ticket;
         this.lock = false;
+        location.reload();
       } else {
         this.commonService.openBar('no data', 5000);
       }

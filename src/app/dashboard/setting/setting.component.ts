@@ -112,6 +112,7 @@ export class SettingComponent implements OnInit {
     this.userService.update(0, body).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
         this.router.navigate(['/error']).then();
@@ -128,6 +129,7 @@ export class SettingComponent implements OnInit {
       this.userService.update(0, body).then(response => {
         if (response.status) {
           this.commonService.openBar('OK', 5000);
+          location.reload();
         } else {
           sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
           this.router.navigate(['/error']).then();
@@ -155,6 +157,7 @@ export class SettingComponent implements OnInit {
     }, 1).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         console.log('user service(techUser) response: ' + JSON.stringify(response));
         sessionStorage.setItem('error', 'user service(techUser) response: ' + JSON.stringify(response));
