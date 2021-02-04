@@ -22,7 +22,7 @@
     </mat-radio-group>
     <form class="form" *ngIf="routeV4 === 'Other'">
       <br>
-      <mat-form-field class="full-width">
+      <mat-form-field [style.width.px]=600>
         <label>
           <textarea matInput placeholder="こちらにご記入ください" [formControl]="routeV4Etc"></textarea>
         </label>
@@ -46,7 +46,7 @@
     </mat-radio-group>
     <form class="form" *ngIf="routeV6 === 'Other'">
       <br>
-      <mat-form-field class="full-width">
+      <mat-form-field [style.width.px]=600>
         <label>
           <textarea matInput placeholder="こちらにご記入ください" [formControl]="routeV6Etc"></textarea>
         </label>
@@ -70,7 +70,7 @@
     </mat-form-field>
     <br>
     <form [formGroup]="jpnicV4">
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=400>
         <mat-label>IPv4</mat-label>
         <label>
           <input matInput placeholder="192.0.2.0/24" formControlName="subnet">
@@ -78,7 +78,7 @@
       </mat-form-field>
     </form>
     <form [formGroup]="jpnicV6">
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=400>
         <mat-label>IPv6</mat-label>
         <label>
           <input matInput placeholder="2001:db8::/32" formControlName="subnet">
@@ -117,14 +117,14 @@
     <p>ネットワーク名は半角英数字とハイフンで12文字以内で入力してください</p>
     <mat-checkbox [(ngModel)]="checkV4">IPv4アドレスのアサインを希望する</mat-checkbox>
     <form *ngIf="checkV4" [formGroup]="jpnicV4">
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=600>
         <mat-label>IPv4ネットワーク名</mat-label>
         <label>
           <input matInput placeholder="Ex. HOMENOCV4" formControlName="name">
         </label>
       </mat-form-field>
       &nbsp;&nbsp;
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=800>
         <mat-label>IPv4 Subnet</mat-label>
         <label>
           <input matInput placeholder="Ex. /x" formControlName="subnet">
@@ -134,14 +134,14 @@
     <br>
     <mat-checkbox [(ngModel)]="checkV6">IPv6アドレスのアサインを希望する</mat-checkbox>
     <form *ngIf="checkV6" [formGroup]="jpnicV6">
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=600>
         <mat-label>IPv6ネットワーク名</mat-label>
         <label>
           <input matInput placeholder="Ex. HOMENOCV6" formControlName="name">
         </label>
       </mat-form-field>
       &nbsp;&nbsp;
-      <mat-form-field class="small-width">
+      <mat-form-field [style.width.px]=800>
         <mat-label>IPv6 Subnet</mat-label>
         <label>
           <input matInput placeholder="Ex. /x" formControlName="subnet">
@@ -153,19 +153,21 @@
     <h3>日本語</h3>
     <p><b>日本語で入力してください</b></p>
     <form class="form" [formGroup]="jpnicJa">
-      <mat-form-field class="large-width">
+      <mat-form-field [style.width.px]=300>
         <mat-label>組織名(日本語)</mat-label>
         <label>
           <textarea matInput placeholder="Org" formControlName="org" required></textarea>
         </label>
       </mat-form-field>
-      <mat-form-field class="large-width">
+      <br>
+      <mat-form-field [style.width.px]=200>
         <mat-label>郵便番号</mat-label>
         <label>
           <textarea matInput placeholder="Postcode" formControlName="postcode" required></textarea>
         </label>
       </mat-form-field>
-      <mat-form-field class="large-width">
+      <br>
+      <mat-form-field [style.width.px]=500>
         <mat-label>住所(日本語)</mat-label>
         <label>
           <textarea matInput placeholder="Address" formControlName="address" required></textarea>
@@ -175,13 +177,14 @@
     <h3>English</h3>
     <p><b>英語で入力してください</b></p>
     <form class="form" [formGroup]="jpnicEn">
-      <mat-form-field class="large-width">
+      <mat-form-field [style.width.px]=300>
         <mat-label>Organization Name(English)</mat-label>
         <label>
           <textarea matInput placeholder="org(English)" formControlName="org" required></textarea>
         </label>
       </mat-form-field>
-      <mat-form-field class="large-width">
+      <br>
+      <mat-form-field [style.width.px]=500>
         <mat-label>Organization Address(English)</mat-label>
         <label>
           <textarea matInput placeholder="Address(English)" formControlName="address" required></textarea>
