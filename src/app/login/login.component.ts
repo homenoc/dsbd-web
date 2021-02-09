@@ -47,7 +47,10 @@ export class LoginComponent implements OnInit {
       const response: any = r;
       console.log('response: ' + JSON.stringify(response));
       sessionStorage.setItem('TmpKey', response.token);
-    }).catch(r => console.log(r));
+    }).catch(r => {
+      console.log(r);
+      this.commonService.openBar('一時Tokenの取得に失敗しました。\nページをリロードしてください。', 10000);
+    });
   }
 
   getErrorMessage() {
