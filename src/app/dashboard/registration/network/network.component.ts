@@ -150,17 +150,19 @@ export class NetworkComponent implements OnInit {
   }
 
   addEventStart(event: MatDatepickerInputEvent<Date>) {
-    this.dateStart = event.value.getFullYear() + '/' + (event.value.getMonth() + 1) + '/' + event.value.getDate();
+    this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+      '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
   addEventEnd(event: MatDatepickerInputEvent<Date>) {
-    this.dateEnd = event.value.getFullYear() + '/' + (event.value.getMonth() + 1) + '/' + event.value.getDate();
+    this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+      '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
   request() {
     // TODO: #1 Issue
-    console.log(this.users);
-    if (this.routeV4 === '' || this.routeV6 === '') {
+    console.log(this.users.data);
+    if (this.routeV4 === '' && this.routeV6 === '') {
       this.commonService.openBar('invalid..', 5000);
       return;
     }
@@ -183,12 +185,33 @@ export class NetworkComponent implements OnInit {
       }
     }
 
-    // date定義
-    let date: string;
-    if (this.dateEndUnlimited) {
-      date = '接続開始日: ' + this.dateStart + '\n接続終了日: 未定';
-    } else {
-      date = '接続開始日: ' + this.dateStart + '\n接続終了日: ' + this.dateEnd;
+    // // date定義
+    // let date: string;
+    // if (this.dateEndUnlimited) {
+    //   date = '接続開始日: ' + this.dateStart + '\n接続終了日: 未定';
+    // } else {
+    //   date = '接続開始日: ' + this.dateStart + '\n接続終了日: ' + this.dateEnd;
+    // }
+
+    const ip: any[] = [];
+
+    if (this.checkV4) {
+      ip.push({
+        version: 4,
+        ip: this.jpnicV4.value.subnet,
+        plan: this.plan.value,
+        start_date: this.dateStart,
+        end_date: this.dateEnd,
+      });
+    }
+
+    if (this.checkV6) {
+      ip.push({
+        version: 6,
+        ip: this.jpnicV6.value.subnet,
+        start_date: this.dateStart,
+        end_date: this.dateEnd,
+      });
     }
 
     const body = {
@@ -203,12 +226,9 @@ export class NetworkComponent implements OnInit {
       route_v6: this.routeV6,
       pi: this.pi,
       asn: this.asn.value,
-      v4: this.jpnicV4.value.subnet,
-      v6: this.jpnicV6.value.subnet,
+      ip,
       v4_name: this.jpnicV4.value.name,
       v6_name: this.jpnicV6.value.name,
-      date,
-      plan: this.plan.value,
     };
 
     console.log(body);
