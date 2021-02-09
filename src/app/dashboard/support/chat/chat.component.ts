@@ -34,28 +34,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userService.getGroup().then(responseUser => {
       console.log(responseUser);
       const user = responseUser;
-      if (user.status) {
-        this.user = user.data;
-        // for (const u of user.data) {
-        //   this.user[u.id] = u.name;
-        // }
+      this.user = user.data;
+      // for (const u of user.data) {
+      //   this.user[u.id] = u.name;
+      // }
 
-        console.log(this.user);
-        console.log(user);
-        this.supportService.get(this.ticketID).then(response => {
-          console.log(response);
-          const info = response;
-          if (info.status) {
-            this.chat = info.support_chat;
-            console.log(info);
-            // this.lock = false;
-          } else {
-            this.commonService.openBar('no data', 5000);
-          }
-        });
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      console.log(user);
+      this.supportService.get(this.ticketID).then(response => {
+        const info = response;
+        this.chat = info.support_chat;
+        console.log(info);
+      });
     });
   }
 

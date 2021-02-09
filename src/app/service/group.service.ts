@@ -28,22 +28,10 @@ export class GroupService {
         }),
       }).toPromise().then(r => {
       const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      if (error.status === 401) {
-        sessionStorage.clear();
-        this.router.navigate(['/']).then();
-      }
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -56,24 +44,10 @@ export class GroupService {
       })
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        if (1000 <= response.group.status) {
-          this.authService.logOut();
-        }
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      if (error.status === 401) {
-        sessionStorage.clear();
-        this.router.navigate(['/']).then();
-      }
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 }

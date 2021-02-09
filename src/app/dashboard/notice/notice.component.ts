@@ -22,11 +22,7 @@ export class NoticeComponent implements OnInit {
     this.name = sessionStorage.getItem('name');
     this.noticeService.get().then(response => {
       const info = response;
-      if (info.status) {
-        this.info = info.notice;
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      this.info = info.notice;
     });
   }
 }

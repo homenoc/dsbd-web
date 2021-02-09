@@ -33,26 +33,14 @@ export class UserService {
         })
       };
     }
-    return this.http.post(environment.api.url + environment.api.path + '/user',
-      body, header).toPromise().then(r => {
-      const response: any = r;
-      console.log('response: ' + JSON.stringify(response));
-      if (response.status === true) {
+    return this.http.post(environment.api.url + environment.api.path + '/user', body, header)
+      .toPromise().then(r => {
+        const response: any = r;
         return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
-    }).catch(error => {
-      if (error.status === 401) {
-        sessionStorage.clear();
-        this.router.navigate(['/']).then();
-      }
-      return {status: false, error};
-    });
+      }).catch(error => {
+        sessionStorage.setItem('error', JSON.stringify(error));
+        this.router.navigate(['/error']).then();
+      });
   }
 
   get(uid): Promise<any> {
@@ -64,21 +52,10 @@ export class UserService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      if (error.status === 401) {
-        sessionStorage.clear();
-        this.router.navigate(['/']).then();
-      }
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -91,18 +68,10 @@ export class UserService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -115,21 +84,10 @@ export class UserService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      if (error.status === 401) {
-        sessionStorage.clear();
-        this.router.navigate(['/']).then();
-      }
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -143,18 +101,10 @@ export class UserService {
         }),
       }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 }

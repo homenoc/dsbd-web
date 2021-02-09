@@ -50,17 +50,8 @@ export class ConnectionComponent implements OnInit {
     this.userService.getGroup().then(response => {
       console.log('---response---');
       console.log(response);
-      if (response.status) {
-        this.user = response;
-        // this.commonService.openBar('OK', 5000);
-      } else {
-        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
-        this.router.navigate(['/error']).then();
-      }
-    }).catch();
-    {
-
-    }
+      this.user = response;
+    });
   }
 
   request() {
@@ -90,14 +81,8 @@ export class ConnectionComponent implements OnInit {
     this.connectionService.add(body).then(response => {
       console.log('---response---');
       console.log(response.status);
-      if (response.status) {
-        this.commonService.openBar('申請完了', 5000);
-        this.router.navigate(['/dashboard']).then();
-      } else {
-        sessionStorage.setItem('error', 'Process 1\n' + 'response: ' + JSON.stringify(response));
-        this.router.navigate(['/error']).then();
-        return;
-      }
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard']).then();
     });
   }
 }

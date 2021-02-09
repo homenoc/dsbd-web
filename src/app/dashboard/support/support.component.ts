@@ -54,13 +54,9 @@ export class SupportComponent implements OnInit {
     this.supportService.register(body).then(response => {
       const info = response;
       console.log(info);
-      if (info.status) {
-        this.info = info.support_ticket;
-        this.lock = false;
-        location.reload();
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      this.info = info.support_ticket;
+      this.lock = false;
+      location.reload();
     });
   }
 }
