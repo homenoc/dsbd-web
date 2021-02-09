@@ -12,7 +12,6 @@ export class InfoComponent implements OnInit {
 
   constructor(
     private infoService: InfoService,
-    private router: Router
   ) {
   }
 
@@ -22,16 +21,7 @@ export class InfoComponent implements OnInit {
     this.infoService.get().then(response => {
       console.log('---response---');
       console.log(response);
-      if (response.status) {
-        this.info = response.info;
-      } else {
-        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
-        this.router.navigate(['/error']).then();
-      }
-    }).catch();
-    {
-
-    }
+      this.info = response.info;
+    });
   }
-
 }

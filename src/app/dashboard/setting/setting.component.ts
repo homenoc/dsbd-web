@@ -53,18 +53,14 @@ export class SettingComponent implements OnInit {
   ngOnInit(): void {
     this.name = sessionStorage.getItem('name');
     this.userService.getLoginUser().then(d => {
-      if (d.status) {
-        if (d.data.status !== 0) {
-          this.lock = false;
-        }
-        this.userInfo = d.data;
-        if (this.userInfo.group_id !== 0) {
-          this.groupService.get().then(group => {
-            if (group.status) {
-              this.groupInfo = group.group;
-            }
-          });
-        }
+      if (d.data.status !== 0) {
+        this.lock = false;
+      }
+      this.userInfo = d.data;
+      if (this.userInfo.group_id !== 0) {
+        this.groupService.get().then(group => {
+          this.groupInfo = group.group;
+        });
       }
     });
   }
@@ -110,13 +106,8 @@ export class SettingComponent implements OnInit {
       email: this.email.value
     };
     this.userService.update(0, body).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
-        this.router.navigate(['/error']).then();
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 
@@ -127,13 +118,8 @@ export class SettingComponent implements OnInit {
         pass: passHash
       };
       this.userService.update(0, body).then(response => {
-        if (response.status) {
-          this.commonService.openBar('OK', 5000);
-          location.reload();
-        } else {
-          sessionStorage.setItem('error', 'response: ' + JSON.stringify(response));
-          this.router.navigate(['/error']).then();
-        }
+        this.commonService.openBar('OK', 5000);
+        location.reload();
       });
     } else {
       this.commonService.openBar('The password is wrong.', 2000);
@@ -154,16 +140,9 @@ export class SettingComponent implements OnInit {
       name: this.group.value.name,
       name_en: this.group.value.nameEn,
       group_handle: groupHandle
-    }, 1).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        console.log('user service(techUser) response: ' + JSON.stringify(response));
-        sessionStorage.setItem('error', 'user service(techUser) response: ' + JSON.stringify(response));
-        this.router.navigate(['/error']).then();
-        return;
-      }
+    }, 1).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }

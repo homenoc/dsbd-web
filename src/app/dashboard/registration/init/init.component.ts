@@ -151,14 +151,7 @@ export class InitComponent implements OnInit {
             email: t.email,
             name: t.name,
             name_en: t.name_en
-          }, 1).then(user => {
-            if (!user.status) {
-              console.log('user service(techUser) response: ' + JSON.stringify(user));
-              sessionStorage.setItem('error', 'user service(techUser) response: ' + JSON.stringify(user));
-              this.router.navigate(['/error']).then();
-              return;
-            }
-          });
+          }, 1).then();
         }
       });
     });
