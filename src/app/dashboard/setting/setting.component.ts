@@ -53,10 +53,10 @@ export class SettingComponent implements OnInit {
   ngOnInit(): void {
     this.name = sessionStorage.getItem('name');
     this.userService.getLoginUser().then(d => {
-      if (d.data.status !== 0) {
+      if (d.status !== 0) {
         this.lock = false;
       }
-      this.userInfo = d.data;
+      this.userInfo = d;
       if (this.userInfo.group_id !== 0) {
         this.groupService.get().then(group => {
           this.groupInfo = group;

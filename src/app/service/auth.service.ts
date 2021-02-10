@@ -32,10 +32,11 @@ export class AuthService {
       const response: any = r;
       sessionStorage.setItem('AccessToken', response.token[0].access_token);
       this.userService.getLoginUser().then(d => {
-        sessionStorage.setItem('name', d.data.name);
-        if (d.data.status === 0) {
+        console.log(d);
+        sessionStorage.setItem('name', d.name);
+        if (d.status === 0) {
           this.router.navigate(['/dashboard/setting']).then();
-        } else if (d.data.status >= 100) {
+        } else if (d.status >= 100) {
           this.commonService.openBar('This account is locked.', 4000);
         } else {
           this.router.navigate(['/dashboard']).then();
