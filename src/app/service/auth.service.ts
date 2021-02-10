@@ -30,25 +30,17 @@ export class AuthService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status) {
-        sessionStorage.setItem('AccessToken', response.token[0].access_token);
-        this.userService.getLoginUser().then(d => {
-          if (d.status) {
-            sessionStorage.setItem('name', d.data.name);
-            if (d.data.status === 0) {
-              this.router.navigate(['/dashboard/setting']).then();
-            } else if (d.data.status >= 100) {
-              this.commonService.openBar('This account is locked.', 4000);
-            } else {
-              this.router.navigate(['/dashboard']).then();
-            }
-          } else {
-            this.commonService.openBar(d.error, 4000);
-          }
-        });
-      } else {
-        this.commonService.openBar(response.error, 4000);
-      }
+      sessionStorage.setItem('AccessToken', response.token[0].access_token);
+      this.userService.getLoginUser().then(d => {
+        sessionStorage.setItem('name', d.data.name);
+        if (d.data.status === 0) {
+          this.router.navigate(['/dashboard/setting']).then();
+        } else if (d.data.status >= 100) {
+          this.commonService.openBar('This account is locked.', 4000);
+        } else {
+          this.router.navigate(['/dashboard']).then();
+        }
+      });
     }).catch(error => {
       console.log('error: ' + JSON.stringify(error.error.error));
       this.commonService.openBar(JSON.stringify(error.error.error), 5000);

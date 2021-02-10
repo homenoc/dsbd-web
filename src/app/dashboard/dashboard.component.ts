@@ -34,35 +34,31 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.userService.getLoginUser().then(user => {
-      if (user.status) {
-        if (user.data.status === 0) {
-          this.registration = false;
-          this.router.navigate(['/dashboard/setting']).then();
-        } else if (user.data.status >= 100) {
-          this.authService.logOut();
-        } else {
-          this.registration = true;
-          console.log(user.data);
-          if (user.data.group_id !== 0) {
-            this.groupService.get().then((group) => {
-              this.support = true;
-              console.log(group);
-              if (group.status === true) {
-                if (100 <= group.group.status && group.group.status <= 500) {
-                  this.info = true;
-                  this.notice = true;
-                }
-                if (2 <= group.group.status && group.group.status < 300) {
-                  this.registration = true;
-                }
-              }
-            }).catch();
-          } else {
-            this.support = false;
-          }
-        }
+      if (user.data.status === 0) {
+        this.registration = false;
+        this.router.navigate(['/dashboard/setting']).then();
+      } else if (user.data.status >= 100) {
+        this.authService.logOut();
       } else {
-        this.commonService.openBar(user.error, 4000);
+        this.registration = true;
+        console.log(user.data);
+        if (user.data.group_id !== 0) {
+          this.groupService.get().then((group) => {
+            this.support = true;
+            console.log(group);
+            if (group.status === true) {
+              if (100 <= group.group.status && group.group.status <= 500) {
+                this.info = true;
+                this.notice = true;
+              }
+              if (2 <= group.group.status && group.group.status < 300) {
+                this.registration = true;
+              }
+            }
+          }).catch();
+        } else {
+          this.support = false;
+        }
       }
     });
   }
