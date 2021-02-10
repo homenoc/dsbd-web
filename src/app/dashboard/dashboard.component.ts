@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public notice = false;
-  public info = false;
+  public open = false;
   public registration = false;
   public support = false;
   public gid = 0;
@@ -46,15 +46,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.groupService.get().then((group) => {
             this.support = true;
             console.log(group);
-            if (group.status === true) {
-              if (100 <= group.group.status && group.group.status <= 500) {
-                this.info = true;
-                this.notice = true;
-              }
-              if (2 <= group.group.status && group.group.status < 300) {
-                this.registration = true;
-              }
-            }
+            this.open = group.open;
           }).catch();
         } else {
           this.support = false;
