@@ -1,13 +1,13 @@
 <mat-sidenav-container class="container">
   <mat-sidenav #sideNav mode="side" opened>
     <mat-nav-list>
-      <a mat-list-item *ngIf="notice" routerLink="notice" i18n="@@notice">お知らせ</a>
-      <a mat-list-item *ngIf="info" routerLink="info" i18n="@@info">接続情報</a>
+      <a mat-list-item *ngIf="open" routerLink="notice" i18n="@@notice">お知らせ</a>
+      <a mat-list-item *ngIf="open" routerLink="info" i18n="@@info">接続情報</a>
       <br>
-      <a mat-list-item *ngIf="registration" routerLink="registration" i18n="@@registration">接続申込</a>
-      <a mat-list-item *ngIf="support" routerLink="support" i18n="@@registration">サポート</a>
+      <a mat-list-item *ngIf="!open" routerLink="registration" i18n="@@registration">接続申込</a>
       <br>
       <br>
+      <a mat-list-item routerLink="support" i18n="@@registration">サポート</a>
       <a mat-list-item routerLink="setting" i18n="@@setting">設定</a>
       <a mat-list-item routerLink="bug" i18n="@@bug">バグ報告</a>
     </mat-nav-list>
