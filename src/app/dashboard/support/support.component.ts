@@ -27,13 +27,8 @@ export class SupportComponent implements OnInit {
     this.supportService.getAll().then(response => {
       console.log(response);
       const info = response;
-      if (info.status) {
-        this.info = info.support_ticket;
-        console.log(this.info);
-        this.lock = false;
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      this.info = info.support_ticket;
+      this.lock = false;
     });
   }
 
