@@ -122,7 +122,7 @@ export class NetworkComponent implements OnInit {
   ngOnInit(): void {
     // アクセス制御
     this.userService.getLoginUser().then(user => {
-      if (user.status && user.data.group_id === 0 && user.data.status === 0) {
+      if (user.status && user.group_id === 0 && user.status === 0) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
@@ -135,7 +135,6 @@ export class NetworkComponent implements OnInit {
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
-      console.log(response.user);
       this.users = response.user;
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < this.users.length; i++) {
@@ -143,9 +142,6 @@ export class NetworkComponent implements OnInit {
           this.users[i].name += ' (GroupHandle)';
         }
       }
-      // this.users = user.data;
-      console.log('---response---');
-      console.log(this.users);
     });
     this.plan.setValue(this.planJa);
   }
