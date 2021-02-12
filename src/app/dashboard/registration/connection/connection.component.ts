@@ -19,7 +19,7 @@ export class ConnectionComponent implements OnInit {
   public noc: string;
   public termIP = new FormControl();
   public monitor: boolean;
-  public user = {data: []};
+  public user: any[] = [];
   public termUser: any;
 
 
@@ -48,9 +48,7 @@ export class ConnectionComponent implements OnInit {
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
-      console.log('---response---');
-      console.log(response);
-      this.user = response;
+      this.user = response.user;
     });
   }
 
