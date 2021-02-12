@@ -25,14 +25,14 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getLoginUser().then((user) => {
-        if (user.data.status === 0) {
+        if (user.status === 0) {
           this.lock = true;
         } else {
-          if (user.data.group_id === 0) {
+          if (user.group_id === 0) {
             this.router.navigate(['/dashboard/registration/init']).then();
           } else {
             this.groupService.get().then((group) => {
-              const status = group.group.status;
+              const status = group.status;
               if (status === 1) {
                 this.type = 1;
               }

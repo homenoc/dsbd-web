@@ -103,7 +103,7 @@ export class NetworkComponent implements OnInit {
     name: new FormControl(''),
     subnet: new FormControl(''),
   });
-  public users = {data: []};
+  public users: any[] = [];
   public admin: any;
   dateStart: string;
   dateEnd: string;
@@ -127,7 +127,7 @@ export class NetworkComponent implements OnInit {
       }
     });
     this.groupService.get().then(group => {
-      const status: number = group.group.status;
+      const status: number = group.status;
       if (group.status && !(status === 2 || status === 11 || status === 21 || status === 111 || status === 121)) {
         this.router.navigate(['/dashboard/registration']).then();
       }
@@ -135,11 +135,12 @@ export class NetworkComponent implements OnInit {
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
-      this.users = response;
+      console.log(response.user);
+      this.users = response.user;
       // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.users.data.length; i++) {
-        if (this.users.data[i].group_handle) {
-          this.users.data[i].name += ' (GroupHandle)';
+      for (let i = 0; i < this.users.length; i++) {
+        if (this.users[i].group_handle) {
+          this.users[i].name += ' (GroupHandle)';
         }
       }
       // this.users = user.data;
@@ -161,7 +162,7 @@ export class NetworkComponent implements OnInit {
 
   request() {
     // TODO: #1 Issue
-    console.log(this.users.data);
+    console.log(this.users);
     if (this.routeV4 === '' && this.routeV6 === '') {
       this.commonService.openBar('invalid..', 5000);
       return;
@@ -179,7 +180,7 @@ export class NetworkComponent implements OnInit {
 
     const tech: any[] = new Array();
 
-    for (const u of this.users.data) {
+    for (const u of this.users) {
       if (u.select) {
         tech.push(u.ID);
       }
