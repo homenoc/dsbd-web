@@ -196,7 +196,7 @@
     <p>割り当てるIPアドレスの管理責任者をお選びください</p>
     <mat-radio-group aria-label="Select an option" [(ngModel)]="admin" name="op_staff">
       <ng-container *ngIf="users !==null">
-        <ng-container *ngFor="let u of users.data">
+        <ng-container *ngFor="let u of users">
           <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
           <br>
         </ng-container>
@@ -206,7 +206,7 @@
     <h2>7. 技術連絡担当者</h2>
     <p>割り当てるIPアドレスの技術連絡担当者をお選びください</p>
     <ng-container *ngIf="users !==null">
-      <ng-container *ngFor="let u of users.data">
+      <ng-container *ngFor="let u of users">
         <mat-checkbox [(ngModel)]="u.select">{{u.ID}}: {{u.name}}</mat-checkbox>
         <br>
       </ng-container>

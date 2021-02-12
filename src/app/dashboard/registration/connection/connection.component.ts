@@ -35,12 +35,12 @@ export class ConnectionComponent implements OnInit {
   ngOnInit(): void {
     // アクセス制御
     this.userService.getLoginUser().then(user => {
-      if (user.status && user.data.group_id === 0 && user.data.status === 0) {
+      if (user.status && user.group_id === 0 && user.status === 0) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
     this.groupService.get().then(group => {
-      const status: number = group.group.status;
+      const status: number = group.status;
       if (group.status && !(status === 13 || status === 23 || status === 113 || status === 123)) {
         this.router.navigate(['/dashboard/registration']).then();
       }

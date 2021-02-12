@@ -47,7 +47,7 @@ export class InitComponent implements OnInit {
     });
     // アクセス制御
     this.userService.getLoginUser().then(user => {
-      if (user.status && user.data.group_id !== 0 && user.data.status === 0) {
+      if (user.status && user.group_id !== 0 && user.status === 0) {
         this.commonService.openBar('すでに登録済みです。', 5000);
         this.router.navigate(['/dashboard/registration']).then();
       }
@@ -141,7 +141,7 @@ export class InitComponent implements OnInit {
       }
 
       this.userService.getLoginUser().then((doc) => {
-        groupID = doc.data.group_id;
+        groupID = doc.group_id;
         for (const t of this.techUser.value.tech) {
           console.log('groupID:' + groupID);
           this.userService.create({
