@@ -1,7 +1,7 @@
 <div class="main">
   <h2>1. 終端先ユーザ</h2>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
-    <ng-container *ngFor="let u of user.data">
+    <ng-container *ngFor="let u of user">
       <mat-radio-button value="{{u.ID}}">{{u.ID}}: {{u.name}}</mat-radio-button>
       <br>
     </ng-container>
