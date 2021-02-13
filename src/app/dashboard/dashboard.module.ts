@@ -25,7 +25,6 @@ import {MatTableModule} from '@angular/material/table';
 import {CdkColumnDef, CdkTableModule} from '@angular/cdk/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {SettingComponent} from './setting/setting.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {NetworkComponent} from './registration/network/network.component';
@@ -34,6 +33,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
 import {BugComponent} from './bug/bug.component';
+import {ProcedureComponent} from './procedure/procedure.component';
+import {GroupComponent} from './procedure/group/group.component';
+import {UserAddComponent} from './procedure/user-add/user-add.component';
+import {UserComponent} from './procedure/user/user.component';
+import {UserDetailComponent} from './procedure/user-detail/user-detail.component';
 
 
 @NgModule({
@@ -43,12 +47,16 @@ import {BugComponent} from './bug/bug.component';
     InitComponent,
     InfoComponent,
     RegistrationComponent,
-    SettingComponent,
     NetworkComponent,
     ConnectionComponent,
     SupportComponent,
     ChatComponent,
     BugComponent,
+    ProcedureComponent,
+    GroupComponent,
+    UserAddComponent,
+    UserComponent,
+    UserDetailComponent,
   ],
   imports: [
     CommonModule,

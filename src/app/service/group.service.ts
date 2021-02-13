@@ -45,9 +45,9 @@ export class GroupService {
     }).toPromise().then(r => {
       const response: any = r;
       return response;
-    }).catch(error => {
-      sessionStorage.setItem('error', JSON.stringify(error));
-      this.router.navigate(['/error']).then();
+      // }).catch(error => {
+      //   sessionStorage.setItem('error', JSON.stringify(error));
+      //   this.router.navigate(['/error']).then();
     });
   }
 }

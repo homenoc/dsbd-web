@@ -1,0 +1,44 @@
+<div class="main">
+  <h1>グループ情報の変更</h1>
+  <ng-container *ngIf="lock">
+    <h3>現在、このユーザではグループ情報の変更が許可されていません。</h3>
+  </ng-container>
+  <ng-container *ngIf="!lock">
+    <mat-card class="card">
+      <mat-card-subtitle>
+        <b>OrgName: {{groupInfo.org}}&nbsp;&nbsp;&nbsp;ID: {{groupInfo.id}}</b>
+      </mat-card-subtitle>
+    </mat-card>
+    <mat-tab-group>
+      <mat-tab label="グループ情報一覧">
+        <br>
+        <table>
+          <tr>
+            <th colspan="2">グループ情報</th>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <td>{{groupInfo.id}}</td>
+          </tr>
+          <tr>
+            <th>規約への同意</th>
+            <td>{{groupInfo.agree}}</td>
+          </tr>
+          <tr>
+            <th>団体名</th>
+            <td>{{groupInfo.org}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{groupInfo.status}}</td>
+          </tr>
+          <tr>
+            <th>学生</th>
+            <td>{{groupInfo.student}}</td>
+          </tr>
+        </table>
+        <br>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+</div>

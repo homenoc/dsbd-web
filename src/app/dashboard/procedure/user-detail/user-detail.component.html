@@ -1,0 +1,201 @@
+<div class="main">
+  <h1>ユーザ情報の変更 (ID: {{id}})</h1>
+  <ng-container *ngIf="lock">
+    <h3>現在、このユーザではグループ作成が許可されていません。</h3>
+  </ng-container>
+  <ng-container *ngIf="userInfo.status === 0">
+    <h3>ユーザ情報の変更より、ユーザ情報の登録をお願いいたします。</h3>
+    <p>この手続きを行わない場合は、各種申請・手続きができません。</p>
+  </ng-container>
+  <ng-container *ngIf="!lock">
+    <mat-card class="card">
+      <mat-card-subtitle>
+        <b>Name: {{userInfo.name}}&nbsp;&nbsp;&nbsp;ID: {{id}}&nbsp;&nbsp;&nbsp;GID: {{userInfo.group_id}}</b>
+      </mat-card-subtitle>
+    </mat-card>
+    <mat-tab-group>
+      <mat-tab label="ユーザ情報一覧">
+        <br>
+        <table>
+          <tr>
+            <th colspan="2">ユーザ情報</th>
+          </tr>
+          <tr>
+            <th>名前</th>
+            <td>{{userInfo.name}}</td>
+          </tr>
+          <tr>
+            <th>名前(English)</th>
+            <td>{{userInfo.name_en}}</td>
+          </tr>
+          <tr>
+            <th>Email address</th>
+            <td>{{userInfo.email}}</td>
+          </tr>
+          <tr>
+            <th>組織名</th>
+            <td>{{userInfo.org}}</td>
+          </tr>
+          <tr>
+            <th>組織名(English)</th>
+            <td>{{userInfo.org_en}}</td>
+          </tr>
+          <tr>
+            <th>郵便番号</th>
+            <td>{{userInfo.postcode}}</td>
+          </tr>
+          <tr>
+            <th>住所</th>
+            <td>{{userInfo.address}}</td>
+          </tr>
+          <tr>
+            <th>住所(English)</th>
+            <td>{{userInfo.address_en}}</td>
+          </tr>
+          <tr>
+            <th>部署名</th>
+            <td>{{userInfo.dept}}</td>
+          </tr>
+          <tr>
+            <th>部署名(English)</th>
+            <td>{{userInfo.dept_en}}</td>
+          </tr>
+          <tr>
+            <th>役職</th>
+            <td>{{userInfo.pos}}</td>
+          </tr>
+          <tr>
+            <th>役職(English)</th>
+            <td>{{userInfo.pos_en}}</td>
+          </tr>
+          <tr>
+            <th>電話番号</th>
+            <td>{{userInfo.tel}}</td>
+          </tr>
+          <tr>
+          <tr>
+            <th>FAX番号</th>
+            <td>{{userInfo.fax}}</td>
+          </tr>
+          <tr>
+            <th>居住国</th>
+            <td>{{userInfo.country}}</td>
+          </tr>
+          <tr>
+            <th>User Status</th>
+            <td>{{userInfo.status}}</td>
+          </tr>
+          <tr>
+            <th>User Level</th>
+            <td>{{userInfo.level}}</td>
+          </tr>
+        </table>
+        <br>
+      </mat-tab>
+      <mat-tab label="メールアドレスの変更">
+        <br>
+        <mat-form-field appearance="fill" [style.width.px]=700>
+          <mat-label>E-Mail address</mat-label>
+          <input matInput [type]="hide ? 'email' : 'text'" [formControl]="email">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill" [style.width.px]=700>
+          <mat-label>E-Mail address(確認用)</mat-label>
+          <input matInput [type]="hide ? 'email' : 'text'" [formControl]="emailVerify">
+        </mat-form-field>
+        <br>
+        <button mat-stroked-button color="primary" (click)="changeMail()">Update</button>
+      </mat-tab>
+      <mat-tab label="パスワードの変更">
+        <br>
+        <mat-form-field appearance="fill" [style.width.px]=500>
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill" [style.width.px]=500>
+          <mat-label>Password Verify</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordVerify">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <br>
+        <button mat-stroked-button color="primary" (click)="changePass()">Update</button>
+        <br>
+      </mat-tab>
+      <mat-tab label="ユーザ情報の変更">
+        <p>ユーザ情報を変更したい箇所のみ記入してください。</p>
+        <form [formGroup]="user">
+          <mat-form-field appearance="fill">
+            <mat-label>組織名</mat-label>
+            <input matInput [type]="hide ? 'org' : 'text'" formControlName="org">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>組織名(English)</mat-label>
+            <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>郵便番号</mat-label>
+            <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" [style.width.px]=500>
+            <mat-label>住所</mat-label>
+            <input matInput [type]="hide ? 'address' : 'text'" formControlName="address">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" [style.width.px]=500>
+            <mat-label>住所(English)</mat-label>
+            <input matInput [type]="hide ? 'address_en' : 'text'" formControlName="address_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>部署名</mat-label>
+            <input matInput [type]="hide ? 'dept' : 'text'" formControlName="dept">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>部署名(English)</mat-label>
+            <input matInput [type]="hide ? 'dept_en' : 'text'" formControlName="dept_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>役職</mat-label>
+            <input matInput [type]="hide ? 'pos' : 'text'" formControlName="pos">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>役職(English)</mat-label>
+            <input matInput [type]="hide ? 'pos_en' : 'text'" formControlName="pos_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>電話番号</mat-label>
+            <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>FAX番号</mat-label>
+            <input matInput [type]="hide ? 'fax' : 'text'" formControlName="fax">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>居住国</mat-label>
+            <input matInput [type]="hide ? 'country' : 'text'" formControlName="country">
+          </mat-form-field>
+          <br>
+        </form>
+        <button mat-stroked-button color="primary" (click)="changeInfo()">Update</button>
+        <br>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+</div>

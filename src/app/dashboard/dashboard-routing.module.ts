@@ -5,13 +5,17 @@ import {DashboardComponent} from './dashboard.component';
 import {InitComponent} from './registration/init/init.component';
 import {InfoComponent} from './info/info.component';
 import {RegistrationComponent} from './registration/registration.component';
-import {SettingComponent} from './setting/setting.component';
 import {AuthGuard} from '../guard/auth.guard';
 import {NetworkComponent} from './registration/network/network.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
-import {BugComponent} from "./bug/bug.component";
+import {BugComponent} from './bug/bug.component';
+import {ProcedureComponent} from './procedure/procedure.component';
+import {GroupComponent} from './procedure/group/group.component';
+import {UserComponent} from './procedure/user/user.component';
+import {UserAddComponent} from './procedure/user-add/user-add.component';
+import {UserDetailComponent} from './procedure/user-detail/user-detail.component';
 
 
 const routes: Routes = [{
@@ -23,7 +27,11 @@ const routes: Routes = [{
     {path: 'support', component: SupportComponent},
     {path: 'support/:id', component: ChatComponent},
     {path: 'info', component: InfoComponent},
-    {path: 'setting', component: SettingComponent},
+    {path: 'procedure', component: ProcedureComponent},
+    {path: 'procedure/group', component: GroupComponent},
+    {path: 'procedure/user', component: UserComponent},
+    {path: 'procedure/user/add', component: UserAddComponent},
+    {path: 'procedure/user/:id', component: UserDetailComponent},
     {path: 'registration/init', component: InitComponent},
     {path: 'registration/network', component: NetworkComponent},
     {path: 'registration/connection', component: ConnectionComponent},

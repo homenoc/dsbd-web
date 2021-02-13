@@ -174,7 +174,7 @@ export class NetworkComponent implements OnInit {
       }
     }
 
-    const tech: any[] = new Array();
+    const tech: any[] = [];
 
     for (const u of this.users) {
       if (u.select) {
@@ -182,19 +182,12 @@ export class NetworkComponent implements OnInit {
       }
     }
 
-    // // date定義
-    // let date: string;
-    // if (this.dateEndUnlimited) {
-    //   date = '接続開始日: ' + this.dateStart + '\n接続終了日: 未定';
-    // } else {
-    //   date = '接続開始日: ' + this.dateStart + '\n接続終了日: ' + this.dateEnd;
-    // }
-
     const ip: any[] = [];
 
     if (this.checkV4) {
       ip.push({
         version: 4,
+        name: this.jpnicV4.value.name,
         ip: this.jpnicV4.value.subnet,
         plan: this.plan.value,
         start_date: this.dateStart,
@@ -205,6 +198,7 @@ export class NetworkComponent implements OnInit {
     if (this.checkV6) {
       ip.push({
         version: 6,
+        name: this.jpnicV6.value.name,
         ip: this.jpnicV6.value.subnet,
         start_date: this.dateStart,
         end_date: this.dateEnd,
@@ -224,8 +218,6 @@ export class NetworkComponent implements OnInit {
       pi: this.pi,
       asn: this.asn.value,
       ip,
-      v4_name: this.jpnicV4.value.name,
-      v6_name: this.jpnicV6.value.name,
     };
 
     console.log(body);
