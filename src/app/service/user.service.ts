@@ -53,14 +53,11 @@ export class UserService {
     }).toPromise().then(r => {
       const response: any = r;
       return response;
-    }).catch(error => {
-      sessionStorage.setItem('error', JSON.stringify(error));
-      this.router.navigate(['/error']).then();
     });
   }
 
   getGroup(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/user/all', {
+    return this.http.get(environment.api.url + environment.api.path + '/user', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -76,7 +73,7 @@ export class UserService {
   }
 
   getLoginUser(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/user', {
+    return this.http.get(environment.api.url + environment.api.path + '/login', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
