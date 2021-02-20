@@ -16,6 +16,8 @@ import {GroupComponent} from './procedure/group/group.component';
 import {UserComponent} from './procedure/user/user.component';
 import {UserAddComponent} from './procedure/user-add/user-add.component';
 import {UserDetailComponent} from './procedure/user-detail/user-detail.component';
+import {MemberComponent} from './member/member.component';
+import {PaymentComponent} from './member/payment/payment.component';
 
 
 const routes: Routes = [{
@@ -27,6 +29,8 @@ const routes: Routes = [{
     {path: 'support', component: SupportComponent},
     {path: 'support/:id', component: ChatComponent},
     {path: 'info', component: InfoComponent},
+    {path: 'member', component: MemberComponent},
+    {path: 'member/payment', component: PaymentComponent},
     {path: 'procedure', component: ProcedureComponent},
     {path: 'procedure/group', component: GroupComponent},
     {path: 'procedure/user', component: UserComponent},
