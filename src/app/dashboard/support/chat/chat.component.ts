@@ -65,5 +65,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       message: this.comment.value
     };
     this.supportService.sendMessage(JSON.stringify(body));
+    this.comment.setValue('');
   }
 }
