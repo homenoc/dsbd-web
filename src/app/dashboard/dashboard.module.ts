@@ -38,6 +38,8 @@ import {GroupComponent} from './procedure/group/group.component';
 import {UserAddComponent} from './procedure/user-add/user-add.component';
 import {UserComponent} from './procedure/user/user.component';
 import {UserDetailComponent} from './procedure/user-detail/user-detail.component';
+import {MemberComponent} from './member/member.component';
+import {PaymentComponent} from './member/payment/payment.component';
 
 
 @NgModule({
@@ -57,6 +59,8 @@ import {UserDetailComponent} from './procedure/user-detail/user-detail.component
     UserAddComponent,
     UserComponent,
     UserDetailComponent,
+    MemberComponent,
+    PaymentComponent,
   ],
   imports: [
     CommonModule,
