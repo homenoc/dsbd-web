@@ -92,7 +92,7 @@
         </table>
         <br>
       </mat-tab>
-      <mat-tab label="メールアドレスの変更">
+      <mat-tab label="メールアドレスの変更" *ngIf="userInfo.group_id !==0">
         <br>
         <mat-form-field appearance="fill" [style.width.px]=700>
           <mat-label>E-Mail address</mat-label>
@@ -106,7 +106,7 @@
         <br>
         <button mat-stroked-button color="primary" (click)="changeMail()">Update</button>
       </mat-tab>
-      <mat-tab label="パスワードの変更">
+      <mat-tab label="パスワードの変更" *ngIf="userInfo.group_id !==0">
         <br>
         <mat-form-field appearance="fill" [style.width.px]=500>
           <mat-label>Password</mat-label>

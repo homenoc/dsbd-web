@@ -32,18 +32,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.ticketID = +this.route.snapshot.paramMap.get('id');
     this.supportService.openWebSocket(this.ticketID);
     this.userService.getGroup().then(responseUser => {
-      console.log(responseUser);
-      const user = responseUser;
-      this.user = user.data;
-      // for (const u of user.data) {
-      //   this.user[u.id] = u.name;
-      // }
-
-      console.log(user);
+      this.user = responseUser.user;
+      console.log(this.user);
       this.supportService.get(this.ticketID).then(response => {
-        const info = response;
-        this.chat = info.support_chat;
-        console.log(info);
+        this.chat = response.support_chat;
+        console.log(this.chat);
       });
     });
   }
@@ -58,7 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     for (const u of this.user) {
-      if (u.ID === id) {
+      if (u.id === id) {
         return u.name;
       }
     }
@@ -72,5 +65,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       message: this.comment.value
     };
     this.supportService.sendMessage(JSON.stringify(body));
+    this.comment.setValue('');
   }
 }
