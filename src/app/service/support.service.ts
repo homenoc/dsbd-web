@@ -8,6 +8,8 @@ import {CommonService} from './common.service';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class SupportService {
 
   websocket: WebSocket;
@@ -27,13 +29,18 @@ export class SupportService {
       sessionStorage.getItem('AccessToken'));
     this.websocket.onopen = (event) => {
       console.log(event);
+      this.chatMessage = [];
     };
 
     this.websocket.onmessage = (event) => {
-      console.log(event);
-      console.log(event.data);
       const json = JSON.parse(event.data);
-      this.chatMessage.push(json);
+      this.chatMessage.push({
+        created_at: json.created_at,
+        user_id: json.user_id,
+        group_id: json.group_id,
+        admin: json.admin,
+        message: json.message
+      });
     };
     this.websocket.onclose = (event) => {
       console.log(event);
