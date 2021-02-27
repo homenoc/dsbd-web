@@ -40,8 +40,7 @@ export class ConnectionComponent implements OnInit {
       }
     });
     this.groupService.get().then(group => {
-      const status: number = group.status;
-      if (group.status && !(status === 13 || status === 23 || status === 113 || status === 123)) {
+      if (!group.pass || !(group.status === 3)) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
