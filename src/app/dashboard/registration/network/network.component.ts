@@ -127,8 +127,7 @@ export class NetworkComponent implements OnInit {
       }
     });
     this.groupService.get().then(group => {
-      const status: number = group.status;
-      if (group.status && !(status === 2 || status === 11 || status === 21 || status === 111 || status === 121)) {
+      if (!group.pass || !(group.status === 1)) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
