@@ -25,10 +25,11 @@ export class NetworkService {
           ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
         })
       }).toPromise().then(r => {
-      const response: any = r;
-      return response;
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard']).then();
     }).catch(error => {
       sessionStorage.setItem('error', JSON.stringify(error));
+      console.log(error);
       this.router.navigate(['/error']).then();
     });
   }

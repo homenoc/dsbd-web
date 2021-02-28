@@ -4,6 +4,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angul
 import {CommonService} from '../../../service/common.service';
 import {GroupService} from '../../../service/group.service';
 import {Router} from '@angular/router';
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-agreement',
@@ -40,6 +41,11 @@ export class InitComponent implements OnInit {
   public org = new FormControl();
   public techUser: FormGroup;
   public contract;
+  public student = new FormGroup({
+    student: new FormControl(),
+    endDate: new FormControl(),
+  });
+  public dateEnd: string;
 
   ngOnInit(): void {
     this.techUser = this.formBuilder.group({
@@ -64,6 +70,11 @@ export class InitComponent implements OnInit {
 
   get userProcess(): FormArray {
     return this.techUser.get('tech') as FormArray;
+  }
+
+  addEventEnd(event: MatDatepickerInputEvent<Date>) {
+    this.dateEnd = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+      '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
   addOptionForm() {
