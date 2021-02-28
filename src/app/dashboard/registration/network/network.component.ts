@@ -8,224 +8,269 @@ import {GroupService} from '../../../service/group.service';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-network',
-  templateUrl: './network.component.html',
-  styleUrls: ['./network.component.scss']
+    selector: 'app-network',
+    templateUrl: './network.component.html',
+    styleUrls: ['./network.component.scss']
 })
 export class NetworkComponent implements OnInit {
 
-  public ip: FormGroup;
-  public routeV4: string;
-  public routeV4Etc = new FormControl();
-  public routeV6: string;
-  public routeV6Etc = new FormControl();
-  public routeV4Check = false;
-  public routeV6Check = false;
-  public pi = false;
-  public asn = new FormControl();
-  public plan = new FormControl();
-  private planJa = '      [Subnet Number1]\n' +
-    '      目的: \n\n' +
-    '      ----使用IPアドレス----\n' +
-    '      契約後: 4\n' +
-    '      半年後: 5\n' +
-    '      １年後: 6\n\n' +
-    '      ----IPアドレスの使用率----\n' +
-    '      * この使用率はネットワークアドレスとブロードキャストアドレスも含めて計算します。\n' +
-    '      契約後: 75%\n' +
-    '      半年後: 87.5%\n' +
-    '      １年後: 100%\n\n' +
-    '      ----Other----\n' +
-    '      一時接続 :\n\n\n' +
-    '      ----デバイス一覧----\n' +
-    '      デバイス　　 契約後/半年後/１年後\n' +
-    '      ----------------------------------------------\n' +
-    '      Router     1/1/1\n' +
-    '      FW         1/1/1\n' +
-    '      WebServer  1/2/2\n' +
-    '      MailServer 1/1/2\n' +
-    '      ----------------------------------------------\n' +
-    '      全デバイス   4/5/6';
-  private planEn = '      [Subnet Number1]\n' +
-    '      Purpose of use: \n\n' +
-    '      ----Use number of ip addresses----\n' +
-    '      immediately after contract : 4\n' +
-    '      immediately after half year : 5\n' +
-    '      immediately after one year : 6\n\n' +
-    '      ----Utilization rate of ip addresses----\n' +
-    '      * The utilization rate is calculated by including the network address and broadcast address.\n' +
-    '      immediately after contract : 75%\n' +
-    '      immediately after half year : 87.5%\n' +
-    '      immediately after one year : 100%\n\n' +
-    '      ----Other----\n' +
-    '      temporary connection :\n\n\n' +
-    '      ----Device List----\n' +
-    '      device 　　after contract/half year/one year\n' +
-    '      ----------------------------------------------\n' +
-    '      Router     1/1/1\n' +
-    '      FW         1/1/1\n' +
-    '      WebServer  1/2/2\n' +
-    '      MailServer 1/1/2\n' +
-    '      ----------------------------------------------\n' +
-    '      total Device      4/5/6\n' +
-    '    Please copy and complete the format for each subnet , if you use divided subnets of IPv4 address.\n' +
-    '    According to JPNIC\'s rules, users must meet the following conditions.\n' +
-    '        immediately after contract\n' +
-    '        Over 25%\n\n' +
-    '        immediately after half year\n' +
-    '        Over 25%\n\n' +
-    '        immediately after one year\n' +
-    '        Over 50%\n\n' +
-    '     ---How to calculate the utilization rate---\n' +
-    '                                    Number of IP addresses to be used\n' +
-    '      Utilization rate = ------------------------------------------------------------------------ x100\n' +
-    '                                    Number of IP addresses to be allocated\n' +
-    '    \n' +
-    '    Please do not include private addresses in the utilization rate.\n' +
-    '    temporary connection means that the always IP address is not used. (ex Assign IP Address by DHCP.\n' +
-    '    The utilization rate is calculated by including the network address and broadcast address.\n';
-  jpnicJa = new FormGroup({
-    org: new FormControl(''),
-    postcode: new FormControl(''),
-    address: new FormControl(''),
-  });
-  jpnicEn = new FormGroup({
-    org: new FormControl(''),
-    address: new FormControl(''),
-  });
-  checkV4 = false;
-  checkV6 = false;
-  jpnicV4 = new FormGroup({
-    name: new FormControl(''),
-    subnet: new FormControl(''),
-  });
-  jpnicV6 = new FormGroup({
-    name: new FormControl(''),
-    subnet: new FormControl(''),
-  });
-  public users: any[] = [];
-  public admin: any;
-  dateStart: string;
-  dateEnd: string;
-  dateEndUnlimited = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private groupService: GroupService,
-    private router: Router,
-    private commonService: CommonService,
-    private networkService: NetworkService,
-  ) {
-  }
-
-  ngOnInit(): void {
-    // アクセス制御
-    this.userService.getLoginUser().then(user => {
-      if (user.status && user.group_id === 0 && user.status === 0) {
-        this.router.navigate(['/dashboard/registration']).then();
-      }
+    public ip: FormGroup;
+    public routeV4: string;
+    public routeV4Etc = new FormControl();
+    public routeV6: string;
+    public routeV6Etc = new FormControl();
+    public routeV4Check = false;
+    public routeV6Check = false;
+    public pi = false;
+    public asn = new FormControl();
+    public plan = new FormControl();
+    private planJa = '      [Subnet Number1]\n' +
+        '      目的: \n\n' +
+        '      ----使用IPアドレス----\n' +
+        '      契約後: 4\n' +
+        '      半年後: 5\n' +
+        '      １年後: 6\n\n' +
+        '      ----IPアドレスの使用率----\n' +
+        '      * この使用率はネットワークアドレスとブロードキャストアドレスも含めて計算します。\n' +
+        '      契約後: 75%\n' +
+        '      半年後: 87.5%\n' +
+        '      １年後: 100%\n\n' +
+        '      ----Other----\n' +
+        '      一時接続 :\n\n\n' +
+        '      ----デバイス一覧----\n' +
+        '      デバイス　　 契約後/半年後/１年後\n' +
+        '      ----------------------------------------------\n' +
+        '      Router     1/1/1\n' +
+        '      FW         1/1/1\n' +
+        '      WebServer  1/2/2\n' +
+        '      MailServer 1/1/2\n' +
+        '      ----------------------------------------------\n' +
+        '      全デバイス   4/5/6';
+    private planEn = '      [Subnet Number1]\n' +
+        '      Purpose of use: \n\n' +
+        '      ----Use number of ip addresses----\n' +
+        '      immediately after contract : 4\n' +
+        '      immediately after half year : 5\n' +
+        '      immediately after one year : 6\n\n' +
+        '      ----Utilization rate of ip addresses----\n' +
+        '      * The utilization rate is calculated by including the network address and broadcast address.\n' +
+        '      immediately after contract : 75%\n' +
+        '      immediately after half year : 87.5%\n' +
+        '      immediately after one year : 100%\n\n' +
+        '      ----Other----\n' +
+        '      temporary connection :\n\n\n' +
+        '      ----Device List----\n' +
+        '      device 　　after contract/half year/one year\n' +
+        '      ----------------------------------------------\n' +
+        '      Router     1/1/1\n' +
+        '      FW         1/1/1\n' +
+        '      WebServer  1/2/2\n' +
+        '      MailServer 1/1/2\n' +
+        '      ----------------------------------------------\n' +
+        '      total Device      4/5/6\n' +
+        '    Please copy and complete the format for each subnet , if you use divided subnets of IPv4 address.\n' +
+        '    According to JPNIC\'s rules, users must meet the following conditions.\n' +
+        '        immediately after contract\n' +
+        '        Over 25%\n\n' +
+        '        immediately after half year\n' +
+        '        Over 25%\n\n' +
+        '        immediately after one year\n' +
+        '        Over 50%\n\n' +
+        '     ---How to calculate the utilization rate---\n' +
+        '                                    Number of IP addresses to be used\n' +
+        '      Utilization rate = ------------------------------------------------------------------------ x100\n' +
+        '                                    Number of IP addresses to be allocated\n' +
+        '    \n' +
+        '    Please do not include private addresses in the utilization rate.\n' +
+        '    temporary connection means that the always IP address is not used. (ex Assign IP Address by DHCP.\n' +
+        '    The utilization rate is calculated by including the network address and broadcast address.\n';
+    jpnicJa = new FormGroup({
+        org: new FormControl(''),
+        postcode: new FormControl(''),
+        address: new FormControl(''),
     });
-    this.groupService.get().then(group => {
-      if (!group.pass || !(group.status === 1)) {
-        this.router.navigate(['/dashboard/registration']).then();
-      }
+    jpnicEn = new FormGroup({
+        org: new FormControl(''),
+        address: new FormControl(''),
     });
-    // Groupに属するユーザをすべて取得する
-    // Todo: #2 Issue
-    this.userService.getGroup().then(response => {
-      this.users = response.user;
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.users.length; i++) {
-        if (this.users[i].group_handle) {
-          this.users[i].name += ' (GroupHandle)';
+    checkV4 = false;
+    checkV6 = false;
+    jpnicV4 = new FormGroup({
+        name: new FormControl(''),
+        subnet: new FormControl(''),
+    });
+    jpnicV6 = new FormGroup({
+        name: new FormControl(''),
+        subnet: new FormControl(''),
+    });
+    public networks: any[] = [];
+    public users: any[] = [];
+    public admin: any;
+    public networkType: string;
+    public networkComment = new FormControl();
+    dateStart: string;
+    dateEnd: string;
+    dateEndUnlimited = false;
+
+    constructor(
+        private formBuilder: FormBuilder,
+        private userService: UserService,
+        private groupService: GroupService,
+        private router: Router,
+        private commonService: CommonService,
+        private networkService: NetworkService,
+    ) {
+    }
+
+    ngOnInit(): void {
+        // アクセス制御
+        this.userService.getLoginUser().then(user => {
+            if (user.status && user.group_id === 0 && user.status === 0) {
+                this.router.navigate(['/dashboard/registration']).then();
+            }
+        });
+        this.groupService.get().then(group => {
+            if (!group.pass || !(group.status === 1)) {
+                this.router.navigate(['/dashboard/registration']).then();
+            }
+        });
+        this.commonService.getService().then(res => {
+            this.networks = res.network;
+            console.log(res);
+        });
+        // Groupに属するユーザをすべて取得する
+        // Todo: #2 Issue
+        this.userService.getGroup().then(response => {
+            this.users = response.user;
+            // tslint:disable-next-line:prefer-for-of
+            for (let i = 0; i < this.users.length; i++) {
+                if (this.users[i].group_handle) {
+                    this.users[i].name += ' (GroupHandle)';
+                }
+            }
+        });
+        this.plan.setValue(this.planJa);
+    }
+
+    addEventStart(event: MatDatepickerInputEvent<Date>) {
+        this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+            '-' + ('00' + (event.value.getDate())).slice(-2);
+    }
+
+    addEventEnd(event: MatDatepickerInputEvent<Date>) {
+        this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+            '-' + ('00' + (event.value.getDate())).slice(-2);
+    }
+
+    request() {
+        let body: any;
+
+        const tech: any[] = [];
+        for (const u of this.users) {
+            if (u.select) {
+                tech.push(u.id);
+            }
         }
-      }
-    });
-    this.plan.setValue(this.planJa);
-  }
 
-  addEventStart(event: MatDatepickerInputEvent<Date>) {
-    this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
-      '-' + ('00' + (event.value.getDate())).slice(-2);
-  }
+        const ip: any[] = [];
+        if (this.networkType === '2000' || this.networkType === '3S00' || this.networkType === '3B00') {
+            if (this.admin === '') {
+                this.commonService.openBar('no select (operation staff)', 5000);
+            }
+            if (this.checkV4) {
+                ip.push({
+                    version: 4,
+                    name: this.jpnicV4.value.name,
+                    ip: this.jpnicV4.value.subnet,
+                    plan: this.plan.value,
+                    start_date: this.dateStart,
+                    end_date: this.dateEnd,
+                });
+            }
+            if (this.checkV6) {
+                ip.push({
+                    version: 6,
+                    name: this.jpnicV6.value.name,
+                    ip: this.jpnicV6.value.subnet,
+                    start_date: this.dateStart,
+                    end_date: this.dateEnd,
+                });
+            }
+            if (this.networkType === '3B00') {
+                if (!this.routeV4 && !this.routeV6) {
+                    this.commonService.openBar('no data: routeV4 and routeV6', 5000);
+                }
+            }
+            body = {
+                admin_id: parseInt(this.admin, 10),
+                tech_id: tech,
+                network_type: this.networkType,
+                network_comment: this.networkComment.value,
+                org: this.jpnicJa.value.org,
+                org_en: this.jpnicEn.value.org,
+                postcode: this.jpnicJa.value.postcode,
+                address: this.jpnicJa.value.address,
+                address_en: this.jpnicEn.value.address,
+                route_v4: this.routeV4,
+                route_v6: this.routeV6,
+                asn: this.asn.value,
+                ip,
+            };
+        } else if (this.networkType === 'IP3B') {
+            if (this.asn.value === '') {
+                this.commonService.openBar('asn invalid..', 5000);
+                return;
+            }
 
-  addEventEnd(event: MatDatepickerInputEvent<Date>) {
-    this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
-      '-' + ('00' + (event.value.getDate())).slice(-2);
-  }
+            const ipv4 = this.jpnicV4.value.subnet.split(',');
+            const ipv6 = this.jpnicV6.value.subnet.split(',');
+            for (const tmp of ipv4) {
+                ip.push({
+                    version: 4,
+                    ip: tmp,
+                    start_date: this.dateStart,
+                    end_date: this.dateEnd,
+                });
+            }
+            for (const tmp of ipv6) {
+                ip.push({
+                    version: 6,
+                    ip: tmp,
+                    start_date: this.dateStart,
+                    end_date: this.dateEnd,
+                });
+            }
+            body = {
+                admin_id: parseInt(this.admin, 10),
+                tech_id: tech,
+                network_type: this.networkType,
+                network_comment: this.networkComment.value,
+                org: this.jpnicJa.value.org,
+                org_en: this.jpnicEn.value.org,
+                postcode: this.jpnicJa.value.postcode,
+                address: this.jpnicJa.value.address,
+                address_en: this.jpnicEn.value.address,
+                route_v4: this.routeV4,
+                route_v6: this.routeV6,
+                asn: this.asn.value,
+                ip,
+            };
+        } else if (this.networkType === 'ET00') {
+            if (this.networkComment.value === '') {
+                this.commonService.openBar('Error: その他の項目が空白です。', 5000);
+                return;
+            }
+            body = {
+                admin_id: parseInt(this.admin, 10),
+                network_type: this.networkType,
+                network_comment: this.networkComment.value,
+            };
+        } else {
+            this.commonService.openBar('Error: ServiceCode', 5000);
+            return;
+        }
+        console.log(body);
 
-  request() {
-    // TODO: #1 Issue
-    console.log(this.users);
-    if (this.routeV4 === '' && this.routeV6 === '') {
-      this.commonService.openBar('invalid..', 5000);
-      return;
+        this.networkService.add(body).then();
     }
-    if (this.pi) {
-      if (this.asn.value === '') {
-        this.commonService.openBar('asn invalid..', 5000);
-        return;
-      }
-    } else {
-      if (this.admin === '') {
-        this.commonService.openBar('no select (operation staff)', 5000);
-      }
-    }
-
-    const tech: any[] = [];
-
-    for (const u of this.users) {
-      if (u.select) {
-        tech.push(u.ID);
-      }
-    }
-
-    const ip: any[] = [];
-
-    if (this.checkV4) {
-      ip.push({
-        version: 4,
-        name: this.jpnicV4.value.name,
-        ip: this.jpnicV4.value.subnet,
-        plan: this.plan.value,
-        start_date: this.dateStart,
-        end_date: this.dateEnd,
-      });
-    }
-
-    if (this.checkV6) {
-      ip.push({
-        version: 6,
-        name: this.jpnicV6.value.name,
-        ip: this.jpnicV6.value.subnet,
-        start_date: this.dateStart,
-        end_date: this.dateEnd,
-      });
-    }
-
-    const body = {
-      admin_id: parseInt(this.admin, 10),
-      tech_id: tech,
-      org: this.jpnicJa.value.org,
-      org_en: this.jpnicEn.value.org,
-      postcode: this.jpnicJa.value.postcode,
-      address: this.jpnicJa.value.address,
-      address_en: this.jpnicEn.value.address,
-      route_v4: this.routeV4,
-      route_v6: this.routeV6,
-      pi: this.pi,
-      asn: this.asn.value,
-      ip,
-    };
-
-    console.log(body);
-
-    this.networkService.add(body).then(response => {
-      console.log('---response---');
-      console.log(response);
-      this.commonService.openBar('申請完了', 5000);
-      this.router.navigate(['/dashboard']).then();
-    });
-  }
 }
