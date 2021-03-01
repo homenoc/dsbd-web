@@ -1,99 +1,102 @@
 <div class="main">
-    <h2>1. 終端先ユーザ</h2>
-    <p>ご希望のユーザが一覧にない場合は、こちらから追加してください。</p>
-    <button mat-button routerLink="/dashboard/procedure/user/add">ユーザの追加</button>
+  <h2>1. 終端先ユーザ</h2>
+  <p>ご希望のユーザが一覧にない場合は、こちらから追加してください。</p>
+  <button mat-button routerLink="/dashboard/procedure/user/add">ユーザの追加</button>
+  <p><b>注意: 必ず本人確認メールの認証と追加したユーザの初期登録を済ませてから本ページの登録をお願いします。
     <br>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
-        <ng-container *ngFor="let u of user">
-            <mat-radio-button value="{{u.id}}">{{u.id}}: {{u.name}}</mat-radio-button>
-            <br>
-        </ng-container>
-    </mat-radio-group>
-    <br><br>
-    <h2>2. 接続終端NOCをお選びください</h2>
-    <mat-label>当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください</mat-label>
+    初期登録が済んでいない場合は、ユーザ一覧に表示されないのでご注意ください。</b></p>
+  <br>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="termUser" name="term_user">
+    <ng-container *ngFor="let u of user">
+      <mat-radio-button value="{{u.id}}">{{u.id}}: {{u.name}}</mat-radio-button>
+      <br>
+    </ng-container>
+  </mat-radio-group>
+  <br><br>
+  <h2>2. 接続終端NOCをお選びください</h2>
+  <mat-label>当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください</mat-label>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>NOC</mat-label>
+    <mat-select [(ngModel)]="noc" name="" required>
+      <ng-container *ngFor="let noc of nocs">
+        <mat-option value="{{noc.name}}">{{noc.name}}({{noc.location}})</mat-option>
+      </ng-container>
+      <mat-option value="any">どこでも良い</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br><br>
+  <h2>3. 接続方式をお選びください</h2>
+  <mat-label>各接続方式については https://www.homenoc.ad.jp/usage/type/ のご説明をご確認ください</mat-label>
+  <br>
+  <br>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="connectionType" name="connectionType" required>
+    <ng-container *ngFor="let connection of connections">
+      <mat-radio-button value="{{connection.id}}">{{connection.name}}: ({{connection.comment}})</mat-radio-button>
+      <br>
+    </ng-container>
     <br>
-    <mat-form-field appearance="fill">
-        <mat-label>NOC</mat-label>
-        <mat-select [(ngModel)]="noc" name="" required>
-            <ng-container *ngFor="let noc of nocs">
-                <mat-option value="{{noc.name}}">{{noc.name}}({{noc.location}})</mat-option>
-            </ng-container>
-            <mat-option value="any">どこでも良い</mat-option>
-        </mat-select>
+    <br>
+  </mat-radio-group>
+  <form class="form" *ngIf="connectionType === 'ETC' || connectionType === 'CC0'">
+    <br>
+    <h2>3.1. その他</h2>
+    <ng-container *ngIf="connectionType === 'CC0'">
+      <p>Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</p>
+    </ng-container>
+    <br>
+    <mat-form-field class="full-width">
+      <label>
+        <textarea matInput placeholder="ご希望の接続方式をご記入ください" [formControl]="connectionComment"></textarea>
+      </label>
     </mat-form-field>
     <br><br>
-    <h2>3. 接続方式をお選びください</h2>
-    <mat-label>各接続方式については https://www.homenoc.ad.jp/usage/type/ のご説明をご確認ください</mat-label>
-    <br>
-    <br>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="connectionType" name="connectionType" required>
-        <ng-container *ngFor="let connection of connections">
-            <mat-radio-button value="{{connection.id}}">{{connection.name}}: ({{connection.comment}})</mat-radio-button>
-            <br>
-        </ng-container>
-        <br>
-        <br>
-    </mat-radio-group>
-    <form class="form" *ngIf="connectionType === 'ETC' || connectionType === 'CC0'">
-        <br>
-        <h2>3.1. その他</h2>
-        <ng-container *ngIf="connectionType === 'CC0'">
-            <p>Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</p>
-        </ng-container>
-        <br>
-        <mat-form-field class="full-width">
-            <label>
-                <textarea matInput placeholder="ご希望の接続方式をご記入ください" [formControl]="connectionComment"></textarea>
-            </label>
-        </mat-form-field>
-        <br><br>
+  </form>
+  <ng-container *ngIf="this.connectionType == 'EIP' || this.connectionType == 'IPT'">
+    <h2>3.1. トンネル終端IPアドレス</h2>
+    <mat-label>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</mat-label>
+    <form>
+      <mat-form-field class="small-width">
+        <mat-label>IP Address</mat-label>
+        <input matInput placeholder="2001:xxxx:xxxx::xxxx/64" [formControl]="termIP">
+      </mat-form-field>
     </form>
-    <ng-container *ngIf="this.connectionType == 'EIP' || this.connectionType == 'IPT'">
-        <h2>3.1. トンネル終端IPアドレス</h2>
-        <mat-label>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</mat-label>
-        <form>
-            <mat-form-field class="small-width">
-                <mat-label>IP Address</mat-label>
-                <input matInput placeholder="2001:xxxx:xxxx::xxxx/64" [formControl]="termIP">
-            </mat-form-field>
-        </form>
-        <br><br>
-        <h2>3.2. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</h2>
-        <mat-label>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</mat-label>
-        <br>
-        <mat-label>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</mat-label>
-        <br>
-        <br>
-        <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="ntt" required>
-            <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続可能）">はい（IPoEによりIPv6インターネットへ接続できます）
-            </mat-radio-button>
-            <br>
-            <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続不可）">はい（IPoEによりIPv6インターネットへ接続できません）
-            </mat-radio-button>
-            <br>
-            <mat-radio-button value="はい（フレッツv6オプションの契約なし）">はい（フレッツv6オプションの契約がありません）
-            </mat-radio-button>
-            <br>
-            <mat-radio-button value="いいえ（フレッツ以外でインターネットに接続可能）">いいえ（フレッツ以外のIPv6インターネット接続が利用可能です）
-            </mat-radio-button>
-            <br>
-            <mat-radio-button value="いいえ（IPv6でのインターネット接続不可）">いいえ（IPv6インターネット接続は利用できません）
-            </mat-radio-button>
-        </mat-radio-group>
-        <br><br>
-    </ng-container>
-    <h2>4. ネットワーク監視</h2>
-    <mat-label>当団体によるネットワーク監視をご希望の場合はチェックを入れて下さい</mat-label>
+    <br><br>
+    <h2>3.2. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</h2>
+    <mat-label>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</mat-label>
     <br>
-    <mat-label>検証用などで頻繁に接続断が発生する予定の場合は当団体からの監視はお断りいたします</mat-label>
+    <mat-label>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</mat-label>
     <br>
     <br>
-    <mat-checkbox [(ngModel)]="monitor">希望する</mat-checkbox>
-    <br>
-    <br>
-    <button mat-button (click)="request()">Request</button>
-    <br>
-    <br>
-    <br>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="ntt" name="ntt" required>
+      <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続可能）">はい（IPoEによりIPv6インターネットへ接続できます）
+      </mat-radio-button>
+      <br>
+      <mat-radio-button value="はい（IPoEによりIPv6インターネットへ接続不可）">はい（IPoEによりIPv6インターネットへ接続できません）
+      </mat-radio-button>
+      <br>
+      <mat-radio-button value="はい（フレッツv6オプションの契約なし）">はい（フレッツv6オプションの契約がありません）
+      </mat-radio-button>
+      <br>
+      <mat-radio-button value="いいえ（フレッツ以外でインターネットに接続可能）">いいえ（フレッツ以外のIPv6インターネット接続が利用可能です）
+      </mat-radio-button>
+      <br>
+      <mat-radio-button value="いいえ（IPv6でのインターネット接続不可）">いいえ（IPv6インターネット接続は利用できません）
+      </mat-radio-button>
+    </mat-radio-group>
+    <br><br>
+  </ng-container>
+  <h2>4. ネットワーク監視</h2>
+  <mat-label>当団体によるネットワーク監視をご希望の場合はチェックを入れて下さい</mat-label>
+  <br>
+  <mat-label>検証用などで頻繁に接続断が発生する予定の場合は当団体からの監視はお断りいたします</mat-label>
+  <br>
+  <br>
+  <mat-checkbox [(ngModel)]="monitor">希望する</mat-checkbox>
+  <br>
+  <br>
+  <button mat-button (click)="request()">Request</button>
+  <br>
+  <br>
+  <br>
 </div>
