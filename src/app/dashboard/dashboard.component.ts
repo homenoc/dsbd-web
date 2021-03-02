@@ -27,9 +27,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   public notice = false;
   public open = false;
+  public lock = false;
   public registration = false;
   public support = false;
-  public gid = 0;
+  public status = 0;
 
 
   ngOnInit() {
@@ -46,6 +47,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.support = true;
             console.log(group);
             this.open = group.open;
+            this.lock = group.lock;
+            this.status = group.status;
           }).catch();
         } else {
           this.support = false;

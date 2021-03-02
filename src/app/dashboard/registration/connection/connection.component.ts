@@ -13,14 +13,16 @@ import {GroupService} from '../../../service/group.service';
 })
 export class ConnectionComponent implements OnInit {
 
-  public connection: string;
-  public connectionEtc = new FormControl();
   public ntt: string;
   public noc: string;
   public termIP = new FormControl();
   public monitor: boolean;
   public user: any[] = [];
   public termUser: any;
+  public connections: any[] = [];
+  public connectionType: string;
+  public connectionComment = new FormControl();
+  public nocs: any[] = [];
 
 
   constructor(
@@ -40,11 +42,19 @@ export class ConnectionComponent implements OnInit {
       }
     });
     this.groupService.get().then(group => {
-      const status: number = group.status;
-      if (group.status && !(status === 13 || status === 23 || status === 113 || status === 123)) {
+      if (!group.pass || !(group.status === 3)) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
+    this.commonService.getService().then(res => {
+      this.connections = res.connection;
+      console.log(res);
+    });
+    this.commonService.getNOC().then(res => {
+      this.nocs = res.noc;
+      console.log(res);
+    });
+
     // Groupに属するユーザをすべて取得する
     // Todo: #2 Issue
     this.userService.getGroup().then(response => {
@@ -53,32 +63,18 @@ export class ConnectionComponent implements OnInit {
   }
 
   request() {
-    if (this.connection === 'Other') {
-      this.connection = this.connectionEtc.value;
-    }
-    if (this.connection === '' || this.ntt === '' || this.noc === '' || this.termIP.value === '') {
-      this.commonService.openBar('invalid..', 5000);
-      return;
-    }
-
-    if (this.connection === 'L2 構内接続' || this.connection === 'L3 StaticRouting 構内接続' ||
-      this.connection === 'L3 BGP 構内接続') {
-      this.ntt = '構内接続のため必要なし';
-      this.termIP.setValue('構内接続のため必要なし');
-    }
-
     const body = {
       user_id: parseInt(this.termUser, 10),
-      service: this.connection,
+      connection_type: this.connectionType,
+      connection_comment: this.connectionComment.value,
       ntt: this.ntt,
       noc: this.noc,
       term_ip: this.termIP.value,
       monitor: this.monitor
     };
 
-    this.connectionService.add(body).then(response => {
+    this.connectionService.add(body).then(() => {
       console.log('---response---');
-      console.log(response.status);
       this.commonService.openBar('申請完了', 5000);
       this.router.navigate(['/dashboard']).then();
     });

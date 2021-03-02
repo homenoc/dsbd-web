@@ -44,9 +44,9 @@
   <h2>7. 技術責任者</h2>
   <p>技術責任者は各種ユーザ登録が必要となります。
     <br>
-  メールアドレスを記入いただくことで、各メールアドレスに仮のパスワードと本人確認メールを送信します。
+    メールアドレスを記入いただくことで、各メールアドレスに仮のパスワードと本人確認メールを送信します。
     <br>
-  ログインページにて、ログインしていただき各種情報を登録する必要があります。</p>
+    ログインページにて、ログインしていただき各種情報を登録する必要があります。</p>
   <section>
     <mat-checkbox [(ngModel)]="admin">現在ログインしているユーザを技術管理者にする</mat-checkbox>
   </section>
@@ -135,6 +135,21 @@
     &nbsp;&nbsp;&nbsp;
     <mat-radio-button class="radio" value="Air Mail">書面の郵送を希望する</mat-radio-button>
   </mat-radio-group>
+  <br>
+  <h2>10. 学生</h2>
+  <form [formGroup]="student">
+    <mat-checkbox [(ngModel)]="student">私は学生です。</mat-checkbox>
+    <br>
+    <br>
+    <ng-container *ngIf="student">
+      <mat-form-field appearance="fill">
+        <mat-label>卒業予定日</mat-label>
+        <input matInput [matDatepicker]="dpEnd" (dateChange)="addEventEnd($event)">
+        <mat-datepicker-toggle matSuffix [for]="dpEnd"></mat-datepicker-toggle>
+        <mat-datepicker #dpEnd></mat-datepicker>
+      </mat-form-field>
+    </ng-container>
+  </form>
   <br>
   <br>
   <br>
