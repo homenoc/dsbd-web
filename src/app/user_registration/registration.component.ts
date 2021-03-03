@@ -58,13 +58,7 @@ export class RegistrationComponent implements OnInit {
           name_en: this.nameEn.value,
           email: this.email.value,
           pass: passHash
-        }, 0).then((result) => {
-          if (!result.status) {
-            console.log('response: ' + JSON.stringify(result));
-            sessionStorage.setItem('error', 'user service(admin) response: ' + JSON.stringify(result));
-            this.router.navigate(['/error']).then();
-            return;
-          }
+        }, 0).then(() => {
         });
       }
     }
