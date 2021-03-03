@@ -131,29 +131,35 @@
       </mat-tab>
       <mat-tab label="ユーザ情報の変更">
         <p>ユーザ情報を変更したい箇所のみ記入してください。</p>
+        <p><b *ngIf="userInfo.group_id ===0">必須項目は必ず埋めてください</b></p>
         <form [formGroup]="user">
           <mat-form-field appearance="fill">
             <mat-label>組織名</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'org' : 'text'" formControlName="org">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
             <mat-label>組織名(English)</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
             <mat-label>郵便番号</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" [style.width.px]=500>
             <mat-label>住所</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'address' : 'text'" formControlName="address">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" [style.width.px]=500>
             <mat-label>住所(English)</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'address_en' : 'text'" formControlName="address_en">
           </mat-form-field>
           <br>
@@ -179,6 +185,7 @@
           <br>
           <mat-form-field appearance="fill">
             <mat-label>電話番号</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
           </mat-form-field>
           <br>
@@ -189,6 +196,7 @@
           <br>
           <mat-form-field appearance="fill">
             <mat-label>居住国</mat-label>
+            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
             <input matInput [type]="hide ? 'country' : 'text'" formControlName="country">
           </mat-form-field>
           <br>
