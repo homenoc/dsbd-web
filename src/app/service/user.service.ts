@@ -96,9 +96,9 @@ export class UserService {
           USER_TOKEN: sessionStorage.getItem('ClientID'),
           ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
         }),
-      }).toPromise().then(r => {
-      const response: any = r;
-      return response;
+      }).toPromise().then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     }).catch(error => {
       sessionStorage.setItem('error', JSON.stringify(error));
       this.router.navigate(['/error']).then();

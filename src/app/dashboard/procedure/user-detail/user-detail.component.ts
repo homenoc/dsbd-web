@@ -81,10 +81,7 @@ export class UserDetailComponent implements OnInit {
 
   changeInfo(): void {
     const body = JSON.stringify(this.user.getRawValue());
-    this.userService.update(0, body).then(() => {
-      this.commonService.openBar('OK', 5000);
-      location.reload();
-    });
+    this.userService.update(0, body).then();
   }
 
   changeMail(): void {
