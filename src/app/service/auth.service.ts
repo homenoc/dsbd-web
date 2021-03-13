@@ -34,10 +34,8 @@ export class AuthService {
       this.userService.getLoginUser().then(d => {
         console.log(d);
         sessionStorage.setItem('name', d.name);
-        if (d.status === 0) {
-          this.router.navigate(['/dashboard/procedure/user/' + d.id]).then();
-        } else if (d.status >= 100) {
-          this.commonService.openBar('This account is locked.', 4000);
+        if (d.group_id === 0) {
+          this.router.navigate(['/dashboard/registration']).then();
         } else {
           this.router.navigate(['/dashboard']).then();
         }

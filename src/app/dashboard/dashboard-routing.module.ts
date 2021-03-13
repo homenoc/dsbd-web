@@ -6,7 +6,7 @@ import {InitComponent} from './registration/init/init.component';
 import {InfoComponent} from './info/info.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {AuthGuard} from '../guard/auth.guard';
-import {NetworkComponent} from './registration/network/network.component';
+import {ServiceComponent} from './registration/service/service.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
@@ -37,7 +37,7 @@ const routes: Routes = [{
     {path: 'procedure/user/add', component: UserAddComponent},
     {path: 'procedure/user/:id', component: UserDetailComponent},
     {path: 'registration/init', component: InitComponent},
-    {path: 'registration/network', component: NetworkComponent},
+    {path: 'registration/service', component: ServiceComponent},
     {path: 'registration/connection', component: ConnectionComponent},
     {path: 'registration', component: RegistrationComponent},
     {path: 'bug', component: BugComponent},

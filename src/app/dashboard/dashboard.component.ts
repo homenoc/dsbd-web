@@ -30,26 +30,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public lock = false;
   public registration = false;
   public support = false;
-  public status = 0;
+  public user;
+  public groupStatus;
+  public groupID = 0;
 
   ngOnInit() {
     this.userService.getLoginUser().then(user => {
-      if (user.status === 0) {
-        this.router.navigate(['/dashboard/procedure/user/' + user.id]).then();
-      } else if (user.status === 1 && user.group_id === 0) {
-        this.status = 1;
-      } else if (user.status >= 100) {
-        this.authService.logOut();
+      this.groupID = user.group_id;
+      if (user.group_id === 0) {
+        this.router.navigate(['/dashboard/registration']).then();
       } else {
         console.log(user);
         if (user.group_id !== 0) {
           this.registration = true;
           this.groupService.get().then((group) => {
             this.support = true;
+            this.groupStatus = group.status;
             console.log(group);
             this.open = group.open;
             this.lock = group.lock;
-            this.status = group.status;
           }).catch();
         } else {
           this.support = false;
