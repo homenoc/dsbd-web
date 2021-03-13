@@ -7,7 +7,7 @@ import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class NetworkService {
+export class ServiceService {
 
   constructor(
     public router: Router,
@@ -17,7 +17,7 @@ export class NetworkService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/group/network',
+    return this.http.post(environment.api.url + environment.api.path + '/group/service',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export class NetworkService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/group/network', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/service', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
@@ -51,7 +51,7 @@ export class NetworkService {
   }
 
   confirm(body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/group/network/confirm',
+    return this.http.post(environment.api.url + environment.api.path + '/group/service/confirm',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
