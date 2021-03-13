@@ -27,26 +27,23 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getLoginUser().then((user) => {
-        if (user.status === 0) {
-          this.lock = true;
+        if (user.group_id === 0) {
+          this.router.navigate(['/dashboard/registration/init']).then();
         } else {
-          if (user.group_id === 0) {
-            this.router.navigate(['/dashboard/registration/init']).then();
-          } else {
-            this.groupService.get().then((group) => {
-              this.status = group.status;
-              this.pass = group.pass;
+          this.groupService.get().then((group) => {
+            console.log(group);
+            this.status = group.status;
+            this.pass = group.pass;
 
-              // ユーザ記入段階
-              if (this.status === 1) {
-                this.router.navigate(['/dashboard/registration/network']).then();
-              }
-              // ユーザ側接続記入段階
-              if (this.status === 3) {
-                this.router.navigate(['/dashboard/registration/connection']).then();
-              }
-            });
-          }
+            // ユーザ記入段階
+            if (this.status === 1) {
+              this.router.navigate(['/dashboard/registration/service']).then();
+            }
+            // ユーザ側接続記入段階
+            if (this.status === 3) {
+              this.router.navigate(['/dashboard/registration/connection']).then();
+            }
+          });
         }
       }
     );
