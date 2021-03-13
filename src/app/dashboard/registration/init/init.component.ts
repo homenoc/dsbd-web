@@ -30,143 +30,94 @@ export class InitComponent implements OnInit {
     question3: new FormControl(),
     question4: new FormControl()
   });
-  public bandwidthAs = false;
-  public bandwidth = new FormGroup({
-    aveUpstream: new FormControl(10, Validators.min(0)),
-    maxUpstream: new FormControl(100, Validators.min(0)),
-    aveDownstream: new FormControl(10, Validators.min(0)),
-    maxDownstream: new FormControl(100, Validators.min(0)),
-    asn: new FormControl()
+  public group = new FormGroup({
+    org: new FormControl(''),
+    org_en: new FormControl(''),
+    postcode: new FormControl(''),
+    address: new FormControl(''),
+    address_en: new FormControl(''),
+    tel: new FormControl(''),
+    country: new FormControl(''),
   });
-  public org = new FormControl();
-  public techUser: FormGroup;
   public contract;
-  public student = new FormGroup({
-    student: new FormControl(),
-    endDate: new FormControl(),
-  });
-  public dateEnd: string;
+  public student = false;
+  public dateStudentEnd: string;
 
   ngOnInit(): void {
-    this.techUser = this.formBuilder.group({
-      tech: this.formBuilder.array([])
-    });
     // アクセス制御
     this.userService.getLoginUser().then(user => {
-      if (user.status && user.group_id !== 0 && user.status === 0) {
+      if (user.group_id !== 0) {
         this.commonService.openBar('すでに登録済みです。', 5000);
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
   }
 
-  get optionForm(): FormGroup {
-    return this.formBuilder.group({
-      email: [''],
-      name: [''],
-      name_en: ['']
-    });
-  }
-
-  get userProcess(): FormArray {
-    return this.techUser.get('tech') as FormArray;
-  }
-
   addEventEnd(event: MatDatepickerInputEvent<Date>) {
-    this.dateEnd = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+    this.dateStudentEnd = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
       '-' + ('00' + (event.value.getDate())).slice(-2);
-  }
-
-  addOptionForm() {
-    this.userProcess.push(this.optionForm);
-  }
-
-  removeOptionForm(idx: number) {
-    this.userProcess.removeAt(idx);
   }
 
   request() {
     const question1 = '1. どこで当団体のことを知りましたか？\n';
     const question2 = '\n\n2. どのような用途で当団体のネットワークに接続しますか？\n';
     const question3 = '\n\n3. アドレスを当団体から割り当てる必要はありますか？\n';
-    const question4 = '\n\n4. 貴方が情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。';
+    const question4 = '\n\n4. 貴方が情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。\n';
 
-    const bandwidth1 = '平均上り利用帯域: ';
-    const bandwidth2 = '\n最大上り利用帯域: ';
-    const bandwidth3 = '\n平均下り利用帯域: ';
-    const bandwidth4 = '\n最大下り利用帯域: ';
-    const bandwidth5 = '\n特定のASに対する大量通信があるのか？\n';
-
-    let bandwidth = '';
-    if (this.bandwidthAs) {
-      bandwidth = bandwidth1 + this.bandwidth.value.aveUpstream + bandwidth2 + this.bandwidth.value.maxUpstream
-        + bandwidth3 + this.bandwidth.value.aveDownstream + bandwidth4 + this.bandwidth.value.maxDownstream
-        + bandwidth5 + this.bandwidth.value.asn;
-    } else {
-      bandwidth = bandwidth1 + this.bandwidth.value.aveUpstream + bandwidth2 + this.bandwidth.value.maxUpstream
-        + bandwidth3 + this.bandwidth.value.aveDownstream + bandwidth4 + this.bandwidth.value.maxDownstream;
-    }
-
-    let groupID = 0;
     // check
-    for (const t of this.techUser.value.tech) {
-      if (t.email.indexOf('@') === -1) {
-        this.commonService.openBar('This mail is invalid..', 5000);
-        return;
-      }
-    }
-    if (this.contract === '' || this.question.value === '' || this.org.value === null ||
-      this.bandwidth.value === null) {
+    if (this.contract === '' || this.question.value === '') {
       this.commonService.openBar('invalid..', 5000);
       return;
     }
+    if (this.group.value.org === '') {
+      this.commonService.openBar('invalid: 団体名が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.org_en === '') {
+      this.commonService.openBar('invalid: 団体名(English)が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.postcode === '') {
+      this.commonService.openBar('invalid: 郵便番号が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.address === '') {
+      this.commonService.openBar('invalid: 住所が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.address_en === '') {
+      this.commonService.openBar('invalid: 住所(English)が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.tel === '') {
+      this.commonService.openBar('invalid: 電話番号が入力されていません。', 5000);
+      return;
+    }
+    if (this.group.value.country === '') {
+      this.commonService.openBar('invalid: 居住国が入力されていません。', 5000);
+      return;
+    }
+
+    const body = {
+      agree: this.agree,
+      question: question1 + this.question.value.question1 + question2 + this.question.value.question2 +
+        question3 + this.question.value.question3 + question4 + this.question.value.question4,
+      org: this.group.value.org,
+      org_en: this.group.value.org_en,
+      postcode: this.group.value.postcode,
+      address: this.group.value.address,
+      address_en: this.group.value.address_en,
+      tel: this.group.value.tel,
+      country: this.group.value.country,
+      contract: this.contract,
+      student: this.student,
+      student_expired: this.dateStudentEnd
+    };
 
     // main
-    this.groupService.register({
-      Agree: this.agree,
-      Question: question1 + this.question.value.question1 + question2 + this.question.value.question2 +
-        question3 + this.question.value.question3 + question4 + this.question.value.question4,
-      Org: this.org.value,
-      Bandwidth: bandwidth,
-      Contract: this.contract
-    }).then(d => {
-      if (!d.status) {
-        console.log('group service response: ' + JSON.stringify(d));
-        sessionStorage.setItem('error', 'group service response: ' + JSON.stringify(d));
-        this.router.navigate(['/error']).then();
-        return;
-      }
-
-      if (this.admin) {
-        this.userService.update(0, {
-          status: 1,
-          user: true
-        }).then(user => {
-          if (!user.status) {
-            console.log('user service(admin) response: ' + JSON.stringify(user));
-            sessionStorage.setItem('error', 'user service(admin) response: ' + JSON.stringify(user));
-            this.router.navigate(['/error']).then();
-            return;
-          }
-        });
-      }
-
-      this.userService.getLoginUser().then((doc) => {
-        groupID = doc.group_id;
-        for (const t of this.techUser.value.tech) {
-          console.log('groupID:' + groupID);
-          this.userService.create({
-            group_id: groupID,
-            user: true,
-            level: 2,
-            email: t.email,
-            name: t.name,
-            name_en: t.name_en
-          }, 1).then();
-        }
-      });
-    });
-    this.commonService.openBar('申請完了', 5000);
-    this.router.navigate(['/dashboard']).then();
+    this.groupService.register(body).then(d => {
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard']).then();
+    }).catch();
   }
 }
