@@ -32,8 +32,8 @@ export class CommonService {
         });
     }
 
-    getService(): Promise<any> {
-        return this.http.get(environment.api.url + environment.api.path + '/service', {
+    getTemplate(): Promise<any> {
+        return this.http.get(environment.api.url + environment.api.path + '/template', {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 USER_TOKEN: sessionStorage.getItem('ClientID'),
