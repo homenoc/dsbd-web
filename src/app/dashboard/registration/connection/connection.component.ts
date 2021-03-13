@@ -5,6 +5,7 @@ import {ConnectionService} from '../../../service/connection.service';
 import {UserService} from '../../../service/user.service';
 import {Router} from '@angular/router';
 import {GroupService} from '../../../service/group.service';
+import {ServiceService} from '../../../service/service.service';
 
 @Component({
   selector: 'app-connection',
@@ -13,16 +14,22 @@ import {GroupService} from '../../../service/group.service';
 })
 export class ConnectionComponent implements OnInit {
 
-  public ntt: string;
-  public noc: string;
+  public nttID: string;
+  public nocID: string;
   public termIP = new FormControl();
+  public address = new FormControl();
   public monitor: boolean;
-  public user: any[] = [];
   public termUser: any;
+  public serviceID = 0;
   public connections: any[] = [];
   public connectionType: string;
   public connectionComment = new FormControl();
   public nocs: any[] = [];
+  public ntts: any[] = [];
+  public services: any[] = [];
+  public needInternet = false;
+  public needCrossConnect = false;
+  public needComment = false;
 
 
   constructor(
@@ -30,6 +37,7 @@ export class ConnectionComponent implements OnInit {
     private connectionService: ConnectionService,
     private userService: UserService,
     private groupService: GroupService,
+    private serviceService: ServiceService,
     private router: Router
   ) {
   }
@@ -46,34 +54,54 @@ export class ConnectionComponent implements OnInit {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
-    this.commonService.getService().then(res => {
-      this.connections = res.connection;
-      console.log(res);
+    this.serviceService.getAddAllow().then(service => {
+      this.services = service.service;
+      console.log(service);
+    });
+    this.commonService.getTemplate().then(res => {
+      this.connections = res.connections;
+      this.ntts = res.ntts;
     });
     this.commonService.getNOC().then(res => {
       this.nocs = res.noc;
-      console.log(res);
-    });
-
-    // Groupに属するユーザをすべて取得する
-    // Todo: #2 Issue
-    this.userService.getGroup().then(response => {
-      this.user = response.user;
     });
   }
 
+  changeStatus(internet, crossConnect, comment: boolean) {
+    this.needInternet = internet;
+    this.needCrossConnect = crossConnect;
+    this.needComment = comment;
+  }
+
   request() {
+    if (this.needInternet) {
+      if (this.termIP.value === '') {
+        this.commonService.openBar('終端先アドレスが入力されていません。', 5000);
+        return;
+      }
+      if (this.nttID === '') {
+        this.commonService.openBar('フレッツ光に関する質問が入力されていません。。', 5000);
+        return;
+      }
+    }
+    if (this.needComment && this.connectionComment.value === '') {
+      this.commonService.openBar('その他項目が入力されていません。', 5000);
+      return;
+    }
+
     const body = {
-      user_id: parseInt(this.termUser, 10),
-      connection_type: this.connectionType,
+      address: this.address.value,
+      connection_template_id: parseInt(this.connectionType, 10),
       connection_comment: this.connectionComment.value,
-      ntt: this.ntt,
-      noc: this.noc,
+      ntt_template_id: parseInt(this.nttID, 10),
+      noc_id: parseInt(this.nocID, 10),
       term_ip: this.termIP.value,
       monitor: this.monitor
     };
+    console.log(body);
+    console.log(this.serviceID);
 
-    this.connectionService.add(body).then(() => {
+    this.connectionService.add(this.serviceID, body).then(() => {
       console.log('---response---');
       this.commonService.openBar('申請完了', 5000);
       this.router.navigate(['/dashboard']).then();

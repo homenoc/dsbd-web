@@ -50,6 +50,22 @@ export class ServiceService {
     });
   }
 
+  getAddAllow(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/group/service/add_allow', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
+  }
+
   confirm(body): Promise<any> {
     return this.http.post(environment.api.url + environment.api.path + '/group/service/confirm',
       body, {
