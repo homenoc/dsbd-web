@@ -27,7 +27,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {NetworkComponent} from './registration/network/network.component';
+import {ServiceComponent} from './registration/service/service.component';
 import {ConnectionComponent} from './registration/connection/connection.component';
 import {MatSelectModule} from '@angular/material/select';
 import {SupportComponent} from './support/support.component';
@@ -49,7 +49,7 @@ import {PaymentComponent} from './member/payment/payment.component';
     InitComponent,
     InfoComponent,
     RegistrationComponent,
-    NetworkComponent,
+    ServiceComponent,
     ConnectionComponent,
     SupportComponent,
     ChatComponent,
