@@ -321,7 +321,7 @@ export class ServiceComponent implements OnInit {
           return;
         }
       }
-      if (this.checkV4 && this.plan.value.v4.length) {
+      if (this.checkV4 && this.plan.value.v4.length === 0) {
         this.commonService.openBar('Planが設定されていません。', 5000);
         return;
       }
