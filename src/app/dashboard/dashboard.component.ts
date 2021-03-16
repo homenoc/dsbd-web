@@ -26,7 +26,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public notice = false;
-  public open = false;
   public lock = false;
   public registration = false;
   public support = false;
@@ -47,7 +46,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.support = true;
             this.groupStatus = group.status;
             console.log(group);
-            this.open = group.open;
             this.lock = group.lock;
           }).catch();
         } else {
