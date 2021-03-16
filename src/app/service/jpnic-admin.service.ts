@@ -17,7 +17,7 @@ export class JpnicAdminService {
   }
 
   add(body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/group/network/jpnic/admin',
+    return this.http.post(environment.api.url + environment.api.path + '/group/service/jpnic/admin',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class JpnicAdminService {
   }
 
   get(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/group/network/jpnic/admin', {
+    return this.http.get(environment.api.url + environment.api.path + '/group/service/jpnic/admin', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         USER_TOKEN: sessionStorage.getItem('ClientID'),
