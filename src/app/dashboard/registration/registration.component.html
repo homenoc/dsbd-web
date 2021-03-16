@@ -1,6 +1,10 @@
 <div class="main">
-  <ng-container *ngIf="lock">
-    <h2>本登録の前に、設定からユーザ情報の設定をしてください。</h2>
+  <ng-container *ngIf="groupExamination">
+    <h1>初期審査中</h1>
+    <br>
+    <br>
+    <p><b>審査には時間がかかる可能性があります。</b></p>
+    <p><b>1ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
   </ng-container>
   <ng-container *ngIf="status === 2">
     <h1>審査中</h1>
