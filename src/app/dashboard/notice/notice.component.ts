@@ -23,7 +23,7 @@ export class NoticeComponent implements OnInit {
     this.noticeService.get().then(response => {
       const info = response;
       this.info = info.notice;
-      if (info.notice.length === 0) {
+      if (info.notice === null || info.notice.length === 0) {
         this.none = true;
       }
     });
