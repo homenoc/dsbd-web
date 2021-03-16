@@ -61,19 +61,15 @@ export class ServiceComponent implements OnInit {
   public jpnicTech: FormGroup;
   public plan: FormGroup;
   public jpnicAdmin = new FormGroup({
-    group_name: new FormControl(''),
-    group_name_en: new FormControl(''),
+    name: new FormControl(''),
+    name_en: new FormControl(''),
     org: new FormControl(''),
     org_en: new FormControl(''),
     postcode: new FormControl(''),
     address: new FormControl(''),
     address_en: new FormControl(''),
-    name: new FormControl(''),
-    name_en: new FormControl(''),
     dept: new FormControl(''),
     dept_en: new FormControl(''),
-    pos: new FormControl(''),
-    pos_en: new FormControl(''),
     tel: new FormControl(''),
     fax: new FormControl(''),
     country: new FormControl(''),
@@ -143,19 +139,15 @@ export class ServiceComponent implements OnInit {
 
   get optionJPNICForm(): FormGroup {
     return this.formBuilder.group({
-      group_name: [''],
-      group_name_en: [''],
+      name: [''],
+      name_en: [''],
       org: [''],
       org_en: [''],
       postcode: [''],
       address: [''],
       address_en: [''],
-      name: [''],
-      name_en: [''],
       dept: [''],
       dept_en: [''],
-      pos: [''],
-      pos_en: [''],
       tel: [''],
       fax: [''],
       country: [''],
