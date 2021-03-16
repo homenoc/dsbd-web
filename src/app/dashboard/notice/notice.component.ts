@@ -28,4 +28,16 @@ export class NoticeComponent implements OnInit {
       }
     });
   }
+
+  getStringFromDate(before: string): string {
+    let str = '無期限';
+    if (!before.match(/9999-12-31/)) {
+      const dateNumberUTC = Date.parse(before);
+      const dateJST = new Date(dateNumberUTC + (9 * 60 * 60 * 1000));
+      str = dateJST.getFullYear() + '-' + ('0' + (1 + dateJST.getMonth())).slice(-2) + '-' +
+        ('0' + dateJST.getDate()).slice(-2) + ' ' + ('0' + dateJST.getHours()).slice(-2) + ':' +
+        ('0' + dateJST.getMinutes()).slice(-2) + ':' + ('0' + dateJST.getSeconds()).slice(-2);
+    }
+    return str;
+  }
 }
