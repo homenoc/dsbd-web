@@ -98,12 +98,12 @@
     <form [formGroup]="jpnicAdmin">
       <mat-form-field appearance="fill">
         <mat-label>GroupName/個人名 (必須)</mat-label>
-        <input matInput [type]="hide ? 'name' : 'text'" formControlName="group_name">
+        <input matInput [type]="hide ? 'name' : 'text'" formControlName="name">
       </mat-form-field>
       <br>
       <mat-form-field appearance="fill">
         <mat-label>GroupName/個人名(English) (必須)</mat-label>
-        <input matInput [type]="hide ? 'name_en' : 'text'" formControlName="group_name_en">
+        <input matInput [type]="hide ? 'name_en' : 'text'" formControlName="name_en">
       </mat-form-field>
       <br>
       <mat-form-field appearance="fill">
@@ -142,16 +142,6 @@
       </mat-form-field>
       <br>
       <mat-form-field appearance="fill">
-        <mat-label>役職</mat-label>
-        <input matInput [type]="hide ? 'pos' : 'text'" formControlName="pos">
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="fill">
-        <mat-label>役職(English)</mat-label>
-        <input matInput [type]="hide ? 'pos_en' : 'text'" formControlName="pos_en">
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="fill">
         <mat-label>電話番号 (必須)</mat-label>
         <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
       </mat-form-field>
@@ -176,14 +166,14 @@
           <mat-form-field appearance="fill">
             <mat-label>GroupName/個人名 (必須)</mat-label>
             <div [formGroupName]="i">
-              <input matInput [type]="hide ? 'name' : 'text'" formControlName="group_name">
+              <input matInput [type]="hide ? 'name' : 'text'" formControlName="name">
             </div>
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
             <mat-label>GroupName/個人名(English) (必須)</mat-label>
             <div [formGroupName]="i">
-              <input matInput [type]="hide ? 'name_en' : 'text'" formControlName="group_name_en">
+              <input matInput [type]="hide ? 'name_en' : 'text'" formControlName="name_en">
             </div>
           </mat-form-field>
           <br>
@@ -233,20 +223,6 @@
             <mat-label>部署名(English)</mat-label>
             <div [formGroupName]="i">
               <input matInput [type]="hide ? 'dept_en' : 'text'" formControlName="dept_en">
-            </div>
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>役職</mat-label>
-            <div [formGroupName]="i">
-              <input matInput [type]="hide ? 'pos' : 'text'" formControlName="pos">
-            </div>
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>役職(English)</mat-label>
-            <div [formGroupName]="i">
-              <input matInput [type]="hide ? 'pos_en' : 'text'" formControlName="pos_en">
             </div>
           </mat-form-field>
           <br>
