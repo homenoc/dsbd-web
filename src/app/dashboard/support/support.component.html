@@ -11,8 +11,8 @@
         <ng-container *ngFor="let d of info">
           <mat-card class="card">
             <mat-card-header>
-              <mat-card-title>{{d.ID}}</mat-card-title>
-              <mat-card-subtitle>GID: {{d.group_id}}</mat-card-subtitle>
+              <mat-card-title>{{d.title}}</mat-card-title>
+              <mat-card-subtitle>作成者: {{d.username}}</mat-card-subtitle>
               <mat-card-subtitle>
                 <mat-chip-list>
                   <ng-container>
@@ -22,8 +22,7 @@
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              <p>{{d.title}}</p>
-              <button mat-button color="primary" (click)="chatPage(d.ID)">Chat</button>
+              <button mat-button color="primary" (click)="chatPage(d.id)">Chat</button>
             </mat-card-content>
           </mat-card>
         </ng-container>

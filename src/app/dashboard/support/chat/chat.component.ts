@@ -2,8 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SupportService} from '../../../service/support.service';
-import {CommonService} from '../../../service/common.service';
-import {UserService} from '../../../service/user.service';
 
 @Component({
   selector: 'app-chat',
@@ -14,15 +12,14 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public comment = new FormControl();
   public ticketID: number;
-  public chat: any;
+  public ticket: any;
   public user: any[] = [];
   public myName = sessionStorage.getItem('name');
+  public loading = true;
 
   constructor(
     public supportService: SupportService,
     private route: ActivatedRoute,
-    private commonService: CommonService,
-    private userService: UserService
   ) {
   }
 
@@ -31,31 +28,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.supportService.chatMessage = null;
     this.ticketID = +this.route.snapshot.paramMap.get('id');
     this.supportService.openWebSocket(this.ticketID);
-    this.userService.getGroup().then(responseUser => {
-      this.user = responseUser.user;
-      console.log(this.user);
-      this.supportService.get(this.ticketID).then(response => {
-        this.chat = response.support_chat;
-        console.log(this.chat);
-      });
+    this.supportService.get(this.ticketID).then(response => {
+      this.ticket = response.tickets;
+      this.loading = false;
+      console.log(this.ticket);
     });
+    // });
   }
 
   ngOnDestroy() {
     this.supportService.closeWebSocket();
-  }
-
-  public getName(id): string {
-    if (id === 0) {
-      return '運営';
-    }
-
-    for (const u of this.user) {
-      if (u.id === id) {
-        return u.name;
-      }
-    }
-    return 'no name';
   }
 
   public sendMessage() {

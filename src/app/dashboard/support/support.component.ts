@@ -26,10 +26,10 @@ export class SupportComponent implements OnInit {
   ngOnInit(): void {
     this.supportService.getAll().then(response => {
       console.log(response);
-      const info = response;
-      this.info = info.support_ticket;
+      this.info = response.tickets;
       this.lock = false;
     });
+    console.log(this.info);
   }
 
   chatPage(id) {
