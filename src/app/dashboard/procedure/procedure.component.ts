@@ -17,19 +17,17 @@ export class ProcedureComponent implements OnInit {
   public userInfo: any;
   public groupLock = true;
   public userLock = false;
+  public userID = 0;
 
 
   ngOnInit(): void {
-    this.userService.getLoginUser().then(user => {
-      this.userInfo = user;
-      if (this.userInfo.group_id !== 0 && this.userInfo.level < 2) {
-        this.groupLock = false;
-      }
-      if (this.userInfo.status === 0) {
-        this.userLock = true;
-      }
-      console.log(user);
-    });
+    const userData = JSON.parse(sessionStorage.getItem('user'));
+    this.userID = userData.id;
+    if (userData.group_id !== 0 && userData.level < 2) {
+      this.groupLock = false;
+    }
+    if (userData.level > 2) {
+      this.userLock = true;
+    }
   }
-
 }
