@@ -28,15 +28,15 @@ export class SupportService {
       '?id=' + id + '&user_token=' + sessionStorage.getItem('ClientID') + '&access_token=' +
       sessionStorage.getItem('AccessToken'));
     this.websocket.onopen = (event) => {
-      console.log(event);
       this.chatMessage = [];
     };
 
     this.websocket.onmessage = (event) => {
       const json = JSON.parse(event.data);
       this.chatMessage.push({
-        created_at: json.created_at,
+        time: json.time,
         user_id: json.user_id,
+        username: json.username,
         group_id: json.group_id,
         admin: json.admin,
         message: json.message
@@ -44,6 +44,7 @@ export class SupportService {
     };
     this.websocket.onclose = (event) => {
       console.log(event);
+      this.commonService.openBar('WebSocket接続に失敗しました。リロードしてください。', 5000);
     };
   }
 
