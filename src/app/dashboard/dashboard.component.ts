@@ -6,6 +6,7 @@ import {CommonService} from '../service/common.service';
 import {AuthService} from '../service/auth.service';
 import {Router} from '@angular/router';
 import {GroupService} from '../service/group.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private groupService: GroupService,
     private sidenavService: SidenavService,
     private commonService: CommonService,
+    private cookieService: CookieService,
     public authService: AuthService,
     private router: Router,
   ) {
@@ -32,25 +34,33 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public user;
   public groupStatus;
   public groupID = 0;
+  public userID = 0;
 
   ngOnInit() {
     this.userService.getLoginUser().then(user => {
       this.groupID = user.group_id;
+      sessionStorage.setItem('user', JSON.stringify(user));
       if (user.group_id === 0) {
         this.router.navigate(['/dashboard/registration']).then();
       } else {
+        this.registration = true;
+        this.lock = true;
+        this.groupStatus = user.group.status;
+        this.lock = user.group.lock;
+
+
         console.log(user);
-        if (user.group_id !== 0) {
-          this.registration = true;
-          this.groupService.get().then((group) => {
-            this.support = true;
-            this.groupStatus = group.status;
-            console.log(group);
-            this.lock = group.lock;
-          }).catch();
-        } else {
-          this.support = false;
-        }
+        // if (user.group_id !== 0) {
+        //   this.registration = true;
+        //   this.groupService.get().then((group) => {
+        //     this.support = true;
+        //     this.groupStatus = group.status;
+        //     console.log(group);
+        //     this.lock = group.lock;
+        //   }).catch();
+        // } else {
+        //   this.support = false;
+        // }
       }
     });
   }

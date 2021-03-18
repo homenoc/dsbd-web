@@ -47,4 +47,17 @@ export class GroupService {
       return response;
     });
   }
+
+  getAll(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/group/all', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      })
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    });
+  }
 }
