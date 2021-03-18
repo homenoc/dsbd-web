@@ -40,6 +40,7 @@ import {UserComponent} from './procedure/user/user.component';
 import {UserDetailComponent} from './procedure/user-detail/user-detail.component';
 import {MemberComponent} from './member/member.component';
 import {PaymentComponent} from './member/payment/payment.component';
+import {CookieService} from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -106,7 +107,7 @@ import {PaymentComponent} from './member/payment/payment.component';
     CdkColumnDef
   ],
   entryComponents: [],
-  providers: [CdkColumnDef]
+  providers: [CdkColumnDef, CookieService]
 })
 export class DashboardModule {
 }
