@@ -29,20 +29,8 @@ export class UserDetailComponent implements OnInit {
   public password = new FormControl();
   public passwordVerify = new FormControl();
   public user = new FormGroup({
-    org: new FormControl(''),
-    org_en: new FormControl(''),
-    postcode: new FormControl(''),
-    address: new FormControl(''),
-    address_en: new FormControl(''),
     name: new FormControl(''),
     name_en: new FormControl(''),
-    dept: new FormControl(''),
-    dept_en: new FormControl(''),
-    pos: new FormControl(''),
-    pos_en: new FormControl(''),
-    tel: new FormControl(''),
-    fax: new FormControl(''),
-    country: new FormControl(''),
   });
   public name: string;
   public lock = true;
@@ -57,20 +45,8 @@ export class UserDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.userService.get(this.id).then(response => {
       this.user.patchValue({
-        org: response.org,
-        org_en: response.org_en,
-        postcode: response.postcode,
-        address: response.address,
-        address_en: response.address_en,
         name: response.name,
         name_en: response.name_en,
-        dept: response.dept,
-        dept_en: response.dept_en,
-        pos: response.pos,
-        pos_en: response.pos_en,
-        tel: response.tel,
-        fax: response.fax,
-        country: response.country,
       });
       this.userInfo = response;
       this.lock = false;
@@ -81,7 +57,7 @@ export class UserDetailComponent implements OnInit {
 
   changeInfo(): void {
     const body = JSON.stringify(this.user.getRawValue());
-    this.userService.update(0, body).then();
+    this.userService.update(this.id, body).then();
   }
 
   changeMail(): void {
@@ -98,7 +74,7 @@ export class UserDetailComponent implements OnInit {
     const body = {
       email: this.email.value
     };
-    this.userService.update(0, body).then(response => {
+    this.userService.update(this.id, body).then(response => {
       this.commonService.openBar('OK', 5000);
       location.reload();
     });
@@ -110,7 +86,7 @@ export class UserDetailComponent implements OnInit {
       const body = {
         pass: passHash
       };
-      this.userService.update(0, body).then(response => {
+      this.userService.update(this.id, body).then(response => {
         this.commonService.openBar('OK', 5000);
         location.reload();
       });
