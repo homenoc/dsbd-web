@@ -10,9 +10,6 @@
       <mat-card-content>
         <mat-card-subtitle>
           <mat-chip-list>
-            <ng-container *ngIf="d.tech">
-              <mat-chip color="primary" selected>技術管理者</mat-chip>
-            </ng-container>
             <ng-container *ngIf="d.status === 0">
               <mat-chip color="warn" selected>情報未登録</mat-chip>
             </ng-container>

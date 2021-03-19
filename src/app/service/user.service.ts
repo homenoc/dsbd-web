@@ -41,6 +41,7 @@ export class UserService {
     })
       .toPromise().then(r => {
         const response: any = r;
+        location.reload();
         return response;
       }).catch(error => {
         sessionStorage.setItem('error', JSON.stringify(error));
