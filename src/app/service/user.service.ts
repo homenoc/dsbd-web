@@ -16,24 +16,29 @@ export class UserService {
   ) {
   }
 
-  create(body, type): Promise<any> {
-    let header = {};
-    if (type === 0) {
-      header = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        })
-      };
-    } else if (type === 1) {
-      header = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          USER_TOKEN: sessionStorage.getItem('ClientID'),
-          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
-        })
-      };
-    }
-    return this.http.post(environment.api.url + environment.api.path + '/user', body, header)
+  create(body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/user', body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    })
+      .toPromise().then(r => {
+        const response: any = r;
+        return response;
+      }).catch(error => {
+        sessionStorage.setItem('error', JSON.stringify(error));
+        this.router.navigate(['/error']).then();
+      });
+  }
+
+  createGroup(body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/user/' + body.group_id, body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      })
+    })
       .toPromise().then(r => {
         const response: any = r;
         return response;
