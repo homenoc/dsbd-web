@@ -49,16 +49,16 @@ export class UserAddComponent implements OnInit {
       return;
     }
 
-    this.userService.createGroup({
+    const body = {
       group_id: this.userInfo.group_id,
-      user: true,
-      leve: this.group.value.level,
+      level: this.group.value.level,
       email: this.group.value.email,
       name: this.group.value.name,
       name_en: this.group.value.nameEn,
-    }).then(() => {
+    };
+    console.log(body);
+    this.userService.createGroup(body).then(() => {
       this.commonService.openBar('OK', 5000);
-      location.reload();
     });
   }
 
