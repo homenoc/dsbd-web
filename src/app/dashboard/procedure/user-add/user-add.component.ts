@@ -20,28 +20,22 @@ export class UserAddComponent implements OnInit {
 
   public lock = true;
   public userInfo: any = {};
-  public groupInfo: any = {};
   public group = new FormGroup({
     email: new FormControl(''),
     name: new FormControl(''),
     nameEn: new FormControl(''),
+    level: new FormControl(4),
   });
 
   ngOnInit(): void {
-    this.userService.getLoginUser().then(d => {
-      if (d.status !== 0) {
-        this.lock = false;
-      }
-      this.userInfo = d;
-      if (this.userInfo.group_id !== 0) {
-        this.groupService.get().then(group => {
-          this.groupInfo = group;
-        });
-      }
-    });
+    const userData = JSON.parse(sessionStorage.getItem('user'));
+    this.userInfo = userData;
+    if (userData.group_id !== 0 && userData.level < 3) {
+      this.lock = false;
+    }
   }
 
-  addUser(groupHandle: boolean): void {
+  addUser(): void {
     if (this.group.value.email === '') {
       this.commonService.openBar('invalid email', 5000);
       return;
@@ -55,15 +49,14 @@ export class UserAddComponent implements OnInit {
       return;
     }
 
-    this.userService.create({
-      group_id: this.groupInfo.id,
+    this.userService.createGroup({
+      group_id: this.userInfo.group_id,
       user: true,
-      level: 2,
+      leve: this.group.value.level,
       email: this.group.value.email,
       name: this.group.value.name,
       name_en: this.group.value.nameEn,
-      group_handle: groupHandle
-    }, 1).then(() => {
+    }).then(() => {
       this.commonService.openBar('OK', 5000);
       location.reload();
     });

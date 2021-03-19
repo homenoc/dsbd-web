@@ -1,58 +1,38 @@
 <div class="main">
-  <h1>ユーザ追加</h1>
-  <br>
-  <p>このページでユーザをグループに登録できます。</p>
-  <br>
   <ng-container *ngIf="lock">
     <h3>現在、このユーザではグループ作成が許可されていません。</h3>
   </ng-container>
   <ng-container *ngIf="!lock">
-    <mat-accordion>
-      <mat-expansion-panel class="card">
-        <mat-expansion-panel-header>
-          <mat-panel-title>ユーザの追加</mat-panel-title>
-        </mat-expansion-panel-header>
-        <form [formGroup]="group">
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
-          </mat-form-field>
-          <br>
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
-          </mat-form-field>
-        </form>
+    <mat-card class="card">
+      <h1>ユーザ追加</h1>
+      <br>
+      <p>このページでユーザをグループに登録できます。</p>
+      <br>
+      <form [formGroup]="group">
+        <mat-form-field>
+          <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
+        </mat-form-field>
         <br>
-        <button mat-stroked-button color="primary" (click)="addUser(false)">Update</button>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <br>
-    <mat-accordion>
-      <mat-expansion-panel class="card">
-        <mat-expansion-panel-header>
-          <mat-panel-title>グループハンドル用のユーザ追加</mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>グループハンドル用のユーザでは、システム上一つのユーザアカウントとみなしているため、</p>
-        <p>すでに登録されているユーザと同一のメールアドレスは登録できないので注意してください。</p>
-        <form [formGroup]="group">
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="Email address" type="text" formControlName="email"/>
-          </mat-form-field>
-          <br>
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="グループ名" type="text" formControlName="name"/>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <mat-form-field>
-            <input class="full-width" matInput placeholder="グループ名(English)" type="text" formControlName="nameEn"/>
-          </mat-form-field>
-        </form>
+        <mat-form-field>
+          <input class="full-width" matInput placeholder="名前" type="text" formControlName="name"/>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;
+        <mat-form-field>
+          <input class="full-width" matInput placeholder="名前(English)" type="text" formControlName="nameEn"/>
+        </mat-form-field>
         <br>
-        <button mat-stroked-button color="primary" (click)="addUser(true)">Update</button>
-      </mat-expansion-panel>
-    </mat-accordion>
+        <mat-form-field appearance="fill">
+          <mat-label>権限レベル</mat-label>
+          <mat-select formControlName="level" required>
+            <mat-option [value]="2">追加・変更・閲覧権限<b>(Master)</b></mat-option>
+            <mat-option [value]="3">閲覧権限のみ<b>(User)</b></mat-option>
+            <mat-option [value]="4">障害通知のみ</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+      </form>
+      <br>
+      <button mat-stroked-button color="primary" (click)="addUser()">Update</button>
+    </mat-card>
   </ng-container>
 </div>

@@ -58,7 +58,7 @@ export class RegistrationComponent implements OnInit {
           name_en: this.nameEn.value,
           email: this.email.value,
           pass: passHash
-        }, 0).then(() => {
+        }).then(() => {
         });
       }
     }
