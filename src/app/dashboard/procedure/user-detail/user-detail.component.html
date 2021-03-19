@@ -33,57 +33,8 @@
             <td>{{userInfo.email}}</td>
           </tr>
           <tr>
-            <th>組織名</th>
-            <td>{{userInfo.org}}</td>
-          </tr>
-          <tr>
-            <th>組織名(English)</th>
-            <td>{{userInfo.org_en}}</td>
-          </tr>
-          <tr>
-            <th>郵便番号</th>
-            <td>{{userInfo.postcode}}</td>
-          </tr>
-          <tr>
-            <th>住所</th>
-            <td>{{userInfo.address}}</td>
-          </tr>
-          <tr>
-            <th>住所(English)</th>
-            <td>{{userInfo.address_en}}</td>
-          </tr>
-          <tr>
-            <th>部署名</th>
-            <td>{{userInfo.dept}}</td>
-          </tr>
-          <tr>
-            <th>部署名(English)</th>
-            <td>{{userInfo.dept_en}}</td>
-          </tr>
-          <tr>
-            <th>役職</th>
-            <td>{{userInfo.pos}}</td>
-          </tr>
-          <tr>
-            <th>役職(English)</th>
-            <td>{{userInfo.pos_en}}</td>
-          </tr>
-          <tr>
-            <th>電話番号</th>
-            <td>{{userInfo.tel}}</td>
-          </tr>
-          <tr>
-          <tr>
-            <th>FAX番号</th>
-            <td>{{userInfo.fax}}</td>
-          </tr>
-          <tr>
-            <th>居住国</th>
-            <td>{{userInfo.country}}</td>
-          </tr>
-          <tr>
-            <th>User Status</th>
-            <td>{{userInfo.status}}</td>
+            <th>メール認証</th>
+            <td>{{userInfo.mail_verify}}</td>
           </tr>
           <tr>
             <th>User Level</th>
@@ -134,70 +85,13 @@
         <p><b *ngIf="userInfo.group_id ===0">必須項目は必ず埋めてください</b></p>
         <form [formGroup]="user">
           <mat-form-field appearance="fill">
-            <mat-label>組織名</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'org' : 'text'" formControlName="org">
+            <mat-label>名前</mat-label>
+            <input matInput [type]="hide ? 'name' : 'text'" formControlName="name">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill">
-            <mat-label>組織名(English)</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>郵便番号</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill" [style.width.px]=500>
-            <mat-label>住所</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'address' : 'text'" formControlName="address">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill" [style.width.px]=500>
-            <mat-label>住所(English)</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'address_en' : 'text'" formControlName="address_en">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>部署名</mat-label>
-            <input matInput [type]="hide ? 'dept' : 'text'" formControlName="dept">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>部署名(English)</mat-label>
-            <input matInput [type]="hide ? 'dept_en' : 'text'" formControlName="dept_en">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>役職</mat-label>
-            <input matInput [type]="hide ? 'pos' : 'text'" formControlName="pos">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>役職(English)</mat-label>
-            <input matInput [type]="hide ? 'pos_en' : 'text'" formControlName="pos_en">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>電話番号</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>FAX番号</mat-label>
-            <input matInput [type]="hide ? 'fax' : 'text'" formControlName="fax">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>居住国</mat-label>
-            <mat-label *ngIf="userInfo.group_id ===0">(必須)</mat-label>
-            <input matInput [type]="hide ? 'country' : 'text'" formControlName="country">
+            <mat-label>名前(English)</mat-label>
+            <input matInput [type]="hide ? 'name_en' : 'text'" formControlName="name_en">
           </mat-form-field>
           <br>
         </form>
