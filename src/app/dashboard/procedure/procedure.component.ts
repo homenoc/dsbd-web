@@ -14,7 +14,6 @@ export class ProcedureComponent implements OnInit {
   }
 
   public open = true;
-  public userInfo: any;
   public groupLock = true;
   public userLock = false;
   public userID = 0;
