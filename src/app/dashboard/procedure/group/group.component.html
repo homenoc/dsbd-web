@@ -29,6 +29,39 @@
             <td>{{groupInfo.org}}</td>
           </tr>
           <tr>
+            <th>団体名(English)</th>
+            <td>{{groupInfo.org_en}}</td>
+          </tr>
+          <tr>
+            <th>郵便番号</th>
+            <td>{{groupInfo.postcode}}</td>
+          </tr>
+          <tr>
+            <th>住所</th>
+            <td>{{groupInfo.address}}</td>
+          </tr>
+          <tr>
+            <th>住所(English)</th>
+            <td>{{groupInfo.address_en}}</td>
+          </tr>
+          <tr>
+            <th>電話</th>
+            <td>{{groupInfo.address}}</td>
+          </tr>
+          <tr>
+            <th>居住国</th>
+            <td>{{groupInfo.country}}</td>
+          </tr>
+          <tr>
+            <th>審査</th>
+            <ng-container *ngIf="groupInfo.status">
+              <td>審査済み</td>
+            </ng-container>
+            <ng-container *ngIf="!groupInfo.status">
+              <td>未審査</td>
+            </ng-container>
+          </tr>
+          <tr>
             <th>Status</th>
             <td>{{groupInfo.status}}</td>
           </tr>
@@ -37,6 +70,49 @@
             <td>{{groupInfo.student}}</td>
           </tr>
         </table>
+        <br>
+      </mat-tab>
+      <mat-tab label="グループ情報の変更">
+        <p>グループ情報を変更したい箇所のみ記入してください。</p>
+        <p><b *ngIf="groupInfo.id === 0">必須項目は必ず埋めてください</b></p>
+        <form [formGroup]="group">
+          <mat-form-field appearance="fill">
+            <mat-label>団体名</mat-label>
+            <input matInput [type]="hide ? 'org' : 'text'" formControlName="org">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>団体名(English)</mat-label>
+            <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>郵便番号</mat-label>
+            <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>住所</mat-label>
+            <input matInput [type]="hide ? 'address' : 'text'" formControlName="address">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>住所(English)</mat-label>
+            <input matInput [type]="hide ? 'address_en' : 'text'" formControlName="address_en">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>電話番号</mat-label>
+            <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>居住国</mat-label>
+            <input matInput [type]="hide ? 'country' : 'text'" formControlName="country">
+          </mat-form-field>
+          <br>
+        </form>
+        <button mat-stroked-button color="primary" (click)="changeInfo()">Update</button>
         <br>
       </mat-tab>
     </mat-tab-group>
