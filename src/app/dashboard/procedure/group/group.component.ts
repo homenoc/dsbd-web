@@ -12,29 +12,34 @@ export class GroupComponent implements OnInit {
 
   constructor(
     public groupService: GroupService,
-    public userService: UserService,
   ) {
   }
 
   public group = new FormGroup({
-    email: new FormControl(''),
-    name: new FormControl(''),
-    nameEn: new FormControl(''),
+    org: new FormControl(''),
+    org_en: new FormControl(''),
+    postcode: new FormControl(''),
+    address: new FormControl(''),
+    address_en: new FormControl(''),
+    tel: new FormControl(''),
+    country: new FormControl(''),
   });
   public groupInfo: any;
   public userInfo: any;
   public lock = true;
+  public hide = true;
 
 
   ngOnInit(): void {
-    this.userService.getLoginUser().then(user => {
-      if (user.level <= 1) {
-        this.groupService.get().then(group => {
-          console.log(group);
-          this.groupInfo = group;
-          this.lock = false;
-        });
-      }
+    this.groupService.get().then(group => {
+      console.log(group);
+      this.groupInfo = group.group;
+      this.lock = false;
     });
+  }
+
+  changeInfo(): void {
+    const body = JSON.stringify(this.group.getRawValue());
+    this.groupService.update(body).then();
   }
 }

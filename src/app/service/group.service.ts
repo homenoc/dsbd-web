@@ -35,6 +35,23 @@ export class GroupService {
     });
   }
 
+  update(data): Promise<any> {
+    return this.http.put(environment.api.url + environment.api.path + '/group',
+      data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          USER_TOKEN: sessionStorage.getItem('ClientID'),
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
+  }
+
   get(): Promise<any> {
     return this.http.get(environment.api.url + environment.api.path + '/group', {
       headers: new HttpHeaders({
