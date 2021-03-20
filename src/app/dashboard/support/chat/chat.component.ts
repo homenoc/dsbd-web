@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.loading = false;
       console.log(this.ticket);
     });
-    // });
   }
 
   ngOnDestroy() {
