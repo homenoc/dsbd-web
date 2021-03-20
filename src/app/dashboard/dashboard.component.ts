@@ -31,10 +31,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public lock = false;
   public registration = false;
   public support = false;
-  public user;
   public groupStatus;
   public groupID = 0;
   public userID = 0;
+  public userLevel = 0;
 
   ngOnInit() {
     this.userService.getLoginUser().then(user => {
@@ -47,20 +47,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.lock = true;
         this.groupStatus = user.group.status;
         this.lock = user.group.lock;
-
+        this.userLevel = user.level;
 
         console.log(user);
-        // if (user.group_id !== 0) {
-        //   this.registration = true;
-        //   this.groupService.get().then((group) => {
-        //     this.support = true;
-        //     this.groupStatus = group.status;
-        //     console.log(group);
-        //     this.lock = group.lock;
-        //   }).catch();
-        // } else {
-        //   this.support = false;
-        // }
       }
     });
   }

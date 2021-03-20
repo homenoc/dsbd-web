@@ -2,11 +2,14 @@
   <mat-sidenav #sideNav mode="side" opened>
     <mat-nav-list>
       <a mat-list-item routerLink="notice" i18n="@@notice">お知らせ</a>
-      <a mat-list-item *ngIf="groupID !== 0" routerLink="info" i18n="@@info">接続情報</a>
-      <!--      <a mat-list-item *ngIf="open" routerLink="member" i18n="@@member">会員</a>-->
-      <br>
-      <a mat-list-item *ngIf="groupID === 0 || groupStatus !== 0" routerLink="registration" i18n="@@registration">申込</a>
-      <br>
+      <ng-container *ngIf="0 < userLevel && userLevel < 4">
+        <a mat-list-item *ngIf="groupID !== 0 && userLevel !==3" routerLink="info" i18n="@@info">接続情報</a>
+        <!--      <a mat-list-item *ngIf="open" routerLink="member" i18n="@@member">会員</a>-->
+        <br>
+        <a mat-list-item *ngIf="groupID === 0 || groupStatus !== 0" routerLink="registration"
+           i18n="@@registration">申込</a>
+        <br>
+      </ng-container>
       <br>
       <a mat-list-item *ngIf="groupID !== 0" routerLink="support" i18n="@@registration">サポート</a>
       <a mat-list-item routerLink="procedure" style="font-size:10pt;" i18n="@@info">各種手続き</a>

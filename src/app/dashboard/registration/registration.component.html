@@ -1,23 +1,31 @@
 <div class="main">
-  <ng-container *ngIf="groupExamination">
-    <h1>初期審査中</h1>
-    <br>
-    <br>
-    <p><b>審査には時間がかかる可能性があります。</b></p>
-    <p><b>1ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
+  <ng-container *ngIf="level === 0">
+    <h1></h1>
   </ng-container>
-  <ng-container *ngIf="status === 2">
-    <h1>審査中</h1>
-    <br>
-    <br>
-    <p><b>審査には時間がかかる可能性があります。</b></p>
-    <p><b>2ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
+  <ng-container *ngIf="0 < level && level < 3; else noAuth">
+    <ng-container *ngIf="groupExamination">
+      <h1>初期審査中</h1>
+      <br>
+      <br>
+      <p><b>審査には時間がかかる可能性があります。</b></p>
+      <p><b>1ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
+    </ng-container>
+    <ng-container *ngIf="status === 2">
+      <h1>審査中</h1>
+      <br>
+      <br>
+      <p><b>審査には時間がかかる可能性があります。</b></p>
+      <p><b>2ヶ月以上経っても審査中が終わらない場合は、サポートにて連絡してください。</b></p>
+    </ng-container>
+    <ng-container *ngIf="status === 4">
+      <h1>開通作業中</h1>
+      <br>
+      <br>
+      <p><b>開通作業の際に、ネットワーク構成によってはかなり時間がかかる可能性があります。</b></p>
+      <p><b>構成内容によって、1ヶ月以上かかる可能性があります。</b></p>
+    </ng-container>
   </ng-container>
-  <ng-container *ngIf="status === 4">
-    <h1>開通作業中</h1>
-    <br>
-    <br>
-    <p><b>開通作業の際に、ネットワーク構成によってはかなり時間がかかる可能性があります。</b></p>
-    <p><b>構成内容によって、1ヶ月以上かかる可能性があります。</b></p>
-  </ng-container>
+  <ng-template #noAuth>
+    <h1>現在、ログインしているユーザでは、申請する権限がありません。</h1>
+  </ng-template>
 </div>
