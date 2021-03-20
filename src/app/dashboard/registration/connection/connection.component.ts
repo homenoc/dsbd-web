@@ -45,12 +45,8 @@ export class ConnectionComponent implements OnInit {
   ngOnInit(): void {
     // アクセス制御
     this.userService.getLoginUser().then(user => {
-      if (user.status && user.group_id === 0 && user.status === 0) {
-        this.router.navigate(['/dashboard/registration']).then();
-      }
-    });
-    this.groupService.get().then(group => {
-      if (!group.pass || !(group.status === 3)) {
+      if ((!(0 < user.level && user.level < 3)) || (user.group_id === 0 && user.status === 0) ||
+        (!user.group.pass || !(user.group.status === 3))) {
         this.router.navigate(['/dashboard/registration']).then();
       }
     });
