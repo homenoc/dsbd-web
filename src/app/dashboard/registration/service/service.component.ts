@@ -132,6 +132,24 @@ export class ServiceComponent implements OnInit {
     this.jpnicTechProcess.removeAt(idx);
   }
 
+  copyJPNIC() {
+    this.jpnicTechProcess.push(this.formBuilder.group({
+      org: [this.jpnicAdmin.value.org],
+      org_en: [this.jpnicAdmin.value.org_en],
+      postcode: [this.jpnicAdmin.value.postcode],
+      address: [this.jpnicAdmin.value.address],
+      address_en: [this.jpnicAdmin.value.address_en],
+      name: [this.jpnicAdmin.value.name],
+      name_en: [this.jpnicAdmin.value.name_en],
+      dept: [this.jpnicAdmin.value.dept],
+      dept_en: [this.jpnicAdmin.value.dept_en],
+      pos: [this.jpnicAdmin.value.pos],
+      pos_en: [this.jpnicAdmin.value.pos_en],
+      tel: [this.jpnicAdmin.value.tel],
+      fax: [this.jpnicAdmin.value.fax],
+      country: [this.jpnicAdmin.value.country],
+    }));
+  }
 
   get optionJPNICForm(): FormGroup {
     return this.formBuilder.group({
