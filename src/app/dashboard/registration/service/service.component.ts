@@ -116,7 +116,7 @@ export class ServiceComponent implements OnInit {
   }
 
   addEventEnd(event: MatDatepickerInputEvent<Date>) {
-    this.dateStart = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
+    this.dateEnd = event.value.getFullYear() + '-' + ('00' + (event.value.getMonth() + 1)).slice(-2) +
       '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
