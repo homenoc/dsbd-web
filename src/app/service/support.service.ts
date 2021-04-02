@@ -14,6 +14,7 @@ export class SupportService {
 
   websocket: WebSocket;
   chatMessage: any[] = [];
+  webSocketConnect = false;
 
   constructor(
     public router: Router,
@@ -29,6 +30,8 @@ export class SupportService {
       sessionStorage.getItem('AccessToken'));
     this.websocket.onopen = (event) => {
       this.chatMessage = [];
+      this.webSocketConnect = true;
+      console.log(event);
     };
 
     this.websocket.onmessage = (event) => {
@@ -44,7 +47,10 @@ export class SupportService {
     };
     this.websocket.onclose = (event) => {
       console.log(event);
-      this.commonService.openBar('WebSocket接続に失敗しました。リロードしてください。', 5000);
+      this.webSocketConnect = false;
+      setTimeout(() => {
+        this.openWebSocket(id);
+      }, 5000);
     };
   }
 
