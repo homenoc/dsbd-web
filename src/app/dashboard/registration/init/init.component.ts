@@ -58,6 +58,10 @@ export class InitComponent implements OnInit {
       '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
+  termPage() {
+    window.open('https://www.homenoc.ad.jp/usage/terms/');
+  }
+
   request() {
     const question1 = '1. どこで当団体のことを知りましたか？\n';
     const question2 = '\n\n2. どのような用途で当団体のネットワークに接続しますか？\n';
