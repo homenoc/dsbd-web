@@ -111,7 +111,7 @@ export class ServiceComponent implements OnInit {
       }
     });
     this.commonService.getTemplate().then(res => {
-      console.log(res);
+      // console.log(res);
       this.templateConnections = res.connections;
       this.templateServices = res.services;
       this.ipv4Template = res.ipv4;
@@ -216,8 +216,6 @@ export class ServiceComponent implements OnInit {
       oneYear += plan.one_year;
     }
 
-    console.log(this.tmpIPQuantity);
-
     if (after > this.tmpIPQuantity / 4 && !(after > this.tmpIPQuantity)) {
       this.planAfter = true;
     } else {
@@ -236,11 +234,10 @@ export class ServiceComponent implements OnInit {
       this.planOneYear = false;
     }
 
-
-    console.log('直後: ' + after);
-    console.log('半年後: ' + halfYear);
-    console.log('1年後: ' + oneYear);
-    console.log(this.planProcess.value);
+    // console.log('直後: ' + after);
+    // console.log('半年後: ' + halfYear);
+    // console.log('1年後: ' + oneYear);
+    // console.log(this.planProcess.value);
   }
 
   check(): boolean {
