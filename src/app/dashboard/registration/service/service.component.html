@@ -18,6 +18,7 @@
     <h2>1.1.1. 割り当てを希望するIPアドレスをお知らせください</h2>
     <p>ネットワーク名は半角英数字とハイフンで12文字以内で入力してください</p>
     <mat-checkbox [(ngModel)]="checkV4">IPv4アドレスのアサインを希望する</mat-checkbox>
+    <p>/28より多く、アドレスを割り当てたい方はサポートよりご相談ください。</p>
     <form *ngIf="checkV4" [formGroup]="jpnicV4">
       <mat-form-field [style.width.px]=600>
         <mat-label>IPv4ネットワーク名</mat-label>
