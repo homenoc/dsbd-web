@@ -65,6 +65,7 @@ export class ServiceComponent implements OnInit {
   public jpnicAdmin = new FormGroup({
     name: new FormControl(''),
     name_en: new FormControl(''),
+    mail: new FormControl(''),
     org: new FormControl(''),
     org_en: new FormControl(''),
     postcode: new FormControl(''),
@@ -145,6 +146,7 @@ export class ServiceComponent implements OnInit {
     this.jpnicTechProcess.push(this.formBuilder.group({
       org: [this.jpnicAdmin.value.org],
       org_en: [this.jpnicAdmin.value.org_en],
+      mail: [this.jpnicAdmin.value.mail],
       postcode: [this.jpnicAdmin.value.postcode],
       address: [this.jpnicAdmin.value.address],
       address_en: [this.jpnicAdmin.value.address_en],
@@ -164,6 +166,7 @@ export class ServiceComponent implements OnInit {
     return this.formBuilder.group({
       name: [''],
       name_en: [''],
+      mail: [''],
       org: [''],
       org_en: [''],
       postcode: [''],
@@ -296,6 +299,10 @@ export class ServiceComponent implements OnInit {
         this.commonService.openBar('団体名(English)が入力されていません。', 5000);
         return false;
       }
+      if (this.jpnicAdmin.value.mail === '') {
+        this.commonService.openBar('メールアドレスが入力されていません。', 5000);
+        return false;
+      }
       if (this.jpnicAdmin.value.postcode === '') {
         this.commonService.openBar('郵便番号が入力されていません。', 5000);
         return false;
@@ -336,6 +343,10 @@ export class ServiceComponent implements OnInit {
         }
         if (tmp.org_en === '') {
           this.commonService.openBar('団体名(English)が入力されていません。', 5000);
+          return false;
+        }
+        if (tmp.mail === '') {
+          this.commonService.openBar('メールアドレスが入力されていません。', 5000);
           return false;
         }
         if (tmp.postcode === '') {
@@ -502,6 +513,7 @@ export class ServiceComponent implements OnInit {
     this.jpnicAdmin.setValue({
       name: 'HomeNOC 太郎',
       name_en: 'Taro HomeNOC',
+      mail: 'test@homenoc.ad.jp',
       org: 'HomeNOC',
       org_en: 'HomeNOC',
       postcode: '5970022',

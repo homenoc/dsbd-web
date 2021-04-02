@@ -1,5 +1,5 @@
 <div class="main">
-<!--  <button mat-raised-button color="primary" (click)="testPush()">Test</button>-->
+    <button mat-raised-button color="primary" (click)="testPush()">Test</button>
   <h2>1. ご希望のサービスをお選びください</h2>
   <mat-radio-group aria-label="Select an option" [(ngModel)]="serviceTypeID" name="networkType" required>
     <ng-container *ngFor="let net of templateServices">
@@ -125,6 +125,11 @@
       </mat-form-field>
       <br>
       <mat-form-field appearance="fill">
+        <mat-label>メールアドレス (必須)</mat-label>
+        <input matInput [type]="hide ? 'mail' : 'email'" formControlName="mail">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
         <mat-label>郵便番号 (必須)</mat-label>
         <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
       </mat-form-field>
@@ -196,6 +201,13 @@
             <mat-label>組織名(English) (必須)</mat-label>
             <div [formGroupName]="i">
               <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
+            </div>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>メールアドレス (必須)</mat-label>
+            <div [formGroupName]="i">
+              <input matInput [type]="hide ? 'mail' : 'email'" formControlName="mail">
             </div>
           </mat-form-field>
           <br>
