@@ -30,7 +30,7 @@ export class ServiceService {
     }).catch(error => {
       sessionStorage.setItem('error', JSON.stringify(error));
       console.log(error);
-      this.router.navigate(['/error']).then();
+      this.commonService.openBar(error.error.error, 2000);
     });
   }
 

@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public user: any[] = [];
   public myName = sessionStorage.getItem('name');
   public loading = true;
+  public solved = false;
 
   constructor(
     public supportService: SupportService,
@@ -27,16 +28,22 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.supportService.chatMessage = null;
     this.ticketID = +this.route.snapshot.paramMap.get('id');
-    this.supportService.openWebSocket(this.ticketID);
     this.supportService.get(this.ticketID).then(response => {
       this.ticket = response.tickets;
       this.loading = false;
+      if (this.ticket.solved) {
+        this.solved = true;
+      } else {
+        this.supportService.openWebSocket(this.ticketID);
+      }
       console.log(this.ticket);
     });
   }
 
   ngOnDestroy() {
-    this.supportService.closeWebSocket();
+    if (!this.solved) {
+      this.supportService.closeWebSocket();
+    }
   }
 
   public sendMessage() {
