@@ -1,6 +1,7 @@
 export interface InfoData {
     user?: UserData
     group?: GroupData
+    user_list?: UserData[]
     service?: ServiceData[]
     notice?: NoticeData[]
     ticket?: TicketData[]
@@ -50,19 +51,22 @@ export interface NoticeData {
 }
 
 export interface TicketData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    solved: boolean,
+    id: number,
+    created_at: string,
+    group_id: number,
+    user_id: number,
     title: string,
     chat?: ChatData[],
+    solved: boolean,
 }
 
 export interface ChatData {
-    time: string,
-    data: string,
+    created_at: string,
+    ticket_id: number,
+    user_id: number,
     user_name: string,
     admin: boolean,
+    data: string,
 }
 
 export interface ServiceData {
@@ -366,15 +370,6 @@ export const DefaultConnectionAddData: ConnectionAddData = {
     term_ip: "",
     monitor: false
 }
-
-export const DefaultChatData: ChatData = {
-    time: "",
-    data: "",
-    user_name: "",
-    admin: false,
-}
-
-export const DefaultChatDataArray: ChatData[] = [DefaultChatData]
 
 export const DefaultAddIP: ServiceAddIPData = {
     version: 0,
