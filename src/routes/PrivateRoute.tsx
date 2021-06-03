@@ -1,5 +1,6 @@
 import React from "react";
 import {Route, Redirect} from "react-router-dom";
+import Cookies from "js-cookie";
 
 const PrivateRoute: React.FC<{
     component: React.FC;
@@ -13,7 +14,7 @@ const PrivateRoute: React.FC<{
 };
 
 const loginStatus = () => {
-    return sessionStorage.getItem("access_token") !== null && sessionStorage.getItem("user_token") !== null;
+    return Cookies.get("access_token") !== undefined && Cookies.get("user_token") !== undefined;
 }
 
 export default PrivateRoute;

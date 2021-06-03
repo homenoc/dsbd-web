@@ -1,9 +1,8 @@
 import {
     Avatar,
-    Button, Checkbox,
+    Button,
     Container,
     CssBaseline,
-    FormControlLabel,
     Grid,
     Link,
     makeStyles,
@@ -13,8 +12,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {colorTheme} from '../../components/Theme';
 import React, {FormEvent, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Login, LoginInit} from '../../api/Auth';
+import {Login} from '../../api/Auth';
 import {useSnackbar} from 'notistack';
+import {Get} from "../../api/Info";
+import Cookies from "js-cookie";
+import store from "../../store";
+import {clearInfos, clearTemplates} from "../../store/action/Actions";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,7 +47,10 @@ export default function SignIn() {
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
-        sessionStorage.clear();
+        Cookies.remove('user_token')
+        Cookies.remove('access_token')
+        store.dispatch(clearInfos());
+        store.dispatch(clearTemplates());
     }, []);
 
 
@@ -63,6 +69,7 @@ export default function SignIn() {
             if (err === "") {
                 console.log("OK");
                 enqueueSnackbar("Login Success !", {variant: "info"});
+                Get().then();
                 history.push('/dashboard');
             } else {
                 console.log(err);
