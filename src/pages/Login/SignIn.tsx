@@ -46,14 +46,6 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const {enqueueSnackbar} = useSnackbar();
 
-    useEffect(() => {
-        Cookies.remove('user_token')
-        Cookies.remove('access_token')
-        store.dispatch(clearInfos());
-        store.dispatch(clearTemplates());
-    }, []);
-
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (mail === "") {
@@ -64,6 +56,11 @@ export default function SignIn() {
             enqueueSnackbar("パスワードが入力されていません。", {variant: "error"});
             return
         }
+
+        Cookies.remove('user_token');
+        Cookies.remove('access_token');
+        store.dispatch(clearInfos());
+        store.dispatch(clearTemplates());
 
         Login(mail, password).then(err => {
             if (err === "") {
