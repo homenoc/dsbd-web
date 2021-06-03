@@ -1,12 +1,9 @@
 import {
-    GET_INFOS_REQUEST,
-    GET_INFOS_SUCCESS,
-    GET_INFOS_FAILURE,
     GET_TEMPLATES_FAILURE,
     GET_TEMPLATES_SUCCESS,
     GET_TEMPLATES_REQUEST, CLEAR_TEMPLATES
 } from "./action/Actions"
-import {InfoData, TemplateData} from "../interface";
+import {TemplateData} from "../interface";
 
 const initialTemplateState = {
     isFetching: false,

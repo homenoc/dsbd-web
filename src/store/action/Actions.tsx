@@ -3,10 +3,10 @@ import {InfoData} from "../../interface";
 import {restfulApiConfig} from "../../api/Config";
 import Cookies from "js-cookie";
 
-export const GET_INFOS_REQUEST = 'GET_INFOS_REQUEST'
-const getInfosRequest = () => {
+export const GET_INFOS = 'GET_INFOS'
+export const getInfos = () => {
     return {
-        type: GET_INFOS_REQUEST
+        type: GET_INFOS
     }
 }
 
@@ -36,7 +36,7 @@ export const clearInfos = () => {
 }
 
 
-export const getInfos = () => {
+export const renewInfos = () => {
     return (dispatch: any) => {
         console.log("URL GET")
         axios.get(restfulApiConfig.apiURL + "/info", {
