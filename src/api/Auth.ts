@@ -1,6 +1,7 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
 import shaJS from "sha.js"
+import Cookies from "js-cookie";
 
 const len = 30;
 
@@ -30,11 +31,11 @@ export function LoginInit(): Promise<string> {
 }
 
 export function Login(email: string, password: string): Promise<string> {
-    sessionStorage.setItem('user_token', GenerateUserToken());
+    Cookies.set('user_token', GenerateUserToken())
     return axios.get(restfulApiConfig.apiURL + "/login", {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: sessionStorage.getItem('user_token')
+            USER_TOKEN: Cookies.get('user_token')
         }
     }).then(res => {
         const passHash: string = shaJS('sha256').update(password).digest('hex');
@@ -47,12 +48,12 @@ export function Login(email: string, password: string): Promise<string> {
         return axios.post(restfulApiConfig.apiURL + "/login", null, {
             headers: {
                 'Content-Type': 'application/json',
-                USER_TOKEN: sessionStorage.getItem('user_token'),
+                USER_TOKEN: Cookies.get('user_token'),
                 HASH_PASS: hash,
                 Email: email
             }
         }).then(res => {
-            sessionStorage.setItem("access_token", res.data.token[0].access_token);
+            Cookies.set('access_token', res.data.token[0].access_token)
             return "";
         }).catch(err => {
             return "[" + err.response.status + "] " + err.response.data.error;
@@ -66,7 +67,7 @@ export function Logout(): Promise<string> {
     return axios.post(restfulApiConfig.apiURL + "/logout", {}, {
         headers: {
             'Content-Type': 'application/json',
-            'ACCESS_TOKEN': sessionStorage.getItem('ACCESS_TOKEN'),
+            'ACCESS_TOKEN': Cookies.get('access_token'),
         }
     }).then(res => {
         console.log(res.data.token[0]);
