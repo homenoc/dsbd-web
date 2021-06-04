@@ -34,7 +34,6 @@ import {clearInfos, clearTemplates} from "../../store/action/Actions";
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
     const history = useHistory();
-    // const classesMenu = useSideBarStyles();
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -103,11 +102,11 @@ export default function Dashboard(props: any) {
                         <IconButton color="inherit" onClick={reloadClick}>
                             <AutorenewIcon/>
                         </IconButton>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={0} color="secondary">
-                                <NotificationsIcon/>
-                            </Badge>
-                        </IconButton>
+                        {/*<IconButton color="inherit">*/}
+                        {/*    <Badge badgeContent={0} color="secondary">*/}
+                        {/*        <NotificationsIcon/>*/}
+                        {/*    </Badge>*/}
+                        {/*</IconButton>*/}
                         <UserMenu key={"user_menu"}/>
                     </Toolbar>
                 </AppBar>
