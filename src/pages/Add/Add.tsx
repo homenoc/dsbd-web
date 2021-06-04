@@ -15,7 +15,7 @@ import {useHistory} from "react-router-dom";
 import GroupAddDialogs from "./GroupAdd/GroupAdd";
 
 function getSteps() {
-    return ['グループ登録', 'サービス情報の登録', '接続情報の登録'];
+    return ['グループ登録', '審査中', 'サービス情報の登録', '審査中', '接続情報の登録', '開通作業中'];
 }
 
 export default function Add() {
@@ -77,8 +77,10 @@ export default function Add() {
                 // add group
                 if (tmpData.data.user?.group_id === 0) {
                     setActiveStep(0);
-                } else if (tmpData.data.group?.add_allow) {
+                } else if (!tmpData.data.group?.pass) {
                     setActiveStep(1);
+                } else if (tmpData.data.group?.add_allow) {
+                    setActiveStep(2);
                 } else {
                     if (tmpData.data.service !== undefined) {
                         let addAllow = false;
@@ -89,10 +91,10 @@ export default function Add() {
                             }
                         }
                         if (addAllow) {
-                            setActiveStep(2);
+                            setActiveStep(4);
                         }
                     } else {
-                        setActiveStep(3);
+                        setActiveStep(6);
                     }
                 }
 
@@ -134,7 +136,17 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 1 && data?.group !== undefined &&
+                        activeStep === 1 &&
+                        <div>
+                            <div>現在、審査中を行っております。</div>
+                            <div>通常であれば、1週間以内に審査手続きが完了いたしますが、内容によって時間がかかる場合がございます。</div>
+                            <div>1ヶ月経っても審査中ステータスから変わらない場合は、サポートよりお問い合わせください。</div>
+                        </div>
+                    }
+                </Grid>
+                <Grid item xs={12}>
+                    {
+                        activeStep === 2 && data?.group !== undefined &&
                         <div>
                             <div>ネットワーク接続を希望の方は、「サービス情報の申請」申請ボタンより行ってください。</div>
                             <br/>
@@ -148,7 +160,7 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 2 && data?.group !== undefined && data?.service !== undefined &&
+                        activeStep === 4 && data?.group !== undefined && data?.service !== undefined &&
                         <div>
                             <div>接続先の情報を登録する必要があるため、「接続情報の申請」ボタンより申請を行ってください。</div>
                             <Button variant="contained" color={"primary"}
