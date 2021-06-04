@@ -16,9 +16,9 @@ export function Post(id: number, data: ConnectionAddData): Promise<{ error: stri
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
+        console.log(err.response);
         return {
-            error: err,
+            error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
         };
     })

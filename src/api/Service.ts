@@ -3,8 +3,8 @@ import {restfulApiConfig} from "./Config";
 import {ServiceAddData} from "../interface";
 import Cookies from "js-cookie";
 
-export function Post(id: number, data: ServiceAddData): Promise<{ error: string; data: any }> {
-    return axios.post(restfulApiConfig.apiURL + "/group/" + id + "/service", data, {
+export function Post(data: ServiceAddData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/service", data, {
         headers: {
             'Content-Type': 'application/json',
             USER_TOKEN: Cookies.get('user_token'),
@@ -16,9 +16,9 @@ export function Post(id: number, data: ServiceAddData): Promise<{ error: string;
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
+        console.log(err.response);
         return {
-            error: err,
+            error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
         };
     })
