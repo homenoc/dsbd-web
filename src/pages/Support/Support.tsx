@@ -20,6 +20,7 @@ import store, {RootState} from "../../store";
 import {clearInfos, clearTemplates, getInfos} from "../../store/action/Actions";
 import {useSelector} from "react-redux";
 import {Get} from "../../api/Info";
+import {SupportAddDialog} from "./SupportAddDialog";
 
 
 export default function Support() {
@@ -36,7 +37,6 @@ export default function Support() {
         console.log(infos);
         const length = infos.length;
         const tmpData = infos[length - 1];
-        const tmpBeforeData = infos[length - 2];
 
         if (tmpData.error !== undefined || tmpData.data !== undefined) {
             if (tmpData.error !== undefined) {
@@ -46,6 +46,7 @@ export default function Support() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
+                    history.push("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -89,6 +90,8 @@ export default function Support() {
 
     return (
         <Dashboard title="Ticket Info">
+            <SupportAddDialog/>
+            <br/>
             <Paper component="form" className={classes.rootInput}>
                 <InputBase
                     className={classes.input}
