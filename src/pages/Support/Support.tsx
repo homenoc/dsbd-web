@@ -5,14 +5,14 @@ import {
     Button,
     Card,
     CardActions,
-    CardContent,
+    CardContent, Chip,
     FormControl, FormControlLabel,
     InputBase,
     Paper, Radio, RadioGroup,
     Typography
 } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import {TicketData} from "../../interface";
+import {SupportAddData, TicketData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {Solved} from "../../components/Dashboard/Solved/Open";
 import Cookies from "js-cookie";
@@ -21,12 +21,14 @@ import {clearInfos, clearTemplates, getInfos} from "../../store/action/Actions";
 import {useSelector} from "react-redux";
 import {Get} from "../../api/Info";
 import {SupportAddDialog} from "./SupportAddDialog";
+import {Put} from "../../api/Support";
 
 
 export default function Support() {
     const classes = useStyles();
     const [tickets, setTickets] = useState<TicketData[]>([]);
     const [initTickets, setInitTickets] = useState<TicketData[]>([]);
+    const [group, setGroupID] = useState(0);
     const infos = useSelector((state: RootState) => state.infos);
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
@@ -54,6 +56,9 @@ export default function Support() {
             } else if (tmpData.data !== undefined && tmpData.data?.ticket !== undefined) {
                 setInitTickets(tmpData.data?.ticket);
                 setTickets(tmpData.data?.ticket);
+                if (tmpData.data.user !== undefined) {
+                    setGroupID(tmpData.data.user?.group_id)
+                }
             }
         } else {
             console.log("Renew");
@@ -62,11 +67,6 @@ export default function Support() {
             enqueueSnackbar("Info情報の更新: " + date.toLocaleString(), {variant: "info"});
         }
     }, [infos]);
-
-    useEffect(() => {
-        // store.dispatch(getInfos())
-    }, []);
-
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value === "true")
@@ -84,13 +84,24 @@ export default function Support() {
         setTickets(tmp);
     };
 
+    const clickSolvedStatus = (id: number, solved: boolean) => {
+        Put(id, {solved}).then(res => {
+            if (res.error === undefined) {
+                enqueueSnackbar("OK", {variant: "success"});
+                Get().then();
+            } else {
+                enqueueSnackbar(res.error, {variant: "error"});
+            }
+        })
+    }
+
     const clickDetailPage = (id: number) => {
         history.push('/dashboard/support/' + id);
     }
 
     return (
         <Dashboard title="Ticket Info">
-            <SupportAddDialog/>
+            <SupportAddDialog key={"support_add_dialog"} groupEnable={group !== 0}/>
             <br/>
             <Paper component="form" className={classes.rootInput}>
                 <InputBase
@@ -120,12 +131,39 @@ export default function Support() {
                                 {ticket.title}
                             </Typography>
                             <br/>
+                            {
+                                ticket.group_id === 0 &&
+                                <Chip
+                                    size="small"
+                                    color="primary"
+                                    label="個人チャット"
+                                />
+                            }
+                            {
+                                ticket.group_id !== 0 &&
+                                <Chip
+                                    size="small"
+                                    color="primary"
+                                    label="グループチャット"
+                                />
+                            }
+                            &nbsp;&nbsp;
                             <Solved key={index} solved={ticket.solved}/>
                             <br/>
                             {/*作成者: {ticket.user?.name}*/}
                         </CardContent>
                         <CardActions>
                             <Button size="small" onClick={() => clickDetailPage(ticket.id)}>Detail</Button>
+                            {
+                                ticket.solved &&
+                                <Button size="small" color="primary"
+                                        onClick={() => clickSolvedStatus(ticket.id, false)}>未解決</Button>
+                            }
+                            {
+                                !ticket.solved &&
+                                <Button size="small" color="secondary"
+                                        onClick={() => clickSolvedStatus(ticket.id, true)}>解決済み</Button>
+                            }
                         </CardActions>
                     </Card>
                 ))
