@@ -16,9 +16,9 @@ export function Post(data: GroupAddData): Promise<{ error: string; data: any }> 
             data: res.data.group
         };
     }).catch(err => {
-        console.log(err);
+        console.log(err.response);
         return {
-            error: err,
+            error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
         };
     })
