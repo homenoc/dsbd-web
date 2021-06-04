@@ -35,6 +35,7 @@ export default function Info() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
+                    history.push('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
