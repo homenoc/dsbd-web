@@ -2,7 +2,8 @@ export interface InfoData {
     user?: UserData
     group?: GroupData
     user_list?: UserData[]
-    service?: ServiceData[]
+    // service?: ServiceData[]
+    info?: InfosData[]
     notice?: NoticeData[]
     ticket?: TicketData[]
 }
@@ -69,7 +70,7 @@ export interface ChatData {
     data: string,
 }
 
-export interface ServiceData {
+export interface InfosData {
     service_id: number,
     service: string,
     assign: boolean,
