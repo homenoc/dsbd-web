@@ -56,6 +56,7 @@ export default function SupportDetail() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
             } else if (tmpData.data !== undefined && tmpData.data?.ticket !== undefined) {
+                console.log(tmpData)
                 if (tmpData.data.user_list !== undefined) {
                     setUserList(tmpData.data.user_list);
                 }

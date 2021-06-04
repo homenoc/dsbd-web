@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel,
+    Grid, Radio, RadioGroup,
     TextField,
 } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
@@ -12,7 +12,10 @@ import {Post} from "../../api/Support";
 import {Get} from "../../api/Info";
 
 
-export function SupportAddDialog() {
+export function SupportAddDialog(props: {
+    groupEnable: boolean
+}) {
+    const {groupEnable} = props;
     const classes = useStyles();
     const history = useHistory();
     const [data, setData] = React.useState(DefaultSupportAddData);
@@ -55,6 +58,18 @@ export function SupportAddDialog() {
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
+                            <h3>ユーザチャットとグループチャットの違い</h3>
+                            <div>ユーザチャット: ログインユーザと1対1のチャットになります。</div>
+                            <div>グループチャットチャット: ログインユーザのグループとのチャット（基本はこちらでお願いします。）</div>
+                            <RadioGroup row aria-label="position" name="position" defaultValue="top"
+                                        onChange={(event) => {
+                                            setData({...data, is_group: event.target.value === "group"})
+                                        }}>
+                                <FormControlLabel value={"user"} control={<Radio color="primary"/>} label="ユーザチャット"/>
+                                <FormControlLabel value={"group"} control={<Radio color="primary"/>}
+                                                  disabled={!groupEnable} label="グループチャット"/>
+                            </RadioGroup>
+                            <br/>
                             <TextField
                                 className={classes.formVeryLong}
                                 id="title"
