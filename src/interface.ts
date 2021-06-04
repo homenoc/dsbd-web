@@ -337,6 +337,13 @@ export interface SupportAddData {
     data: string
 }
 
+export interface UserAddData {
+    name: string
+    name_en: string
+    email: string
+    pass: string
+    level: number
+}
 
 export const DefaultTemplateData: TemplateData = {
     services: undefined,
@@ -432,4 +439,12 @@ export const DefaultSupportAddData: SupportAddData = {
     is_group: true,
     title: "",
     data: ""
+}
+
+export const DefaultUserAddData: UserAddData = {
+    name: "",
+    name_en: "",
+    email: "",
+    pass: "",
+    level: 2
 }
