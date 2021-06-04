@@ -361,7 +361,7 @@ export function OrgInfoAdd(props: {
                     required
                     id="country"
                     label="居住国"
-                    value={data.tel}
+                    value={data.country}
                     variant="outlined"
                     onChange={event => {
                         setData({...data, country: event.target.value});
