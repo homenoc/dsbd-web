@@ -79,7 +79,11 @@ export default function Info() {
                 />
             </Paper>
             {
-                infos !== undefined &&
+                (infos === null) &&
+                    <h3>現在、開通しているサービスがありません。</h3>
+            }
+            {
+                (infos !== null) &&
                 infos.map((info: InfosData, index) => (
                     <Card className={classes.root}>
                         <CardContent>
