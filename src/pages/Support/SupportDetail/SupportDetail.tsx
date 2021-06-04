@@ -41,10 +41,12 @@ export default function SupportDetail() {
         console.log(infos);
         const length = infos.length;
         const tmpData = infos[length - 1];
-
+        console.log(Cookies.get("access_token"))
+        console.log(Cookies.get("user_token"))
         if (tmpData.error !== undefined || tmpData.data !== undefined) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
+                    console.log("logout");
                     Cookies.remove('user_token');
                     Cookies.remove('access_token');
                     store.dispatch(clearInfos());
@@ -85,7 +87,7 @@ export default function SupportDetail() {
                     admin: obj.admin,
                     data: obj.message,
                     created_at: obj.time,
-                    user_id: 0,
+                    user_id: obj.user_id,
                     user_name: obj.username
                 }]);
             }
@@ -107,7 +109,8 @@ export default function SupportDetail() {
     useEffect(() => {
         if (sendPush) {
             sendMessage(JSON.stringify({
-                access_token: sessionStorage.getItem('AccessToken'),
+                access_token: Cookies.get('access_token'),
+                user_token: Cookies.get('user_token'),
                 message: inputChatData
             }));
             setSendPush(false);
