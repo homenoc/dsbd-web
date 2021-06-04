@@ -120,7 +120,11 @@ export default function Support() {
                 </RadioGroup>
             </FormControl>
             {
-                tickets !== undefined &&
+                tickets === null &&
+                <h3>現在、有効なチケットはありません。</h3>
+            }
+            {
+                tickets !== null &&
                 tickets.filter(ticket => ticket.solved === value).map((ticket: TicketData, index) => (
                     <Card className={classes.root}>
                         <CardContent>
