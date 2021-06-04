@@ -51,6 +51,11 @@ export default function Add() {
     }, []);
 
     useEffect(() => {
+        Get().then();
+    }, [reload]);
+
+
+    useEffect(() => {
         // info
         const length = infos.length;
         const tmpData = infos[length - 1];
