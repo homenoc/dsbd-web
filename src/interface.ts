@@ -75,6 +75,7 @@ export interface TicketData {
     title: string
     chat?: ChatData[]
     solved: boolean
+    admin: boolean
 }
 
 export interface ChatData {
