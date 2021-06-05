@@ -74,7 +74,13 @@ export default function ServiceAddDialogs(props: {
         const err = check(data, template);
         if (err === "") {
             console.log("OK")
-            Post(groupData.id, data).then(res => {
+            if (data.ip !== undefined) {
+                for (const tmp of data.ip) {
+                    tmp.start_date = data.start_date;
+                    tmp.end_date = data.end_date;
+                }
+            }
+            Post(data).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
