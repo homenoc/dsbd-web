@@ -3,6 +3,7 @@ export interface InfoData {
     group?: GroupData
     user_list?: UserData[]
     service?: ServiceData[]
+    connection?: ConnectionData[]
     info?: InfosData[]
     notice?: NoticeData[]
     ticket?: TicketData[]
@@ -47,6 +48,12 @@ export interface ServiceData {
     service_type: string
     need_route: boolean
     add_allow: boolean
+    pass: boolean
+}
+
+export interface ConnectionData {
+    id: number
+    open: boolean
 }
 
 export interface NoticeData {
