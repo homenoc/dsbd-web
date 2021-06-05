@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import {
     AppBar,
-    Badge, colors,
+    colors,
     Container, createMuiTheme, ThemeProvider,
     CssBaseline,
     Divider,
@@ -15,13 +15,11 @@ import {
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
 import TocIcon from '@material-ui/icons/Toc';
 import AddIcon from '@material-ui/icons/Add';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import ChatIcon from "@material-ui/icons/Chat";
-import SettingsIcon from "@material-ui/icons/Settings";
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import useStyles from "./styles";
 import {useHistory} from "react-router-dom";
@@ -30,6 +28,7 @@ import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
 import store from "../../store";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
@@ -77,6 +76,9 @@ export default function Dashboard(props: any) {
     }
     const SupportPage = () => {
         history.push("/dashboard/support");
+    }
+    const ProcedurePage = () => {
+        history.push("/dashboard/procedure");
     }
 
     return (
@@ -145,11 +147,11 @@ export default function Dashboard(props: any) {
                         </ListItemIcon>
                         <ListItemText primary="Support"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={ProcedurePage}>
                         <ListItemIcon>
-                            <SettingsIcon/>
+                            <NoteAddOutlinedIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Setting"/>
+                        <ListItemText primary="各種手続き"/>
                     </ListItem>
                     <Divider/>
                 </Drawer>

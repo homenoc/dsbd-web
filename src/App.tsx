@@ -10,6 +10,9 @@ import Info from "./pages/Info/Info";
 import Support from "./pages/Support/Support";
 import SupportDetail from "./pages/Support/SupportDetail/SupportDetail";
 import Add from "./pages/Add/Add";
+import Procedure from "./pages/Procedure/Procedure";
+import UserList from "./pages/Procedure/UserList/UserList";
+import UserDetail from "./pages/Procedure/UserList/UserDetail/UserDetail";
 
 function App() {
     return (
@@ -24,6 +27,9 @@ function App() {
                 <PrivateRoute exact path="/dashboard/info" component={Info}/>
                 <PrivateRoute exact path="/dashboard/support" component={Support}/>
                 <PrivateRoute exact path="/dashboard/support/:id" component={SupportDetail}/>
+                <PrivateRoute exact path="/dashboard/procedure" component={Procedure}/>
+                <PrivateRoute exact path="/dashboard/procedure/user" component={UserList}/>
+                <PrivateRoute exact path="/dashboard/procedure/user/:id" component={UserDetail}/>
             </Switch>
         </BrowserRouter>
     );
