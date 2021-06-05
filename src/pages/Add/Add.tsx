@@ -81,21 +81,14 @@ export default function Add() {
                     setActiveStep(1);
                 } else if (tmpData.data.group?.add_allow) {
                     setActiveStep(2);
+                } else if (tmpData.data.service !== undefined && tmpData.data.service?.filter(value => !value.pass).length > 0) {
+                    setActiveStep(3);
+                } else if (tmpData.data.service !== undefined && tmpData.data.service?.filter(value => value.add_allow).length > 0) {
+                    setActiveStep(4);
+                } else if (tmpData.data.connection !== undefined && tmpData.data.connection?.filter(value => !value.open).length > 0) {
+                    setActiveStep(5);
                 } else {
-                    if (tmpData.data.service !== undefined) {
-                        let addAllow = false;
-                        for (const tmpService of tmpData.data.service) {
-                            if (tmpService.add_allow) {
-                                addAllow = true;
-                                break;
-                            }
-                        }
-                        if (addAllow) {
-                            setActiveStep(4);
-                        }
-                    } else {
-                        setActiveStep(6);
-                    }
+                    setActiveStep(6);
                 }
 
             } else {
@@ -136,7 +129,7 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 1 &&
+                        (activeStep === 1 || activeStep === 3) &&
                         <div>
                             <div>現在、審査中を行っております。</div>
                             <div>通常であれば、1週間以内に審査手続きが完了いたしますが、内容によって時間がかかる場合がございます。</div>
