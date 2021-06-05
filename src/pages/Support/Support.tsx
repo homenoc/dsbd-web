@@ -153,6 +153,15 @@ export default function Support() {
                             }
                             &nbsp;&nbsp;
                             <Solved key={index} solved={ticket.solved}/>
+                            &nbsp;&nbsp;
+                            {
+                                ticket.admin &&
+                                <Chip
+                                    size="small"
+                                    color="primary"
+                                    label="管理者作成"
+                                />
+                            }
                             <br/>
                             {/*作成者: {ticket.user?.name}*/}
                         </CardContent>
