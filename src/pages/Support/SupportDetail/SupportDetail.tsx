@@ -99,9 +99,9 @@ export default function SupportDetail() {
             //     user_name: obj.username
             // }]);
             if (obj.admin) {
-                enqueueSnackbar("送信しました。", {variant: "success"})
+                enqueueSnackbar("新規メッセージがあります", {variant: "success"});
             } else {
-                enqueueSnackbar("新規メッセージがあります", {variant: "success"})
+                enqueueSnackbar("送信しました。", {variant: "success"});
             }
             ref.current?.scrollIntoView()
         }
