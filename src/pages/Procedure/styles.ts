@@ -2,7 +2,13 @@ import {makeStyles} from "@material-ui/core";
 
 export default makeStyles(theme => ({
         root: {
-            width: '100%',
+            minWidth: 275,
+            marginBottom: 5,
+        },
+        rootTable: {
+            '& > *': {
+                borderBottom: 'unset',
+            },
         },
         rootInput: {
             minWidth: 100,
