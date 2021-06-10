@@ -27,7 +27,7 @@ export default function UserProfile() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -39,7 +39,7 @@ export default function UserProfile() {
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
-            } else if (tmpData.data !== undefined) {
+            } else if (tmpData.data != null) {
                 setData(tmpData.data);
                 // add group
                 if (tmpData.data.user?.group_id === 0) {
@@ -47,7 +47,7 @@ export default function UserProfile() {
                 } else if (tmpData.data.group?.add_allow) {
                     setStatus(1);
                 } else {
-                    if (tmpData.data.service !== undefined) {
+                    if (tmpData.data.service != null) {
                         let addAllow = false;
                         for (const tmpService of tmpData.data.service) {
                             if (tmpService.add_allow) {

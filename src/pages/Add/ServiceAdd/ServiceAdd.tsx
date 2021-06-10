@@ -74,7 +74,7 @@ export default function ServiceAddDialogs(props: {
         const err = check(data, template);
         if (err === "") {
             console.log("OK")
-            if (data.ip !== undefined) {
+            if (data.ip != null) {
                 for (const tmp of data.ip) {
                     tmp.start_date = data.start_date;
                     tmp.end_date = data.end_date;
@@ -255,14 +255,14 @@ export function ServiceAddAssignIP(props: {
                 })
             } else if (dataExtra.length === 1) {
                 const dataIndex = data.ip?.findIndex(item => item.version === type);
-                if (dataIndex !== undefined)
+                if (dataIndex != null)
                     tmpIP[dataIndex].ip = subnet;
             }
         }
 
         if (type === 4) {
             const dataCheck = template.ipv4?.find(item => item.subnet === subnet);
-            if (dataCheck !== undefined) {
+            if (dataCheck != null) {
                 setIPv4PlanSubnetCount(dataCheck.quantity);
             }
         }
@@ -297,7 +297,7 @@ export function ServiceAddAssignIP(props: {
                 })
             } else if (dataExtra.length === 1) {
                 const dataIndex = data.ip?.findIndex(item => item.version === type);
-                if (dataIndex !== undefined)
+                if (dataIndex != null)
                     tmpIP[dataIndex].name = name;
             }
         }
@@ -678,18 +678,18 @@ export function ServiceAddJPNICIPv4Plan(props: {
             enqueueSnackbar('１年後の名前が入力されていません', {variant: "error"});
         }
 
-        if (!(data.ip === undefined || data.ip.length === 0)) {
+        if (!(data.ip == null || data.ip.length === 0)) {
             tmpIP = data.ip;
 
             const dataExtra = tmpIP.filter(item => item.version === 4);
-            if (dataExtra !== undefined && dataExtra.length === 1) {
+            if (dataExtra != null && dataExtra.length === 1) {
                 const dataIndex = tmpIP.findIndex(item => item.version === 4);
                 if (dataIndex !== -1) {
                     if (tmpIP[dataIndex].plan === undefined || tmpIP[dataIndex].plan?.length === 0) {
                         tmpPlan = [inputPlan];
                     } else {
                         tmpPlan = tmpIP[dataIndex].plan;
-                        if (tmpPlan !== undefined)
+                        if (tmpPlan != null)
                             tmpPlan.push(inputPlan);
                     }
                 }
@@ -713,11 +713,11 @@ export function ServiceAddJPNICIPv4Plan(props: {
             tmpIP = data.ip;
 
             const dataExtra = tmpIP.filter(item => item.version === 4);
-            if (dataExtra !== undefined && dataExtra.length === 1) {
+            if (dataExtra != null && dataExtra.length === 1) {
                 const dataIndex = tmpIP.findIndex(item => item.version === 4);
                 if (dataIndex !== -1 && !(tmpIP[dataIndex].plan === undefined || tmpIP[dataIndex].plan?.length === 0)) {
                     tmpPlan = data.ip[dataIndex].plan;
-                    if (tmpPlan !== undefined) {
+                    if (tmpPlan != null) {
                         setPlanSum({
                             name: "",
                             after: planSum.after - tmpPlan[index].after,
@@ -1175,7 +1175,7 @@ export function ServiceAddJPNICTech(props: {
     const changeData = (index: number) => {
         const jpnicTech = data.jpnic_tech;
 
-        if (data.jpnic_tech !== undefined && jpnicTech) {
+        if (data.jpnic_tech != null && jpnicTech) {
             jpnicTech[index] = jpnic;
             setData({...data, jpnic_tech: jpnicTech})
         } else {
@@ -1186,7 +1186,7 @@ export function ServiceAddJPNICTech(props: {
     const deleteData = (index: number) => {
         const jpnicTech = data.jpnic_tech;
 
-        if (data.jpnic_tech !== undefined && jpnicTech) {
+        if (data.jpnic_tech != null && jpnicTech) {
             jpnicTech?.splice(index, 1)
             setData({...data, jpnic_tech: jpnicTech})
         } else {
@@ -1763,7 +1763,7 @@ export function ServiceAddBandwidthDialogs(props: {
     setData: Dispatch<SetStateAction<ServiceAddData>>
 }) {
     const {data, setData} = props
-    const [checkBox, setCheckBox] = React.useState(data.max_bandwidth_as !== undefined);
+    const [checkBox, setCheckBox] = React.useState(data.max_bandwidth_as != null);
     const classes = useStyles();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

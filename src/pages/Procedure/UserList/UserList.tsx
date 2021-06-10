@@ -34,7 +34,7 @@ export default function UserList() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -47,7 +47,7 @@ export default function UserList() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.user_list !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.user_list != null) {
                 setInitUsers(tmpData.data?.user_list);
                 setUsers(tmpData.data?.user_list);
             }
@@ -89,7 +89,7 @@ export default function UserList() {
                 />
             </Paper>
             {
-                users === null &&
+                users == null &&
                 <h3>現在、有効なユーザはありません。</h3>
             }
             {

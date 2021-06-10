@@ -60,7 +60,7 @@ export default function Add() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -72,7 +72,7 @@ export default function Add() {
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
-            } else if (tmpData.data !== undefined) {
+            } else if (tmpData.data != null) {
                 setData(tmpData.data);
                 // add group
                 if (tmpData.data.user?.group_id === 0) {
@@ -81,11 +81,11 @@ export default function Add() {
                     setActiveStep(1);
                 } else if (tmpData.data.group?.add_allow) {
                     setActiveStep(2);
-                } else if (tmpData.data.service !== undefined && tmpData.data.service?.filter(value => !value.pass).length > 0) {
+                } else if (tmpData.data.service != null && tmpData.data.service?.filter(value => !value.pass).length > 0) {
                     setActiveStep(3);
-                } else if (tmpData.data.service !== undefined && tmpData.data.service?.filter(value => value.add_allow).length > 0) {
+                } else if (tmpData.data.service != null && tmpData.data.service?.filter(value => value.add_allow).length > 0) {
                     setActiveStep(4);
-                } else if (tmpData.data.connection !== undefined && tmpData.data.connection?.filter(value => !value.open).length > 0) {
+                } else if (tmpData.data.connection != null && tmpData.data.connection?.filter(value => !value.open).length > 0) {
                     setActiveStep(5);
                 } else {
                     setActiveStep(6);
@@ -116,7 +116,7 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 0 && data?.user !== undefined &&
+                        activeStep === 0 && data?.user != null &&
                         <div>
                             <div>アカウント登録後、以下の「グループ情報の申請」のボタンより申請を行ってください。</div>
                             <br/>
@@ -139,7 +139,7 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 2 && data?.group !== undefined &&
+                        activeStep === 2 && data?.group != null &&
                         <div>
                             <div>ネットワーク接続を希望の方は、「サービス情報の申請」申請ボタンより行ってください。</div>
                             <br/>
@@ -153,7 +153,7 @@ export default function Add() {
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        activeStep === 4 && data?.group !== undefined && data?.service !== undefined &&
+                        activeStep === 4 && data?.group != null && data?.service != null &&
                         <div>
                             <div>接続先の情報を登録する必要があるため、「接続情報の申請」ボタンより申請を行ってください。</div>
                             <Button variant="contained" color={"primary"}

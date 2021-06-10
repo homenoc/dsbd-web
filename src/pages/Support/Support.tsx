@@ -40,7 +40,7 @@ export default function Support() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -53,10 +53,10 @@ export default function Support() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.ticket !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.ticket != null) {
                 setInitTickets(tmpData.data?.ticket);
                 setTickets(tmpData.data?.ticket);
-                if (tmpData.data.user !== undefined) {
+                if (tmpData.data.user != null) {
                     setGroupID(tmpData.data.user?.group_id)
                 }
             }
@@ -120,7 +120,7 @@ export default function Support() {
                 </RadioGroup>
             </FormControl>
             {
-                tickets === null &&
+                (tickets == null || tickets.length === 0) &&
                 <h3>現在、有効なチケットはありません。</h3>
             }
             {

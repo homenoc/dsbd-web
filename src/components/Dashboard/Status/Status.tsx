@@ -43,7 +43,7 @@ export function GroupStudent(props: { student: boolean, date: string }): any {
 
 export function GroupFee(props: { fee: number }): any {
     const {fee} = props;
-    if (fee === 0 || fee === null) {
+    if (fee === 0 || fee == null) {
         return (
             <Chip
                 size="small"

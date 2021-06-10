@@ -53,7 +53,7 @@ export default function SignUp() {
     const history = useHistory();
     let hCaptchaSiteKey = "";
 
-    if (restfulApiConfig.hCaptchaSiteKey !== undefined) {
+    if (restfulApiConfig.hCaptchaSiteKey != null) {
         hCaptchaSiteKey = restfulApiConfig.hCaptchaSiteKey;
     }
 

@@ -43,7 +43,7 @@ export default function SupportDetail() {
         const tmpData = infos[length - 1];
         console.log(Cookies.get("access_token"))
         console.log(Cookies.get("user_token"))
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     console.log("logout");
@@ -55,26 +55,28 @@ export default function SupportDetail() {
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.ticket !== undefined) {
+            } else if (tmpData.data != null) {
                 console.log(tmpData)
-                if (tmpData.data.user_list !== undefined) {
+                if (tmpData.data.user_list != null) {
                     setUserList(tmpData.data.user_list);
                 }
 
-                const ticketOne = tmpData.data.ticket.filter(ticket => ticket.id === Number(id));
-                if (ticketOne !== undefined && ticketOne.length !== 0) {
-                    setTickets(ticketOne[0]);
-                    if (ticketOne[0].chat !== undefined) {
-                        setBaseChatData(ticketOne[0].chat);
-                        return
+                if (tmpData.data.ticket != null) {
+                    const ticketOne = tmpData.data.ticket.filter(ticket => ticket.id === Number(id));
+                    if (ticketOne != null && ticketOne.length !== 0) {
+                        setTickets(ticketOne[0]);
+                        if (ticketOne[0].chat != null) {
+                            setBaseChatData(ticketOne[0].chat);
+                            return
+                        }
                     }
                 }
 
-                if (tmpData.data.request !== undefined) {
+                if (tmpData.data.request != null) {
                     const requestOne = tmpData.data.request.filter(ticket => ticket.id === Number(id));
-                    if (requestOne !== undefined && requestOne.length !== 0) {
+                    if (requestOne != null && requestOne.length !== 0) {
                         setTickets(requestOne[0]);
-                        if (requestOne[0].chat !== undefined) {
+                        if (requestOne[0].chat != null) {
                             setBaseChatData(requestOne[0].chat);
                             return
                         }
@@ -99,7 +101,7 @@ export default function SupportDetail() {
             const obj = JSON.parse(lastMessage?.data);
             console.log(obj)
 
-            if (baseChatData !== undefined) {
+            if (baseChatData != null) {
                 setBaseChatData([...baseChatData, {
                     ticket_id: Number(id),
                     admin: obj.admin,
@@ -151,12 +153,11 @@ export default function SupportDetail() {
                 <h2>データがありません</h2>
             }
             {
-                baseChatData !== undefined &&
+                baseChatData != null &&
                 <div className={classes.container}>
                     <Paper className={classes.paper}>
                         <Paper id="style-1" className={classes.messagesBody}>
                             {
-                                baseChatData !== undefined &&
                                 baseChatData.map((chat, index) =>
                                     !chat.admin ?
                                         <MessageRight key={index} message={chat.data} timestamp={chat.created_at}
