@@ -35,7 +35,6 @@ export default function Procedure() {
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
     const history = useHistory();
-    const [status, setStatus] = React.useState(3);
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -58,27 +57,6 @@ export default function Procedure() {
                 }
             } else if (tmpData.data !== undefined) {
                 setData(tmpData.data);
-                // add group
-                if (tmpData.data.user?.group_id === 0) {
-                    setStatus(0);
-                } else if (tmpData.data.group?.add_allow) {
-                    setStatus(1);
-                } else {
-                    if (tmpData.data.service !== undefined) {
-                        let addAllow = false;
-                        for (const tmpService of tmpData.data.service) {
-                            if (tmpService.add_allow) {
-                                addAllow = true;
-                                break;
-                            }
-                        }
-                        if (addAllow) {
-                            setStatus(2);
-                        }
-                    } else {
-                        setStatus(3);
-                    }
-                }
             }
 
         } else {
@@ -103,7 +81,7 @@ export default function Procedure() {
                 <Grid item xs={12}>
                     <h3>申請状況</h3>
                     {
-                        data !== undefined && data.request != undefined &&
+                        data !== undefined && data.request !== undefined &&
                         <StatusTable key={"status_table"} request={data?.request}/>
                     }
                 </Grid>

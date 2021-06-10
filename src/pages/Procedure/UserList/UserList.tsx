@@ -27,7 +27,6 @@ export default function UserList() {
     const infos = useSelector((state: RootState) => state.infos);
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
-    const [value, setValue] = React.useState(false);
 
     useEffect(() => {
         // info
@@ -72,17 +71,6 @@ export default function UserList() {
         }
         setUsers(tmp);
     };
-
-    const clickSolvedStatus = (id: number, solved: boolean) => {
-        // Put(id, {solved}).then(res => {
-        //     if (res.error === undefined) {
-        //         enqueueSnackbar("OK", {variant: "success"});
-        //         Get().thestylesn();
-        //     } else {
-        //         enqueueSnackbar(res.error, {variant: "error"});
-        //     }
-        // })
-    }
 
     const clickDetailPage = (id: number) => {
         history.push('/dashboard/procedure/user/' + id);

@@ -1,4 +1,4 @@
-import {IP, JPNICData, Plan, ServiceData} from "../../../interface";
+import {IP, JPNICData, ServiceData} from "../../../interface";
 import useStyles from "../styles";
 import {
     Box,
@@ -19,7 +19,6 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import cssModule from "./ServiceList.module.scss";
 
 export function ServiceGet(props: { service: ServiceData }): any {
-    const classes = useStyles();
     const {service} = props;
 
     return (
@@ -181,7 +180,7 @@ function ServiceIPRow(props: {
                                     }
                                     {
                                         ip.plan !== undefined && ip.plan?.map((plan, index) =>
-                                            <TableRow className={classes.rootTable}>
+                                            <TableRow className={classes.rootTable} id={"service_table_row_" + index}>
                                                 <TableCell component="th" scope="row">
                                                     {plan.id}
                                                 </TableCell>
@@ -189,7 +188,8 @@ function ServiceIPRow(props: {
                                                 <TableCell align="right">{plan.after}</TableCell>
                                                 <TableCell align="right">{plan.half_year}</TableCell>
                                                 <TableCell align="right">{plan.one_year}</TableCell>
-                                            </TableRow>                                        )
+                                            </TableRow>
+                                        )
                                     }
                                 </TableBody>
                             </Table>

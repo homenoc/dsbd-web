@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useStyles from "../styles"
 import {
-    Button,
     Card,
     CardActions,
     CardContent, Chip,
@@ -10,7 +9,7 @@ import {
     Typography
 } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import {ServiceData, UserData} from "../../../interface";
+import {ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
 import store, {RootState} from "../../../store";
@@ -73,10 +72,6 @@ export default function ServiceList() {
         }
         setServices(tmp);
     };
-
-    const clickDetailPage = (id: number) => {
-        history.push('/dashboard/procedure/service/' + id);
-    }
 
     return (
         <Dashboard title="サービス変更/廃止手続き">

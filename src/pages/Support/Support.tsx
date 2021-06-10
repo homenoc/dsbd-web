@@ -12,12 +12,12 @@ import {
     Typography
 } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import {SupportAddData, TicketData} from "../../interface";
+import {TicketData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {Solved} from "../../components/Dashboard/Solved/Open";
 import Cookies from "js-cookie";
 import store, {RootState} from "../../store";
-import {clearInfos, clearTemplates, getInfos} from "../../store/action/Actions";
+import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import {useSelector} from "react-redux";
 import {Get} from "../../api/Info";
 import {SupportAddDialog} from "./SupportAddDialog";

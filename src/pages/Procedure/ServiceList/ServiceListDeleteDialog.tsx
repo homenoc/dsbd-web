@@ -1,26 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import useStyles from "../styles"
 import {
-    AppBar,
     Button,
-    Card,
-    CardActions,
-    CardContent, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
-    Tab, Tabs, TextField,
-    Typography, useTheme
+    Dialog, DialogActions, DialogContent, DialogTitle, Grid,
+    TextField,
 } from "@material-ui/core";
-import SwipeableViews from "react-swipeable-views";
-import {useHistory, useParams} from "react-router-dom";
-import {DefaultSupportAddData, ServiceData, UserData} from "../../../interface";
+import {useHistory} from "react-router-dom";
+import {DefaultSupportAddData, ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
-import Cookies from "js-cookie";
-import store, {RootState} from "../../../store";
-import {clearInfos, clearTemplates} from "../../../store/action/Actions";
-import {useSelector} from "react-redux";
 import {Get} from "../../../api/Info";
-import Dashboard from "../../../components/Dashboard/Dashboard";
-import {Delete, Put} from "../../../api/User";
-import shaJS from "sha.js";
 import {Post} from "../../../api/Request";
 import {ServiceGet} from "./Service";
 
