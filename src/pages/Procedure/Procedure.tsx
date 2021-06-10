@@ -82,7 +82,7 @@ export default function Procedure() {
                     <h3>申請状況</h3>
                     {
                         data !== undefined && data.request !== undefined &&
-                        <StatusTable key={"status_table"} request={data?.request}/>
+                        <StatusTable key={"status_table"} request={data?.request.sort((a, b) => b.id - a.id)}/>
                     }
                 </Grid>
                 <Grid item xs={12}>
@@ -340,7 +340,7 @@ export function StatusTable(props: {
                             rowsPerPage > 0
                                 ? request.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : request
-                        ).sort((a, b) => b.id - a.id).map((row) => (
+                        ).map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell component="th" scope="row">
                                     {row.title}
