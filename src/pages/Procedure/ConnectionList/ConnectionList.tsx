@@ -36,7 +36,7 @@ export default function ConnectionList() {
         const length = info.length;
         const tmpData = info[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -49,7 +49,7 @@ export default function ConnectionList() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.info !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.info != null) {
                 setInitInfos(tmpData.data?.info);
                 setInfos(tmpData.data?.info);
             }
@@ -95,11 +95,11 @@ export default function ConnectionList() {
                 />
             </Paper>
             {
-                infos === null &&
+                infos == null &&
                 <h3>現在、有効なサービスはありません。</h3>
             }
             {
-                infos !== null &&
+                infos != null &&
                 infos.map((tmpInfo: InfosData, index) => (
                     <Card className={classes.root}>
                         <CardContent>

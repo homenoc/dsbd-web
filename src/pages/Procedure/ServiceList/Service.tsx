@@ -108,7 +108,7 @@ function ServiceIP(props: {
                 </Card>
             }
             {
-                service.ip !== undefined &&
+                service.ip != null &&
                 <Card className={classes.rootTable}>
                     <CardContent>
                         <h3>IP</h3>
@@ -179,7 +179,7 @@ function ServiceIPRow(props: {
                                         ip.plan === undefined && <p><b>情報なし</b></p>
                                     }
                                     {
-                                        ip.plan !== undefined && ip.plan?.map((plan, index) =>
+                                        ip.plan != null && ip.plan?.map((plan, index) =>
                                             <TableRow className={classes.rootTable} id={"service_table_row_" + index}>
                                                 <TableCell component="th" scope="row">
                                                     {plan.id}
@@ -279,7 +279,7 @@ export function ServiceJPNICAdmin(props: {
                 </Card>
             }
             {
-                service.need_jpnic && service.jpnic_admin !== undefined &&
+                service.need_jpnic && service.jpnic_admin != null &&
                 <Card className={cssModule.contract}>
                     <CardContent>
                         <h3>JPNIC管理者連絡窓口記入情報</h3>
@@ -349,7 +349,7 @@ export function ServiceJPNICTech(props: {
 }): any {
     const {service} = props;
 
-    console.log(service.jpnic_tech === null)
+    console.log(service.jpnic_tech == null)
     const classes = useStyles();
 
     return (
@@ -364,7 +364,7 @@ export function ServiceJPNICTech(props: {
                 </Card>
             }
             {
-                service.need_jpnic && service.jpnic_tech === null &&
+                service.need_jpnic && service.jpnic_tech == null &&
                 <Card>
                     <CardContent>
                         <h3>JPNIC技術連絡担当者</h3>

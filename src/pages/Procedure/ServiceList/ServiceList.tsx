@@ -35,7 +35,7 @@ export default function ServiceList() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -48,7 +48,7 @@ export default function ServiceList() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.service !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.service != null) {
                 setInitServices(tmpData.data?.service);
                 setServices(tmpData.data?.service);
             }
@@ -94,7 +94,7 @@ export default function ServiceList() {
                 />
             </Paper>
             {
-                services === null &&
+                services == null &&
                 <h3>現在、有効なサービスはありません。</h3>
             }
             {

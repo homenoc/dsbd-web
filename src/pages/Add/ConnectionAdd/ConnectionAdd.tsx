@@ -159,7 +159,7 @@ export function ConnectionAddServiceSelect(props: {
     const selectData = (id: number) => {
         const dataExtra = serviceData.filter(item => item.id === id);
         console.log(dataExtra);
-        if (dataExtra !== undefined) {
+        if (dataExtra != null) {
             setIPBGPRoute(dataExtra[0].need_route);
         } else {
             enqueueSnackbar('Templateから情報が見つかりません。', {variant: "error"});
@@ -180,7 +180,7 @@ export function ConnectionAddServiceSelect(props: {
                         onChange={(event) => {
                             selectData(Number(event.target.value));
                             const tmpData = serviceData.filter(data => data.id === Number(event.target.value));
-                            if (tmpData !== undefined) {
+                            if (tmpData != null) {
                                 setServiceCode(tmpData[0].service_type);
                             }
                             setData({...data, connection_template_id: Number(event.target.value)})

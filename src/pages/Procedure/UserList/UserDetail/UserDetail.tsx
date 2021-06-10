@@ -79,7 +79,7 @@ export default function UserDetail() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -92,10 +92,10 @@ export default function UserDetail() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.user_list !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.user_list != null) {
                 const tmpUser = tmpData.data?.user_list.filter(user => user.id === Number(id));
                 setUser(tmpUser[0]);
-                if (tmpData.data.user !== undefined) {
+                if (tmpData.data.user != null) {
                     setLoginUserID(tmpData.data.user.id);
                 }
             }
@@ -174,11 +174,11 @@ export default function UserDetail() {
     return (
         <Dashboard title={"ユーザ情報 (ID: " + id + ")"}>
             {
-                user === null &&
+                user == null &&
                 <h3>現在、有効なユーザはありません。</h3>
             }
             {
-                user !== undefined &&
+                user != null &&
                 <Card className={classes.root}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>

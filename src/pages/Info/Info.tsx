@@ -27,7 +27,7 @@ export default function Info() {
         const length = serviceInfos.length;
         const tmpData = serviceInfos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -40,7 +40,7 @@ export default function Info() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data !== undefined && tmpData.data?.info !== undefined) {
+            } else if (tmpData.data != null && tmpData.data?.info != null) {
                 console.log(tmpData.data?.info);
                 setInitInfos(tmpData.data?.info);
                 setInfos(tmpData.data?.info);
@@ -79,11 +79,11 @@ export default function Info() {
                 />
             </Paper>
             {
-                (infos === null) &&
-                    <h3>現在、開通しているサービスがありません。</h3>
+                (infos == null || infos.length === 0) &&
+                <h3>現在、開通しているサービスがありません。</h3>
             }
             {
-                (infos !== null) &&
+                (infos != null) &&
                 infos.map((info: InfosData, index) => (
                     <Card className={classes.root}>
                         <CardContent>

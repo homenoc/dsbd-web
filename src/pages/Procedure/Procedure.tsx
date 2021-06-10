@@ -43,7 +43,7 @@ export default function Procedure() {
         const length = infos.length;
         const tmpData = infos[length - 1];
 
-        if (tmpData.error !== undefined || tmpData.data !== undefined) {
+        if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
                     Cookies.remove('user_token');
@@ -55,7 +55,7 @@ export default function Procedure() {
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
-            } else if (tmpData.data !== undefined) {
+            } else if (tmpData.data != null) {
                 setData(tmpData.data);
             }
 
@@ -81,13 +81,16 @@ export default function Procedure() {
                 <Grid item xs={12}>
                     <h3>申請状況</h3>
                     {
-                        data !== undefined && data.request !== undefined &&
+                        (data != null && data?.request == undefined) && <h2>申請履歴がありません</h2>
+                    }
+                    {
+                        data != null && data.request != null &&
                         <StatusTable key={"status_table"} request={data?.request.sort((a, b) => b.id - a.id)}/>
                     }
                 </Grid>
                 <Grid item xs={12}>
                     {
-                        data?.user !== undefined && data.user?.group_id !== 0 &&
+                        data != null && data?.user != null && data.user?.group_id !== 0 &&
                         <Card key={"add_user"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -114,7 +117,7 @@ export default function Procedure() {
                         </CardActions>
                     </Card>
                     {
-                        data?.user !== undefined && data.user?.group_id !== 0 && data.group !== undefined &&
+                        data != null && data?.user != null && data.user?.group_id !== 0 && data.group != null &&
                         <Card key={"change_group"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -129,7 +132,7 @@ export default function Procedure() {
                         </Card>
                     }
                     {
-                        data?.group !== undefined && !data.group?.add_allow &&
+                        data != null && data?.group != null && !data.group?.add_allow &&
                         <Card key={"add_service"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -144,7 +147,7 @@ export default function Procedure() {
                         </Card>
                     }
                     {
-                        data?.service !== undefined && data.service?.filter(value => !value.pass).length > 0 &&
+                        data != null && data?.service != null && data.service?.filter(value => !value.pass).length > 0 &&
                         <Card key={"change_abolished_service"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -163,7 +166,7 @@ export default function Procedure() {
                         </Card>
                     }
                     {
-                        data?.service !== undefined && data.service?.filter(value => value.add_allow).length > 0 &&
+                        data != null && data?.service != null && data.service?.filter(value => value.add_allow).length > 0 &&
                         <Card key={"add_connection"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -178,7 +181,7 @@ export default function Procedure() {
                         </Card>
                     }
                     {
-                        data?.connection !== undefined && data.connection?.filter(value => !value.open).length > 0 &&
+                        data != null && data?.connection != null && data.connection?.filter(value => !value.open).length > 0 &&
                         <Card key={"change_abolished_connection"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -197,7 +200,7 @@ export default function Procedure() {
                         </Card>
                     }
                     {
-                        data?.user !== undefined && data.user?.group_id !== 0 &&
+                        data != null && data?.user != null && data.user?.group_id !== 0 &&
                         <Card key={"abolished_group"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -211,10 +214,6 @@ export default function Procedure() {
                             </CardActions>
                         </Card>
                     }
-                </Grid>
-                <Grid item xs={12}>
-                    {/*<Button onClick={() => test1()}>Test1</Button>*/}
-                    {/*<Button onClick={() => test2()}>Test2</Button>*/}
                 </Grid>
             </Grid>
         </DashboardComponent>
@@ -302,11 +301,6 @@ export function StatusTable(props: {
     const history = useHistory();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [data, setData] = React.useState<TicketData[]>();
-
-    useEffect(() => {
-        setData(request);
-    }, []);
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, request.length - page * rowsPerPage);
 
@@ -381,7 +375,7 @@ export function StatusTable(props: {
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, {label: 'All', value: -1}]}
-                            colSpan={3}
+                            colSpan={4}
                             count={request.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
