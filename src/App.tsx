@@ -13,6 +13,8 @@ import Add from "./pages/Add/Add";
 import Procedure from "./pages/Procedure/Procedure";
 import UserList from "./pages/Procedure/UserList/UserList";
 import UserDetail from "./pages/Procedure/UserList/UserDetail/UserDetail";
+import ServiceList from "./pages/Procedure/ServiceList/ServiceList";
+import ConnectionList from "./pages/Procedure/ConnectionList/ConnectionList";
 
 function App() {
     return (
@@ -30,6 +32,8 @@ function App() {
                 <PrivateRoute exact path="/dashboard/procedure" component={Procedure}/>
                 <PrivateRoute exact path="/dashboard/procedure/user" component={UserList}/>
                 <PrivateRoute exact path="/dashboard/procedure/user/:id" component={UserDetail}/>
+                <PrivateRoute exact path="/dashboard/procedure/service" component={ServiceList}/>
+                <PrivateRoute exact path="/dashboard/procedure/connection" component={ConnectionList}/>
             </Switch>
         </BrowserRouter>
     );
