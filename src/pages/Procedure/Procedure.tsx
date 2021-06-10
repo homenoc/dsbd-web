@@ -371,7 +371,7 @@ export function StatusTable(props: {
                     }
                     {
                         emptyRows > 0 && (
-                            <TableRow style={{height: 53 * emptyRows}}>
+                            <TableRow style={{height: 43 * emptyRows}}>
                                 <TableCell colSpan={6}/>
                             </TableRow>
                         )
