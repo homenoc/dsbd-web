@@ -302,6 +302,11 @@ export function StatusTable(props: {
     const history = useHistory();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [data, setData] = React.useState<TicketData[]>();
+
+    useEffect(() => {
+        setData(request);
+    }, []);
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, request.length - page * rowsPerPage);
 
@@ -335,7 +340,7 @@ export function StatusTable(props: {
                             rowsPerPage > 0
                                 ? request.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : request
-                        ).map((row) => (
+                        ).sort((a, b) => b.id - a.id).map((row) => (
                             <TableRow key={row.id}>
                                 <TableCell component="th" scope="row">
                                     {row.title}
