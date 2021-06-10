@@ -5,10 +5,8 @@ import {
     Dialog, DialogActions, DialogContent, DialogTitle, Grid,
     TextField,
 } from "@material-ui/core";
-import cssModule from "./ServiceList.module.scss";
-import SwipeableViews from "react-swipeable-views";
-import {useHistory, useParams} from "react-router-dom";
-import {DefaultSupportAddData, ServiceData, UserData} from "../../../interface";
+import {useHistory} from "react-router-dom";
+import {DefaultSupportAddData, ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import {Get} from "../../../api/Info";
 import {Post} from "../../../api/Request";
