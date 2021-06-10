@@ -60,14 +60,31 @@ export default function SupportDetail() {
                 if (tmpData.data.user_list !== undefined) {
                     setUserList(tmpData.data.user_list);
                 }
-                const ticketOne = tmpData.data.ticket.filter(ticket => ticket.id === Number(id));
 
-                if (ticketOne !== undefined) {
+                const ticketOne = tmpData.data.ticket.filter(ticket => ticket.id === Number(id));
+                if (ticketOne !== undefined && ticketOne.length !== 0) {
                     setTickets(ticketOne[0]);
                     if (ticketOne[0].chat !== undefined) {
                         setBaseChatData(ticketOne[0].chat);
+                        return
                     }
                 }
+
+                if (tmpData.data.request !== undefined) {
+                    const requestOne = tmpData.data.request.filter(ticket => ticket.id === Number(id));
+                    if (requestOne !== undefined && requestOne.length !== 0) {
+                        setTickets(requestOne[0]);
+                        if (requestOne[0].chat !== undefined) {
+                            setBaseChatData(requestOne[0].chat);
+                            return
+                        }
+                    }
+                }
+
+                enqueueSnackbar("データがありません ", {variant: "info"});
+                return
+
+
             }
         } else {
             Get().then();
@@ -129,26 +146,33 @@ export default function SupportDetail() {
 
     return (
         <div>
-            <div className={classes.container}>
-                <Paper className={classes.paper}>
-                    <Paper id="style-1" className={classes.messagesBody}>
-                        {
-                            baseChatData !== undefined &&
-                            baseChatData.map((chat, index) =>
-                                !chat.admin ?
-                                    <MessageRight key={index} message={chat.data} timestamp={chat.created_at}
-                                                  displayName={getUser(chat.user_id)}/>
-                                    :
-                                    <MessageLeft key={index} message={chat.data} timestamp={chat.created_at}
-                                                 displayName={"運営"}/>
-                            )
-                        }
-                        <div ref={ref}/>
+            {
+                baseChatData === undefined &&
+                <h2>データがありません</h2>
+            }
+            {
+                baseChatData !== undefined &&
+                <div className={classes.container}>
+                    <Paper className={classes.paper}>
+                        <Paper id="style-1" className={classes.messagesBody}>
+                            {
+                                baseChatData !== undefined &&
+                                baseChatData.map((chat, index) =>
+                                    !chat.admin ?
+                                        <MessageRight key={index} message={chat.data} timestamp={chat.created_at}
+                                                      displayName={getUser(chat.user_id)}/>
+                                        :
+                                        <MessageLeft key={index} message={chat.data} timestamp={chat.created_at}
+                                                     displayName={"運営"}/>
+                                )
+                            }
+                            <div ref={ref}/>
+                        </Paper>
+                        <TextInput key={"textInput"} inputChat={inputChatData} setInputChat={setInputChatData}
+                                   setSendPush={setSendPush}/>
                     </Paper>
-                    <TextInput key={"textInput"} inputChat={inputChatData} setInputChat={setInputChatData}
-                               setSendPush={setSendPush}/>
-                </Paper>
-            </div>
+                </div>
+            }
         </div>
     );
 }
