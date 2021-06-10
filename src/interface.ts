@@ -7,6 +7,7 @@ export interface InfoData {
     info?: InfosData[]
     notice?: NoticeData[]
     ticket?: TicketData[]
+    request?: TicketData[]
 }
 
 export interface UserData {
@@ -47,12 +48,66 @@ export interface ServiceData {
     service_id: string
     service_type: string
     need_route: boolean
+    need_jpnic: boolean
     add_allow: boolean
     pass: boolean
+    org: string
+    org_en: string
+    postcode: string
+    address: string
+    address_en: string
+    asn: number
+    avg_upstream: number
+    max_upstream: number
+    avg_downstream: number
+    max_downstream: number
+    max_bandwidth_as: string
+    ip?: IP[]
+    jpnic_admin?: JPNICData
+    jpnic_tech?: JPNICData[]
+}
+
+export interface JPNICData {
+    id: number
+    name: string
+    name_en: string
+    mail: string
+    org: string
+    org_en: string
+    postcode: string
+    address: string
+    address_en: string
+    dept: string
+    dept_en: string
+    tel: string
+    fax: string
+    country: string
+}
+
+export interface IP {
+    id: number
+    version: number
+    name: string
+    ip: string
+    plan: Plan[]
+    start_date: string
+    end_date: string
+    use_case: string
+    open: boolean
+}
+
+export interface Plan {
+    id: number
+    ip_id: number
+    name: string
+    after: number
+    half_year: number
+    one_year: number
 }
 
 export interface ConnectionData {
     id: number
+    service_id: string
     open: boolean
 }
 
@@ -75,6 +130,7 @@ export interface TicketData {
     title: string
     chat?: ChatData[]
     solved: boolean
+    reject: boolean
     admin: boolean
 }
 
@@ -88,7 +144,7 @@ export interface ChatData {
 }
 
 export interface InfosData {
-    service_id: number
+    service_id: string
     service: string
     assign: boolean
     asn: number
@@ -119,7 +175,7 @@ export interface InfosData {
 }
 
 export interface JPNICData {
-    ID: number
+    id: number
     address: string
     address_en: string
     country: string
@@ -140,7 +196,7 @@ export interface JPNICData {
 export interface BGPRouterDetailData {
     CreatedAt: string
     DeletedAt: string
-    ID: number
+    id: number
     UpdatedAt: string
     address: string
     comment: string
