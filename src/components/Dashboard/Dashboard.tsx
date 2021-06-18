@@ -21,6 +21,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import ChatIcon from "@material-ui/icons/Chat";
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import PaymentIcon from '@material-ui/icons/Payment';
 import useStyles from "./styles";
 import {useHistory} from "react-router-dom";
 import {Logout} from "../../api/Auth";
@@ -29,6 +30,7 @@ import Cookies from "js-cookie";
 import store from "../../store";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import MoneyIcon from '@material-ui/icons/Money';
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
@@ -73,6 +75,12 @@ export default function Dashboard(props: any) {
     }
     const AddPage = () => {
         history.push("/dashboard/add");
+    }
+    const MembershipPage = () => {
+        history.push("/dashboard/membership");
+    }
+    const DonatePage = () => {
+        history.push("/dashboard/donate");
     }
     const SupportPage = () => {
         history.push("/dashboard/support");
@@ -140,6 +148,18 @@ export default function Dashboard(props: any) {
                             <AddIcon/>
                         </ListItemIcon>
                         <ListItemText primary="申請"/>
+                    </ListItem>
+                    <ListItem button onClick={MembershipPage}>
+                        <ListItemIcon>
+                            <PaymentIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="会費"/>
+                    </ListItem>
+                    <ListItem button onClick={DonatePage}>
+                        <ListItemIcon>
+                            <MoneyIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="寄付"/>
                     </ListItem>
                     <ListItem button onClick={SupportPage}>
                         <ListItemIcon>

@@ -13,6 +13,7 @@ export interface InfoData {
 export interface UserData {
     id: number
     group_id: number
+    stripe_customer_id: string
     name: string
     name_en: string
     email: string
@@ -23,6 +24,7 @@ export interface UserData {
 
 export interface GroupData {
     id: number
+    payment_membership_template: string
     agree: boolean
     question: string
     org: string
@@ -33,8 +35,11 @@ export interface GroupData {
     tel: string
     country: string
     contract: string
-    student: boolean
-    student_expired: string
+    paid: boolean
+    discount_rate: number
+    automatic_update: boolean
+    member_info: string
+    member_expired: string
     fee: number
     lock: boolean
     expired_status: number
@@ -300,6 +305,30 @@ export interface IPRouteData {
     name: string
 }
 
+export interface IPRouteData {
+    ID: number
+    CreatedAt: string
+    UpdatedAt: string
+    name: string
+}
+
+export interface PaymentMembershipTemplate {
+    ID: number
+    title: string
+    plan: string
+    monthly: boolean
+    yearly: boolean
+    fee: number
+    comment: string
+}
+
+export interface PaymentDonateTemplate {
+    ID: number
+    name: string
+    fee: number
+    comment: string
+}
+
 export interface TemplateData {
     services?: ServiceTemplateData[]
     connections?: ConnectionTemplateData[]
@@ -311,6 +340,8 @@ export interface TemplateData {
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
     ipv4_route?: IPRouteData[]
     ipv6_route?: IPRouteData[]
+    payment_membership_template?: PaymentMembershipTemplate[]
+    payment_donate_template?: PaymentDonateTemplate[]
 }
 
 export interface GroupAddData {
