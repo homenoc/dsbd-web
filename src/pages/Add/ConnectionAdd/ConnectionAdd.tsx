@@ -32,14 +32,14 @@ export default function ConnectionAddDialogs(props: {
     template: TemplateData
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>
-    baseData: GroupData
     serviceData: ServiceData[]
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {template, open, setOpen, baseData, serviceData, reload} = props
+    const {template, open, setOpen, serviceData, reload} = props
     const [data, setData] = React.useState(DefaultConnectionAddData);
     const [internet, setInternet] = React.useState(false);
     const [serviceCode, setServiceCode] = React.useState("");
+    const [serviceID, setServiceID] = React.useState(0);
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
 
@@ -64,7 +64,7 @@ export default function ConnectionAddDialogs(props: {
         const err = check(data, template);
         if (err === "") {
             console.log("OK")
-            Post(baseData.id, data).then(res => {
+            Post(serviceID, data).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
@@ -97,7 +97,7 @@ export default function ConnectionAddDialogs(props: {
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <ConnectionAddServiceSelect key={"connection_add_service_select"} serviceData={serviceData}
-                                                    data={data} setData={setData}
+                                                    data={data} setData={setData} setServiceID={setServiceID}
                                                     setServiceCode={setServiceCode} template={template}/>
                         <br/>
                         <Grid item xs={12}>
@@ -149,15 +149,17 @@ export function ConnectionAddServiceSelect(props: {
     data: ConnectionAddData
     setData: Dispatch<SetStateAction<ConnectionAddData>>
     template: TemplateData,
+    setServiceID: Dispatch<SetStateAction<number>>
     setServiceCode: Dispatch<SetStateAction<string>>
 }) {
-    const {serviceData, template, data, setData, setServiceCode} = props;
+    const {serviceData, setServiceID, template, data, setData, setServiceCode} = props;
     const [ipBGPRoute, setIPBGPRoute] = React.useState(false);
     const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const selectData = (id: number) => {
         const dataExtra = serviceData.filter(item => item.id === id);
+        setServiceID(id);
         console.log(dataExtra);
         if (dataExtra != null) {
             setIPBGPRoute(dataExtra[0].need_route);
