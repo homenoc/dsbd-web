@@ -159,7 +159,7 @@ export default function Add() {
                             <Button variant="contained" color={"primary"}
                                     onClick={() => setOpenConnection(true)}>接続情報の申請</Button>
                             <ConnectionAddDialogs open={openConnection} setOpen={setOpenConnection}
-                                                  baseData={data?.group} serviceData={data?.service}
+                                                  serviceData={data?.service}
                                                   reload={setReload} template={template}/>
                         </div>
                     }
