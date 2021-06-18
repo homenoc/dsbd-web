@@ -24,5 +24,17 @@ export default makeStyles(theme => ({
             marginLeft: theme.spacing(1),
             flex: 1,
         },
+        cardHeader: {
+            backgroundColor: theme.palette.grey[700],
+        },
+        cardPricing: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'baseline',
+            marginBottom: theme.spacing(2),
+        },
+        heroContent: {
+            padding: theme.spacing(8, 0, 6),
+        },
     }),
 );

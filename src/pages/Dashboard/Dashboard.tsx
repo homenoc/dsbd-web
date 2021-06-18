@@ -10,6 +10,7 @@ import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useHistory} from "react-router-dom";
+import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
 
 
 export default function Dashboard() {
@@ -91,10 +92,41 @@ export default function Dashboard() {
         history.push("/dashboard/add");
     }
 
+    const moveMembershipPage = () => {
+        history.push("/dashboard/membership");
+    }
+
     return (
         <DashboardComponent title="Dashboard">
             <Grid container spacing={3}>
                 <Grid item xs={8}>
+                    {
+                        !data?.group?.paid && data?.info?.length != undefined &&
+                        <Card key={"payment_notice"} className={classes.root}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    会費のお支払いについて
+                                </Typography>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    <Chip
+                                        label="重要"
+                                        color="secondary"
+                                    />
+                                </Typography>
+                                <h3>開通処理が完了致しましたので、会費のお支払いをお願いいたします。</h3>
+                                <h3>（開通処理後に1週間以内に支払いが行われない場合は、未開通処理を行います。）</h3>
+
+                                <br/>
+                                以下の「会費のお支払いはこちらから」ボタンより手続きを進めてください
+
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" variant="outlined" onClick={moveMembershipPage}>
+                                    会費のお支払いはこちらから
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    }
                     {
                         status !== 3 &&
                         <Card key={"add_notice"} className={classes.root}>
@@ -166,6 +198,60 @@ export default function Dashboard() {
                     }
                 </Grid>
                 <Grid item xs={4}>
+                    <Card key={"student"} className={classes.root}>
+                        <CardContent>
+                            <Typography variant="h5" component="h2">
+                                会員情報
+                            </Typography>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                {
+                                    data?.group?.paid && <h3>失効期限: {data?.group?.member_expired}</h3>
+                                }
+                            </Typography>
+                            <br/>
+                            {
+                                data?.group?.paid &&
+                                <div>
+                                    <h3>Plan: {data?.group?.payment_membership_template}</h3>
+                                    {
+                                        data?.group?.automatic_update &&
+                                        <h4>自動更新が有効</h4>
+                                    }
+                                    {
+                                        !data?.group?.automatic_update &&
+                                        <h4>自動更新が無効</h4>
+                                    }
+                                    <Chip
+                                        size="small"
+                                        color="primary"
+                                        label="支払い済み"
+                                    />
+                                </div>
+                            }
+                            {
+                                !data?.group?.paid && data?.info?.length == undefined &&
+                                <div>
+                                    <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
+                                    <Chip
+                                        size="small"
+                                        color={"secondary"}
+                                        label="未払い"
+                                    />
+                                </div>
+                            }
+                            {
+                                !data?.group?.paid && data?.info?.length != undefined &&
+                                <div>
+                                    <h3>支払い手続きを行ってください。</h3>
+                                    <Chip
+                                        size="small"
+                                        color={"secondary"}
+                                        label="未払い"
+                                    />
+                                </div>
+                            }
+                        </CardContent>
+                    </Card>
                     {/*<Button onClick={() => test1()}>Test1</Button>*/}
                     {/*<Button onClick={() => test2()}>Test2</Button>*/}
                 </Grid>
