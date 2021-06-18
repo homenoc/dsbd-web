@@ -15,7 +15,7 @@ import {useHistory} from "react-router-dom";
 import GroupAddDialogs from "./GroupAdd/GroupAdd";
 
 function getSteps() {
-    return ['グループ登録', '審査中', 'サービス情報の登録', '審査中', '接続情報の登録', '開通作業中'];
+    return ['グループ登録', '初期審査中', 'サービス情報の登録', '審査中', '接続情報の登録', '開通作業中'];
 }
 
 export default function Add() {
