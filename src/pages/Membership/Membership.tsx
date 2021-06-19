@@ -107,7 +107,7 @@ export default function Membership() {
             }
             {
                 isStatus === 2 &&
-                <h2>学生会員のため、費用は免除されます。</h2>
+                <h2>{data?.group?.member_info}のため、費用は免除されます。</h2>
             }
             {
                 isStatus === 3 &&
