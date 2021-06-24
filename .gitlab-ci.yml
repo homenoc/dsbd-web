@@ -1,0 +1,14 @@
+image: node:latest
+
+pages:
+  stage: deploy
+  script:
+  - npm install
+  - npm run build --prod
+  - mkdir public
+  - mv dist/angular-pwa/* public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
