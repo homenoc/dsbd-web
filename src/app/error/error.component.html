@@ -1,0 +1,26 @@
+<div class="main">
+  <h1>エラーが発生しました</h1>
+  <h2>Date</h2>
+  <p>{{time}}</p>
+  <h2>Error Result</h2>
+  <p><b>{{errorJson.error.error}}</b></p>
+
+  <h2>Error Http Status</h2>
+  <p><b>{{errorJson.message}}</b></p>
+  <br>
+  <br>
+  <h2>Error詳細情報</h2>
+  <p>Time: {{time}}</p>
+  <p>Detail: {{error}}</p>
+  <br>
+  <br>
+  <p>エラー原因がわからない場合は、support@homenoc.ad.jp宛に件名「Webシステムのエラー　[名前]」と上記の「Error詳細情報」を記入の上、
+    直前の操作内容を記入の上、送信してください。</p>
+  <br>
+  <br>
+  <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+  <br>
+  <br>
+  <button mat-raised-button color="primary" (click)="dashboardPage()">Dashboard</button>
+</div>
+

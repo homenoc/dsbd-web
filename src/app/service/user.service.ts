@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from "@angular/fire/auth";
-import {CommonService} from "./common.service";
-import {AngularFirestore} from "@angular/fire/firestore";
+import {CommonService} from './common.service';
+import {environment} from '../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,39 +10,105 @@ import {AngularFirestore} from "@angular/fire/firestore";
 export class UserService {
 
   constructor(
-    private afAuth: AngularFireAuth,
-    public afs: AngularFirestore,
+    public router: Router,
     private commonService: CommonService,
+    private http: HttpClient
   ) {
   }
 
-  createUser(email, pass): void {
-    this.afAuth.createUserWithEmailAndPassword(email, pass)
-      .then(result => {
-        result.user.sendEmailVerification().then()
-        this.commonService.openBar('Please follow the email confirmation link.。', 10000)
+  create(body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/user', body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
       })
-      .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
+    })
+      .toPromise().then(r => {
+        const response: any = r;
+        return response;
+      }).catch(error => {
+        sessionStorage.setItem('error', JSON.stringify(error));
+        this.router.navigate(['/error']).then();
+      });
   }
 
-  getUser(uid): Promise<any> {
-    const data = this.afs.collection('user').doc(uid);
-    return data.ref.get()
-      .then(doc => {
-        // console.log(doc);
-        if (doc.exists) {
-          // console.log('User data: ', doc.data());
-          if (doc.data().isActive) {
-            return doc.data();
-          } else {
-            return 0;
-          }
-        } else {
-          console.error('No matching invoice found');
-          return 0;
-        }
+  createGroup(body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/user/' + body.group_id, body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
       })
-      .catch();
+    })
+      .toPromise().then(r => {
+        const response: any = r;
+        location.reload();
+        return response;
+      }).catch(error => {
+        sessionStorage.setItem('error', JSON.stringify(error));
+        this.router.navigate(['/error']).then();
+      });
+  }
+
+  get(uid): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/user/' + uid, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    });
+  }
+
+  getGroup(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/user', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
+  }
+
+  getLoginUser(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/login', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        USER_TOKEN: sessionStorage.getItem('ClientID'),
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
+  }
+
+  update(uid, data): Promise<any> {
+    return this.http.put(environment.api.url + environment.api.path + '/user/' + uid,
+      data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          USER_TOKEN: sessionStorage.getItem('ClientID'),
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
   }
 }
 

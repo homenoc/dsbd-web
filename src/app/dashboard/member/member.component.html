@@ -1,0 +1,12 @@
+<div class="main">
+  <h1>会員ページ</h1>
+  <br>
+  <h2>会費</h2>
+  <ng-container *ngIf="student">
+    学生会員のため、費用は免除となります。
+  </ng-container>
+  <ng-container *ngIf="!student">
+    学生会員のため、費用は免除となります。
+  </ng-container>
+
+</div>

@@ -1,0 +1,79 @@
+<div class="main">
+  <h1>サポート</h1>
+  <mat-tab-group>
+    <mat-tab label="チケット一覧">
+      <ng-container *ngIf="lock">
+        <h2>登録されたチケットはありません。</h2>
+      </ng-container>
+      <ng-container *ngIf="!lock">
+        <ng-container *ngFor="let d of info">
+          <mat-card class="card" *ngIf="!d.solved">
+            <mat-card-header>
+              <mat-card-title>{{d.title}}</mat-card-title>
+              <mat-card-subtitle>作成者: {{d.username}}</mat-card-subtitle>
+              <mat-card-subtitle>
+                <mat-chip-list>
+                  <ng-container>
+                    <mat-chip color="primary" *ngIf="d.solved" selected>Solved</mat-chip>
+                  </ng-container>
+                </mat-chip-list>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <button mat-button color="primary" (click)="chatPage(d.id)">Chat</button>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+      </ng-container>
+      <br>
+    </mat-tab>
+    <mat-tab label="チケット一覧(解決済み)">
+      <ng-container *ngIf="lock">
+        <h2>登録されたチケットはありません。</h2>
+      </ng-container>
+      <ng-container *ngIf="!lock">
+        <ng-container *ngFor="let d of info">
+          <mat-card class="card" *ngIf="d.solved">
+            <mat-card-header>
+              <mat-card-title>{{d.title}}</mat-card-title>
+              <mat-card-subtitle>作成者: {{d.username}}</mat-card-subtitle>
+              <mat-card-subtitle>
+                <mat-chip-list>
+                  <ng-container>
+                    <mat-chip color="primary" *ngIf="d.solved" selected>Solved</mat-chip>
+                  </ng-container>
+                </mat-chip-list>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <button mat-button color="primary" (click)="chatPage(d.id)">Chat</button>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+      </ng-container>
+      <br>
+    </mat-tab>
+    <mat-tab label="チケット追加">
+      <br>
+      <p>IPアドレスの追加割当や接続情報の変更などについてもこちらからお問合せ下さい。</p>
+      <br>
+      <h4>タイトル</h4>
+      <mat-form-field class="large-width">
+        <mat-label>タイトル</mat-label>
+        <label>
+          <input matInput placeholder="タイトル" [formControl]="title">
+        </label>
+      </mat-form-field>
+      <br>
+      <h4>お問合せ内容</h4>
+      <form>
+        <mat-form-field class="textarea-form">
+          <textarea matInput rows="10" placeholder="お問合せ内容を入力してください" [formControl]="data" required></textarea>
+        </mat-form-field>
+      </form>
+      <br>
+      <button mat-button (click)="registration()">Request</button>
+      <br>
+    </mat-tab>
+  </mat-tab-group>
+</div>

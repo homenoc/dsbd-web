@@ -1,24 +1,25 @@
 <mat-sidenav-container class="container">
   <mat-sidenav #sideNav mode="side" opened>
-    <!--    <mat-nav-list>-->
-    <!--      <a mat-list-item routerLink="notice">お知らせ</a>-->
-    <!--    </mat-nav-list>-->
-    <ng-container>
-      <mat-nav-list>
-        <a mat-list-item routerLink="notice">Notification</a>
-        <a mat-list-item *ngIf="registration" routerLink="registration">Registration</a>
-        <a mat-list-item *ngIf="release" routerLink="data">Data</a>
+    <mat-nav-list>
+      <a mat-list-item routerLink="notice" i18n="@@notice">お知らせ</a>
+      <ng-container *ngIf="0 < userLevel && userLevel < 4">
+        <a mat-list-item *ngIf="groupID !== 0 && userLevel !==3" routerLink="info" i18n="@@info">接続情報</a>
+        <!--      <a mat-list-item *ngIf="open" routerLink="member" i18n="@@member">会員</a>-->
         <br>
-        <a mat-list-item *ngIf="release" routerLink="setting">Setting</a>
-
-      </mat-nav-list>
+        <a mat-list-item *ngIf="groupID === 0 || groupStatus !== 0" routerLink="registration"
+           i18n="@@registration">申込</a>
+        <br>
+      </ng-container>
       <br>
-      <br>
-      <p class="version"><b>version: 1.1</b></p>
-    </ng-container>
+      <a mat-list-item *ngIf="groupID !== 0" routerLink="support" i18n="@@registration">サポート</a>
+      <a mat-list-item routerLink="procedure" style="font-size:10pt;" i18n="@@info">各種手続き</a>
+      <a mat-list-item routerLink="bug" i18n="@@bug">バグ報告</a>
+    </mat-nav-list>
     <br>
     <br>
-    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut(true)">Logout</button>
+    <br>
+    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut()" i18n="@@logout">Logout
+    </button>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

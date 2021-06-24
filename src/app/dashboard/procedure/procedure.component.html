@@ -1,0 +1,70 @@
+<div class="main">
+  <h1>各種手続き</h1>
+  <ng-container *ngIf="!groupLock">
+    <mat-card class="card">
+      <h2>ユーザ追加手続き</h2>
+      <mat-card-subtitle>
+        <b>グループにユーザ追加を希望される方はお選びください。</b>
+      </mat-card-subtitle>
+      <button mat-button routerLink="user/add">次へ</button>
+    </mat-card>
+  </ng-container>
+  <ng-container *ngIf="userLock">
+    <mat-card class="card">
+      <h2>ユーザ情報登録手続き(ログインユーザのみ)</h2>
+      <mat-card-subtitle>
+        <b>ユーザ情報の登録を希望される方はお選びください。</b>
+      </mat-card-subtitle>
+      <button mat-button routerLink="user/{{userID}}">次へ</button>
+    </mat-card>
+  </ng-container>
+  <ng-container *ngIf="!userLock">
+    <mat-card class="card">
+      <h2>ユーザ情報変更手続き</h2>
+      <mat-card-subtitle>
+        <b>メールアドレス、パスワード、ユーザ情報の変更を希望される方はお選びください。</b>
+      </mat-card-subtitle>
+      <button mat-button routerLink="user">次へ</button>
+    </mat-card>
+  </ng-container>
+  <ng-container *ngIf="!groupLock">
+    <mat-card class="card">
+      <h2>グループ情報変更手続き</h2>
+      <mat-card-subtitle>
+        <p><b>*注意* 現在はグループ情報変更に対応してないため、サポートよりご連絡をください。（対応予定中です。）</b></p>
+        <b>グループ情報の変更を希望される方はお選びください。</b>
+      </mat-card-subtitle>
+      <button mat-button routerLink="group">次へ</button>
+    </mat-card>
+  </ng-container>
+  <ng-container *ngIf="open">
+    <!--    <mat-card class="card">-->
+    <!--      <h2>アドレス追加申請の手続き</h2>-->
+    <!--      <mat-card-subtitle>-->
+    <!--        <b>アドレスのおかわりをご希望の方はお選びください。</b>-->
+    <!--      </mat-card-subtitle>-->
+    <!--      <button mat-button>次へ</button>-->
+    <!--    </mat-card>-->
+    <!--    <mat-card class="card">-->
+    <!--      <h2>アドレス変更・返却の手続き</h2>-->
+    <!--      <mat-card-subtitle>-->
+    <!--        <b>アドレスの変更又は返却をご希望の方はお選びください。</b>-->
+    <!--      </mat-card-subtitle>-->
+    <!--      <button mat-button>次へ</button>-->
+    <!--    </mat-card>-->
+    <!--    <mat-card class="card">-->
+    <!--      <h2>接続追加手続き</h2>-->
+    <!--      <mat-card-subtitle>-->
+    <!--        <b>当団体ルータからの接続の追加をご希望される方はお選びください。</b>-->
+    <!--      </mat-card-subtitle>-->
+    <!--      <button mat-button>次へ</button>-->
+    <!--    </mat-card>-->
+    <!--    <mat-card class="card">-->
+    <!--      <h2>接続変更・削除手続き</h2>-->
+    <!--      <mat-card-subtitle>-->
+    <!--        <b>当団体ルータからの接続の変更又は削除をご希望される方はお選びください。</b>-->
+    <!--      </mat-card-subtitle>-->
+    <!--      <button mat-button>次へ</button>-->
+    <!--    </mat-card>-->
+  </ng-container>
+</div>

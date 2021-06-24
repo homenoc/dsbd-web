@@ -1,0 +1,125 @@
+<div class="main">
+  <button mat-raised-button (click)="termPage()">実験ネットワーク利用規約はこちらから</button>
+  <br>
+  <br>
+  <section>
+    <mat-checkbox [(ngModel)]="agree">上のリンク先の実験ネットワーク利用規約をお読みになり同意いただける場合はチェックを入れて下さい。</mat-checkbox>
+  </section>
+  <br>
+  <form class="form" [formGroup]="question">
+    <h2>1. どこで当団体のことを知りましたか？ </h2>
+    <p><b>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</b></p>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" formControlName="question1" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>2. どのような用途で当団体のネットワークに接続しますか？ </h2>
+    <p>例）研究目的、勉強、自宅サーバ用途（商用利用は固くお断りいたします）</p>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" formControlName="question2" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>3. アドレスを当団体から割り当てる必要はありますか？ </h2>
+    <p>PIアドレスやAS番号をお持ちの方は、それらをご利用頂くことも可能です。</p>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" formControlName="question3" required></textarea>
+    </mat-form-field>
+    <br>
+    <h2>4. 貴方が情報発信しているSNSやWebサイト、GitHubなどありましたら教えてください。</h2>
+    <mat-form-field class="textarea-form">
+      <textarea matInput rows="4" formControlName="question4" required></textarea>
+    </mat-form-field>
+  </form>
+  <br>
+  <h2>5. 組織情報</h2>
+  <p>個人利用で特に組織名が無い方は名前をご記入ください。</p>
+  <br>
+  <form class="form" [formGroup]="group">
+    <mat-form-field [style.width.px]=300>
+      <mat-label>組織名(日本語)</mat-label>
+      <label>
+        <textarea matInput placeholder="Org" formControlName="org" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=300>
+      <mat-label>組織名(英語)</mat-label>
+      <label>
+        <textarea matInput placeholder="OrgEn" formControlName="org_en" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=200>
+      <mat-label>郵便番号</mat-label>
+      <label>
+        <textarea matInput placeholder="Postcode" formControlName="postcode" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=500>
+      <mat-label>住所(日本語)</mat-label>
+      <label>
+        <textarea matInput placeholder="Address" formControlName="address" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=500>
+      <mat-label>住所(英語)</mat-label>
+      <label>
+        <textarea matInput placeholder="AddressEn" formControlName="address_en" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=300>
+      <mat-label>電話番号</mat-label>
+      <label>
+        <textarea matInput placeholder="tel" formControlName="tel" required></textarea>
+      </label>
+    </mat-form-field>
+    <br>
+    <mat-form-field [style.width.px]=300>
+      <mat-label>居住国</mat-label>
+      <label>
+        <textarea matInput placeholder="country" formControlName="country" required></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br>
+  <h2>6. 契約書</h2>
+  <p>当団体は電気通信事業者として届出を行っておりますため、利用開始時に電気通信事業法 第26条2（書面の交付義務）に基づき、
+    <br>
+    ご利用内容をお知らせいたしますので、ご希望の交付方法をお知らせください。</p>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="contract">
+    <mat-radio-button class="radio" value="E-Mail">電子交付を希望する</mat-radio-button>
+    &nbsp;&nbsp;&nbsp;
+    <mat-radio-button class="radio" value="Air Mail">書面の郵送を希望する</mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <br>
+  <h2>7. 学生</h2>
+  <p>貴団体の会員が全員学生の場合は規約により会費を無料とさせていただきます。</p>
+  <!--  <p>虚偽の申告をした場合は○○○○○していただく場合がございます。</p>-->
+  <mat-checkbox [(ngModel)]="student">私は学生です。</mat-checkbox>
+  <br>
+  <br>
+  <ng-container *ngIf="student">
+    <mat-form-field appearance="fill">
+      <mat-label>卒業予定日</mat-label>
+      <input matInput [matDatepicker]="dpEnd" (dateChange)="addEventEnd($event)">
+      <mat-datepicker-toggle matSuffix [for]="dpEnd"></mat-datepicker-toggle>
+      <mat-datepicker #dpEnd></mat-datepicker>
+    </mat-form-field>
+  </ng-container>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="button">
+    <button mat-raised-button color="warn" disabled>Save</button>
+    &nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" (click)="request()" [disabled]="agree == false">Request</button>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
