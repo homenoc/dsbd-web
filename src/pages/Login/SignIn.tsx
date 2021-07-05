@@ -72,6 +72,8 @@ export default function SignIn() {
                 console.log(err);
                 enqueueSnackbar(err, {variant: "error"});
             }
+        }).catch(error => {
+            enqueueSnackbar("何かしらのエラーが発生しました。 error: " + error.response, {variant: "error"});
         });
     }
 
