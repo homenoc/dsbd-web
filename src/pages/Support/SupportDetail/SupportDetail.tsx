@@ -31,18 +31,18 @@ export default function SupportDetail() {
     const [tickets, setTickets] = useState<TicketData>();
     const [userList, setUserList] = useState<UserData[]>();
     const infos = useSelector((state: RootState) => state.infos);
-
     const [sendPush, setSendPush] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        ref.current?.scrollIntoView()
+    }, [baseChatData]);
 
     useEffect(() => {
         // info
         console.log(infos);
         const length = infos.length;
         const tmpData = infos[length - 1];
-        console.log(Cookies.get("access_token"))
-        console.log(Cookies.get("user_token"))
         if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
                 if (tmpData.error?.indexOf("[401]") !== -1) {
@@ -56,7 +56,6 @@ export default function SupportDetail() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
             } else if (tmpData.data != null) {
-                console.log(tmpData)
                 if (tmpData.data.user_list != null) {
                     setUserList(tmpData.data.user_list);
                 }
@@ -82,16 +81,14 @@ export default function SupportDetail() {
                         }
                     }
                 }
-
                 enqueueSnackbar("データがありません ", {variant: "info"});
                 return
-
-
             }
         } else {
             Get().then();
             enqueueSnackbar("Info情報の更新: " + tmpData.lastUpdated, {variant: "info"});
         }
+        ref.current?.scrollIntoView()
     }, [infos]);
 
     useEffect(() => {
@@ -117,10 +114,11 @@ export default function SupportDetail() {
             //     time: obj.time,
             //     user_name: obj.username
             // }]);
-            if (obj.admin) {
-                enqueueSnackbar("新規メッセージがあります", {variant: "success"});
+            const tmpData = infos[infos.length - 1];
+            if (obj.user_id === tmpData.data?.user?.id) {
+                enqueueSnackbar("送信しました", {variant: "success"});
             } else {
-                enqueueSnackbar("送信しました。", {variant: "success"});
+                enqueueSnackbar("新規メッセージがあります", {variant: "success"});
             }
             ref.current?.scrollIntoView()
         }
@@ -139,7 +137,6 @@ export default function SupportDetail() {
 
     const getUser = (id: number) => {
         const result = userList?.filter(user => user.id === id);
-        console.log(result);
         if (result === undefined) {
             return "不明";
         }
