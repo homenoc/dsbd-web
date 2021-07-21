@@ -13,7 +13,6 @@ import React, {FormEvent, useState} from "react";
 import {colorTheme} from "../../components/Theme";
 import {DefaultUserAddData, UserAddData} from "../../interface";
 import {useSnackbar} from "notistack";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {restfulApiConfig} from "../../api/Config";
 import {Post} from "../../api/User";
 import {useHistory} from "react-router-dom";

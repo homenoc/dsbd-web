@@ -11,6 +11,7 @@ import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useHistory} from "react-router-dom";
 import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
+import {restfulApiConfig} from "../../api/Config";
 
 
 export default function Dashboard() {
@@ -101,7 +102,7 @@ export default function Dashboard() {
             <Grid container spacing={3}>
                 <Grid item xs={8}>
                     {
-                        !data?.group?.paid && data?.info?.length != undefined &&
+                        restfulApiConfig.enableMoney && !data?.group?.paid && data?.info?.length != undefined &&
                         <Card key={"payment_notice"} className={classes.root}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
@@ -198,60 +199,63 @@ export default function Dashboard() {
                     }
                 </Grid>
                 <Grid item xs={4}>
-                    <Card key={"student"} className={classes.root}>
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                会員情報
-                            </Typography>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    {
+                        restfulApiConfig.enableMoney &&
+                        <Card key={"student"} className={classes.root}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    会員情報
+                                </Typography>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    {
+                                        data?.group?.paid && <h3>失効期限: {data?.group?.member_expired}</h3>
+                                    }
+                                </Typography>
+                                <br/>
                                 {
-                                    data?.group?.paid && <h3>失効期限: {data?.group?.member_expired}</h3>
+                                    data?.group?.paid &&
+                                    <div>
+                                        <h3>Plan: {data?.group?.payment_membership_template}</h3>
+                                        {
+                                            data?.group?.automatic_update &&
+                                            <h4>自動更新が有効</h4>
+                                        }
+                                        {
+                                            !data?.group?.automatic_update &&
+                                            <h4>自動更新が無効</h4>
+                                        }
+                                        <Chip
+                                            size="small"
+                                            color="primary"
+                                            label="支払い済み"
+                                        />
+                                    </div>
                                 }
-                            </Typography>
-                            <br/>
-                            {
-                                data?.group?.paid &&
-                                <div>
-                                    <h3>Plan: {data?.group?.payment_membership_template}</h3>
-                                    {
-                                        data?.group?.automatic_update &&
-                                        <h4>自動更新が有効</h4>
-                                    }
-                                    {
-                                        !data?.group?.automatic_update &&
-                                        <h4>自動更新が無効</h4>
-                                    }
-                                    <Chip
-                                        size="small"
-                                        color="primary"
-                                        label="支払い済み"
-                                    />
-                                </div>
-                            }
-                            {
-                                !data?.group?.paid && data?.info?.length == undefined &&
-                                <div>
-                                    <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
-                                    <Chip
-                                        size="small"
-                                        color={"secondary"}
-                                        label="未払い"
-                                    />
-                                </div>
-                            }
-                            {
-                                !data?.group?.paid && data?.info?.length != undefined &&
-                                <div>
-                                    <h3>支払い手続きを行ってください。</h3>
-                                    <Chip
-                                        size="small"
-                                        color={"secondary"}
-                                        label="未払い"
-                                    />
-                                </div>
-                            }
-                        </CardContent>
-                    </Card>
+                                {
+                                    !data?.group?.paid && data?.info?.length == undefined &&
+                                    <div>
+                                        <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
+                                        <Chip
+                                            size="small"
+                                            color={"secondary"}
+                                            label="未払い"
+                                        />
+                                    </div>
+                                }
+                                {
+                                    !data?.group?.paid && data?.info?.length != undefined &&
+                                    <div>
+                                        <h3>支払い手続きを行ってください。</h3>
+                                        <Chip
+                                            size="small"
+                                            color={"secondary"}
+                                            label="未払い"
+                                        />
+                                    </div>
+                                }
+                            </CardContent>
+                        </Card>
+                    }
                     {/*<Button onClick={() => test1()}>Test1</Button>*/}
                     {/*<Button onClick={() => test2()}>Test2</Button>*/}
                 </Grid>
