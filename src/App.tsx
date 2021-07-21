@@ -17,6 +17,7 @@ import ServiceList from "./pages/Procedure/ServiceList/ServiceList";
 import ConnectionList from "./pages/Procedure/ConnectionList/ConnectionList";
 import Membership from "./pages/Membership/Membership";
 import Donate from "./pages/Donate/Donate";
+import {restfulApiConfig} from "./api/Config";
 
 function App() {
     return (
@@ -27,8 +28,14 @@ function App() {
                 <Route exact path="/register" component={SignUp}/>
                 <Route exact path="/forget" component={PasswordRecovery}/>
                 <PrivateRoute exact path="/dashboard" component={Dashboard}/>
-                <PrivateRoute exact path="/dashboard/membership" component={Membership}/>
-                <PrivateRoute exact path="/dashboard/donate" component={Donate}/>
+                {
+                    restfulApiConfig.enableMoney &&
+                    <PrivateRoute exact path="/dashboard/membership" component={Membership}/>
+                }
+                {
+                    restfulApiConfig.enableMoney &&
+                    <PrivateRoute exact path="/dashboard/donate" component={Donate}/>
+                }
                 <PrivateRoute exact path="/dashboard/add" component={Add}/>
                 <PrivateRoute exact path="/dashboard/info" component={Info}/>
                 <PrivateRoute exact path="/dashboard/support" component={Support}/>
