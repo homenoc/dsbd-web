@@ -31,6 +31,7 @@ import store from "../../store";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import MoneyIcon from '@material-ui/icons/Money';
+import {restfulApiConfig} from "../../api/Config";
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
@@ -149,18 +150,24 @@ export default function Dashboard(props: any) {
                         </ListItemIcon>
                         <ListItemText primary="申請"/>
                     </ListItem>
-                    <ListItem button onClick={MembershipPage}>
-                        <ListItemIcon>
-                            <PaymentIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="会費"/>
-                    </ListItem>
-                    <ListItem button onClick={DonatePage}>
-                        <ListItemIcon>
-                            <MoneyIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="寄付"/>
-                    </ListItem>
+                    {
+                        restfulApiConfig.enableMoney &&
+                        <ListItem button onClick={MembershipPage}>
+                            <ListItemIcon>
+                                <PaymentIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="会費"/>
+                        </ListItem>
+                    }
+                    {
+                        restfulApiConfig.enableMoney &&
+                        <ListItem button onClick={DonatePage}>
+                            <ListItemIcon>
+                                <MoneyIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="寄付"/>
+                        </ListItem>
+                    }
                     <ListItem button onClick={SupportPage}>
                         <ListItemIcon>
                             <ChatIcon/>
