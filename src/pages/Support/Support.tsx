@@ -53,9 +53,11 @@ export default function Support() {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
                 }
-            } else if (tmpData.data != null && tmpData.data?.ticket != null) {
-                setInitTickets(tmpData.data?.ticket);
-                setTickets(tmpData.data?.ticket);
+            } else if (tmpData.data != null) {
+                if (tmpData.data?.ticket != null) {
+                    setInitTickets(tmpData.data?.ticket);
+                    setTickets(tmpData.data?.ticket);
+                }
                 if (tmpData.data.user != null) {
                     setGroupID(tmpData.data.user?.group_id)
                 }
