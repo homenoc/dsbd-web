@@ -456,7 +456,7 @@ export function StudentAdd(props: {
                         <KeyboardDatePicker
                             required
                             margin="normal"
-                            id="student_expired_-picker-dialog"
+                            id="student_expired_date-picker-dialog"
                             label="卒業予定"
                             format="yyyy/MM/dd"
                             value={selectedDate}
