@@ -18,8 +18,8 @@ import {
 } from "@material-ui/core";
 import {
     ConnectionAddData,
-    DefaultConnectionAddData, DefaultTemplateData,
-    GroupData, ServiceData,
+    DefaultConnectionAddData,
+    ServiceData,
     TemplateData,
 } from "../../../interface";
 import useStyles from "../styles";
@@ -187,8 +187,8 @@ export function ConnectionAddServiceSelect(props: {
                 <FormControl className={classes.formSelect}>
                     <InputLabel>Service Code</InputLabel>
                     <Select
-                        labelId="service_code"
-                        id="service_code"
+                        labelId="connection_add_select_service_code"
+                        id="connection_add_select_service_code"
                         onChange={(event) => {
                             selectData(Number(event.target.value));
                             const tmpData = serviceData.filter(data => data.id === Number(event.target.value));
@@ -200,7 +200,8 @@ export function ConnectionAddServiceSelect(props: {
                     >
                         {
                             serviceData.filter(tmp => tmp.add_allow).map((row, index) => (
-                                <MenuItem key={index} value={row.id}>{row.service_id}</MenuItem>
+                                <MenuItem key={"connection_add_select_service_code" + index}
+                                          value={row.id}>{row.service_id}</MenuItem>
                             ))
                         }
                     </Select>
@@ -219,16 +220,17 @@ export function ConnectionAddServiceSelect(props: {
                     <FormControl className={classes.formSelect}>
                         <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                         <Select
-                            labelId="ipv4_route"
-                            id="ipv4_route"
-                            value={data.ipv4_route_template_id}
+                            labelId="connection_add_select_ipv4_route"
+                            id="connection_add_select_ipv4_route"
+                            value={data.ipv4_route_template_id || undefined}
                             onChange={(event) => {
                                 setData({...data, ipv4_route_template_id: Number(event.target.value)})
                             }}
                         >
                             {
                                 template.ipv4_route?.map((row, index) => (
-                                    <MenuItem key={"ipv4_route_" + index} value={row.ID}>{row.name}</MenuItem>
+                                    <MenuItem key={"connection_add_select_ipv4_route_" + index}
+                                              value={row.ID}>{row.name}</MenuItem>
                                 ))
                             }
                         </Select>
@@ -241,16 +243,17 @@ export function ConnectionAddServiceSelect(props: {
                     <FormControl className={classes.formSelect}>
                         <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                         <Select
-                            labelId="ipv6_route"
-                            id="ipv6_route"
-                            value={data.ipv6_route_template_id}
+                            labelId="connection_add_select_ipv6_route"
+                            id="connection_add_select_ipv6_route"
+                            value={data.ipv6_route_template_id || undefined}
                             onChange={(event) => {
                                 setData({...data, ipv6_route_template_id: Number(event.target.value)})
                             }}
                         >
                             {
                                 template.ipv6_route?.map((row, index) => (
-                                    <MenuItem key={"ipv6_route_" + index} value={row.ID}>{row.name}</MenuItem>
+                                    <MenuItem key={"connection_add_select_ipv6_route_" + index}
+                                              value={row.ID}>{row.name}</MenuItem>
                                 ))
                             }
                         </Select>
@@ -287,10 +290,7 @@ export function ConnectionAddType(props: {
                 <FormLabel component="legend">2. 接続方式をお選びください</FormLabel>
                 <RadioGroup aria-label="gender" name="gender1" value={data.connection_template_id}
                             onChange={(event) => {
-                                setData({
-                                    ...DefaultConnectionAddData,
-                                    connection_template_id: parseInt(event.target.value)
-                                })
+                                setData({...data, connection_template_id: parseInt(event.target.value)})
                                 getComment(parseInt(event.target.value));
                             }}>
                     {
@@ -345,8 +345,8 @@ export function ConnectionAddNOC(props: {
             <FormControl className={classes.formSelect}>
                 <InputLabel>NOC</InputLabel>
                 <Select
-                    labelId="service_code"
-                    id="service_code"
+                    labelId="connection_add_select_noc"
+                    id="connection_add_select_noc"
                     value={data.noc_id}
                     onChange={(event) => {
                         setData({...data, noc_id: Number(event.target.value)})
@@ -354,7 +354,7 @@ export function ConnectionAddNOC(props: {
                 >
                     {
                         template.nocs?.map((row, index) => (
-                            <MenuItem key={index} value={row.ID}>{row.name}</MenuItem>
+                            <MenuItem key={"connection_add_select_noc" + index} value={row.ID}>{row.name}</MenuItem>
                         ))
                     }
                 </Select>
@@ -385,7 +385,7 @@ export function ConnectionAddAddress(props: {
                 fullWidth
                 name="終端先ユーザの都道府県市町村"
                 label="終端先ユーザの都道府県市町村"
-                id="address"
+                id="connection_add_text_address"
                 value={data.address}
                 onChange={event => setData({...data, address: event.target.value})}
             />
@@ -416,7 +416,7 @@ export function ConnectionAddTermIP(props: {
                 fullWidth
                 name="終端IPアドレス"
                 label="終端IPアドレス"
-                id="term_ip"
+                id="connection_add_text_term_ip"
                 value={data.term_ip}
                 onChange={event => setData({...data, term_ip: event.target.value})}
             />
@@ -429,8 +429,8 @@ export function ConnectionAddTermIP(props: {
             <br/>
             <FormControl className={classes.formSelect}>
                 <RadioGroup
-                    aria-label="gender"
-                    name="gender1"
+                    id="connection_add_select_noc"
+                    name="connection_add_select_noc"
                     value={data.ntt_template_id}
                     onChange={(event) => {
                         setData({...data, ntt_template_id: Number(event.target.value)})
@@ -438,7 +438,8 @@ export function ConnectionAddTermIP(props: {
                 >
                     {
                         template.ntts?.map((row) => (
-                                <FormControlLabel key={row.ID} value={row.ID} control={<Radio/>}
+                                <FormControlLabel key={"connection_add_select_noc_" + row.ID} value={row.ID}
+                                                  control={<Radio/>}
                                                   label={(row.name) + ": (" + (row.comment) + ")"}/>
                             )
                         )
