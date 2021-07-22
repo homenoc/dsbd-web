@@ -154,6 +154,8 @@ export function ConnectionAddServiceSelect(props: {
 }) {
     const {serviceData, setServiceID, template, data, setData, setServiceCode} = props;
     const [ipBGPRoute, setIPBGPRoute] = React.useState(false);
+    const [ipv4BGPRoute, setIPv4BGPRoute] = React.useState(false);
+    const [ipv6BGPRoute, setIPv6BGPRoute] = React.useState(false);
     const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
@@ -163,6 +165,14 @@ export function ConnectionAddServiceSelect(props: {
         console.log(dataExtra);
         if (dataExtra != null) {
             setIPBGPRoute(dataExtra[0].need_route);
+            const dataIPv4 = dataExtra[0].ip?.filter(item => item.version === 4);
+            if (dataIPv4 !== undefined && dataIPv4.length > 0) {
+                setIPv4BGPRoute(true)
+            }
+            const dataIPv6 = dataExtra[0].ip?.filter(item => item.version === 6);
+            if (dataIPv6 !== undefined && dataIPv6.length > 0) {
+                setIPv6BGPRoute(true)
+            }
         } else {
             enqueueSnackbar('Templateから情報が見つかりません。', {variant: "error"});
         }
@@ -205,7 +215,7 @@ export function ConnectionAddServiceSelect(props: {
             </Grid>
             <Grid item xs={6}>
                 {
-                    ipBGPRoute &&
+                    ipBGPRoute && ipv4BGPRoute &&
                     <FormControl className={classes.formSelect}>
                         <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                         <Select
@@ -227,7 +237,7 @@ export function ConnectionAddServiceSelect(props: {
             </Grid>
             <Grid item xs={6}>
                 {
-                    ipBGPRoute &&
+                    ipBGPRoute && ipv6BGPRoute &&
                     <FormControl className={classes.formSelect}>
                         <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                         <Select
