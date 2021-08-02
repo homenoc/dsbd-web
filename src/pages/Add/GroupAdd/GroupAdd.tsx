@@ -58,8 +58,6 @@ export default function GroupAddDialogs(props: {
     }, [open]);
 
     const request = () => {
-        console.log(data);
-
         // check question item
         const errQuestion = checkQuestion(question);
         if (errQuestion !== "") {
@@ -68,16 +66,17 @@ export default function GroupAddDialogs(props: {
             return;
         }
 
-        const tmpQuestion = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
+        let sendData = data;
+        sendData.question = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
             "2. どのような用途で当団体のネットワークに接続しますか？\n" + question.question2 + "\n\n" +
             "3. アドレスを当団体から割り当てる必要はありますか？\n" + question.question3 + "\n\n" +
             "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + question.question4;
-        setData({...data, question: tmpQuestion});
+        console.log(sendData);
 
-        const err = check(data);
+        const err = check(sendData);
         if (err === "") {
             console.log("OK");
-            Post(data).then(res => {
+            Post(sendData).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
