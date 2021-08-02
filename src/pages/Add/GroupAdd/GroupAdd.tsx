@@ -19,7 +19,7 @@ import {
     UserData,
 } from "../../../interface";
 import useStyles from "../styles";
-import {check} from "./check";
+import {check, checkQuestion} from "./check";
 import {useSnackbar} from "notistack";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -34,6 +34,19 @@ export default function GroupAddDialogs(props: {
 }) {
     const {open, setOpen, userData, reload} = props
     const [data, setData] = React.useState(DefaultGroupAddData);
+    const [question, setQuestion] = React.useState<{
+        question1: string,
+        question2: string,
+        question3: string,
+        question4: string
+    }>(
+        {
+            question1: "",
+            question2: "",
+            question3: "",
+            question4: ""
+        }
+    );
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
 
@@ -45,11 +58,25 @@ export default function GroupAddDialogs(props: {
     }, [open]);
 
     const request = () => {
-        console.log(data);
-        const err = check(data);
+        // check question item
+        const errQuestion = checkQuestion(question);
+        if (errQuestion !== "") {
+            console.log("NG: " + errQuestion)
+            enqueueSnackbar(errQuestion, {variant: "error"});
+            return;
+        }
+
+        let sendData = data;
+        sendData.question = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
+            "2. どのような用途で当団体のネットワークに接続しますか？\n" + question.question2 + "\n\n" +
+            "3. アドレスを当団体から割り当てる必要はありますか？\n" + question.question3 + "\n\n" +
+            "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + question.question4;
+        console.log(sendData);
+
+        const err = check(sendData);
         if (err === "") {
-            console.log("OK")
-            Post(data).then(res => {
+            console.log("OK");
+            Post(sendData).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
@@ -85,7 +112,7 @@ export default function GroupAddDialogs(props: {
                         <Grid item xs={12}>
                             <TermAgreeAdd key={"term_agree_add_select"} data={data} setData={setData}/>
                             <br/>
-                            <QuestionAdd key={"connection_add_type"} data={data} setData={setData}/>
+                            <QuestionAdd key={"connection_add_type"} data={question} setData={setQuestion}/>
                             <br/>
                             <OrgInfoAdd key={"org_info_add"} data={data} setData={setData}/>
                             <br/>
@@ -165,26 +192,27 @@ export function TermAgreeAdd(props: {
 }
 
 export function QuestionAdd(props: {
-    data: GroupAddData
-    setData: Dispatch<SetStateAction<GroupAddData>>
+    data: {
+        question1: string,
+        question2: string,
+        question3: string,
+        question4: string
+    }
+    setData: Dispatch<SetStateAction<{
+        question1: string,
+        question2: string,
+        question3: string,
+        question4: string
+    }>>
 }) {
     const {data, setData} = props;
-    const [question1, setQuestion1] = React.useState("");
-    const [question2, setQuestion2] = React.useState("");
-    const [question3, setQuestion3] = React.useState("");
-    const [question4, setQuestion4] = React.useState("");
     const classes = useStyles();
-
-    const apply = () => {
-        const question = question1 + "\n" + question2 + "\n" + question3 + "\n" + question4;
-        setData({...data, question: question});
-    }
 
     return (
         <div>
             <FormControl component="fieldset">
                 <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
-                <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</div>
+                <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。[10文字以上]</div>
                 <br/>
                 <TextField
                     className={classes.formVeryLong}
@@ -192,16 +220,15 @@ export function QuestionAdd(props: {
                     label=""
                     multiline
                     rows={4}
-                    value={question1}
+                    value={data.question1}
                     onChange={event => {
-                        setQuestion1(event.target.value);
-                        apply();
+                        setData({...data, question1: event.target.value});
                     }}
                     variant="outlined"
                 />
                 <br/>
                 <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
-                <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）300文字</div>
+                <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[300文字以上]</div>
                 <br/>
                 <TextField
                     className={classes.formVeryLong}
@@ -212,16 +239,15 @@ export function QuestionAdd(props: {
                     inputProps={{
                         minLength: 300
                     }}
-                    value={question2}
+                    value={data.question2}
                     onChange={event => {
-                        setQuestion2(event.target.value);
-                        apply();
+                        setData({...data, question2: event.target.value});
                     }}
                     variant="outlined"
                 />
                 <br/>
                 <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
-                <div>PIアドレスやASS番号をお持ちの方は、それらをご利用いただくことも可能です。</div>
+                <div>PIアドレスやASS番号をお持ちの方は、それらをご利用いただくことも可能です。[5文字以上]</div>
                 <br/>
                 <TextField
                     className={classes.formVeryLong}
@@ -229,16 +255,16 @@ export function QuestionAdd(props: {
                     label=""
                     multiline
                     rows={4}
-                    value={question3}
+                    value={data.question3}
                     onChange={event => {
-                        setQuestion3(event.target.value);
-                        apply();
+                        setData({...data, question3: event.target.value});
                     }}
                     variant="outlined"
                 />
                 <br/>
                 <FormLabel component="legend">4.
                     情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
+                <div>[20文字以上]</div>
                 <br/>
                 <TextField
                     className={classes.formVeryLong}
@@ -246,10 +272,9 @@ export function QuestionAdd(props: {
                     label=""
                     multiline
                     rows={4}
-                    value={question4}
+                    value={data.question4}
                     onChange={event => {
-                        setQuestion4(event.target.value);
-                        apply();
+                        setData({...data, question4: event.target.value});
                     }}
                     variant="outlined"
                 />
