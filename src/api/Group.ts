@@ -1,6 +1,6 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {ConnectionAddData, GroupAddData} from "../interface";
+import {GroupAddData} from "../interface";
 import Cookies from "js-cookie";
 
 export function Post(data: GroupAddData): Promise<{ error: string; data: any }> {
