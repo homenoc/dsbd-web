@@ -27,15 +27,15 @@ import {check} from "./check";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/Connection";
 import {useHistory} from "react-router-dom";
+import {Get} from "../../../api/Info";
 
 export default function ConnectionAddDialogs(props: {
     template: TemplateData
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>
     serviceData: ServiceData[]
-    reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {template, open, setOpen, serviceData, reload} = props
+    const {template, open, setOpen, serviceData} = props
     const [data, setData] = React.useState(DefaultConnectionAddData);
     const [internet, setInternet] = React.useState(false);
     const [serviceCode, setServiceCode] = React.useState("");
@@ -61,7 +61,7 @@ export default function ConnectionAddDialogs(props: {
 
     const request = () => {
         console.log(data);
-        const err = check(data, template);
+        const err = check(serviceID, data, template);
         if (err === "") {
             console.log("OK")
             Post(serviceID, data).then(res => {
@@ -69,7 +69,7 @@ export default function ConnectionAddDialogs(props: {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setOpen(false);
-                    reload(true);
+                    Get().then();
                 } else {
                     console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
@@ -195,7 +195,8 @@ export function ConnectionAddServiceSelect(props: {
                             if (tmpData != null) {
                                 setServiceCode(tmpData[0].service_type);
                             }
-                            setData({...data, connection_template_id: Number(event.target.value)})
+                            setData(DefaultConnectionAddData);
+                            setServiceID(Number(event.target.value));
                         }}
                     >
                         {

@@ -21,7 +21,6 @@ function getSteps() {
 export default function Add() {
     const classes = useStyles();
     const [data, setData] = React.useState<InfoData>();
-    const [reload, setReload] = React.useState(false);
     const [openGroup, setOpenGroup] = React.useState(false);
     const [openService, setOpenService] = React.useState(false);
     const [openConnection, setOpenConnection] = React.useState(false);
@@ -49,11 +48,6 @@ export default function Add() {
             }
         })
     }, []);
-
-    useEffect(() => {
-        Get().then();
-    }, [reload]);
-
 
     useEffect(() => {
         // info
@@ -123,7 +117,7 @@ export default function Add() {
                             <Button variant="contained" color={"primary"}
                                     onClick={() => setOpenGroup(true)}>グループ情報の申請（初期申請）</Button>
                             <GroupAddDialogs open={openGroup} setOpen={setOpenGroup}
-                                             userData={data.user} reload={setReload}/>
+                                             userData={data.user}/>
                         </div>
                     }
                 </Grid>
@@ -146,8 +140,7 @@ export default function Add() {
                             <Button variant="contained" color={"primary"}
                                     onClick={() => setOpenService(true)}>サービス情報の申請</Button>
                             <ServiceAddDialogs template={template} open={openService} setOpen={setOpenService}
-                                               groupData={data?.group}
-                                               reload={setReload}/>
+                                               groupData={data?.group}/>
                         </div>
                     }
                 </Grid>
@@ -160,7 +153,7 @@ export default function Add() {
                                     onClick={() => setOpenConnection(true)}>接続情報の申請</Button>
                             <ConnectionAddDialogs open={openConnection} setOpen={setOpenConnection}
                                                   serviceData={data?.service}
-                                                  reload={setReload} template={template}/>
+                                                  template={template}/>
                         </div>
                     }
                 </Grid>
