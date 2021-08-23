@@ -61,7 +61,7 @@ export default function ConnectionAddDialogs(props: {
 
     const request = () => {
         console.log(data);
-        const err = check(data, template);
+        const err = check(serviceID, data, template);
         if (err === "") {
             console.log("OK")
             Post(serviceID, data).then(res => {
@@ -195,7 +195,8 @@ export function ConnectionAddServiceSelect(props: {
                             if (tmpData != null) {
                                 setServiceCode(tmpData[0].service_type);
                             }
-                            setData({...data, connection_template_id: Number(event.target.value)})
+                            setData(DefaultConnectionAddData);
+                            setServiceID(Number(event.target.value));
                         }}
                     >
                         {
