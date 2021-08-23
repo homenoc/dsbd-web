@@ -25,14 +25,14 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns";
 import {Post} from "../../../api/Group";
 import {useHistory} from "react-router-dom";
+import {Get} from "../../../api/Info";
 
 export default function GroupAddDialogs(props: {
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>
     userData: UserData
-    reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {open, setOpen, userData, reload} = props
+    const {open, setOpen, userData} = props
     const [data, setData] = React.useState(DefaultGroupAddData);
     const [question, setQuestion] = React.useState<{
         question1: string,
@@ -81,7 +81,7 @@ export default function GroupAddDialogs(props: {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setOpen(false);
-                    reload(true);
+                    Get().then();
                 } else {
                     console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});

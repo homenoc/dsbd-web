@@ -35,15 +35,15 @@ import {Paper} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/Service";
 import {useHistory} from "react-router-dom";
+import {Get} from "../../../api/Info";
 
 export default function ServiceAddDialogs(props: {
     open: boolean,
     template: TemplateData
     setOpen: Dispatch<SetStateAction<boolean>>
     groupData: GroupData
-    reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {template, groupData, open, setOpen, reload} = props
+    const {template, groupData, open, setOpen} = props
     const [data, setData] = React.useState(DefaultServiceAddData);
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
@@ -85,7 +85,7 @@ export default function ServiceAddDialogs(props: {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setOpen(false);
-                    reload(true);
+                    Get().then();
                 } else {
                     console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
@@ -96,7 +96,6 @@ export default function ServiceAddDialogs(props: {
             console.log("NG: " + err)
             enqueueSnackbar(err, {variant: "error"});
         }
-        reload(true);
     }
 
     return (
