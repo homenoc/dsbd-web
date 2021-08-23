@@ -72,6 +72,14 @@ export default function UserDetail() {
     const [email, setEmail] = React.useState({email: "", email_verify: ""});
     const [password, setPassword] = React.useState({password: "", password_verify: ""});
     const [name, setName] = React.useState({name: "", name_en: ""});
+    const [reload, setReload] = React.useState(false);
+
+    useEffect(() => {
+        if (reload) {
+            Get().then();
+            setReload(false);
+        }
+    }, [reload]);
 
     useEffect(() => {
         // info
@@ -159,11 +167,11 @@ export default function UserDetail() {
         Put(Number(id), data).then(res => {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
+                setReload(true);
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
             }
         })
-
     }
 
     return (
