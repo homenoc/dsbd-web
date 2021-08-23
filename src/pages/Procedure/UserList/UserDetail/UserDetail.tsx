@@ -127,6 +127,7 @@ export default function UserDetail() {
         Delete(Number(id)).then(res => {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
+                Get().then();
                 history.push("/dashboard/procedure/user")
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
