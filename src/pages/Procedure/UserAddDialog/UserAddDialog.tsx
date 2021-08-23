@@ -61,6 +61,8 @@ export function UserAddDialog(props: {
                 Get().then(() => {
                     history.push('/dashboard/procedure');
                 });
+                enqueueSnackbar("ユーザ追加しました。", {variant: "success"});
+                setOpen(false);
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
             }
@@ -84,6 +86,8 @@ export function UserAddDialog(props: {
                 </DialogTitle>
                 <DialogContent dividers>
                     <div>このページにてグループにユーザを追加できます。</div>
+                    <div>本人確認メールと仮パスワードを追加ユーザのメールアドレス宛に送信されるので、登録後に確認をお願いします。</div>
+                    <br/>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             autoComplete="fname"
