@@ -150,11 +150,6 @@ export default function UserDetail() {
 
             data = {pass: passHash}
         } else if (value === 2) {
-            // check name
-            if (name.name !== name.name_en) {
-                enqueueSnackbar('NameとName(English)が異なります。', {variant: "error"});
-                return
-            }
             data = {name: name.name, name_en: name.name_en}
         } else {
             enqueueSnackbar('Tabのステータスが不正です。', {variant: "error"});
@@ -294,7 +289,7 @@ export default function UserDetail() {
                                         fullWidth
                                         id="name_en"
                                         label="Name(English)"
-                                        value={password.password_verify}
+                                        value={name.name_en}
                                         onChange={event => setName({...name, name_en: event.target.value})}
                                         autoFocus
                                     />
