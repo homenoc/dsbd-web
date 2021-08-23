@@ -77,7 +77,7 @@ export default function UserList() {
     }
 
     return (
-        <Dashboard title="ユーザ追加">
+        <Dashboard title="ユーザ一覧">
             <Paper component="form" className={classes.rootInput}>
                 <InputBase
                     className={classes.input}
