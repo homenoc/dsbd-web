@@ -1,7 +1,7 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
 import store from "../store";
-import {getInfosFailure, getInfosSuccess, getTemplatesFailure, getTemplatesSuccess} from "../store/action/Actions";
+import {getInfosFailure, getInfosSuccess} from "../store/action/Actions";
 import Cookies from "js-cookie";
 
 export function Get(): Promise<Object | string> {
