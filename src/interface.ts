@@ -67,6 +67,8 @@ export interface ServiceData {
     avg_downstream: number
     max_downstream: number
     max_bandwidth_as: string
+    start_date: string
+    end_date?: string
     ip?: IP[]
     jpnic_admin?: JPNICData
     jpnic_tech?: JPNICData[]
