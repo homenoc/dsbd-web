@@ -255,6 +255,7 @@ export default function UserDetail() {
                                         required
                                         fullWidth
                                         id="password"
+                                        type={"password"}
                                         label="Password"
                                         value={password.password}
                                         onChange={event => setPassword({...password, password: event.target.value})}
@@ -267,6 +268,7 @@ export default function UserDetail() {
                                         required
                                         fullWidth
                                         id="password_verify"
+                                        type={"password"}
                                         label="Password(確認用)"
                                         value={password.password_verify}
                                         onChange={event => setPassword({
