@@ -72,6 +72,14 @@ export default function UserDetail() {
     const [email, setEmail] = React.useState({email: "", email_verify: ""});
     const [password, setPassword] = React.useState({password: "", password_verify: ""});
     const [name, setName] = React.useState({name: "", name_en: ""});
+    const [reload, setReload] = React.useState(false);
+
+    useEffect(() => {
+        if (reload) {
+            Get().then();
+            setReload(false);
+        }
+    }, [reload]);
 
     useEffect(() => {
         // info
@@ -119,6 +127,7 @@ export default function UserDetail() {
         Delete(Number(id)).then(res => {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
+                Get().then();
                 history.push("/dashboard/procedure/user")
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
@@ -159,11 +168,11 @@ export default function UserDetail() {
         Put(Number(id), data).then(res => {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
+                setReload(true);
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
             }
         })
-
     }
 
     return (
@@ -247,6 +256,7 @@ export default function UserDetail() {
                                         required
                                         fullWidth
                                         id="password"
+                                        type={"password"}
                                         label="Password"
                                         value={password.password}
                                         onChange={event => setPassword({...password, password: event.target.value})}
@@ -259,6 +269,7 @@ export default function UserDetail() {
                                         required
                                         fullWidth
                                         id="password_verify"
+                                        type={"password"}
                                         label="Password(確認用)"
                                         value={password.password_verify}
                                         onChange={event => setPassword({
