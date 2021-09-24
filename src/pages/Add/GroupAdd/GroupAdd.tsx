@@ -35,12 +35,14 @@ export default function GroupAddDialogs(props: {
     const {open, setOpen, userData} = props
     const [data, setData] = React.useState(DefaultGroupAddData);
     const [question, setQuestion] = React.useState<{
+        isExist: boolean,
         question1: string,
         question2: string,
         question3: string,
         question4: string
     }>(
         {
+            isExist: false,
             question1: "",
             question2: "",
             question3: "",
@@ -59,18 +61,22 @@ export default function GroupAddDialogs(props: {
 
     const request = () => {
         // check question item
-        const errQuestion = checkQuestion(question);
-        if (errQuestion !== "") {
-            console.log("NG: " + errQuestion)
-            enqueueSnackbar(errQuestion, {variant: "error"});
-            return;
-        }
-
         let sendData = data;
-        sendData.question = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
-            "2. どのような用途で当団体のネットワークに接続しますか？\n" + question.question2 + "\n\n" +
-            "3. アドレスを当団体から割り当てる必要はありますか？\n" + question.question3 + "\n\n" +
-            "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + question.question4;
+        if (question.isExist) {
+            sendData.question = "---------既存ユーザ---------\n\n" + question.question1
+        } else {
+            const errQuestion = checkQuestion(question);
+            if (errQuestion !== "") {
+                console.log("NG: " + errQuestion)
+                enqueueSnackbar(errQuestion, {variant: "error"});
+                return;
+            }
+
+            sendData.question = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
+                "2. どのような用途で当団体のネットワークに接続しますか？\n" + question.question2 + "\n\n" +
+                "3. アドレスを当団体から割り当てる必要はありますか？\n" + question.question3 + "\n\n" +
+                "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + question.question4;
+        }
         console.log(sendData);
 
         const err = check(sendData);
@@ -193,12 +199,14 @@ export function TermAgreeAdd(props: {
 
 export function QuestionAdd(props: {
     data: {
+        isExist: boolean
         question1: string,
         question2: string,
         question3: string,
         question4: string
     }
     setData: Dispatch<SetStateAction<{
+        isExist: boolean
         question1: string,
         question2: string,
         question3: string,
@@ -208,77 +216,118 @@ export function QuestionAdd(props: {
     const {data, setData} = props;
     const classes = useStyles();
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setData({...data, isExist: !data.isExist});
+    }
+
     return (
         <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
-                <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。[10文字以上]</div>
-                <br/>
-                <TextField
-                    className={classes.formVeryLong}
-                    id="question1"
-                    label=""
-                    multiline
-                    rows={4}
-                    value={data.question1}
-                    onChange={event => {
-                        setData({...data, question1: event.target.value});
-                    }}
-                    variant="outlined"
-                />
-                <br/>
-                <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
-                <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[300文字以上]</div>
-                <br/>
-                <TextField
-                    className={classes.formVeryLong}
-                    id="question2"
-                    label=""
-                    multiline
-                    rows={4}
-                    inputProps={{
-                        minLength: 300
-                    }}
-                    value={data.question2}
-                    onChange={event => {
-                        setData({...data, question2: event.target.value});
-                    }}
-                    variant="outlined"
-                />
-                <br/>
-                <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
-                <div>PIアドレスやASS番号をお持ちの方は、それらをご利用いただくことも可能です。[5文字以上]</div>
-                <br/>
-                <TextField
-                    className={classes.formVeryLong}
-                    id="question3"
-                    label=""
-                    multiline
-                    rows={4}
-                    value={data.question3}
-                    onChange={event => {
-                        setData({...data, question3: event.target.value});
-                    }}
-                    variant="outlined"
-                />
-                <br/>
-                <FormLabel component="legend">4.
-                    情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
-                <div>[20文字以上]</div>
-                <br/>
-                <TextField
-                    className={classes.formVeryLong}
-                    id="question4"
-                    label=""
-                    multiline
-                    rows={4}
-                    value={data.question4}
-                    onChange={event => {
-                        setData({...data, question4: event.target.value});
-                    }}
-                    variant="outlined"
-                />
-            </FormControl>
+            <FormLabel component="legend">0. 既存会員ですか？</FormLabel>
+            <div>既存会員の方は、こちらのチェックボックスを選択してください。</div>
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={data.isExist}
+                        onChange={handleChange}
+                        name="monitor"
+                        color="primary"
+                    />
+                }
+                label="私は既存会員です"
+            />
+            <br/>
+            {
+                !data.isExist &&
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
+                    <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。[10文字以上]</div>
+                    <br/>
+                    <TextField
+                        className={classes.formVeryLong}
+                        id="question1"
+                        label=""
+                        multiline
+                        rows={4}
+                        value={data.question1}
+                        onChange={event => {
+                            setData({...data, question1: event.target.value});
+                        }}
+                        variant="outlined"
+                    />
+                    <br/>
+                    <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
+                    <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[300文字以上]</div>
+                    <br/>
+                    <TextField
+                        className={classes.formVeryLong}
+                        id="question2"
+                        label=""
+                        multiline
+                        rows={4}
+                        inputProps={{
+                            minLength: 300
+                        }}
+                        value={data.question2}
+                        onChange={event => {
+                            setData({...data, question2: event.target.value});
+                        }}
+                        variant="outlined"
+                    />
+                    <br/>
+                    <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
+                    <div>PIアドレスやASS番号をお持ちの方は、それらをご利用いただくことも可能です。[5文字以上]</div>
+                    <br/>
+                    <TextField
+                        className={classes.formVeryLong}
+                        id="question3"
+                        label=""
+                        multiline
+                        rows={4}
+                        value={data.question3}
+                        onChange={event => {
+                            setData({...data, question3: event.target.value});
+                        }}
+                        variant="outlined"
+                    />
+                    <br/>
+                    <FormLabel component="legend">4.
+                        情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
+                    <div>[20文字以上]</div>
+                    <br/>
+                    <TextField
+                        className={classes.formVeryLong}
+                        id="question4"
+                        label=""
+                        multiline
+                        rows={4}
+                        value={data.question4}
+                        onChange={event => {
+                            setData({...data, question4: event.target.value});
+                        }}
+                        variant="outlined"
+                    />
+                </FormControl>
+            }
+            {
+                data.isExist &&
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">1. 既存のサービスコードを記入してください</FormLabel>
+                    <br/>
+                    <TextField
+                        className={classes.formVeryLong}
+                        id="question1"
+                        label=""
+                        multiline
+                        rows={4}
+                        value={data.question1}
+                        onChange={event => {
+                            setData({...data, question1: event.target.value});
+                        }}
+                        variant="outlined"
+                    />
+                    <br/>
+                </FormControl>
+            }
         </div>
     )
 }
