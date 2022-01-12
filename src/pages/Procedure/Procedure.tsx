@@ -383,10 +383,9 @@ export function StatusTable(props: {
                                 inputProps: {'aria-label': 'rows per page'},
                                 native: true,
                             }}
-                            onChangePage={handleChangePage}
+                            onPageChange={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
+                            ActionsComponent={TablePaginationActions}/>
                     </TableRow>
                 </TableFooter>
             </Table>
