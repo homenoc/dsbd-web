@@ -240,7 +240,7 @@ export function QuestionAdd(props: {
                 !data.isExist &&
                 <FormControl component="fieldset">
                     <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
-                    <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。[10文字以上]</div>
+                    <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</div>
                     <br/>
                     <TextField
                         className={classes.formVeryLong}
@@ -256,7 +256,7 @@ export function QuestionAdd(props: {
                     />
                     <br/>
                     <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
-                    <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[300文字以上]</div>
+                    <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]</div>
                     <br/>
                     <TextField
                         className={classes.formVeryLong}
@@ -265,7 +265,7 @@ export function QuestionAdd(props: {
                         multiline
                         rows={4}
                         inputProps={{
-                            minLength: 300
+                            minLength: 10
                         }}
                         value={data.question2}
                         onChange={event => {
@@ -275,7 +275,7 @@ export function QuestionAdd(props: {
                     />
                     <br/>
                     <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
-                    <div>PIアドレスやASS番号をお持ちの方は、それらをご利用いただくことも可能です。[5文字以上]</div>
+                    <div>PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。</div>
                     <br/>
                     <TextField
                         className={classes.formVeryLong}
@@ -292,7 +292,7 @@ export function QuestionAdd(props: {
                     <br/>
                     <FormLabel component="legend">4.
                         情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
-                    <div>[20文字以上]</div>
+                    <div>(発信しているコンテンツなどがなければ、「なし」とお答えください)</div>
                     <br/>
                     <TextField
                         className={classes.formVeryLong}
