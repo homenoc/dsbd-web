@@ -39,23 +39,23 @@ export function checkQuestion(data: {
     question4: string
 }): string {
     // check question1 word count
-    if (data.question1.length < 10) {
-        return "[項目1]「どこで当団体のことを知りましたか」の文字数が足りません。";
+    if (data.question1.length < 1) {
+        return "[項目1]「どこで当団体のことを知りましたか」の文字数が足りません。(2文字以上入力してください)";
     }
 
     // check question2 word count
-    if (data.question2.length < 300) {
-        return "[項目2]「どのような用途で当団体のネットワークに接続しますか」の文字数が足りません。";
+    if (data.question2.length < 10) {
+        return "[項目2]「どのような用途で当団体のネットワークに接続しますか」の文字数が足りません。(10文字以上入力してください)";
     }
 
     // check question3 word count
     if (data.question3.length < 5) {
-        return "[項目3]「アドレスを当団体から割り当てる必要はありますか」の文字数が足りません。";
+        return "[項目3]「アドレスを当団体から割り当てる必要はありますか」の文字数が足りません。(5文字以上入力してください)";
     }
 
-    // check question2 word count
-    if (data.question4.length < 20) {
-        return "[項目4]「情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください」の文字数が足りません。";
+    // check question4 word count
+    if (data.question4.length < 1) {
+        return "[項目4]「情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください」の文字数が足りません。(2文字以上入力してください)";
     }
 
     return "";
