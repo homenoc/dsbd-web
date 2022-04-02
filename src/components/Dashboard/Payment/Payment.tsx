@@ -107,8 +107,8 @@ function CheckoutForm(props: {
         axios.post(restfulApiConfig.apiURL + "/payment/" + url, {item_id: itemID}, {
             headers: {
                 "Content-Type": "application/json",
-                USER_TOKEN: Cookies.get('user_token'),
-                ACCESS_TOKEN: Cookies.get('access_token'),
+                USER_TOKEN: Cookies.get('user_token')!,
+                ACCESS_TOKEN: Cookies.get('access_token')!,
             },
         }).then(res => {
             console.log(res);

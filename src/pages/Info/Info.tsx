@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
 import {useSelector} from "react-redux";
 import store, {RootState} from "../../store";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
@@ -18,7 +18,7 @@ export default function Info() {
     const [infos, setInfos] = useState<InfosData[]>([]);
     const [initInfos, setInitInfos] = useState<InfosData[]>([]);
     const serviceInfos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function Info() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();

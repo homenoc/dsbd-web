@@ -24,7 +24,7 @@ import {useSnackbar} from "notistack";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import {Post} from "../../../api/Group";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Get} from "../../../api/Info";
 
 export default function GroupAddDialogs(props: {
@@ -50,12 +50,12 @@ export default function GroupAddDialogs(props: {
         }
     );
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (open && userData.group_id !== 0) {
             enqueueSnackbar('登録済みです。', {variant: "error"});
-            history.push("/dashboard")
+            navigate("/dashboard")
         }
     }, [open]);
 

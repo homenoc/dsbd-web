@@ -8,7 +8,7 @@ import {
     Paper,
     Typography
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -26,7 +26,7 @@ export default function ServiceList() {
     const [services, setServices] = useState<ServiceData[]>([]);
     const [initServices, setInitServices] = useState<ServiceData[]>([]);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function ServiceList() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();

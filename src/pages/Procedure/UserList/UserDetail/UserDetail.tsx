@@ -11,7 +11,7 @@ import {
     Typography, useTheme
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
-import {useHistory, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {UserData} from "../../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -64,8 +64,8 @@ export default function UserDetail() {
     const [loginUserID, setLoginUserID] = useState<Number>();
     const [user, setUser] = useState<UserData>();
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
-    let id: string;
+    const navigate = useNavigate();
+    let id: string | undefined;
     ({id} = useParams());
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(0);
@@ -95,7 +95,7 @@ export default function UserDetail() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -128,7 +128,7 @@ export default function UserDetail() {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
                 Get().then();
-                history.push("/dashboard/procedure/user")
+                navigate("/dashboard/procedure/user")
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
             }
@@ -177,6 +177,10 @@ export default function UserDetail() {
 
     return (
         <Dashboard title={"ユーザ情報 (ID: " + id + ")"}>
+            {
+                id === undefined &&
+                <h2>IDの値が取得できません</h2>
+            }
             {
                 user == null &&
                 <h3>現在、有効なユーザはありません。</h3>

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {deepOrange} from '@material-ui/core/colors';
 import ReactMarkdown from 'react-markdown';
-import gfm from "remark-gfm";
+import remarkGfm from "remark-gfm";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -167,7 +167,7 @@ export const MessageLeft = (props: { message: string; timestamp: string; display
                             className={classes.messageContent}
                             children={message}
                             skipHtml={true}
-                            plugins={[gfm]}
+                            remarkPlugins={[remarkGfm]}
                         />
                     </div>
                     <div className={classes.messageTimeStampRight}>{timestamp}</div>
@@ -199,7 +199,7 @@ export const MessageRight = (props: { message: string; timestamp: string; displa
                         className={classes.messageContent}
                         children={message}
                         skipHtml={true}
-                        plugins={[gfm]}
+                        remarkPlugins={[remarkGfm]}
                         // escapeHtml={false}
                     />
                 </div>

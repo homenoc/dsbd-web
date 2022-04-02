@@ -15,7 +15,7 @@ import {DefaultUserAddData, UserAddData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {restfulApiConfig} from "../../api/Config";
 import {Post} from "../../api/User";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import shaJS from "sha.js";
 
 
@@ -49,7 +49,7 @@ export default function SignUp() {
     const [passwordAgain, setPasswordAgain] = useState("");
     const [agree, setAgree] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
+    const navigate = useNavigate();
     let hCaptchaSiteKey = "";
 
     if (restfulApiConfig.hCaptchaSiteKey != null) {
@@ -100,7 +100,7 @@ export default function SignUp() {
             if (res.error === undefined) {
                 console.log(res);
                 enqueueSnackbar("OK", {variant: "success"});
-                history.push("/login");
+                navigate("/login");
             } else {
                 console.log(res.error);
                 enqueueSnackbar(res.error, {variant: "error"});

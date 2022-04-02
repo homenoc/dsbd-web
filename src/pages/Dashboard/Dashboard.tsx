@@ -9,7 +9,7 @@ import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
 import {restfulApiConfig} from "../../api/Config";
 
@@ -19,7 +19,7 @@ export default function Dashboard() {
     const [data, setData] = React.useState<InfoData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [status, setStatus] = React.useState(3);
     const {enqueueSnackbar} = useSnackbar();
 
@@ -37,7 +37,7 @@ export default function Dashboard() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
@@ -90,11 +90,11 @@ export default function Dashboard() {
     }
 
     const moveAddPage = () => {
-        history.push("/dashboard/add");
+        navigate("/dashboard/add");
     }
 
     const moveMembershipPage = () => {
-        history.push("/dashboard/membership");
+        navigate("/dashboard/membership");
     }
 
     return (

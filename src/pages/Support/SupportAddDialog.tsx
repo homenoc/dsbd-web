@@ -4,7 +4,7 @@ import {
     Grid, Radio, RadioGroup,
     TextField,
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData} from "../../interface";
 import {useSnackbar} from "notistack";
 import useStyles from "./styles";
@@ -17,7 +17,7 @@ export function SupportAddDialog(props: {
 }) {
     const {groupEnable} = props;
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -32,7 +32,7 @@ export function SupportAddDialog(props: {
         Post(data).then(res => {
             if (res.error === undefined) {
                 Get().then(() => {
-                    history.push('/dashboard/support/' + res.data.id);
+                    navigate('/dashboard/support/' + res.data.id);
                 });
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});

@@ -96,8 +96,8 @@ function ChangeCardForm() {
         axios.get(restfulApiConfig.apiURL + "/payment/card", {
             headers: {
                 "Content-Type": "application/json",
-                USER_TOKEN: Cookies.get('user_token'),
-                ACCESS_TOKEN: Cookies.get('access_token'),
+                USER_TOKEN: Cookies.get('user_token')!,
+                ACCESS_TOKEN: Cookies.get('access_token')!,
             },
         }).then(res => {
             console.log(res);
@@ -114,8 +114,8 @@ function ChangeCardForm() {
                     axios.put(restfulApiConfig.apiURL + "/payment/card", {payment_method_id: res.paymentMethod?.id}, {
                         headers: {
                             "Content-Type": "application/json",
-                            USER_TOKEN: Cookies.get('user_token'),
-                            ACCESS_TOKEN: Cookies.get('access_token'),
+                            USER_TOKEN: Cookies.get('user_token')!,
+                            ACCESS_TOKEN: Cookies.get('access_token')!,
                         },
                     }).then(res => {
                         console.log(res);

@@ -34,7 +34,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {Paper} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/Service";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Get} from "../../../api/Info";
 
 export default function ServiceAddDialogs(props: {
@@ -46,12 +46,12 @@ export default function ServiceAddDialogs(props: {
     const {template, groupData, open, setOpen} = props
     const [data, setData] = React.useState(DefaultServiceAddData);
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (open && !groupData.add_allow) {
             enqueueSnackbar('登録が許可されていません。', {variant: "error"});
-            history.push("/dashboard")
+            navigate("/dashboard")
         }
     }, [open]);
 

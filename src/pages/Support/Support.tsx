@@ -11,7 +11,7 @@ import {
     Paper, Radio, RadioGroup,
     Typography
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {TicketData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {Solved} from "../../components/Dashboard/Solved/Open";
@@ -30,7 +30,7 @@ export default function Support() {
     const [initTickets, setInitTickets] = useState<TicketData[]>([]);
     const [group, setGroupID] = useState(0);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(false);
 
@@ -48,7 +48,7 @@ export default function Support() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -98,7 +98,7 @@ export default function Support() {
     }
 
     const clickDetailPage = (id: number) => {
-        history.push('/dashboard/support/' + id);
+        navigate('/dashboard/support/' + id);
     }
 
     return (

@@ -9,7 +9,7 @@ import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {PaymentDialog} from "../../components/Dashboard/Payment/Payment";
 
 
@@ -18,7 +18,7 @@ export default function Donate() {
     const [template, setTemplate] = React.useState<TemplateData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function Donate() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
@@ -67,7 +67,7 @@ export default function Donate() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(res, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 }
             }
         })

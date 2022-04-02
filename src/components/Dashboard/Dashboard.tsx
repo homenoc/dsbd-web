@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import {
     AppBar,
     colors,
-    Container, createMuiTheme, ThemeProvider,
+    Container, ThemeProvider,
     CssBaseline,
     Divider,
     Drawer,
@@ -13,6 +13,7 @@ import {
     Typography,
     MenuItem, Menu, Fade
 } from "@material-ui/core";
+import {createTheme} from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
@@ -23,7 +24,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import PaymentIcon from '@material-ui/icons/Payment';
 import useStyles from "./styles";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
 import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
@@ -35,7 +36,7 @@ import {restfulApiConfig} from "../../api/Config";
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -58,7 +59,7 @@ export default function Dashboard(props: any) {
         Get().then();
     }
 
-    const theme = createMuiTheme({
+    const theme = createTheme({
         palette: {
             primary: {
                 main: colors.blue[800],
@@ -69,25 +70,25 @@ export default function Dashboard(props: any) {
     });
 
     const DashboardPage = () => {
-        history.push("/dashboard");
+        navigate("/dashboard");
     }
     const InfoPage = () => {
-        history.push("/dashboard/info");
+        navigate("/dashboard/info");
     }
     const AddPage = () => {
-        history.push("/dashboard/add");
+        navigate("/dashboard/add");
     }
     const MembershipPage = () => {
-        history.push("/dashboard/membership");
+        navigate("/dashboard/membership");
     }
     const DonatePage = () => {
-        history.push("/dashboard/donate");
+        navigate("/dashboard/donate");
     }
     const SupportPage = () => {
-        history.push("/dashboard/support");
+        navigate("/dashboard/support");
     }
     const ProcedurePage = () => {
-        history.push("/dashboard/procedure");
+        navigate("/dashboard/procedure");
     }
 
     return (
@@ -206,7 +207,7 @@ export function UserMenu() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -222,7 +223,7 @@ export function UserMenu() {
                 Cookies.remove('access_token');
                 store.dispatch(clearInfos());
                 store.dispatch(clearTemplates());
-                history.push('/login');
+                navigate('/login');
                 console.log(res)
                 if (res === "") {
                 } else {

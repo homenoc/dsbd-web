@@ -8,8 +8,8 @@ export function Get(): Promise<Object | string> {
     return axios.get(restfulApiConfig.apiURL + "/info", {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: Cookies.get('user_token'),
-            ACCESS_TOKEN: Cookies.get('access_token'),
+            USER_TOKEN: Cookies.get('user_token')!,
+            ACCESS_TOKEN: Cookies.get('access_token')!,
         }
     }).then(res => {
         // console.log(res.data);
@@ -28,8 +28,8 @@ export function GetTemplate(): Promise<Object | string> {
     return axios.get(restfulApiConfig.apiURL + "/template", {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: Cookies.get('user_token'),
-            ACCESS_TOKEN: Cookies.get('access_token'),
+            USER_TOKEN: Cookies.get('user_token')!,
+            ACCESS_TOKEN: Cookies.get('access_token')!,
         }
     }).then(res => {
         console.log(res.data);

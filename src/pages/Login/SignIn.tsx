@@ -11,7 +11,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {colorTheme} from '../../components/Theme';
 import React, {FormEvent, useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Login} from '../../api/Auth';
 import {useSnackbar} from 'notistack';
 import {Get} from "../../api/Info";
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
     const {enqueueSnackbar} = useSnackbar();
@@ -67,7 +67,7 @@ export default function SignIn() {
                 console.log("OK");
                 enqueueSnackbar("Login Success !", {variant: "info"});
                 Get().then();
-                history.push('/dashboard');
+                navigate('/dashboard');
             } else {
                 console.log(err);
                 enqueueSnackbar(err, {variant: "error"});

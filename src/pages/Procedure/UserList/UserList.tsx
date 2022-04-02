@@ -9,7 +9,7 @@ import {
     Paper,
     Typography
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {UserData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -25,7 +25,7 @@ export default function UserList() {
     const [users, setUsers] = useState<UserData[]>([]);
     const [initUsers, setInitUsers] = useState<UserData[]>([]);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function UserList() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -73,7 +73,7 @@ export default function UserList() {
     };
 
     const clickDetailPage = (id: number) => {
-        history.push('/dashboard/procedure/user/' + id);
+        navigate('/dashboard/procedure/user/' + id);
     }
 
     return (

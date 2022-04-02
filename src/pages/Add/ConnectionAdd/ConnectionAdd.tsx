@@ -26,7 +26,7 @@ import useStyles from "../styles";
 import {check} from "./check";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/Connection";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Get} from "../../../api/Info";
 
 export default function ConnectionAddDialogs(props: {
@@ -41,7 +41,7 @@ export default function ConnectionAddDialogs(props: {
     const [serviceCode, setServiceCode] = React.useState("");
     const [serviceID, setServiceID] = React.useState(0);
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (open) {
@@ -54,7 +54,7 @@ export default function ConnectionAddDialogs(props: {
             }
             if (!addAllow) {
                 enqueueSnackbar('登録が許可されていません。', {variant: "error"});
-                history.push("/dashboard")
+                navigate("/dashboard")
             }
         }
     }, [open]);

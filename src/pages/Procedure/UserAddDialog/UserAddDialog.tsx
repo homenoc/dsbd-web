@@ -4,7 +4,7 @@ import {
     Grid, MenuItem, Select,
     TextField,
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import {DefaultUserAddData, UserAddData} from "../../../interface";
 import {PostGroup} from "../../../api/User";
@@ -16,7 +16,7 @@ export function UserAddDialog(props: {
     groupID: number
 }) {
     const {groupID} = props;
-    const history = useHistory();
+    const navigate = useNavigate();
     const classes = useStyles();
     const [data, setData] = React.useState(DefaultUserAddData);
     const [open, setOpen] = React.useState(false);
@@ -59,7 +59,7 @@ export function UserAddDialog(props: {
         PostGroup(groupID, sendData).then(res => {
             if (res.error === undefined) {
                 Get().then(() => {
-                    history.push('/dashboard/procedure');
+                    navigate('/dashboard/procedure');
                 });
                 enqueueSnackbar("ユーザ追加しました。", {variant: "success"});
                 setOpen(false);

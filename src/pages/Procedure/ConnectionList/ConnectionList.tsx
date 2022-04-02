@@ -9,7 +9,7 @@ import {
     Paper,
     Typography
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {InfosData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -27,7 +27,7 @@ export default function ConnectionList() {
     const [infos, setInfos] = useState<InfosData[]>([]);
     const [initInfos, setInitInfos] = useState<InfosData[]>([]);
     const info = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function ConnectionList() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();

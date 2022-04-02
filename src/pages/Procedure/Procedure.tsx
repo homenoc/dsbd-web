@@ -19,7 +19,7 @@ import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {UserAddDialog} from "./UserAddDialog/UserAddDialog";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
@@ -34,7 +34,7 @@ export default function Procedure() {
     const [data, setData] = React.useState<InfoData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function Procedure() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
@@ -71,9 +71,9 @@ export default function Procedure() {
 
     }, [infos, templates]);
 
-    const UserListPage = () => history.push("/dashboard/procedure/user");
-    const ServiceListPage = () => history.push("/dashboard/procedure/service");
-    const ConnectionListPage = () => history.push("/dashboard/procedure/connection");
+    const UserListPage = () => navigate("/dashboard/procedure/user");
+    const ServiceListPage = () => navigate("/dashboard/procedure/service");
+    const ConnectionListPage = () => navigate("/dashboard/procedure/connection");
 
     return (
         <DashboardComponent title="各種手続き">
@@ -298,7 +298,7 @@ export function StatusTable(props: {
 }) {
     const {request} = props;
     const classes = useStyles2();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -315,7 +315,7 @@ export function StatusTable(props: {
         setPage(0);
     };
 
-    const ChatPage = (id: number) => history.push("/dashboard/support/" + id);
+    const ChatPage = (id: number) => navigate("/dashboard/support/" + id);
 
     return (
         <TableContainer component={Paper}>

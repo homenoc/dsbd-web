@@ -5,7 +5,7 @@ import {
     Dialog, DialogActions, DialogContent, DialogTitle, Grid,
     TextField,
 } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData, GroupData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import {Get} from "../../../api/Info";
@@ -17,7 +17,7 @@ export function GroupChangeDialog(props: {
 }) {
     const {group} = props;
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -29,7 +29,7 @@ export function GroupChangeDialog(props: {
         Post(data).then(res => {
             if (res.error === undefined) {
                 Get().then(() => {
-                    history.push('/dashboard/support/' + res.data.id);
+                    navigate('/dashboard/support/' + res.data.id);
                 });
                 setOpen(false);
             } else {

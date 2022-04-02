@@ -11,7 +11,7 @@ import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import ServiceAddDialogs from "./ServiceAdd/ServiceAdd";
 import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import GroupAddDialogs from "./GroupAdd/GroupAdd";
 
 function getSteps() {
@@ -26,7 +26,7 @@ export default function Add() {
     const [openConnection, setOpenConnection] = React.useState(false);
     const [template, setTemplate] = React.useState<TemplateData>(DefaultTemplateData);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -43,7 +43,7 @@ export default function Add() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(res, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 }
             }
         })
@@ -62,7 +62,7 @@ export default function Add() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }

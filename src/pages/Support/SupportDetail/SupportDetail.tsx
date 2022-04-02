@@ -16,7 +16,7 @@ import {Get} from "../../../api/Info";
 
 export default function SupportDetail() {
     const classes = useStyles();
-    let id: string;
+    let id: string | undefined;
     ({id} = useParams());
     const {sendMessage, lastMessage} = useWebSocket(restfulApiConfig.wsURL + "/support" +
         '?id=' + id + '&user_token=' + Cookies.get('user_token') + '&access_token=' +
@@ -145,6 +145,10 @@ export default function SupportDetail() {
 
     return (
         <div>
+            {
+                id === undefined &&
+                <h2>IDの値が取得できません</h2>
+            }
             {
                 baseChatData === undefined &&
                 <h2>データがありません</h2>
