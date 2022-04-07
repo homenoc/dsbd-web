@@ -1,22 +1,20 @@
 import React, {useEffect} from 'react';
-import useStyles from "../styles"
 import {
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle, Grid,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData, InfosData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import {Get} from "../../../api/Info";
 import {Post} from "../../../api/Request";
 import {InfoGet} from "../../../components/Dashboard/Info/Info";
+import {StyledTextFieldVeryLong} from "../../../style";
 
 export function ConnectionListDeleteDialog(props: {
     info: InfosData
 }) {
     const {info} = props;
-    const classes = useStyles();
     const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
@@ -59,8 +57,7 @@ export function ConnectionListDeleteDialog(props: {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 disabled={true}
                                 id="title"
                                 label="Title"
@@ -74,8 +71,7 @@ export function ConnectionListDeleteDialog(props: {
                             <div>「{data.title}」の理由について詳しく説明してください。</div>
                             <div>内容によりまして、承諾できない可能性がありますがご了承ください。</div>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline

@@ -1,22 +1,20 @@
 import React, {useEffect} from 'react';
-import useStyles from "../styles"
 import {
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle, Grid,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData, ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import {Get} from "../../../api/Info";
 import {Post} from "../../../api/Request";
 import {ServiceGet} from "./Service";
+import {StyledTextFieldVeryLong} from "../../../style";
 
 export function ServiceListDeleteDialog(props: {
     service: ServiceData
 }) {
     const {service} = props;
-    const classes = useStyles();
     const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
@@ -59,8 +57,7 @@ export function ServiceListDeleteDialog(props: {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 disabled={true}
                                 id="title"
                                 label="Title"
@@ -74,8 +71,7 @@ export function ServiceListDeleteDialog(props: {
                             <div>「{data.title}」の理由について詳しく説明してください。</div>
                             <div>内容によりまして、承諾できない可能性がありますがご了承ください。</div>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline

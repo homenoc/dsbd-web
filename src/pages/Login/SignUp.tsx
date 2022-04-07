@@ -1,46 +1,23 @@
 import {
-    Avatar,
-    Button,
     Checkbox,
     Container, CssBaseline,
     FormControlLabel,
     Grid, Link,
-    makeStyles, TextField, ThemeProvider,
+    TextField, ThemeProvider,
     Typography
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import React, {FormEvent, useState} from "react";
-import {colorTheme} from "../../components/Theme";
+import {muiColorTheme} from "../../components/Theme";
 import {DefaultUserAddData, UserAddData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {restfulApiConfig} from "../../api/Config";
 import {Post} from "../../api/User";
 import {useNavigate} from "react-router-dom";
 import shaJS from "sha.js";
-
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import {StyledAvatar, StyledButtonSubmit, StyledForm, StyledPaper} from "./styles";
 
 export default function SignUp() {
-    const classes = useStyles();
     const [data, setData] = useState(DefaultUserAddData);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -114,17 +91,17 @@ export default function SignUp() {
     }
 
     return (
-        <ThemeProvider theme={colorTheme}>
+        <ThemeProvider theme={muiColorTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
+                <StyledPaper>
+                    <StyledAvatar>
                         <LockOutlinedIcon/>
-                    </Avatar>
+                    </StyledAvatar>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form className={classes.form} onSubmit={request} noValidate>
+                    <StyledForm onSubmit={request} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -221,7 +198,7 @@ export default function SignUp() {
                                     autoComplete="current-password-again"
                                 />
                             </Grid>
-                            <Grid container justify="flex-start">
+                            <Grid container justifyContent="flex-start">
                                 <Grid item>
                                     <Link href="https://www.homenoc.ad.jp/rules/" variant="body2">
                                         会則：https://www.homenoc.ad.jp/rules/
@@ -249,24 +226,23 @@ export default function SignUp() {
                             {/*    />*/}
                             {/*</Grid>*/}
                         </Grid>
-                        <Button
+                        <StyledButtonSubmit
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
-                            className={classes.submit}
                         >
                             Sign Up
-                        </Button>
-                        <Grid container justify="flex-end">
+                        </StyledButtonSubmit>
+                        <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="login" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>
                         </Grid>
-                    </form>
-                </div>
+                    </StyledForm>
+                </StyledPaper>
             </Container>
         </ThemeProvider>
     );

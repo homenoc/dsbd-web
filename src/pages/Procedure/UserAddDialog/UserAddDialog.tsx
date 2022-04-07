@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Grid, MenuItem, Select,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import {DefaultUserAddData, UserAddData} from "../../../interface";
 import {PostGroup} from "../../../api/User";
 import {Get} from "../../../api/Info";
-import useStyles from "../styles";
+import {StyledTextFieldShort, StyledTextFieldVeryLong} from "../../../style";
 
 
 export function UserAddDialog(props: {
@@ -17,7 +16,6 @@ export function UserAddDialog(props: {
 }) {
     const {groupID} = props;
     const navigate = useNavigate();
-    const classes = useStyles();
     const [data, setData] = React.useState(DefaultUserAddData);
     const [open, setOpen] = React.useState(false);
     const [firstName, setFirstName] = useState("");
@@ -74,13 +72,11 @@ export function UserAddDialog(props: {
             <Button variant="outlined" onClick={() => setOpen(true)}>
                 次へ
             </Button>
-            <Dialog onClose={() => setOpen(false)} aria-labelledby="customized-dialog-title"
-                    open={open} maxWidth={"lg"}
-                    PaperProps={{
-                        style: {
-                            backgroundColor: "#2b2a2a",
-                        },
-                    }}>
+            <Dialog
+                onClose={() => setOpen(false)}
+                aria-labelledby="customized-dialog-title"
+                open={open} maxWidth={"lg"}
+            >
                 <DialogTitle id="customized-dialog-title">
                     ユーザ追加
                 </DialogTitle>
@@ -89,10 +85,9 @@ export function UserAddDialog(props: {
                     <div>本人確認メールと仮パスワードを追加ユーザのメールアドレス宛に送信されるので、登録後に確認をお願いします。</div>
                     <br/>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <StyledTextFieldShort
                             autoComplete="fname"
                             name="firstNameJP"
-                            className={classes.formShort}
                             variant="outlined"
                             required
                             fullWidth
@@ -102,9 +97,8 @@ export function UserAddDialog(props: {
                             onChange={event => setFirstName(event.target.value)}
                             autoFocus
                         />
-                        <TextField
+                        <StyledTextFieldShort
                             variant="outlined"
-                            className={classes.formShort}
                             required
                             fullWidth
                             id="lastNameJP"
@@ -116,8 +110,7 @@ export function UserAddDialog(props: {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
-                            className={classes.formShort}
+                        <StyledTextFieldShort
                             autoComplete="fname"
                             name="firstNameEn"
                             variant="outlined"
@@ -129,8 +122,7 @@ export function UserAddDialog(props: {
                             onChange={event => setFirstNameEn(event.target.value)}
                             autoFocus
                         />
-                        <TextField
-                            className={classes.formShort}
+                        <StyledTextFieldShort
                             variant="outlined"
                             required
                             fullWidth
@@ -143,8 +135,7 @@ export function UserAddDialog(props: {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
-                            className={classes.formVeryLong}
+                        <StyledTextFieldVeryLong
                             variant="outlined"
                             required
                             fullWidth

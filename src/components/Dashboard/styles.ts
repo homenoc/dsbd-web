@@ -1,106 +1,45 @@
-import {makeStyles} from "@material-ui/core";
+import {Container, FormControl, ListItem, styled, Typography} from "@mui/material";
 
 const drawerWidth = 240;
 
-// const useDashboardStyles = ;
+export const StyledDivDashboardRoot = styled(FormControl)(({theme}) => ({
+    display: 'flex',
+}))
 
-export default makeStyles(theme => ({
-        root: {
-            display: 'flex',
-        },
-        toolbar: {
-            paddingRight: 24, // keep right padding when drawer closed
-        },
-        toolbarIcon: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
-            ...theme.mixins.toolbar,
-        },
-        appBar: {
-            zIndex: theme.zIndex.drawer + 1,
-            transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-        },
-        appBarShift: {
-            marginLeft: drawerWidth,
-            width: `calc(100% - ${drawerWidth}px)`,
-            transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
-        menuButton: {
-            marginRight: 36,
-        },
-        menuButtonHidden: {
-            display: 'none',
-        },
-        title: {
-            flexGrow: 1,
-        },
-        drawerPaper: {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
-        drawerPaperClose: {
-            overflowX: 'hidden',
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up('sm')]: {
-                width: theme.spacing(9),
-            },
-        },
-        appBarSpacer: theme.mixins.toolbar,
-        content: {
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-        },
-        container: {
-            paddingTop: theme.spacing(4),
-            paddingBottom: theme.spacing(4),
-        },
-        paper: {
-            padding: theme.spacing(2),
-            display: 'flex',
-            overflow: 'auto',
-            flexDirection: 'column',
-        },
-        fixedHeight: {
-            height: 240,
-        },
-        pageTitle: {
-            marginBottom: theme.spacing(1),
-        },
+// @ts-ignore
+export const StyledDivDashboardToolBarIcon = styled('div')(({theme}) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar
+}))
+
+export const StyledTypographyPageTitle = styled(Typography)(({theme}) => ({
+    marginBottom: theme.spacing(1),
+}))
+
+export const StyledMainContent = styled('main')(({theme}) => ({
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+}))
+
+export const StyledDivAppBarShift = styled('div')(({theme}) => ({
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
     }),
-);
-//
-// // const useListStyles = makeStyles((theme: Theme) =>
-// export function useListStyles(): any {
-//     return (
-//         makeStyles((theme: Theme) =>
-//             createStyles({
-//                 root: {
-//                     width: '100%',
-//                     maxWidth: 360,
-//                     backgroundColor: theme.palette.background.paper,
-//                 },
-//                 nested: {
-//                     paddingLeft: theme.spacing(4),
-//                 },
-//             }),
-//         )
-//     );
-// };
+}))
+
+export const StyledContainer1 = styled(Container)(({theme}) => ({
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+}))
+
+export const StyledListItemSideBarNested = styled(ListItem)(({theme}) => ({
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+}))

@@ -14,28 +14,31 @@ import {
     MenuItem,
     Radio,
     RadioGroup,
-    Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    Select, TableBody, TableCell, TableContainer, TableHead, TableRow,
     TextField, Typography,
-} from "@material-ui/core";
+    Paper
+} from "@mui/material";
 import {
-    DefaultServiceAddData, DefaultServiceAddIPv4PlanData, DefaultServiceAddJPNICData, DefaultTemplateData, GroupData,
+    DefaultServiceAddData, DefaultServiceAddIPv4PlanData, DefaultServiceAddJPNICData, GroupData,
     ServiceAddData,
     ServiceAddIPData, ServiceAddIPv4PlanData, ServiceAddJPNICData,
     TemplateData,
 } from "../../../interface";
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
-import useStyles from "../styles";
+import DatePicker from '@mui/lab/DatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {LocalizationProvider} from "@mui/lab";
 import {check} from "./check";
-import DateFnsUtils from "@date-io/date-fns";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import {Paper} from "@material-ui/core";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/Service";
 import {useNavigate} from "react-router-dom";
 import {Get} from "../../../api/Info";
+import {
+    StyledDivRoot1,
+    StyledRootForm, StyledTableRoot,
+    StyledTextFieldLong, StyledTextFieldMedium, StyledTextFieldShort, StyledTextFieldTooVeryShort,
+    StyledTextFieldVeryShort1, StyledTypographyHeading
+} from "../../../style";
 
 export default function ServiceAddDialogs(props: {
     open: boolean,
@@ -53,7 +56,7 @@ export default function ServiceAddDialogs(props: {
             enqueueSnackbar('登録が許可されていません。', {variant: "error"});
             navigate("/dashboard")
         }
-    }, [open]);
+    }, [enqueueSnackbar, groupData.add_allow, navigate, open]);
 
     useEffect(() => {
         const nowDate = new Date;
@@ -210,7 +213,6 @@ export function ServiceAddAssignIP(props: {
     const [checkBoxIPv4, setCheckBoxIPv4] = React.useState(false);
     const [checkBoxIPv6, setCheckBoxIPv6] = React.useState(false);
     const [ipv4PlanSubnetCount, setIPv4PlanSubnetCount] = React.useState(0);
-    const classes = useStyles();
 
     const handleIPv4CheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckBoxIPv4(event.target.checked);
@@ -392,9 +394,8 @@ export function ServiceAddAssignIP(props: {
                                     </Select>
                                 </FormControl>
                                 <br/>
-                                <form className={classes.rootForm} noValidate autoComplete="off">
-                                    <TextField
-                                        className={classes.formMedium}
+                                <StyledRootForm noValidate autoComplete="off">
+                                    <StyledTextFieldMedium
                                         required
                                         id="ipv4_network_name"
                                         label="Network名"
@@ -406,7 +407,7 @@ export function ServiceAddAssignIP(props: {
                                         onChange={(event) =>
                                             handleNetworkNameChange(event.target.value, 4)}
                                     />
-                                </form>
+                                </StyledRootForm>
                             </div>
                         )
                     }
@@ -426,9 +427,8 @@ export function ServiceAddAssignIP(props: {
                         checkBoxIPv6 && (
                             <div>
                                 <br/>
-                                <form className={classes.rootForm} noValidate autoComplete="off">
-                                    <TextField
-                                        className={classes.formMedium}
+                                <StyledRootForm noValidate autoComplete="off">
+                                    <StyledTextFieldMedium
                                         required
                                         id="ipv6_network_name"
                                         value={getSubnetName(6)}
@@ -440,7 +440,7 @@ export function ServiceAddAssignIP(props: {
                                         onChange={(event) =>
                                             handleNetworkNameChange(event.target.value, 6)}
                                     />
-                                </form>
+                                </StyledRootForm>
                                 <FormControl component="fieldset">
                                     <Select aria-label="gender" id="ipv6_subnet" value={getSubnetID(6)}
                                             onChange={(event) =>
@@ -477,7 +477,6 @@ export function ServiceIPForGlobalAS(props: {
     const [checkBoxIPv6, setCheckBoxIPv6] = React.useState(false);
     const [ipv4, setIPv4] = React.useState("");
     const [ipv6, setIPv6] = React.useState("");
-    const classes = useStyles();
 
     const handleIPv4CheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckBoxIPv4(event.target.checked);
@@ -540,9 +539,8 @@ export function ServiceIPForGlobalAS(props: {
             </Grid>
             <Grid item xs={6}>
                 <div>
-                    <form className={classes.rootForm} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.formMedium}
+                    <StyledRootForm noValidate autoComplete="off">
+                        <StyledTextFieldMedium
                             required
                             id="asn"
                             label="ASN"
@@ -552,7 +550,7 @@ export function ServiceIPForGlobalAS(props: {
                             onChange={(event) =>
                                 setData({...data, asn: Number(event.target.value)})}
                         />
-                    </form>
+                    </StyledRootForm>
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -568,9 +566,8 @@ export function ServiceIPForGlobalAS(props: {
                     {checkBoxIPv4 && (
                         <div>
                             <br/>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formMedium}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldMedium
                                     required
                                     id="ipv4_network_name"
                                     label="IPv4"
@@ -578,7 +575,7 @@ export function ServiceIPForGlobalAS(props: {
                                     variant="outlined"
                                     onChange={(event) => setIPv4(event.target.value)}
                                 />
-                            </form>
+                            </StyledRootForm>
                             <Button autoFocus variant="contained" onClick={() => handleIPChange(ipv4, 4)}
                                     color="primary">追加</Button>
                         </div>
@@ -598,9 +595,8 @@ export function ServiceIPForGlobalAS(props: {
                     {checkBoxIPv6 && (
                         <div>
                             <br/>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formMedium}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldMedium
                                     required
                                     id="ipv6_network_name"
                                     value={ipv6}
@@ -608,7 +604,7 @@ export function ServiceIPForGlobalAS(props: {
                                     variant="outlined"
                                     onChange={(event) => setIPv6(event.target.value)}
                                 />
-                            </form>
+                            </StyledRootForm>
                             <Button autoFocus variant="contained" onClick={() => handleIPChange(ipv6, 6)}
                                     color="primary">追加</Button>
                         </div>
@@ -618,7 +614,7 @@ export function ServiceIPForGlobalAS(props: {
             <Grid item xs={6}>
                 {
                     <TableContainer component={Paper}>
-                        <Table className={classes.table} size="small" aria-label="a dense table">
+                        <StyledTableRoot size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>IP</TableCell>
@@ -640,7 +636,7 @@ export function ServiceIPForGlobalAS(props: {
                                     </TableRow>
                                 ))}
                             </TableBody>
-                        </Table>
+                        </StyledTableRoot>
                     </TableContainer>
                 }
             </Grid>
@@ -656,7 +652,6 @@ export function ServiceAddJPNICIPv4Plan(props: {
     const {data, setData, subnetCount} = props;
     const [inputPlan, setInputPlan] = React.useState(DefaultServiceAddIPv4PlanData);
     const [planSum, setPlanSum] = React.useState(DefaultServiceAddIPv4PlanData);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
 
@@ -743,9 +738,8 @@ export function ServiceAddJPNICIPv4Plan(props: {
                     <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
                     <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
                     <br/>
-                    <form className={classes.rootForm} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.formMedium}
+                    <StyledRootForm noValidate autoComplete="off">
+                        <StyledTextFieldMedium
                             required
                             id="name"
                             label="Name"
@@ -755,8 +749,7 @@ export function ServiceAddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, name: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="after"
                             label="直後"
@@ -767,8 +760,7 @@ export function ServiceAddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, after: parseInt(event.target.value)});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="half_year"
                             label="半年後"
@@ -779,8 +771,7 @@ export function ServiceAddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, half_year: parseInt(event.target.value)});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="one_year"
                             label="1年後"
@@ -793,11 +784,11 @@ export function ServiceAddJPNICIPv4Plan(props: {
                         />
                         <br/>
                         <Button size="small" variant="contained" color="primary" onClick={add}>追加</Button>
-                    </form>
+                    </StyledRootForm>
                     {
                         data.ip?.map((ip, index) => (ip.version === 4 &&
                             <TableContainer component={Paper} key={index}>
-                                <Table className={classes.table} size="small" aria-label="a dense table">
+                                <StyledTableRoot size="small" aria-label="a dense table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>Name</TableCell>
@@ -838,7 +829,7 @@ export function ServiceAddJPNICIPv4Plan(props: {
                                                 align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
                                         </TableRow>
                                     </TableBody>
-                                </Table>
+                                </StyledTableRoot>
                             </TableContainer>
                         ))
                     }
@@ -853,17 +844,15 @@ export function ServiceAddJPNICInfo(props: {
     setData: Dispatch<SetStateAction<ServiceAddData>>
 }) {
     const {data, setData} = props;
-    const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <StyledDivRoot1>
             <FormLabel component="legend">1.2.1. JPNICの登録情報</FormLabel>
             <br/>
             <div>JPNICに登録する情報を記入してください。</div>
             <br/>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formShort}
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldShort
                     required
                     id="org"
                     label="組織名"
@@ -876,8 +865,7 @@ export function ServiceAddJPNICInfo(props: {
                         setData({...data, org: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formShort}
+                <StyledTextFieldShort
                     required
                     id="org_en"
                     label="組織名(英語)"
@@ -891,8 +879,7 @@ export function ServiceAddJPNICInfo(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="postcode"
                     label="郵便番号"
@@ -905,8 +892,7 @@ export function ServiceAddJPNICInfo(props: {
                         setData({...data, postcode: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="address"
                     label="住所(日本語)"
@@ -919,8 +905,7 @@ export function ServiceAddJPNICInfo(props: {
                         setData({...data, address: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="address_en"
                     label="住所(英語)"
@@ -933,8 +918,8 @@ export function ServiceAddJPNICInfo(props: {
                         setData({...data, address_en: event.target.value});
                     }}
                 />
-            </form>
-        </div>
+            </StyledRootForm>
+        </StyledDivRoot1>
     );
 }
 
@@ -944,17 +929,15 @@ export function ServiceAddJPNICAdmin(props: {
 }) {
     const {data, setData} = props;
     const [jpnic, setJPNIC] = React.useState(DefaultServiceAddJPNICData);
-    const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <StyledDivRoot1>
             <FormLabel component="legend">1.2.2. 管理者連絡窓口</FormLabel>
             <br/>
             <div>割り当てるIPアドレスの管理連絡窓口をご記入ください</div>
             <br/>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formVeryShort}
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_org"
                     label="組織名"
@@ -968,8 +951,7 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_org_en"
                     label="組織名(English)"
@@ -984,8 +966,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_name"
                     label="名前"
@@ -999,8 +980,7 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_name_en"
                     label="名前(English)"
@@ -1015,8 +995,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_postcode"
                     label="郵便番号"
@@ -1031,8 +1010,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="jpnic_admin_address"
                     label="住所"
@@ -1047,8 +1025,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="jpnic_admin_address_en"
                     label="住所(English)"
@@ -1063,8 +1040,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     id="jpnic_admin_dept"
                     label="Dept"
                     value={jpnic.dept}
@@ -1077,8 +1053,7 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     id="jpnic_admin_dept_en"
                     label="Dept(English)"
                     value={jpnic.dept_en}
@@ -1091,8 +1066,7 @@ export function ServiceAddJPNICAdmin(props: {
                 }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_tel"
                     label="電話番号"
@@ -1106,8 +1080,7 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     id="jpnic_admin_fax"
                     label="Fax"
                     value={jpnic.fax}
@@ -1121,8 +1094,7 @@ export function ServiceAddJPNICAdmin(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formShort}
+                <StyledTextFieldShort
                     required
                     id="jpnic_admin_mail"
                     label="Mail"
@@ -1136,8 +1108,7 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="jpnic_admin_country"
                     label="住居国"
@@ -1148,8 +1119,8 @@ export function ServiceAddJPNICAdmin(props: {
                         setData({...data, jpnic_admin: jpnic});
                     }}
                 />
-            </form>
-        </div>
+            </StyledRootForm>
+        </StyledDivRoot1>
     );
 }
 
@@ -1160,7 +1131,6 @@ export function ServiceAddJPNICTech(props: {
     const {data, setData} = props;
     const [jpnic, setJPNIC] = React.useState(DefaultServiceAddJPNICData);
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const handleClickOpen = () => {
@@ -1220,7 +1190,7 @@ export function ServiceAddJPNICTech(props: {
     };
 
     return (
-        <div className={classes.root}>
+        <StyledDivRoot1>
             <FormLabel component="legend">1.2.3. 技術連絡担当者</FormLabel>
             <br/>
             <div>割り当てるIPアドレスの技術連絡担当者をご記入ください</div>
@@ -1231,9 +1201,8 @@ export function ServiceAddJPNICTech(props: {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
                 <DialogContent>
-                    <form className={classes.rootForm} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.formVeryShort}
+                    <StyledRootForm noValidate autoComplete="off">
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_org"
                             label="Org"
@@ -1246,8 +1215,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, org: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_org_en"
                             label="Org(English)"
@@ -1261,8 +1229,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_name"
                             label="名前"
@@ -1275,8 +1242,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, name: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_name_en"
                             label="名前(English)"
@@ -1290,8 +1256,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_postcode"
                             label="郵便番号"
@@ -1305,8 +1270,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formLong}
+                        <StyledTextFieldLong
                             required
                             id="jpnic_tech_address"
                             label="住所"
@@ -1320,8 +1284,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formLong}
+                        <StyledTextFieldLong
                             required
                             id="jpnic_tech_address_en"
                             label="住所(English)"
@@ -1335,8 +1298,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="jpnic_tech_dept"
                             label="Dept"
                             value={jpnic.dept}
@@ -1348,8 +1310,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, dept: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="jpnic_tech_dept_en"
                             label="Dept(English)"
                             value={jpnic.dept_en}
@@ -1361,8 +1322,7 @@ export function ServiceAddJPNICTech(props: {
                         }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_tel"
                             label="電話番号"
@@ -1375,8 +1335,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, tel: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="jpnic_tech_fax"
                             label="Fax"
                             value={jpnic.fax}
@@ -1390,8 +1349,7 @@ export function ServiceAddJPNICTech(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formShort}
+                        <StyledTextFieldShort
                             required
                             id="jpnic_tech_mail"
                             label="Mail"
@@ -1404,8 +1362,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, mail: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="jpnic_tech_country"
                             label="住居国"
@@ -1415,7 +1372,7 @@ export function ServiceAddJPNICTech(props: {
                                 setJPNIC({...jpnic, country: event.target.value});
                             }}
                         />
-                    </form>
+                    </StyledRootForm>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => submit(true)} color="primary"> 管理連絡窓口の情報をコピー </Button>
@@ -1433,13 +1390,12 @@ export function ServiceAddJPNICTech(props: {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography className={classes.heading}>{row.name}({row.name_en})</Typography>
+                            <StyledTypographyHeading>{row.name}({row.name_en})</StyledTypographyHeading>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                <form className={classes.rootForm} noValidate autoComplete="off">
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                <StyledRootForm noValidate autoComplete="off">
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_org"}
                                         label="組織名"
@@ -1452,8 +1408,7 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, org: event.target.value});
                                         }}
                                     />
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_org_en"}
                                         label="組織名(English)"
@@ -1467,8 +1422,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_name"}
                                         label="名前"
@@ -1481,8 +1435,7 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, name: event.target.value});
                                         }}
                                     />
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_name_en"}
                                         label="名前(English)"
@@ -1496,8 +1449,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_postcode"}
                                         label="郵便番号"
@@ -1511,8 +1463,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formLong}
+                                    <StyledTextFieldLong
                                         required
                                         id={"jpnic_tech_" + index + "_address"}
                                         label="住所"
@@ -1526,8 +1477,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formLong}
+                                    <StyledTextFieldLong
                                         required
                                         id={"jpnic_tech_" + index + "_address_en"}
                                         label="住所(English)"
@@ -1541,8 +1491,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_dept"}
                                         label="Dept"
@@ -1555,8 +1504,7 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, dept: event.target.value});
                                         }}
                                     />
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_dept_en"}
                                         label="Dept(English)"
@@ -1569,8 +1517,7 @@ export function ServiceAddJPNICTech(props: {
                                     }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_tel"}
                                         label="電話番号"
@@ -1583,8 +1530,7 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, tel: event.target.value});
                                         }}
                                     />
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_fax"}
                                         label="Fax"
@@ -1598,8 +1544,7 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                     <br/>
-                                    <TextField
-                                        className={classes.formShort}
+                                    <StyledTextFieldShort
                                         required
                                         id={"jpnic_tech_" + index + "_mail"}
                                         label="Mail"
@@ -1612,8 +1557,7 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, mail: event.target.value});
                                         }}
                                     />
-                                    <TextField
-                                        className={classes.formVeryShort}
+                                    <StyledTextFieldVeryShort1
                                         required
                                         id={"jpnic_tech_" + index + "_country"}
                                         label="住居国"
@@ -1623,9 +1567,9 @@ export function ServiceAddJPNICTech(props: {
                                             setJPNIC({...row, country: event.target.value});
                                         }}
                                     />
-                                </form>
+                                </StyledRootForm>
                                 <Button size="small" variant="contained" color="primary"
-                                        className={classes.spaceRight}
+                                        sx={{marginRight: 5}}
                                         onClick={() => changeData(index)}>変更</Button>
                                 <Button size="small" variant="contained" color="secondary"
                                         onClick={() => deleteData(index)}>削除</Button>
@@ -1634,7 +1578,7 @@ export function ServiceAddJPNICTech(props: {
                     </Accordion>
                 ))
             }
-        </div>
+        </StyledDivRoot1>
     )
 }
 
@@ -1670,21 +1614,17 @@ export function ServiceAddDate(props: {
             <br/>
             <div>利用開始日に関しましては、ベストエフォートとなりますので、期待に応じられない可能性があります。</div>
             <br/>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                    required
-                    margin="normal"
-                    id="begin-date-picker-dialog"
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                    mask="____/__/__"
                     label="接続開始日"
-                    format="yyyy/MM/dd"
+                    key="begin-date-picker-dialog"
                     value={selectedDate}
+                    inputFormat="yyyy/MM/dd"
                     onChange={handleBeginDateChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
+                    renderInput={(params) => (<TextField  {...params} helperText={null}/>)}
                 />
-            </MuiPickersUtilsProvider>
-
+            </LocalizationProvider>
             <br/>
             <br/>
             <b>接続終了日は未定の場合はここにチェックしてください。</b>
@@ -1736,23 +1676,20 @@ export function ServiceAddBandwidthEndDateDialogs(props: {
 
     return (
         <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <br/>
-                <div>一時的な検証やイベントネットワークでの利用など、利用終了日が決まっている場合はお知らせください</div>
-                <br/>
-                <KeyboardDatePicker
-                    required
-                    margin="normal"
-                    id="end-date-picker-dialog"
+            <br/>
+            <div>一時的な検証やイベントネットワークでの利用など、利用終了日が決まっている場合はお知らせください</div>
+            <br/>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                    mask="____/__/__"
                     label="接続終了日"
-                    format="yyyy/MM/dd"
+                    key="end-date-picker-dialog"
                     value={selectedDate}
+                    inputFormat="yyyy/MM/dd"
                     onChange={handleEndDateChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
+                    renderInput={(params) => (<TextField  {...params} helperText={null}/>)}
                 />
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
         </div>
     )
 }
@@ -1763,7 +1700,6 @@ export function ServiceAddBandwidthDialogs(props: {
 }) {
     const {data, setData} = props
     const [checkBox, setCheckBox] = React.useState(data.max_bandwidth_as != null);
-    const classes = useStyles();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckBox(event.target.checked);
@@ -1782,9 +1718,8 @@ export function ServiceAddBandwidthDialogs(props: {
             <div>利用帯域が分からない場合は申し込み時点での想定をご記入ください。</div>
             <div> 設備都合などによりご希望の帯域を提供できない場合がございます。</div>
             <br/>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formVeryShort}
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldVeryShort1
                     required
                     id="avg_downstream"
                     label="平均上り利用帯域"
@@ -1795,8 +1730,7 @@ export function ServiceAddBandwidthDialogs(props: {
                         setData({...data, avg_downstream: parseInt(event.target.value)});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="max_downstream"
                     label="最大上り利用帯域"
@@ -1808,8 +1742,7 @@ export function ServiceAddBandwidthDialogs(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="avg_upstream"
                     label="平均下り利用帯域"
@@ -1820,8 +1753,7 @@ export function ServiceAddBandwidthDialogs(props: {
                         setData({...data, avg_upstream: parseInt(event.target.value)});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="max_upstream"
                     label="最大下り利用帯域"
@@ -1850,7 +1782,7 @@ export function ServiceAddBandwidthDialogs(props: {
                 </div>
                 <br/>
                 <ServiceAddMaxASDialogs key={"service_add_max_as"} data={data} setData={setData}/>
-            </form>
+            </StyledRootForm>
         </div>
     )
 }
@@ -1860,7 +1792,6 @@ export function ServiceAddMaxASDialogs(props: {
     setData: Dispatch<SetStateAction<ServiceAddData>>
 }) {
     const {data, setData} = props;
-    const classes = useStyles();
 
     if (data.max_bandwidth_as === undefined) {
         return (
@@ -1871,8 +1802,7 @@ export function ServiceAddMaxASDialogs(props: {
     } else {
         return (
             <div>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="max_bandwidth_asn"
                     label="ASN"

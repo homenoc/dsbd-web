@@ -13,19 +13,25 @@ import {
     Radio,
     RadioGroup,
     TextField,
-} from "@material-ui/core";
+} from "@mui/material";
+import DatePicker from '@mui/lab/DatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {LocalizationProvider} from "@mui/lab";
 import {
     DefaultGroupAddData, GroupAddData,
     UserData,
 } from "../../../interface";
-import useStyles from "../styles";
 import {check, checkQuestion} from "./check";
 import {useSnackbar} from "notistack";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import {Post} from "../../../api/Group";
 import {useNavigate} from "react-router-dom";
 import {Get} from "../../../api/Info";
+import {
+    StyledDivRoot1, StyledRootForm, StyledTextFieldLong,
+    StyledTextFieldMedium, StyledTextFieldShort,
+    StyledTextFieldVeryLong,
+    StyledTextFieldVeryShort1
+} from "../../../style";
 
 export default function GroupAddDialogs(props: {
     open: boolean
@@ -214,7 +220,6 @@ export function QuestionAdd(props: {
     }>>
 }) {
     const {data, setData} = props;
-    const classes = useStyles();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData({...data, isExist: !data.isExist});
@@ -242,8 +247,7 @@ export function QuestionAdd(props: {
                     <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
                     <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</div>
                     <br/>
-                    <TextField
-                        className={classes.formVeryLong}
+                    <StyledTextFieldVeryLong
                         id="question1"
                         label=""
                         multiline
@@ -258,8 +262,7 @@ export function QuestionAdd(props: {
                     <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
                     <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]</div>
                     <br/>
-                    <TextField
-                        className={classes.formVeryLong}
+                    <StyledTextFieldVeryLong
                         id="question2"
                         label=""
                         multiline
@@ -277,8 +280,7 @@ export function QuestionAdd(props: {
                     <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
                     <div>PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。</div>
                     <br/>
-                    <TextField
-                        className={classes.formVeryLong}
+                    <StyledTextFieldVeryLong
                         id="question3"
                         label=""
                         multiline
@@ -294,8 +296,7 @@ export function QuestionAdd(props: {
                         情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
                     <div>(発信しているコンテンツなどがなければ、「なし」とお答えください)</div>
                     <br/>
-                    <TextField
-                        className={classes.formVeryLong}
+                    <StyledTextFieldVeryLong
                         id="question4"
                         label=""
                         multiline
@@ -313,8 +314,7 @@ export function QuestionAdd(props: {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">1. 既存のサービスコードを記入してください</FormLabel>
                     <br/>
-                    <TextField
-                        className={classes.formVeryLong}
+                    <StyledTextFieldVeryLong
                         id="question1"
                         label=""
                         multiline
@@ -337,18 +337,16 @@ export function OrgInfoAdd(props: {
     setData: Dispatch<SetStateAction<GroupAddData>>
 }) {
     const {data, setData} = props;
-    const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <StyledDivRoot1>
             <FormLabel component="legend">5. 組織情報</FormLabel>
             <div>個人利用で特に組織名がない方は名前をご記入ください。</div>
             <br/>
             <div>JPNICに登録する情報を記入してください。</div>
             <br/>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formShort}
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldShort
                     required
                     id="org"
                     label="組織名"
@@ -361,8 +359,7 @@ export function OrgInfoAdd(props: {
                         setData({...data, org: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formShort}
+                <StyledTextFieldShort
                     required
                     id="org_en"
                     label="組織名(英語)"
@@ -376,8 +373,7 @@ export function OrgInfoAdd(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="postcode"
                     label="郵便番号"
@@ -390,8 +386,7 @@ export function OrgInfoAdd(props: {
                         setData({...data, postcode: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="address"
                     label="住所(日本語)"
@@ -404,8 +399,7 @@ export function OrgInfoAdd(props: {
                         setData({...data, address: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="address_en"
                     label="住所(英語)"
@@ -419,8 +413,7 @@ export function OrgInfoAdd(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="tel"
                     label="電話番号"
@@ -430,8 +423,7 @@ export function OrgInfoAdd(props: {
                         setData({...data, tel: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="country"
                     label="居住国"
@@ -441,8 +433,8 @@ export function OrgInfoAdd(props: {
                         setData({...data, country: event.target.value});
                     }}
                 />
-            </form>
-        </div>
+            </StyledRootForm>
+        </StyledDivRoot1>
     );
 }
 
@@ -523,23 +515,20 @@ export function StudentAdd(props: {
                 />
                 {
                     checkBox &&
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <br/>
                         <div>確認のため在学を証明するもの（学生証）を提出していただく場合もありますが、ご了承ください。</div>
                         <br/>
-                        <KeyboardDatePicker
-                            required
-                            margin="normal"
-                            id="student_expired_date-picker-dialog"
+                        <DatePicker
+                            mask="____/__/__"
                             label="卒業予定"
-                            format="yyyy/MM/dd"
+                            key="student_expired_date-picker-dialog"
                             value={selectedDate}
+                            inputFormat="yyyy/MM/dd"
                             onChange={handleStudentExpiredChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
+                            renderInput={(params) => (<TextField  {...params} helperText={null}/>)}
                         />
-                    </MuiPickersUtilsProvider>
+                    </LocalizationProvider>
                 }
             </FormControl>
         </div>

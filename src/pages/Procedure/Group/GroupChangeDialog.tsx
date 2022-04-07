@@ -1,22 +1,20 @@
 import React, {useEffect} from 'react';
-import useStyles from "../styles"
 import {
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle, Grid,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData, GroupData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import {Get} from "../../../api/Info";
 import {Post} from "../../../api/Request";
 import {GroupGet} from "../../../components/Dashboard/Group/Group";
+import {StyledTextFieldVeryLong} from "../../../style";
 
 export function GroupChangeDialog(props: {
     group: GroupData
 }) {
     const {group} = props;
-    const classes = useStyles();
     const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
@@ -64,8 +62,7 @@ export function GroupChangeDialog(props: {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 disabled={true}
                                 id="title"
                                 label="Title"
@@ -79,8 +76,7 @@ export function GroupChangeDialog(props: {
                             <div>変更前、変更後のことも詳しく説明してください。</div>
                             <div>内容によりまして、承諾できない可能性がありますがご了承ください。</div>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline

@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
-import {Button, Grid, Step, StepLabel, Stepper} from "@material-ui/core";
-import useStyles from "./styles"
+import {Button, Grid, Step, StepLabel, Stepper} from "@mui/material";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {DefaultTemplateData, InfoData, TemplateData} from "../../interface";
@@ -19,7 +18,6 @@ function getSteps() {
 }
 
 export default function Add() {
-    const classes = useStyles();
     const [data, setData] = React.useState<InfoData>();
     const [openGroup, setOpenGroup] = React.useState(false);
     const [openService, setOpenService] = React.useState(false);

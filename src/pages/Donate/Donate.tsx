@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
-import {Card, CardActions, CardContent, CardHeader, Container, Grid, Typography} from "@material-ui/core";
-import useStyles from "./styles"
+import {Card, CardActions, CardContent, Container, Grid, Typography} from "@mui/material";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {TemplateData} from "../../interface";
@@ -11,10 +10,11 @@ import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 import {PaymentDialog} from "../../components/Dashboard/Payment/Payment";
+import {StyledCardHeader1, StyledDivCardPricing} from "../Membership/styles";
+import {StyledContainer1} from "../../style";
 
 
 export default function Donate() {
-    const classes = useStyles();
     const [template, setTemplate] = React.useState<TemplateData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
@@ -75,32 +75,31 @@ export default function Donate() {
 
     return (
         <DashboardComponent title="Donate">
-            <Container maxWidth="sm" component="main" className={classes.heroContent}>
+            <StyledContainer1 maxWidth="sm">
                 <Typography variant="h5" align="center" color="textSecondary" component="p">
                     寄付
                 </Typography>
-            </Container>
+            </StyledContainer1>
             <Container maxWidth="md" component="main">
                 <Grid container spacing={5} alignItems="flex-end">
                     {
                         template?.payment_donate_template?.map((donate, index) => (
-                            <Grid item xs={12} sm={6} md={3}>
+                            <Grid key={"donate_template_id_" + donate.ID} item xs={12} sm={6} md={3}>
                                 <Card>
-                                    <CardHeader
+                                    <StyledCardHeader1
                                         title={donate.name}
                                         titleTypographyProps={{align: 'center'}}
                                         subheaderTypographyProps={{align: 'center'}}
-                                        className={classes.cardHeader}
                                     />
                                     <CardContent>
-                                        <div className={classes.cardPricing}>
+                                        <StyledDivCardPricing>
                                             <Typography component="h2" variant="h3" color="textPrimary">
                                                 {/*${tier.price}*/}
                                             </Typography>
                                             <Typography variant="h6" color="textSecondary">
                                                 {donate.fee}円
                                             </Typography>
-                                        </div>
+                                        </StyledDivCardPricing>
                                         <ul>
                                             {donate.comment}
                                         </ul>

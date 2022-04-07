@@ -1,22 +1,21 @@
 import React from 'react';
 import {
+    Box,
     Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel,
     Grid, Radio, RadioGroup,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData} from "../../interface";
 import {useSnackbar} from "notistack";
-import useStyles from "./styles";
 import {Post} from "../../api/Support";
 import {Get} from "../../api/Info";
+import {StyledTextFieldVeryLong} from "../../style";
 
 
 export function SupportAddDialog(props: {
     groupEnable: boolean
 }) {
     const {groupEnable} = props;
-    const classes = useStyles();
     const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
@@ -41,7 +40,7 @@ export function SupportAddDialog(props: {
     }
 
     return (
-        <div>
+        <Box>
             <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
                 チケットの作成
             </Button>
@@ -70,8 +69,7 @@ export function SupportAddDialog(props: {
                                                   disabled={!groupEnable} label="グループチャット"/>
                             </RadioGroup>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="title"
                                 label="Title"
                                 multiline
@@ -81,8 +79,7 @@ export function SupportAddDialog(props: {
                                 variant="outlined"
                             />
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline
@@ -103,6 +100,6 @@ export function SupportAddDialog(props: {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Box>
     );
 }

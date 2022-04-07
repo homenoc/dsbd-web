@@ -2,20 +2,12 @@ import React, {FormEvent, useState} from 'react';
 import {loadStripe} from "@stripe/stripe-js";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import stripeJs from "@stripe/stripe-js";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide} from "@material-ui/core";
-import {TransitionProps} from "@material-ui/core/transitions";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import "./payment.scss"
 import {restfulApiConfig} from "../../../api/Config";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {useSnackbar} from "notistack";
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement<any, any> },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export function PaymentCardChangeDialog() {
     const [open, setOpen] = React.useState(false);
@@ -34,7 +26,6 @@ export function PaymentCardChangeDialog() {
             <Button variant={"contained"} color="primary" onClick={handleClickOpen}>お支払い方法の変更</Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-slide-title"

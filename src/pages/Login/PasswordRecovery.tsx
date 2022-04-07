@@ -1,41 +1,17 @@
 import {
-    Avatar,
-    Button,
     Container,
     CssBaseline,
     Grid,
     Link,
-    makeStyles,
     TextField, ThemeProvider, Typography
-} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import {colorTheme} from "../../components/Theme";
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import React, {FormEvent, useState} from 'react';
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1)
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import {muiColorTheme} from "../../components/Theme";
+import {StyledPaper, StyledAvatar, StyledButtonSubmit, StyledForm} from './styles';
 
 export default function PasswordRecovery() {
-    const classes = useStyles();
     const [mail, setMail] = useState("0123");
-
 
     const handleSubmit = (e: FormEvent) => {
         console.log(mail);
@@ -43,18 +19,18 @@ export default function PasswordRecovery() {
     }
 
     return (
-        <ThemeProvider theme={colorTheme}>
+        <ThemeProvider theme={muiColorTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-                <div className={classes.paper}>
+                <StyledPaper>
                     <h3>現時点では、サーバ側が未対応のため使用できません。</h3>
-                    <Avatar className={classes.avatar}>
+                    <StyledAvatar>
                         <LockOutlinedIcon/>
-                    </Avatar>
+                    </StyledAvatar>
                     <Typography component="h1" variant="h5">
                         Password Recovery
                     </Typography>
-                    <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                    <StyledForm onSubmit={handleSubmit} noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -68,15 +44,14 @@ export default function PasswordRecovery() {
                             defaultValue=""
                             onChange={event => setMail(event.target.value)}
                         />
-                        <Button
+                        <StyledButtonSubmit
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
-                            className={classes.submit}
                         >
                             Recovery
-                        </Button>
+                        </StyledButtonSubmit>
                         <Grid container>
                             <Grid item>
                                 <Link href="/login" variant="body2">
@@ -84,8 +59,8 @@ export default function PasswordRecovery() {
                                 </Link>
                             </Grid>
                         </Grid>
-                    </form>
-                </div>
+                    </StyledForm>
+                </StyledPaper>
                 {/*<Box mt={8}>*/}
                 {/*    <Copyright/>*/}
                 {/*</Box>*/}

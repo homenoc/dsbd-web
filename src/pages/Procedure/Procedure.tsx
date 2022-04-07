@@ -1,17 +1,16 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
 import {
+    Box,
     Button,
-    Card,
     CardActions,
     CardContent, Chip,
-    Grid, IconButton,
+    Grid,
     Paper,
-    Table, TableBody, TableCell,
-    TableContainer, TableFooter, TableHead, TablePagination, TableRow,
-    Typography, useTheme
-} from "@material-ui/core";
-import useStyles from "../Dashboard/styles"
+    TableBody, TableCell,
+    TableContainer, TableHead, TablePagination, TableRow,
+    Typography
+} from "@mui/material";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {InfoData, TicketData} from "../../interface";
@@ -21,16 +20,12 @@ import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 import {UserAddDialog} from "./UserAddDialog/UserAddDialog";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import {RequestAddDialog} from "./RequestAddDialog/RequestAddDialog";
 import {GroupChangeDialog} from "./Group/GroupChangeDialog";
+import {StyledCardRoot3, StyledTable2} from "../../style";
 
 
 export default function Procedure() {
-    const classes = useStyles();
     const [data, setData] = React.useState<InfoData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
@@ -91,7 +86,7 @@ export default function Procedure() {
                 <Grid item xs={12}>
                     {
                         data != null && data?.user != null && data.user?.group_id !== 0 &&
-                        <Card key={"add_user"} className={classes.root}>
+                        <StyledCardRoot3 key={"add_user"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     ユーザ追加手続き
@@ -102,9 +97,9 @@ export default function Procedure() {
                             <CardActions>
                                 <UserAddDialog groupID={data.user.group_id}/>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
-                    <Card key={"change_user"} className={classes.root}>
+                    <StyledCardRoot3 key={"change_user"}>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 ユーザ情報変更手続き
@@ -115,10 +110,10 @@ export default function Procedure() {
                         <CardActions>
                             <Button variant="outlined" onClick={UserListPage}> 次へ </Button>
                         </CardActions>
-                    </Card>
+                    </StyledCardRoot3>
                     {
                         data != null && data?.user != null && data.user?.group_id !== 0 && data.group != null &&
-                        <Card key={"change_group"} className={classes.root}>
+                        <StyledCardRoot3 key={"change_group"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     グループ情報変更手続き
@@ -129,11 +124,11 @@ export default function Procedure() {
                             <CardActions>
                                 <GroupChangeDialog key={"request_abolished_group"} group={data.group}/>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data != null && data?.group != null && !data.group?.add_allow &&
-                        <Card key={"add_service"} className={classes.root}>
+                        <StyledCardRoot3 key={"add_service"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     サービス追加手続き
@@ -144,11 +139,11 @@ export default function Procedure() {
                             <CardActions>
                                 <RequestAddDialog key={"request_add_service"} title={"[追加] サービス情報申請"}/>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data != null && data?.service != null && data.service?.filter(value => !value.pass).length > 0 &&
-                        <Card key={"change_abolished_service"} className={classes.root}>
+                        <StyledCardRoot3 key={"change_abolished_service"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     サービスの変更/廃止手続き
@@ -163,11 +158,11 @@ export default function Procedure() {
                             <CardActions>
                                 <Button variant="outlined" onClick={ServiceListPage}>次へ</Button>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data != null && data?.service != null && data.service?.filter(value => value.add_allow).length > 0 &&
-                        <Card key={"add_connection"} className={classes.root}>
+                        <StyledCardRoot3 key={"add_connection"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     接続追加手続き
@@ -178,11 +173,11 @@ export default function Procedure() {
                             <CardActions>
                                 <RequestAddDialog key={"request_add_connection"} title={"[追加] 接続情報申請"}/>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data != null && data?.connection != null && data.connection?.filter(value => !value.open).length > 0 &&
-                        <Card key={"change_abolished_connection"} className={classes.root}>
+                        <StyledCardRoot3 key={"change_abolished_connection"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     接続の変更/廃止手続き
@@ -197,11 +192,11 @@ export default function Procedure() {
                             <CardActions>
                                 <Button variant="outlined" onClick={ConnectionListPage}>次へ</Button>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data != null && data?.user != null && data.user?.group_id !== 0 &&
-                        <Card key={"abolished_group"} className={classes.root}>
+                        <StyledCardRoot3 key={"abolished_group"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     退会手続き
@@ -212,7 +207,7 @@ export default function Procedure() {
                             <CardActions>
                                 <RequestAddDialog key={"request_abolished_group"} title={"[退会] グループの退会申請"}/>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                 </Grid>
             </Grid>
@@ -220,84 +215,10 @@ export default function Procedure() {
     );
 }
 
-const useStyles1 = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexShrink: 0,
-            marginLeft: theme.spacing(2.5),
-        },
-    }),
-);
-
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
-}
-
-function TablePaginationActions(props: TablePaginationActionsProps) {
-    const classes = useStyles1();
-    const theme = useTheme();
-    const {count, page, rowsPerPage, onChangePage} = props;
-
-    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onChangePage(event, 0);
-    };
-
-    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onChangePage(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onChangePage(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
-
-    return (
-        <div className={classes.root}>
-            <IconButton
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                {theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
-            </IconButton>
-            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-                {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
-            </IconButton>
-            <IconButton
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
-            </IconButton>
-            <IconButton
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                {theme.direction === 'rtl' ? <FirstPageIcon/> : <LastPageIcon/>}
-            </IconButton>
-        </div>
-    );
-}
-
-const useStyles2 = makeStyles({
-    table: {
-        minWidth: 500,
-    },
-});
-
 export function StatusTable(props: {
     request: TicketData[]
 }) {
     const {request} = props;
-    const classes = useStyles2();
     const navigate = useNavigate();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -318,77 +239,71 @@ export function StatusTable(props: {
     const ChatPage = (id: number) => navigate("/dashboard/support/" + id);
 
     return (
-        <TableContainer component={Paper}>
-            <Table className={classes.table} size="small" aria-label="custom pagination table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>申請内容</TableCell>
-                        <TableCell align="right">作成日</TableCell>
-                        <TableCell align="right">状況</TableCell>
-                        <TableCell align="right">機能</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        (
-                            rowsPerPage > 0
-                                ? request.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                : request
-                        ).map((row) => (
-                            <TableRow key={row.id}>
-                                <TableCell component="th" scope="row">
-                                    {row.title}
-                                </TableCell>
-                                <TableCell style={{width: 300}} align="right">
-                                    {row.created_at}
-                                </TableCell>
-                                <TableCell style={{width: 160}} align="right">
-                                    {
-                                        row.reject &&
-                                        <Chip size="small" color="secondary" label="却下"/>
-                                    }
-                                    {
-                                        !row.reject && !row.solved &&
-                                        <Chip size="small" color="primary" label="申請中"/>
-                                    }
-                                    {
-                                        !row.reject && row.solved &&
-                                        <Chip size="small" color="primary" label="承諾/変更済み"/>
-                                    }
-                                </TableCell>
-                                <TableCell style={{width: 100}} align="right">
-                                    <Button size="small" variant="outlined"
-                                            onClick={() => ChatPage(row.id)}>Chat</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    }
-                    {
-                        emptyRows > 0 && (
-                            <TableRow style={{height: 43 * emptyRows}}>
-                                <TableCell colSpan={6}/>
-                            </TableRow>
-                        )
-                    }
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, {label: 'All', value: -1}]}
-                            colSpan={4}
-                            count={request.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {'aria-label': 'rows per page'},
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}/>
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+        <Box>
+            <TableContainer component={Paper}>
+                <StyledTable2 size="small" aria-label="custom pagination table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>申請内容</TableCell>
+                            <TableCell align="right">作成日</TableCell>
+                            <TableCell align="right">状況</TableCell>
+                            <TableCell align="right">機能</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            (
+                                rowsPerPage > 0
+                                    ? request.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : request
+                            ).map((row) => (
+                                <TableRow key={row.id}>
+                                    <TableCell component="th" scope="row">
+                                        {row.title}
+                                    </TableCell>
+                                    <TableCell style={{width: 300}} align="right">
+                                        {row.created_at}
+                                    </TableCell>
+                                    <TableCell style={{width: 160}} align="right">
+                                        {
+                                            row.reject &&
+                                            <Chip size="small" color="secondary" label="却下"/>
+                                        }
+                                        {
+                                            !row.reject && !row.solved &&
+                                            <Chip size="small" color="primary" label="申請中"/>
+                                        }
+                                        {
+                                            !row.reject && row.solved &&
+                                            <Chip size="small" color="primary" label="承諾/変更済み"/>
+                                        }
+                                    </TableCell>
+                                    <TableCell style={{width: 100}} align="right">
+                                        <Button size="small" variant="outlined"
+                                                onClick={() => ChatPage(row.id)}>Chat</Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
+                        {
+                            emptyRows > 0 && (
+                                <TableRow style={{height: 43 * emptyRows}}>
+                                    <TableCell colSpan={6}/>
+                                </TableRow>
+                            )
+                        }
+                    </TableBody>
+                </StyledTable2>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={request.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Box>
     );
 }

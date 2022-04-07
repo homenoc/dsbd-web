@@ -1,5 +1,4 @@
 import {IP, JPNICData, ServiceData} from "../../../interface";
-import useStyles from "../styles";
 import {
     Box,
     Card,
@@ -12,46 +11,44 @@ import {
     TableContainer,
     TableHead,
     TableRow
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import cssModule from "./ServiceList.module.scss";
+import {StyledCardRoot2, StyledCardRoot3, StyledTableRowRoot} from "../../../style";
 
 export function ServiceGet(props: { service: ServiceData }): any {
     const {service} = props;
 
     return (
-        <div>
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <div className={cssModule.contract}>
-                        <ServiceEtc key={"service_etc"} service={service}/>
-                    </div>
-                </Grid>
-                <Grid item xs={6}>
-                    <ServiceIP key={"service_ip"} service={service}/>
-                </Grid>
-                <Grid item xs={12}>
-                    <ServiceJPNIC key={"service_jpnic"} service={service}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <ServiceJPNICAdmin key={"service_jpnic_admin"} service={service}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <ServiceJPNICTech key={"service_jpnic_tech"} service={service}/>
-                </Grid>
+        <Grid container spacing={3}>
+            <Grid item xs={6}>
+                <div className={cssModule.contract}>
+                    <ServiceEtc key={"service_etc"} service={service}/>
+                </div>
             </Grid>
-        </div>
+            <Grid item xs={6}>
+                <ServiceIP key={"service_ip"} service={service}/>
+            </Grid>
+            <Grid item xs={12}>
+                <ServiceJPNIC key={"service_jpnic"} service={service}/>
+            </Grid>
+            <Grid item xs={6}>
+                <ServiceJPNICAdmin key={"service_jpnic_admin"} service={service}/>
+            </Grid>
+            <Grid item xs={6}>
+                <ServiceJPNICTech key={"service_jpnic_tech"} service={service}/>
+            </Grid>
+        </Grid>
     )
 }
 
 function ServiceEtc(props: { service: ServiceData }): any {
-    const classes = useStyles();
     const {service} = props;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot3>
             <CardContent>
                 <h3>Bandwidth</h3>
                 <table aria-colspan={3}>
@@ -86,7 +83,7 @@ function ServiceEtc(props: { service: ServiceData }): any {
                     </thead>
                 </table>
             </CardContent>
-        </Card>
+        </StyledCardRoot3>
     );
 }
 
@@ -94,7 +91,6 @@ function ServiceIP(props: {
     service: ServiceData,
 }): any {
     const {service} = props;
-    const classes = useStyles();
 
     return (
         <div>
@@ -109,7 +105,7 @@ function ServiceIP(props: {
             }
             {
                 service.ip != null &&
-                <Card className={classes.rootTable}>
+                <StyledCardRoot2>
                     <CardContent>
                         <h3>IP</h3>
                         <TableContainer component={Paper}>
@@ -132,7 +128,7 @@ function ServiceIP(props: {
                             </Table>
                         </TableContainer>
                     </CardContent>
-                </Card>
+                </StyledCardRoot2>
             }
         </div>
     )
@@ -143,11 +139,10 @@ function ServiceIPRow(props: {
 }): any {
     const {ip} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     return (
         <React.Fragment>
-            <TableRow className={classes.rootTable}>
+            <StyledTableRowRoot>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -158,7 +153,7 @@ function ServiceIPRow(props: {
                 </TableCell>
                 <TableCell align="left">{ip.name}</TableCell>
                 <TableCell align="left">{ip.ip}</TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -180,7 +175,7 @@ function ServiceIPRow(props: {
                                     }
                                     {
                                         ip.plan != null && ip.plan?.map((plan, index) =>
-                                            <TableRow className={classes.rootTable} id={"service_table_row_" + index}>
+                                            <StyledTableRowRoot id={"service_table_row_" + index}>
                                                 <TableCell component="th" scope="row">
                                                     {plan.id}
                                                 </TableCell>
@@ -188,7 +183,7 @@ function ServiceIPRow(props: {
                                                 <TableCell align="right">{plan.after}</TableCell>
                                                 <TableCell align="right">{plan.half_year}</TableCell>
                                                 <TableCell align="right">{plan.one_year}</TableCell>
-                                            </TableRow>
+                                            </StyledTableRowRoot>
                                         )
                                     }
                                 </TableBody>
@@ -349,9 +344,6 @@ export function ServiceJPNICTech(props: {
 }): any {
     const {service} = props;
 
-    console.log(service.jpnic_tech == null)
-    const classes = useStyles();
-
     return (
         <div>
             {
@@ -374,7 +366,7 @@ export function ServiceJPNICTech(props: {
             }
             {
                 service.need_jpnic && service.jpnic_tech !== null &&
-                <Card className={classes.rootTable}>
+                <StyledCardRoot2>
                     <CardContent>
                         <h3>JPNIC技術連絡担当者</h3>
                         <TableContainer component={Paper}>
@@ -397,7 +389,7 @@ export function ServiceJPNICTech(props: {
                             </Table>
                         </TableContainer>
                     </CardContent>
-                </Card>
+                </StyledCardRoot2>
             }
         </div>
     )
@@ -408,11 +400,10 @@ function ServiceJPNICTechRow(props: {
 }): any {
     const {jpnic} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     return (
         <React.Fragment>
-            <TableRow className={classes.rootTable}>
+            <StyledTableRowRoot>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -423,7 +414,7 @@ function ServiceJPNICTechRow(props: {
                 </TableCell>
                 <TableCell align="right">{jpnic.name}</TableCell>
                 <TableCell align="right">{jpnic.mail}</TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>

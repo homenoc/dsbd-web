@@ -1,4 +1,4 @@
-import React, {memo, ReactNode} from "react";
+import React, {ReactNode} from "react";
 import {Navigate} from "react-router-dom";
 import Cookies from "js-cookie";
 

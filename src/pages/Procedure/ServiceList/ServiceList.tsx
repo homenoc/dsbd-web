@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import useStyles from "../styles"
 import {
-    Card,
     CardActions,
     CardContent, Chip,
-    InputBase,
-    Paper,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {ServiceData} from "../../../interface";
 import {useSnackbar} from "notistack";
@@ -19,10 +15,10 @@ import {Get} from "../../../api/Info";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import {ServiceListChangeDialog} from "./ServiceListChangeDialog";
 import {ServiceListDeleteDialog} from "./ServiceListDeleteDialog";
+import {StyledCardRoot3, StyledPaperRootInput, StyledSearchInput, StyledTypographyTitle} from "../../../style";
 
 
 export default function ServiceList() {
-    const classes = useStyles();
     const [services, setServices] = useState<ServiceData[]>([]);
     const [initServices, setInitServices] = useState<ServiceData[]>([]);
     const infos = useSelector((state: RootState) => state.infos);
@@ -75,24 +71,23 @@ export default function ServiceList() {
 
     return (
         <Dashboard title="サービス変更/廃止手続き">
-            <Card className={classes.root}>
+            <StyledCardRoot3>
                 <CardContent>
                     サービス変更手続き（JPNIC管理者連絡窓口やJPNIC技術連絡窓口などのJPNICに登録している情報を変更、IPアドレスの廃止をご希望の方もお選びください。）
                     <br/>
                     サービス削除手続き（サービスに属している接続も廃止になりますのでご注意ください。）
                 </CardContent>
-            </Card>
+            </StyledCardRoot3>
             <br/>
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledSearchInput
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 services == null &&
                 <h3>現在、有効なサービスはありません。</h3>
@@ -100,14 +95,14 @@ export default function ServiceList() {
             {
                 services !== null &&
                 services.map((service: ServiceData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCardRoot3>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {service.service_id}
                             </Typography>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {service.id}
-                            </Typography>
+                            </StyledTypographyTitle>
                             &nbsp;
                             <Pass key={"pass" + index} pass={service.pass}/>
                             <br/>
@@ -116,7 +111,7 @@ export default function ServiceList() {
                             <ServiceListChangeDialog key={"service_list_change_dialog"} service={service}/>
                             <ServiceListDeleteDialog key={"service_list_delete_dialog"} service={service}/>
                         </CardActions>
-                    </Card>
+                    </StyledCardRoot3>
                 ))
             }
         </Dashboard>

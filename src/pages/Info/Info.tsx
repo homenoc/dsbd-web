@@ -8,13 +8,12 @@ import Cookies from "js-cookie";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import {Get} from "../../api/Info";
 import {InfosData} from "../../interface";
-import {Card, CardContent, Grid, InputBase, Paper, Typography} from "@material-ui/core";
-import useStyles from "../Dashboard/styles"
+import {CardContent, Typography} from "@mui/material";
 import classesCSS from "./style.module.scss";
+import {StyledCardRoot3, StyledPaperRootInput, StyledSearchInput, StyledTypographyTitle} from "../../style";
 
 
 export default function Info() {
-    const classes = useStyles();
     const [infos, setInfos] = useState<InfosData[]>([]);
     const [initInfos, setInitInfos] = useState<InfosData[]>([]);
     const serviceInfos = useSelector((state: RootState) => state.infos);
@@ -68,16 +67,15 @@ export default function Info() {
 
     return (
         <DashboardComponent title="Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledSearchInput
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 (infos == null || infos.length === 0) &&
                 <h3>現在、開通しているサービスがありません。</h3>
@@ -85,14 +83,14 @@ export default function Info() {
             {
                 (infos != null) &&
                 infos.map((info: InfosData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCardRoot3>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {info.service_id}
                             </Typography>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 {info.asn}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="body2" component="p">
                                 <div className={classesCSS.contract}>
                                     <br/>
@@ -201,7 +199,7 @@ export default function Info() {
                         {/*<CardActions>*/}
                         {/*    <Button size="small">Learn More</Button>*/}
                         {/*</CardActions>*/}
-                    </Card>
+                    </StyledCardRoot3>
                 ))
             }
         </DashboardComponent>
