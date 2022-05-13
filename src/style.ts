@@ -247,6 +247,11 @@ export const StyledRootForm = styled('form')(({theme}) => ({
     marginBottom: 20,
 }))
 
+export const StyledRootForm1 = styled('form')(({theme}) => ({
+    margin: theme.spacing(1),
+    marginBottom: 3,
+}))
+
 // TextField(Form)
 export const StyledTextFieldWrapTitle = styled(TextField)(({theme}) => ({
     margin: theme.spacing(1),

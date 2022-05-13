@@ -1,8 +1,9 @@
 import React, {useRef} from 'react'
 import remarkGfm from "remark-gfm";
 import {StyledMessageTimeStampRight, StyledReactMarkdownMessageContent} from "./styles";
-import {Box} from '@mui/material';
-import {StyledBlueMessage, StyledDisplayName, StyledOrangeMessage} from "../../../style";
+import {Avatar, Box} from '@mui/material';
+import {StyledBlueMessage, StyledOrangeMessage} from "../../../style";
+import { deepOrange } from '@mui/material/colors';
 
 export const MessageLeft = (props: { message: string; timestamp: string; displayName?: string; }) => {
     const message = props.message ? props.message : 'no message';
@@ -12,7 +13,7 @@ export const MessageLeft = (props: { message: string; timestamp: string; display
 
     return (
         <Box sx={{display: 'flex'}}>
-            <StyledDisplayName>{displayName}</StyledDisplayName>
+            <Avatar sx={{ bgcolor: deepOrange[500] }}>{displayName}</Avatar>
             <StyledBlueMessage>
                 <div
                     ref={divRef}
