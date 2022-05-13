@@ -235,7 +235,7 @@ export default function ConnectionAdd() {
                             >
                                 {
                                     infos[infos.length - 1]?.data?.service?.filter(tmp => tmp.add_allow).map((row, index) => (
-                                        <MenuItem key={"service_code" + index}
+                                        <MenuItem key={"service_code_" + index}
                                                   value={row.id}>{row.service_id}</MenuItem>
                                     ))
                                 }
