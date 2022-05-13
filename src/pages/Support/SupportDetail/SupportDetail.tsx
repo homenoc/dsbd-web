@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import {ChatData, TicketData, UserData} from "../../../interface";
-import useStyles from "./styles";
-import {Paper} from "@material-ui/core";
 import {restfulApiConfig} from "../../../api/Config";
 import useWebSocket from "react-use-websocket";
 import {MessageLeft, MessageRight} from "./Message";
@@ -13,10 +11,10 @@ import store, {RootState} from "../../../store";
 import Cookies from "js-cookie";
 import {clearInfos, clearTemplates} from "../../../store/action/Actions";
 import {Get} from "../../../api/Info";
+import {StyledDivContainer, StyledPaper1, StyledPaperMessage} from "../../../style";
 
 export default function SupportDetail() {
-    const classes = useStyles();
-    let id: string;
+    let id: string | undefined;
     ({id} = useParams());
     const {sendMessage, lastMessage} = useWebSocket(restfulApiConfig.wsURL + "/support" +
         '?id=' + id + '&user_token=' + Cookies.get('user_token') + '&access_token=' +
@@ -146,14 +144,18 @@ export default function SupportDetail() {
     return (
         <div>
             {
+                id === undefined &&
+                <h2>IDの値が取得できません</h2>
+            }
+            {
                 baseChatData === undefined &&
                 <h2>データがありません</h2>
             }
             {
                 baseChatData != null &&
-                <div className={classes.container}>
-                    <Paper className={classes.paper}>
-                        <Paper id="style-1" className={classes.messagesBody}>
+                <StyledDivContainer>
+                    <StyledPaper1>
+                        <StyledPaperMessage id="style-1">
                             <b>このチャットはMarkdownに準拠しております。</b>
                             {
                                 baseChatData.map((chat, index) =>
@@ -166,11 +168,11 @@ export default function SupportDetail() {
                                 )
                             }
                             <div ref={ref}/>
-                        </Paper>
+                        </StyledPaperMessage>
                         <TextInput key={"textInput"} inputChat={inputChatData} setInputChat={setInputChatData}
                                    setSendPush={setSendPush}/>
-                    </Paper>
-                </div>
+                    </StyledPaper1>
+                </StyledDivContainer>
             }
         </div>
     );

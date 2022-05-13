@@ -35,7 +35,7 @@ export function Login(email: string, password: string): Promise<string> {
     return axios.get(restfulApiConfig.apiURL + "/login", {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: Cookies.get('user_token')
+            USER_TOKEN: Cookies.get('user_token')!
         }
     }).then(res => {
         const passHash: string = shaJS('sha256').update(password).digest('hex');
@@ -48,7 +48,7 @@ export function Login(email: string, password: string): Promise<string> {
         return axios.post(restfulApiConfig.apiURL + "/login", null, {
             headers: {
                 'Content-Type': 'application/json',
-                USER_TOKEN: Cookies.get('user_token'),
+                USER_TOKEN: Cookies.get('user_token')!,
                 HASH_PASS: hash,
                 Email: email
             }
@@ -67,7 +67,7 @@ export function Logout(): Promise<string> {
     return axios.post(restfulApiConfig.apiURL + "/logout", {}, {
         headers: {
             'Content-Type': 'application/json',
-            'ACCESS_TOKEN': Cookies.get('access_token'),
+            'ACCESS_TOKEN': Cookies.get('access_token')!,
         }
     }).then(res => {
         console.log(res.data.token[0]);

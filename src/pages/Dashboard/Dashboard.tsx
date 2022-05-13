@@ -1,25 +1,23 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
-import {Button, Card, CardActions, CardContent, Chip, Grid, Typography} from "@material-ui/core";
-import useStyles from "../Dashboard/styles"
-import {clearInfos, clearTemplates, getInfos} from "../../store/action/Actions";
+import {Button, CardActions, CardContent, Chip, Grid, Typography} from "@mui/material";
+import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {InfoData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
-import {Get, GetTemplate} from "../../api/Info";
+import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
-import {useHistory} from "react-router-dom";
-import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
+import {useNavigate} from "react-router-dom";
 import {restfulApiConfig} from "../../api/Config";
+import {StyledCardRoot3, StyledTypographyTitle} from '../../style';
 
 
 export default function Dashboard() {
-    const classes = useStyles();
     const [data, setData] = React.useState<InfoData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [status, setStatus] = React.useState(3);
     const {enqueueSnackbar} = useSnackbar();
 
@@ -37,7 +35,7 @@ export default function Dashboard() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
@@ -90,11 +88,11 @@ export default function Dashboard() {
     }
 
     const moveAddPage = () => {
-        history.push("/dashboard/add");
+        navigate("/dashboard/add");
     }
 
     const moveMembershipPage = () => {
-        history.push("/dashboard/membership");
+        navigate("/dashboard/membership");
     }
 
     return (
@@ -103,17 +101,17 @@ export default function Dashboard() {
                 <Grid item xs={8}>
                     {
                         restfulApiConfig.enableMoney && !data?.group?.paid && data?.info?.length != undefined &&
-                        <Card key={"payment_notice"} className={classes.root}>
+                        <StyledCardRoot3 key={"payment_notice"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     会費のお支払いについて
                                 </Typography>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                <StyledTypographyTitle color="textSecondary" gutterBottom>
                                     <Chip
                                         label="重要"
                                         color="secondary"
                                     />
-                                </Typography>
+                                </StyledTypographyTitle>
                                 <h3>開通処理が完了致しましたので、会費のお支払いをお願いいたします。</h3>
                                 <h3>（開通処理後に1週間以内に支払いが行われない場合は、未開通処理を行います。）</h3>
 
@@ -126,21 +124,21 @@ export default function Dashboard() {
                                     会費のお支払いはこちらから
                                 </Button>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         status !== 3 &&
-                        <Card key={"add_notice"} className={classes.root}>
+                        <StyledCardRoot3 key={"add_notice"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     申請手続きのお知らせ
                                 </Typography>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                <StyledTypographyTitle color="textSecondary" gutterBottom>
                                     <Chip
                                         label="重要"
                                         color="secondary"
                                     />
-                                </Typography>
+                                </StyledTypographyTitle>
                                 <br/>
                                 以下の「申請ページはこちら」ボタンより手続きを進めてください
 
@@ -150,19 +148,19 @@ export default function Dashboard() {
                                     申請ページはこちら
                                 </Button>
                             </CardActions>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {
                         data?.notice?.map((notice, index) =>
-                            <Card key={index} className={classes.root}>
+                            <StyledCardRoot3 key={index}>
                                 <CardContent>
                                     <Typography variant="h5" component="h2">
                                         {notice.title}
                                     </Typography>
-                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    <StyledTypographyTitle color="textSecondary" gutterBottom>
                                         ({getStringFromDate(notice.start_time)} - {getStringFromDate(notice.end_time)})
-                                    </Typography>
-                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    </StyledTypographyTitle>
+                                    <StyledTypographyTitle color="textSecondary" gutterBottom>
                                         {
                                             notice.info &&
                                             <Chip
@@ -184,7 +182,7 @@ export default function Dashboard() {
                                                 color="secondary"
                                             />
                                         }
-                                    </Typography>
+                                    </StyledTypographyTitle>
                                     <br/>
                                     {notice.data}
                                 </CardContent>
@@ -194,23 +192,23 @@ export default function Dashboard() {
                                     {/*    Delete*/}
                                     {/*</Button>*/}
                                 </CardActions>
-                            </Card>
+                            </StyledCardRoot3>
                         )
                     }
                 </Grid>
                 <Grid item xs={4}>
                     {
                         restfulApiConfig.enableMoney &&
-                        <Card key={"student"} className={classes.root}>
+                        <StyledCardRoot3 key={"student"}>
                             <CardContent>
                                 <Typography variant="h5" component="h2">
                                     会員情報
                                 </Typography>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                <StyledTypographyTitle color="textSecondary" gutterBottom>
                                     {
                                         data?.group?.paid && <h3>失効期限: {data?.group?.member_expired}</h3>
                                     }
-                                </Typography>
+                                </StyledTypographyTitle>
                                 <br/>
                                 {
                                     data?.group?.paid &&
@@ -254,7 +252,7 @@ export default function Dashboard() {
                                     </div>
                                 }
                             </CardContent>
-                        </Card>
+                        </StyledCardRoot3>
                     }
                     {/*<Button onClick={() => test1()}>Test1</Button>*/}
                     {/*<Button onClick={() => test2()}>Test2</Button>*/}

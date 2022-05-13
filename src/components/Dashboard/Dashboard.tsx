@@ -1,136 +1,182 @@
 import React from 'react';
-import clsx from 'clsx';
 import {
-    AppBar,
-    colors,
-    Container, createMuiTheme, ThemeProvider,
+    ThemeProvider,
     CssBaseline,
     Divider,
-    Drawer,
     IconButton,
     ListItem, ListItemIcon, ListItemText,
-    Toolbar,
-    Typography,
-    MenuItem, Menu, Fade
-} from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
-import TocIcon from '@material-ui/icons/Toc';
-import AddIcon from '@material-ui/icons/Add';
-import AutorenewIcon from '@material-ui/icons/Autorenew';
-import ChatIcon from "@material-ui/icons/Chat";
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import PaymentIcon from '@material-ui/icons/Payment';
-import useStyles from "./styles";
-import {useHistory} from "react-router-dom";
+    MenuItem, Menu, Fade, styled, Toolbar, CSSObject, Theme, Box, Typography
+} from "@mui/material";
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
+import TocIcon from '@mui/icons-material/Toc';
+import AddIcon from '@mui/icons-material/Add';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import ChatIcon from "@mui/icons-material/Chat";
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import PaymentIcon from '@mui/icons-material/Payment';
+import {
+    StyledContainer1,
+    StyledDivAppBarShift,
+    StyledDivDashboardRoot,
+    StyledDivDashboardToolBarIcon,
+    StyledMainContent,
+    StyledTypographyPageTitle
+} from "./styles";
+import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
 import {Get} from "../../api/Info";
 import Cookies from "js-cookie";
 import store from "../../store";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import MoneyIcon from '@material-ui/icons/Money';
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import MoneyIcon from '@mui/icons-material/Money';
 import {restfulApiConfig} from "../../api/Config";
+import {muiColorTheme} from "../Theme";
+
+const drawerWidth = 240;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: 'hidden',
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up('sm')]: {
+        width: `calc(${theme.spacing(9)} + 1px)`,
+    },
+});
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({theme, open}) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme),
+        }),
+    }),
+);
 
 export default function Dashboard(props: any) {
-    const classesDashboard = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
     const handleDrawerClose = () => {
-        setOpenOther(false);
         setOpen(false);
-    };
-    const [openOther, setOpenOther] = React.useState(false);
-    const handleClick = () => {
-        setOpenOther(!openOther);
-        // Menu Bar is not opened...
-        if (!open) {
-            setOpen(true);
-        }
     };
 
     const reloadClick = () => {
         Get().then();
     }
 
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: colors.blue[800],
-            },
-            type: "dark",
-            // type: darkMode ? "dark" : "light",
-        },
-    });
-
     const DashboardPage = () => {
-        history.push("/dashboard");
+        navigate("/dashboard");
     }
     const InfoPage = () => {
-        history.push("/dashboard/info");
+        navigate("/dashboard/info");
     }
     const AddPage = () => {
-        history.push("/dashboard/add");
+        navigate("/dashboard/add");
     }
     const MembershipPage = () => {
-        history.push("/dashboard/membership");
+        navigate("/dashboard/membership");
     }
     const DonatePage = () => {
-        history.push("/dashboard/donate");
+        navigate("/dashboard/donate");
     }
     const SupportPage = () => {
-        history.push("/dashboard/support");
+        navigate("/dashboard/support");
     }
     const ProcedurePage = () => {
-        history.push("/dashboard/procedure");
+        navigate("/dashboard/procedure");
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className={classesDashboard.root}>
+        <ThemeProvider theme={muiColorTheme}>
+            <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
-                <AppBar position="absolute"
-                        className={clsx(classesDashboard.appBar, open && classesDashboard.appBarShift)}>
-                    <Toolbar className={classesDashboard.toolbar}>
+                <AppBar position="fixed" open={open}>
+                    <Toolbar>
                         <IconButton
-                            edge="start"
                             color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
-                            className={clsx(classesDashboard.menuButton, open && classesDashboard.menuButtonHidden)}
+                            edge="start"
+                            sx={{
+                                marginRight: 5,
+                                ...(open && {display: 'none'}),
+                            }}
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap
-                                    className={classesDashboard.title}>
+                        <Typography component="h1" variant="h6">
                             AS59105 Service Online
                         </Typography>
-                        <IconButton color="inherit" onClick={reloadClick}>
-                            <AutorenewIcon/>
-                        </IconButton>
-                        {/*<IconButton color="inherit">*/}
-                        {/*    <Badge badgeContent={0} color="secondary">*/}
-                        {/*        <NotificationsIcon/>*/}
-                        {/*    </Badge>*/}
-                        {/*</IconButton>*/}
-                        <UserMenu key={"user_menu"}/>
+                        <Box sx={{flexGrow: 1}}/>
+                        <Box sx={{display: {xs: 'none', md: 'flex'}}}>
+                            <IconButton color="inherit" onClick={reloadClick}>
+                                <AutorenewIcon/>
+                            </IconButton>
+                            {/*<IconButton color="inherit">*/}
+                            {/*    <Badge badgeContent={0} color="secondary">*/}
+                            {/*        <NotificationsIcon/>*/}
+                            {/*    </Badge>*/}
+                            {/*</IconButton>*/}
+                            <UserMenu key={"user_menu"}/>
+                        </Box>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
-                    open={open}
-                >
-                    <div className={classesDashboard.toolbarIcon}>
+                <Drawer variant="permanent" open={open}>
+                    <StyledDivDashboardToolBarIcon>
                         <IconButton onClick={handleDrawerClose}>
                             <ChevronLeftIcon/>
                         </IconButton>
-                    </div>
+                    </StyledDivDashboardToolBarIcon>
                     <Divider/>
                     <ListItem button onClick={DashboardPage}>
                         <ListItemIcon>
@@ -182,31 +228,28 @@ export default function Dashboard(props: any) {
                     </ListItem>
                     <Divider/>
                 </Drawer>
-                <main className={classesDashboard.content}>
-                    <div className={classesDashboard.appBarSpacer}/>
-                    <Container maxWidth="lg" className={classesDashboard.container}>
-                        <Typography
-                            component="h2"
-                            variant="h5"
-                            color="inherit"
-                            noWrap
-                            className={classesDashboard.pageTitle}
-                        >
-                            {props.title}
-                        </Typography>
-                        {props.children}
-                    </Container>
-                </main>
-            </div>
+                <Box component="main" sx={{flexGrow: 1, p: 3}}>
+                    <StyledDivDashboardToolBarIcon/>
+
+                    <StyledTypographyPageTitle
+                        // component="h2"
+                        variant="h5"
+                        color="inherit"
+                        noWrap
+                    >
+                        {props.title}
+                    </StyledTypographyPageTitle>
+                    {props.children}
+                </Box>
+            </Box>
         </ThemeProvider>
     );
 }
 
 export function UserMenu() {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -222,7 +265,7 @@ export function UserMenu() {
                 Cookies.remove('access_token');
                 store.dispatch(clearInfos());
                 store.dispatch(clearTemplates());
-                history.push('/login');
+                navigate('/login');
                 console.log(res)
                 if (res === "") {
                 } else {
@@ -233,7 +276,7 @@ export function UserMenu() {
     }
 
     return (
-        <div className={classes.root}>
+        <StyledDivDashboardRoot>
             <IconButton
                 color="inherit"
                 aria-controls={open ? 'menu-list-grow' : undefined}
@@ -253,6 +296,6 @@ export function UserMenu() {
                 {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
                 <MenuItem onClick={clickLogout}>Logout</MenuItem>
             </Menu>
-        </div>
+        </StyledDivDashboardRoot>
     );
 }

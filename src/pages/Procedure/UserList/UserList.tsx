@@ -1,15 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import useStyles from "../styles"
 import {
     Button,
-    Card,
     CardActions,
     CardContent, Chip,
-    InputBase,
-    Paper,
     Typography
-} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {UserData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -18,14 +14,14 @@ import {clearInfos, clearTemplates} from "../../../store/action/Actions";
 import {useSelector} from "react-redux";
 import {Get} from "../../../api/Info";
 import Dashboard from "../../../components/Dashboard/Dashboard";
+import {StyledCardRoot3, StyledPaperRootInput, StyledSearchInput, StyledTypographyTitle} from '../../../style';
 
 
 export default function UserList() {
-    const classes = useStyles();
     const [users, setUsers] = useState<UserData[]>([]);
     const [initUsers, setInitUsers] = useState<UserData[]>([]);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -42,7 +38,7 @@ export default function UserList() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -73,21 +69,20 @@ export default function UserList() {
     };
 
     const clickDetailPage = (id: number) => {
-        history.push('/dashboard/procedure/user/' + id);
+        navigate('/dashboard/procedure/user/' + id);
     }
 
     return (
         <Dashboard title="ユーザ一覧">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledSearchInput
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 users == null &&
                 <h3>現在、有効なユーザはありません。</h3>
@@ -95,11 +90,11 @@ export default function UserList() {
             {
                 users !== null &&
                 users.map((user: UserData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCardRoot3>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {user.id} ({user.email})
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {user.name}({user.name_en})
                             </Typography>
@@ -121,7 +116,7 @@ export default function UserList() {
                             {/*            onClick={() => clickSolvedStatus(user.id, true)}>解決済み</Button>*/}
                             {/*}*/}
                         </CardActions>
-                    </Card>
+                    </StyledCardRoot3>
                 ))
             }
         </Dashboard>

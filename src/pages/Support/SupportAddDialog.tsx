@@ -1,23 +1,22 @@
 import React from 'react';
 import {
+    Box,
     Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel,
     Grid, Radio, RadioGroup,
-    TextField,
-} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData} from "../../interface";
 import {useSnackbar} from "notistack";
-import useStyles from "./styles";
 import {Post} from "../../api/Support";
 import {Get} from "../../api/Info";
+import {StyledTextFieldVeryLong} from "../../style";
 
 
 export function SupportAddDialog(props: {
     groupEnable: boolean
 }) {
     const {groupEnable} = props;
-    const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -32,7 +31,7 @@ export function SupportAddDialog(props: {
         Post(data).then(res => {
             if (res.error === undefined) {
                 Get().then(() => {
-                    history.push('/dashboard/support/' + res.data.id);
+                    navigate('/dashboard/support/' + res.data.id);
                 });
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
@@ -41,7 +40,7 @@ export function SupportAddDialog(props: {
     }
 
     return (
-        <div>
+        <Box>
             <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
                 チケットの作成
             </Button>
@@ -70,8 +69,7 @@ export function SupportAddDialog(props: {
                                                   disabled={!groupEnable} label="グループチャット"/>
                             </RadioGroup>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="title"
                                 label="Title"
                                 multiline
@@ -81,8 +79,7 @@ export function SupportAddDialog(props: {
                                 variant="outlined"
                             />
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline
@@ -103,6 +100,6 @@ export function SupportAddDialog(props: {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Box>
     );
 }

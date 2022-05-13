@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import useStyles from "../../styles"
 import {
     AppBar,
     Box,
     Button,
-    Card,
     CardActions,
     CardContent, Chip,
-    Tab, Tabs, TextField,
+    Tab, Tabs,
     Typography, useTheme
-} from "@material-ui/core";
+} from "@mui/material";
 import SwipeableViews from "react-swipeable-views";
-import {useHistory, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {UserData} from "../../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -22,6 +20,7 @@ import {Get} from "../../../../api/Info";
 import Dashboard from "../../../../components/Dashboard/Dashboard";
 import {Delete, Put} from "../../../../api/User";
 import shaJS from "sha.js";
+import {StyledCardRoot3, StyledTextFieldMedium, StyledTextFieldShort, StyledTypographyTitle} from "../../../../style";
 
 
 interface TabPanelProps {
@@ -59,13 +58,12 @@ function a11yProps(index: any) {
 }
 
 export default function UserDetail() {
-    const classes = useStyles();
     const theme = useTheme();
     const [loginUserID, setLoginUserID] = useState<Number>();
     const [user, setUser] = useState<UserData>();
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
-    let id: string;
+    const navigate = useNavigate();
+    let id: string | undefined;
     ({id} = useParams());
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(0);
@@ -95,7 +93,7 @@ export default function UserDetail() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -128,7 +126,7 @@ export default function UserDetail() {
             if (res.error === undefined) {
                 enqueueSnackbar('OK', {variant: "success"});
                 Get().then();
-                history.push("/dashboard/procedure/user")
+                navigate("/dashboard/procedure/user")
             } else {
                 enqueueSnackbar(res.error, {variant: "error"});
             }
@@ -178,16 +176,20 @@ export default function UserDetail() {
     return (
         <Dashboard title={"ユーザ情報 (ID: " + id + ")"}>
             {
+                id === undefined &&
+                <h2>IDの値が取得できません</h2>
+            }
+            {
                 user == null &&
                 <h3>現在、有効なユーザはありません。</h3>
             }
             {
                 user != null &&
-                <Card className={classes.root}>
+                <StyledCardRoot3>
                     <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        <StyledTypographyTitle color="textSecondary" gutterBottom>
                             ID: {user.id} ({user.email})
-                        </Typography>
+                        </StyledTypographyTitle>
                         <Typography variant="h5" component="h2">
                             {user.name}({user.name_en})
                         </Typography>
@@ -201,119 +203,111 @@ export default function UserDetail() {
                         <br/>
                         <br/>
                         <br/>
-                        <div className={classes.rootTabs}>
-                            <AppBar position="static" color="default">
-                                <Tabs
-                                    defaultValue={0}
-                                    value={value}
-                                    onChange={handleChange}
-                                    indicatorColor="primary"
-                                    textColor="primary"
-                                    variant="fullWidth"
-                                    aria-label="full width tabs example"
-                                >
-                                    <Tab label="メールアドレスの変更" {...a11yProps(0)} />
-                                    <Tab label="パスワードの変更" {...a11yProps(1)} />
-                                    <Tab label="ユーザ情報の変更" {...a11yProps(2)} />
-                                </Tabs>
-                            </AppBar>
-                            <SwipeableViews
-                                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                                index={value}
-                                onChangeIndex={handleChangeIndex}
+                        <AppBar position="static" color="default">
+                            <Tabs
+                                defaultValue={0}
+                                value={value}
+                                onChange={handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                                variant="fullWidth"
+                                aria-label="full width tabs example"
                             >
-                                <TabPanel value={0} index={0} dir={theme.direction}>
-                                    <TextField
-                                        name="email"
-                                        className={classes.formMedium}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="E-Mail Address"
-                                        value={email.email}
-                                        onChange={event => setEmail({...email, email: event.target.value})}
-                                        autoFocus
-                                    />
-                                    <TextField
-                                        name="email_verify"
-                                        className={classes.formMedium}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="email_verify"
-                                        label="E-Mail Address(確認用)"
-                                        value={email.email_verify}
-                                        onChange={event => setEmail({...email, email_verify: event.target.value})}
-                                        autoFocus
-                                    />
-                                </TabPanel>
-                                <TabPanel value={1} index={1} dir={theme.direction}>
-                                    <TextField
-                                        name="password"
-                                        className={classes.formMedium}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="password"
-                                        type={"password"}
-                                        label="Password"
-                                        value={password.password}
-                                        onChange={event => setPassword({...password, password: event.target.value})}
-                                        autoFocus
-                                    />
-                                    <TextField
-                                        name="password_verify"
-                                        className={classes.formMedium}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="password_verify"
-                                        type={"password"}
-                                        label="Password(確認用)"
-                                        value={password.password_verify}
-                                        onChange={event => setPassword({
-                                            ...password,
-                                            password_verify: event.target.value
-                                        })}
-                                        autoFocus
-                                    />
-                                </TabPanel>
-                                <TabPanel value={2} index={2} dir={theme.direction}>
-                                    <TextField
-                                        name="name"
-                                        className={classes.formShort}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="name"
-                                        label="Name"
-                                        value={name.name}
-                                        onChange={event => setName({...name, name: event.target.value})}
-                                        autoFocus
-                                    />
-                                    <TextField
-                                        name="name_en"
-                                        className={classes.formShort}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="name_en"
-                                        label="Name(English)"
-                                        value={name.name_en}
-                                        onChange={event => setName({...name, name_en: event.target.value})}
-                                        autoFocus
-                                    />
-                                </TabPanel>
-                            </SwipeableViews>
-                        </div>
+                                <Tab label="メールアドレスの変更" {...a11yProps(0)} />
+                                <Tab label="パスワードの変更" {...a11yProps(1)} />
+                                <Tab label="ユーザ情報の変更" {...a11yProps(2)} />
+                            </Tabs>
+                        </AppBar>
+                        <SwipeableViews
+                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                            index={value}
+                            onChangeIndex={handleChangeIndex}
+                        >
+                            <TabPanel value={0} index={0} dir={theme.direction}>
+                                <StyledTextFieldMedium
+                                    name="email"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="E-Mail Address"
+                                    value={email.email}
+                                    onChange={event => setEmail({...email, email: event.target.value})}
+                                    autoFocus
+                                />
+                                <StyledTextFieldMedium
+                                    name="email_verify"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email_verify"
+                                    label="E-Mail Address(確認用)"
+                                    value={email.email_verify}
+                                    onChange={event => setEmail({...email, email_verify: event.target.value})}
+                                    autoFocus
+                                />
+                            </TabPanel>
+                            <TabPanel value={1} index={1} dir={theme.direction}>
+                                <StyledTextFieldMedium
+                                    name="password"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="password"
+                                    type={"password"}
+                                    label="Password"
+                                    value={password.password}
+                                    onChange={event => setPassword({...password, password: event.target.value})}
+                                    autoFocus
+                                />
+                                <StyledTextFieldMedium
+                                    name="password_verify"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="password_verify"
+                                    type={"password"}
+                                    label="Password(確認用)"
+                                    value={password.password_verify}
+                                    onChange={event => setPassword({
+                                        ...password,
+                                        password_verify: event.target.value
+                                    })}
+                                    autoFocus
+                                />
+                            </TabPanel>
+                            <TabPanel value={2} index={2} dir={theme.direction}>
+                                <StyledTextFieldShort
+                                    name="name"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    value={name.name}
+                                    onChange={event => setName({...name, name: event.target.value})}
+                                    autoFocus
+                                />
+                                <StyledTextFieldShort
+                                    name="name_en"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="name_en"
+                                    label="Name(English)"
+                                    value={name.name_en}
+                                    onChange={event => setName({...name, name_en: event.target.value})}
+                                    autoFocus
+                                />
+                            </TabPanel>
+                        </SwipeableViews>
                     </CardContent>
                     <CardActions>
                         <Button size="small" variant="outlined" onClick={clickUpdateUser}>更新</Button>
                         <Button size="small" variant="outlined" color={"secondary"}
                                 disabled={Number(id) === loginUserID} onClick={clickDeleteUser}>削除</Button>
                     </CardActions>
-                </Card>
+                </StyledCardRoot3>
             }
         </Dashboard>
     );

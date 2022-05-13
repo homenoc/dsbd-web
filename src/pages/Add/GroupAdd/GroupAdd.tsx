@@ -1,547 +1,572 @@
-import React, {Dispatch, SetStateAction, useEffect} from "react";
+import React, {Fragment, useEffect} from "react";
+import DashboardComponent from "../../../components/Dashboard/Dashboard";
+import {Get} from "../../../api/Info";
+import Cookies from "js-cookie";
+import store, {RootState} from "../../../store";
+import {clearInfos, clearTemplates} from "../../../store/action/Actions";
+import {useSnackbar} from "notistack";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {
+    Box,
     Button,
     Checkbox,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     FormControl,
     FormControlLabel,
-    FormLabel,
-    Grid,
-    Radio,
-    RadioGroup,
-    TextField,
-} from "@material-ui/core";
+    FormHelperText, FormLabel,
+    Grid, Radio, RadioGroup,
+    TextField, Typography
+} from "@mui/material";
+import {useForm, Controller} from "react-hook-form";
+import * as Yup from 'yup';
+import {yupResolver} from "@hookform/resolvers/yup";
 import {
-    DefaultGroupAddData, GroupAddData,
-    UserData,
-} from "../../../interface";
-import useStyles from "../styles";
-import {check, checkQuestion} from "./check";
-import {useSnackbar} from "notistack";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+    StyledTextFieldLong, StyledTextFieldMedium,
+    StyledTextFieldShort,
+    StyledTextFieldVeryLong,
+    StyledTextFieldVeryShort1
+} from "../../../style";
+import {ObjectShape} from "yup/lib/object";
+import {LocalizationProvider} from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import moment from "moment";
 import {Post} from "../../../api/Group";
-import {useHistory} from "react-router-dom";
-import {Get} from "../../../api/Info";
 
-export default function GroupAddDialogs(props: {
-    open: boolean
-    setOpen: Dispatch<SetStateAction<boolean>>
-    userData: UserData
-}) {
-    const {open, setOpen, userData} = props
-    const [data, setData] = React.useState(DefaultGroupAddData);
-    const [question, setQuestion] = React.useState<{
-        isExist: boolean,
-        question1: string,
-        question2: string,
-        question3: string,
-        question4: string
-    }>(
-        {
-            isExist: false,
-            question1: "",
-            question2: "",
-            question3: "",
-            question4: ""
-        }
-    );
+export default function GroupAdd() {
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
+    const navigate = useNavigate();
+    const infos = useSelector((state: RootState) => state.infos);
 
-    useEffect(() => {
-        if (open && userData.group_id !== 0) {
-            enqueueSnackbar('登録済みです。', {variant: "error"});
-            history.push("/dashboard")
-        }
-    }, [open]);
-
-    const request = () => {
-        // check question item
-        let sendData = data;
-        if (question.isExist) {
-            sendData.question = "---------既存ユーザ---------\n\n" + question.question1
-        } else {
-            const errQuestion = checkQuestion(question);
-            if (errQuestion !== "") {
-                console.log("NG: " + errQuestion)
-                enqueueSnackbar(errQuestion, {variant: "error"});
-                return;
-            }
-
-            sendData.question = "1. どこで当団体のことを知りましたか？\n" + question.question1 + "\n\n" +
-                "2. どのような用途で当団体のネットワークに接続しますか？\n" + question.question2 + "\n\n" +
-                "3. アドレスを当団体から割り当てる必要はありますか？\n" + question.question3 + "\n\n" +
-                "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + question.question4;
-        }
-        console.log(sendData);
-
-        const err = check(sendData);
-        if (err === "") {
-            console.log("OK");
-            Post(sendData).then(res => {
-                if (res.error === "") {
-                    console.log(res.data);
-                    enqueueSnackbar('Request Success', {variant: "success"});
-                    setOpen(false);
-                    Get().then();
-                } else {
-                    console.log(res.error);
-                    enqueueSnackbar(String(res.error), {variant: "error"});
-                }
-            })
-            enqueueSnackbar('OK', {variant: "success"});
-        } else {
-            console.log("NG: " + err)
-            enqueueSnackbar(err, {variant: "error"});
-        }
-    }
-
-    return (
-        <div>
-            <Dialog onClose={() => setOpen(false)} fullScreen={true} aria-labelledby="customized-dialog-title"
-                    open={open}
-                    PaperProps={{
-                        style: {
-                            backgroundColor: "#2b2a2a",
-                        },
-                    }}>
-                <DialogTitle id="customized-dialog-title">
-                    Group情報の追加
-                </DialogTitle>
-                <DialogContent dividers>
-                    <Grid container spacing={3}>
-                        <br/>
-                        <Grid item xs={12}>
-                            <TermAgreeAdd key={"term_agree_add_select"} data={data} setData={setData}/>
-                            <br/>
-                            <QuestionAdd key={"connection_add_type"} data={question} setData={setQuestion}/>
-                            <br/>
-                            <OrgInfoAdd key={"org_info_add"} data={data} setData={setData}/>
-                            <br/>
-                            <ContractSelectAdd key={"contact_select_add"} data={data} setData={setData}/>
-                            <br/>
-                            <StudentAdd key={"contact_select_add"} data={data} setData={setData}/>
-                        </Grid>
-                        <br/>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={() => setOpen(false)} color="secondary">
-                        Close
-                    </Button>
-                    <Button autoFocus onClick={() => request()} color="primary">
-                        登録
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-    );
-}
-
-export function TermAgreeAdd(props: {
-    data: GroupAddData
-    setData: Dispatch<SetStateAction<GroupAddData>>
-}) {
-    const {data, setData} = props;
-    const [checkBox, setCheckBox] = React.useState(false);
     const privacyPolicyURL = "https://www.homenoc.ad.jp/rules/privacy/";
     const usageURL = "https://www.homenoc.ad.jp/usage/";
     const feeURL = "https://www.homenoc.ad.jp/rules/fee/";
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckBox(event.target.checked);
-        setData({...data, agree: event.target.checked});
-    }
-
-    return (
-        <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">0. 利用規約の同意</FormLabel>
-                <br/>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Button variant="contained" color="primary" onClick={() => window.open(feeURL, "_blank")}>
-                            会費について
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button variant="contained" color="primary" onClick={() => window.open(usageURL, "_blank")}>
-                            実験ネットワーク利用規約
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button variant="contained" color="primary"
-                                onClick={() => window.open(privacyPolicyURL, "_blank")}>
-                            プライバシーポリシー
-                        </Button>
-                    </Grid>
-                </Grid>
-
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkBox}
-                            onChange={handleChange}
-                            name="monitor"
-                            color="primary"
-                        />
-                    }
-                    label="利用規約に同意します"
-                />
-            </FormControl>
-        </div>
-    )
-}
-
-export function QuestionAdd(props: {
-    data: {
-        isExist: boolean
-        question1: string,
-        question2: string,
-        question3: string,
-        question4: string
-    }
-    setData: Dispatch<SetStateAction<{
-        isExist: boolean
-        question1: string,
-        question2: string,
-        question3: string,
-        question4: string
-    }>>
-}) {
-    const {data, setData} = props;
-    const classes = useStyles();
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setData({...data, isExist: !data.isExist});
-    }
-
-    return (
-        <div>
-            <FormLabel component="legend">0. 既存会員ですか？</FormLabel>
-            <div>既存会員の方は、こちらのチェックボックスを選択してください。</div>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={data.isExist}
-                        onChange={handleChange}
-                        name="monitor"
-                        color="primary"
-                    />
-                }
-                label="私は既存会員です"
-            />
-            <br/>
-            {
-                !data.isExist &&
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">1. どこで当団体のことを知りましたか？</FormLabel>
-                    <div>当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。</div>
-                    <br/>
-                    <TextField
-                        className={classes.formVeryLong}
-                        id="question1"
-                        label=""
-                        multiline
-                        rows={4}
-                        value={data.question1}
-                        onChange={event => {
-                            setData({...data, question1: event.target.value});
-                        }}
-                        variant="outlined"
-                    />
-                    <br/>
-                    <FormLabel component="legend">2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
-                    <div>例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]</div>
-                    <br/>
-                    <TextField
-                        className={classes.formVeryLong}
-                        id="question2"
-                        label=""
-                        multiline
-                        rows={4}
-                        inputProps={{
-                            minLength: 10
-                        }}
-                        value={data.question2}
-                        onChange={event => {
-                            setData({...data, question2: event.target.value});
-                        }}
-                        variant="outlined"
-                    />
-                    <br/>
-                    <FormLabel component="legend">3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
-                    <div>PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。</div>
-                    <br/>
-                    <TextField
-                        className={classes.formVeryLong}
-                        id="question3"
-                        label=""
-                        multiline
-                        rows={4}
-                        value={data.question3}
-                        onChange={event => {
-                            setData({...data, question3: event.target.value});
-                        }}
-                        variant="outlined"
-                    />
-                    <br/>
-                    <FormLabel component="legend">4.
-                        情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。</FormLabel>
-                    <div>(発信しているコンテンツなどがなければ、「なし」とお答えください)</div>
-                    <br/>
-                    <TextField
-                        className={classes.formVeryLong}
-                        id="question4"
-                        label=""
-                        multiline
-                        rows={4}
-                        value={data.question4}
-                        onChange={event => {
-                            setData({...data, question4: event.target.value});
-                        }}
-                        variant="outlined"
-                    />
-                </FormControl>
-            }
-            {
-                data.isExist &&
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">1. 既存のサービスコードを記入してください</FormLabel>
-                    <br/>
-                    <TextField
-                        className={classes.formVeryLong}
-                        id="question1"
-                        label=""
-                        multiline
-                        rows={4}
-                        value={data.question1}
-                        onChange={event => {
-                            setData({...data, question1: event.target.value});
-                        }}
-                        variant="outlined"
-                    />
-                    <br/>
-                </FormControl>
-            }
-        </div>
-    )
-}
-
-export function OrgInfoAdd(props: {
-    data: GroupAddData
-    setData: Dispatch<SetStateAction<GroupAddData>>
-}) {
-    const {data, setData} = props;
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <FormLabel component="legend">5. 組織情報</FormLabel>
-            <div>個人利用で特に組織名がない方は名前をご記入ください。</div>
-            <br/>
-            <div>JPNICに登録する情報を記入してください。</div>
-            <br/>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formShort}
-                    required
-                    id="org"
-                    label="組織名"
-                    value={data.org}
-                    variant="outlined"
-                    inputProps={{
-                        maxLength: 128,
-                    }}
-                    onChange={event => {
-                        setData({...data, org: event.target.value});
-                    }}
-                />
-                <TextField
-                    className={classes.formShort}
-                    required
-                    id="org_en"
-                    label="組織名(英語)"
-                    value={data.org_en}
-                    variant="outlined"
-                    inputProps={{
-                        maxLength: 128,
-                    }}
-                    onChange={event => {
-                        setData({...data, org_en: event.target.value});
-                    }}
-                />
-                <br/>
-                <TextField
-                    className={classes.formVeryShort}
-                    required
-                    id="postcode"
-                    label="郵便番号"
-                    value={data.postcode}
-                    variant="outlined"
-                    inputProps={{
-                        maxLength: 8,
-                    }}
-                    onChange={event => {
-                        setData({...data, postcode: event.target.value});
-                    }}
-                />
-                <TextField
-                    className={classes.formLong}
-                    required
-                    id="address"
-                    label="住所(日本語)"
-                    value={data.address}
-                    variant="outlined"
-                    inputProps={{
-                        maxLength: 128,
-                    }}
-                    onChange={event => {
-                        setData({...data, address: event.target.value});
-                    }}
-                />
-                <TextField
-                    className={classes.formLong}
-                    required
-                    id="address_en"
-                    label="住所(英語)"
-                    value={data.address_en}
-                    variant="outlined"
-                    inputProps={{
-                        maxLength: 128,
-                    }}
-                    onChange={event => {
-                        setData({...data, address_en: event.target.value});
-                    }}
-                />
-                <br/>
-                <TextField
-                    className={classes.formMedium}
-                    required
-                    id="tel"
-                    label="電話番号"
-                    value={data.tel}
-                    variant="outlined"
-                    onChange={event => {
-                        setData({...data, tel: event.target.value});
-                    }}
-                />
-                <TextField
-                    className={classes.formMedium}
-                    required
-                    id="country"
-                    label="居住国"
-                    value={data.country}
-                    variant="outlined"
-                    onChange={event => {
-                        setData({...data, country: event.target.value});
-                    }}
-                />
-            </form>
-        </div>
-    );
-}
-
-
-export function ContractSelectAdd(props: {
-    data: GroupAddData
-    setData: Dispatch<SetStateAction<GroupAddData>>
-}) {
-    const {data, setData} = props;
-
-    return (
-        <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">6. 契約書</FormLabel>
-                <br/>
-                <div>当団体は電気通信事業者として届出を行っておりますため、利用開始時に電気通信事業法 第26条2（書面の交付義務）に基づき、
-                    ご利用内容をお知らせいたしますので、ご希望の交付方法をお知らせください。
-                </div>
-                <RadioGroup row aria-label="position" name="position" defaultValue="top"
-                            onChange={(event) => {
-                                setData({...data, contract: event.target.value})
-                            }}>
-                    <FormControlLabel value="E-Mail" control={<Radio color="primary"/>} label="電子交付を希望する"/>
-                    <FormControlLabel value="Air Mail" control={<Radio color="primary"/>} label="書面の郵送を希望する"/>
-                </RadioGroup>
-            </FormControl>
-        </div>
-    )
-}
-
-export function StudentAdd(props: {
-    data: GroupAddData
-    setData: Dispatch<SetStateAction<GroupAddData>>
-}) {
-    const {data, setData} = props;
-    const [checkBox, setCheckBox] = React.useState(false);
-    const nowDate = new Date()
-    const [selectedDate, setSelectedDate] = React.useState<Date | null>(nowDate);
+    useEffect(()=>{
+        Get().then();
+    },[])
 
     useEffect(() => {
-        let tmpEndDate = nowDate;
-        tmpEndDate.setDate(tmpEndDate.getDate() + 30);
-        setSelectedDate(tmpEndDate);
-    }, []);
+        // info
+        const tmpData = infos[infos.length - 1];
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckBox(event.target.checked);
-        setData({...data, student: event.target.checked});
-    }
-
-    const handleStudentExpiredChange = (date: Date | null) => {
-        setSelectedDate(date);
-        if (date !== null) {
-            setData({
-                ...data, student_expired: date.getFullYear() + '-' + ('00' + (date.getMonth() + 1)).slice(-2) +
-                    '-' + ('00' + (date.getDate())).slice(-2)
-            });
+        if (tmpData.error != null || tmpData.data != null) {
+            if (tmpData.error != null) {
+                if (tmpData.error?.indexOf("[401]") !== -1) {
+                    Cookies.remove('user_token');
+                    Cookies.remove('access_token');
+                    store.dispatch(clearInfos());
+                    store.dispatch(clearTemplates());
+                    enqueueSnackbar(tmpData.error, {variant: "error"});
+                    navigate('/login');
+                } else {
+                    enqueueSnackbar(tmpData.error, {variant: "error"});
+                }
+            } else if (tmpData.data != null) {
+                // add group
+                if (tmpData.data.user?.group_id !== 0) {
+                    navigate("/dashboard/add");
+                }
+            } else {
+                console.log("Renew");
+                Get().then();
+                const date = new Date();
+                enqueueSnackbar("Info情報の更新: " + date.toLocaleString(), {variant: "info"});
+            }
         }
+    }, [infos]);
+
+    const validationSchema = Yup.lazy(values => {
+        let obj: ObjectShape = {
+            agree: Yup.bool().oneOf([true], '利用の規約に同意しないと次へ進めません。'),
+            isMember: Yup.bool(),
+            org: Yup.string()
+                .required('Org is required')
+                .max(255, 'Org must not exceed 255 characters'),
+            org_en: Yup.string()
+                .required('Org(English) is required')
+                .max(255, 'Org(English) must not exceed 255 characters'),
+            postcode: Yup.string()
+                .required('PostCode is required')
+                .min(8, 'PostCode must be at least 8 characters')
+                .max(8, 'PostCode must not exceed 8 characters'),
+            address: Yup.string()
+                .required('Address is required')
+                .min(6, 'Address must be at least 6 characters')
+                .max(255, 'Address must not exceed 255 characters'),
+            address_en: Yup.string()
+                .required('Address(English) is required')
+                .min(6, 'Address(English) must be at least 6 characters')
+                .max(255, 'Address(English) must not exceed 255 characters'),
+            tel: Yup.string()
+                .required('Tel is required')
+                .min(6, 'Tel must be at least 6 characters')
+                .max(30, 'Tel must not exceed 30 characters'),
+            country: Yup.string()
+                .required('Country is required')
+                .min(2, 'Country must be at least 2 characters')
+                .max(40, 'Country must not exceed 40 characters'),
+            contract: Yup.string()
+                .required('通知方法を選択してください'),
+            is_student: Yup.bool(),
+            student_expired: Yup.date(),
+        }
+        if (!values.isMember) {
+            obj["question1"] = Yup.string()
+                .min(2, '2文字以上入力してください。')
+            obj["question2"] = Yup.string()
+                .min(10, '10文字以上入力してください。')
+            obj["question3"] = Yup.string()
+                .min(2, '2文字以上入力してください。')
+            obj["question4"] = Yup.string()
+                .min(2, '2文字以上入力してください。')
+        }
+
+        return Yup.object().shape(obj)
+    });
+
+    const {register, control, handleSubmit, formState: {errors}, watch} = useForm({
+        resolver: yupResolver(validationSchema),
+        defaultValues: {
+            agree: false,
+            isMember: false,
+            question1: "",
+            question2: "",
+            question3: "",
+            question4: "",
+            org: "",
+            org_en: "",
+            postcode: "",
+            address: "",
+            address_en: "",
+            tel: "",
+            country: "",
+            contract: "E-Mail",
+            is_student: false,
+            student_expired: new Date()
+        }
+    });
+    const isMember = watch('isMember');
+    const is_student = watch('is_student');
+    const onSubmit = (data: any, e: any) => {
+        console.log(data, e)
+        // check question item
+        let question: string;
+        let request: any = {
+            agree: data.agree,
+            student: data.is_student,
+            org: data.org,
+            org_en: data.org_en,
+            postcode: data.postcode,
+            address: data.address,
+            address_en: data.address_en,
+            tel: data.tel,
+            country: data.country,
+            contract: data.contract,
+            student_expired: data.student_expired
+        };
+
+        if (data.isExist) {
+            question = "---------既存ユーザ---------\n\n" + data.question1
+        } else {
+            question = "1. どこで当団体のことを知りましたか？\n" + data.question1 + "\n\n" +
+                "2. どのような用途で当団体のネットワークに接続しますか？\n" + data.question2 + "\n\n" +
+                "3. アドレスを当団体から割り当てる必要はありますか？\n" + data.question3 + "\n\n" +
+                "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + data.question4;
+        }
+        request.question = question;
+
+        console.log("OK");
+        Post(request).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                enqueueSnackbar('Request Success', {variant: "success"});
+                Get().then();
+                navigate("/dashboard/add");
+            } else {
+                console.log(res.error);
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+        })
+        enqueueSnackbar('OK', {variant: "success"});
+        navigate("/dashboard/add");
+    };
+    const onError = (errors: any, e: any) => {
+        console.log(errors, e)
+        enqueueSnackbar("入力した内容を確認してください。", {variant: "error"});
     };
 
 
     return (
-        <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">7. 学生</FormLabel>
-                <br/>
-                <div>貴団体の会員が<b>全員学生の場合</b>は、規約により会費を無料とさせていただきます。</div>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkBox}
-                            onChange={handleChange}
-                            name="monitor"
-                            color="primary"
-                        />
+        <DashboardComponent title="Group情報の申請">
+            <Fragment>
+                <Grid container spacing={3}>
+                    <br/>
+                    <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                            <FormLabel>0. 利用規約の同意</FormLabel>
+                            <br/>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12}>
+                                    <Button variant="contained" color="primary"
+                                            onClick={() => window.open(feeURL, "_blank")}>
+                                        会費について
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Button variant="contained" color="primary"
+                                            onClick={() => window.open(usageURL, "_blank")}>
+                                        実験ネットワーク利用規約
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Button variant="contained" color="primary"
+                                            onClick={() => window.open(privacyPolicyURL, "_blank")}>
+                                        プライバシーポリシー
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                            <FormControlLabel
+                                control={<Controller
+                                    control={control}
+                                    name="agree"
+                                    render={({field: {onChange}}) => (
+                                        <Checkbox
+                                            color="primary"
+                                            onChange={e => onChange(e.target.checked)}
+                                        />
+                                    )}/>
+                                }
+                                label={
+                                    <Typography color={errors.agree ? 'error' : 'inherit'}>
+                                        利用規約に同意する
+                                    </Typography>
+                                }
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.agree ? '(' + errors.agree.message + ')' : ''}
+                            </Typography>
+                            <br/>
+                        </FormControl>
+                        <FormControl component="fieldset">
+                            <FormLabel>1. 申請内容</FormLabel>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12}>
+                                    <FormLabel>1.0. 既存会員ですか？</FormLabel>
+                                    <Typography variant="subtitle1" gutterBottom component="div">
+                                        既存会員の方は、こちらのチェックボックスを選択してください。
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <FormControlLabel
+                                control={<Controller
+                                    control={control}
+                                    name="isMember"
+                                    render={({field: {onChange}}) => (
+                                        <Checkbox
+                                            color="primary"
+                                            onChange={e => {
+                                                onChange(e.target.checked)
+                                            }}
+                                        />
+                                    )}/>
+                                }
+                                label={<Typography>私は既存会員です</Typography>}
+                            />
+                        </FormControl>
+                        <br/>
+                        {
+                            !isMember &&
+                            <div>
+                                <FormControl component="fieldset">
+                                    <FormLabel>1.1. どこで当団体のことを知りましたか？</FormLabel>
+                                    <Typography variant="subtitle1" gutterBottom component="div">
+                                        当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。
+                                    </Typography>
+                                    <StyledTextFieldVeryLong
+                                        id="question1"
+                                        // name="question1"
+                                        label="question1"
+                                        multiline
+                                        rows={4}
+                                        variant="outlined"
+                                        {...register('question1')}
+                                        error={!!errors.question1}
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.question1?.message}
+                                    </Typography>
+                                </FormControl>
+                                <br/>
+                                <FormControl component="fieldset">
+                                    <FormLabel>1.2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
+                                    <Typography variant="subtitle1" gutterBottom component="div">
+                                        例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]
+                                    </Typography>
+                                    <StyledTextFieldVeryLong
+                                        id="question2"
+                                        label="question2"
+                                        multiline
+                                        rows={4}
+                                        variant="outlined"
+                                        {...register('question2')}
+                                        error={!!errors.question2}
+
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.question2?.message}
+                                    </Typography>
+                                </FormControl>
+                                <br/>
+                                <FormControl component="fieldset">
+                                    <FormLabel>1.3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
+                                    <Typography variant="subtitle1" gutterBottom component="div">
+                                        PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。
+                                    </Typography>
+                                    <StyledTextFieldVeryLong
+                                        id="question3"
+                                        label="question3"
+                                        multiline
+                                        rows={4}
+                                        variant="outlined"
+                                        {...register('question3')}
+                                        error={!!errors.question3}
+
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.question3?.message}
+                                    </Typography>
+                                </FormControl>
+                                <br/>
+                                <FormControl component="fieldset">
+                                    <FormLabel>1.4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、
+                                        GitHub、成果物などがありましたら教えてください。</FormLabel>
+                                    <Typography variant="subtitle1" gutterBottom component="div">
+                                        (発信しているコンテンツなどがなければ、「なし」とお答えください)
+                                    </Typography>
+                                    <StyledTextFieldVeryLong
+                                        id="question4"
+                                        label="question4"
+                                        multiline
+                                        rows={4}
+                                        variant="outlined"
+                                        {...register('question4')}
+                                        error={!!errors.question4}
+
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.question4?.message}
+                                    </Typography>
+                                </FormControl>
+                            </div>
+                        } {
+                        isMember &&
+                        <FormControl component="fieldset">
+                            <FormLabel>1.1. 登録者の名前と既存のサービスコードを記入してください</FormLabel>
+                            <Typography variant="subtitle1" gutterBottom component="div">
+                                登録者の名前と既存のサービスコードを記入してください。
+                            </Typography>
+                            <StyledTextFieldVeryLong
+                                id="question1"
+                                // name="question1"
+                                label="question1"
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                {...register('question1')}
+                                error={!!errors.question1}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.question1?.message}
+                            </Typography>
+                        </FormControl>
                     }
-                    label="私は学生です"
-                />
-                {
-                    checkBox &&
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <br/>
-                        <div>確認のため在学を証明するもの（学生証）を提出していただく場合もありますが、ご了承ください。</div>
+                        <FormControl component="fieldset">
+                            <FormLabel>2. 組織情報</FormLabel>
+                            <Typography variant="subtitle1" gutterBottom component="div">
+                                個人利用で特に組織名がない方は名前をご記入ください。
+                                JPNICに登録する情報を記入してください。
+                            </Typography>
+                            <br/>
+                            <Grid container spacing={3}>
+                                <Grid item xs={6}>
+                                    <StyledTextFieldShort
+                                        id="org"
+                                        label="組織名"
+                                        multiline
+                                        variant="outlined"
+                                        {...register('org')}
+                                        error={!!errors.org}
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.org?.message}
+                                    </Typography>
+                                    {/*</Grid>*/}
+                                    {/*<Grid item xs={6}>*/}
+                                    <StyledTextFieldShort
+                                        id="org_en"
+                                        label="組織名(英語)"
+                                        multiline
+                                        variant="outlined"
+                                        {...register('org_en')}
+                                        error={!!errors.org_en}
+                                    />
+                                    <Typography variant="inherit" color="textSecondary">
+                                        {errors.org_en?.message}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <StyledTextFieldVeryShort1
+                                id="postcode"
+                                label="郵便番号"
+                                multiline
+                                variant="outlined"
+                                {...register('postcode')}
+                                error={!!errors.postcode}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.postcode?.message}
+                            </Typography>
+                            <StyledTextFieldLong
+                                id="address"
+                                label="住所(日本語)"
+                                multiline
+                                variant="outlined"
+                                {...register('address')}
+                                error={!!errors.address}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.address?.message}
+                            </Typography>
+                            <StyledTextFieldLong
+                                id="address_en"
+                                label="住所(英語)"
+                                multiline
+                                variant="outlined"
+                                {...register('address_en')}
+                                error={!!errors.address_en}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.address_en?.message}
+                            </Typography>
+                            <StyledTextFieldMedium
+                                id="tel"
+                                label="電話番号"
+                                multiline
+                                variant="outlined"
+                                {...register('tel')}
+                                error={!!errors.tel}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.tel?.message}
+                            </Typography>
+                            <StyledTextFieldMedium
+                                id="country"
+                                label="居住国"
+                                multiline
+                                variant="outlined"
+                                {...register('country')}
+                                error={!!errors.country}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.country?.message}
+                            </Typography>
+                        </FormControl>
                         <br/>
-                        <KeyboardDatePicker
-                            required
-                            margin="normal"
-                            id="student_expired_date-picker-dialog"
-                            label="卒業予定"
-                            format="yyyy/MM/dd"
-                            value={selectedDate}
-                            onChange={handleStudentExpiredChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                        />
-                    </MuiPickersUtilsProvider>
-                }
-            </FormControl>
-        </div>
+                        <FormControl component="fieldset">
+                            <FormLabel>3. 契約書</FormLabel>
+                            <Typography variant="subtitle1" gutterBottom component="div">
+                                当団体は電気通信事業者として届出を行っておりますため、利用開始時に電気通信事業法 第26条2（書面の交付義務）に基づき、
+                                ご利用内容をお知らせいたしますので、ご希望の交付方法をお知らせください。
+                            </Typography>
+                            <FormHelperText>
+                                {errors?.contract && errors?.contract.message}
+                            </FormHelperText>
+                            <Controller
+                                name="contract"
+                                control={control}
+                                render={({field, fieldState}) => (
+                                    <RadioGroup
+                                        aria-label="gender"
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value)
+                                        }}
+                                        value={field.value === undefined ? '' : field.value}>
+                                        <FormControlLabel value="E-Mail" control={<Radio color="primary"/>}
+                                                          label="電子交付を希望する"/>
+                                        <FormControlLabel value="Air Mail" control={<Radio color="primary"/>}
+                                                          label="書面の郵送を希望する"/>
+                                    </RadioGroup>
+                                )}
+                            />
+                        </FormControl>
+                        <br/>
+                        <FormControl component="fieldset">
+                            <FormLabel>4. 学生</FormLabel>
+                            <Typography variant="subtitle1" gutterBottom component="div">
+                                貴団体の会員が<b>全員学生の場合</b>は、規約により会費を無料とさせていただきます。
+                            </Typography>
+                            <FormControlLabel
+                                control={
+                                    <Controller
+                                        control={control}
+                                        name="is_student"
+                                        render={({field: {onChange}}) => (
+                                            <Checkbox
+                                                color="primary"
+                                                onChange={e => onChange(e.target.checked)}
+                                            />
+                                        )}/>
+                                }
+                                label={
+                                    <Typography color={errors.is_student ? 'error' : 'inherit'}>
+                                        私は学生です
+                                    </Typography>
+                                }
+                            />
+                            {
+                                is_student &&
+                                <div>
+                                    <br/>
+                                    <div>確認のため在学を証明するもの（学生証）を提出していただく場合もありますが、ご了承ください。</div>
+                                    <Box sx={{width: 200}}>
+                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                            <br/>
+                                            <Controller
+                                                name="student_expired"
+                                                control={control}
+                                                render={({
+                                                             field: {onChange, value},
+                                                             fieldState: {error, invalid}
+                                                         }) => (
+                                                    <DatePicker
+                                                        label="Date of Student Expired"
+                                                        disablePast
+                                                        value={value}
+                                                        onChange={(value) =>
+                                                            onChange(moment(value).format("YYYY-MM-DD"))
+                                                        }
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                    />
+                                                )}
+                                            />
+                                        </LocalizationProvider>
+                                    </Box>
+                                </div>
+                            }
+                        </FormControl>
+                    </Grid>
+                    <br/>
+                </Grid>
+                <br/>
+                <br/>
+                <Box mt={3}>
+                    <Button variant="contained" onClick={handleSubmit(onSubmit, onError)}>
+                        申請する
+                    </Button>
+                </Box>
+            </Fragment>
+        </DashboardComponent>
     )
 }

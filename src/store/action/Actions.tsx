@@ -42,8 +42,8 @@ export const renewInfos = () => {
         axios.get(restfulApiConfig.apiURL + "/info", {
             headers: {
                 'Content-Type': 'application/json',
-                USER_TOKEN: Cookies.get('user_token'),
-                ACCESS_TOKEN: Cookies.get('access_token'),
+                USER_TOKEN: Cookies.get('user_token')!,
+                ACCESS_TOKEN: Cookies.get('access_token')!,
             }
         }).then(res => {
             console.log(res);
@@ -92,8 +92,8 @@ export const getTemplates = () => {
         axios.get(restfulApiConfig.apiURL + "/template", {
             headers: {
                 'Content-Type': 'application/json',
-                USER_TOKEN: Cookies.get('user_token'),
-                ACCESS_TOKEN: Cookies.get('access_token'),
+                USER_TOKEN: Cookies.get('user_token')!,
+                ACCESS_TOKEN: Cookies.get('access_token')!,
             }
         }).then(res => {
             console.log(res);

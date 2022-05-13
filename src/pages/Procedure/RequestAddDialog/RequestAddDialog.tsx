@@ -2,22 +2,20 @@ import React, {useEffect} from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Grid,
-    TextField,
-} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {DefaultSupportAddData} from "../../../interface";
 import {useSnackbar} from "notistack";
-import useStyles from "../styles";
 import {Post} from "../../../api/Request";
 import {Get} from "../../../api/Info";
+import {StyledTextFieldVeryLong} from "../../../style";
 
 
 export function RequestAddDialog(props: {
     title: string
 }) {
     const {title} = props;
-    const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [data, setData] = React.useState(DefaultSupportAddData);
     const [open, setOpen] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -29,7 +27,7 @@ export function RequestAddDialog(props: {
         Post(data).then(res => {
             if (res.error === undefined) {
                 Get().then(() => {
-                    history.push('/dashboard/support/' + res.data.id);
+                    navigate('/dashboard/support/' + res.data.id);
                 });
                 setOpen(false);
             } else {
@@ -59,8 +57,7 @@ export function RequestAddDialog(props: {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 disabled={true}
                                 id="title"
                                 label="Title"
@@ -74,8 +71,7 @@ export function RequestAddDialog(props: {
                             <div>「{title}」の理由について詳しく説明してください。</div>
                             <div>内容によりまして、承諾できない可能性がありますがご了承ください。</div>
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline

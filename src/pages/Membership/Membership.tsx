@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
-import {Button, Card, CardActions, CardContent, CardHeader, Container, Grid, Typography} from "@material-ui/core";
-import useStyles from "./styles"
+import {Button, Card, CardActions, CardContent, Container, Grid, Typography} from "@mui/material";
+import {StyledCardHeader1, StyledDivCardPricing} from "./styles"
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {InfoData, TemplateData} from "../../interface";
@@ -9,19 +9,19 @@ import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "./membership.scss";
 import {PaymentDialog} from "../../components/Dashboard/Payment/Payment";
 import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
+import {StyledContainer1} from "../../style";
 
 
 export default function Membership() {
-    const classes = useStyles();
     const [data, setData] = React.useState<InfoData>();
     const [template, setTemplate] = React.useState<TemplateData>();
     const infos = useSelector((state: RootState) => state.infos);
     const templates = useSelector((state: RootState) => state.templates);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [isStatus, setIsStatus] = React.useState(0);
     const {enqueueSnackbar} = useSnackbar();
 
@@ -39,7 +39,7 @@ export default function Membership() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                 }
@@ -80,19 +80,19 @@ export default function Membership() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(res, {variant: "error"});
-                    history.push('/login');
+                    navigate('/login');
                 }
             }
         })
     }, []);
 
     const DonatePage = () => {
-        history.push("/dashboard/donate");
+        navigate("/dashboard/donate");
     }
 
     return (
         <DashboardComponent title="Membership">
-            <Container maxWidth="sm" component="main" className={classes.heroContent}>
+            <StyledContainer1 maxWidth="sm">
                 {/*<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>*/}
                 {/*    Membership*/}
                 {/*</Typography>*/}
@@ -100,7 +100,7 @@ export default function Membership() {
                     当団体ではネットワーク接続などをご利用頂いている皆様に「会費」として運営費用の一部を2021年から負担して頂くことになりました。
                     {/*今後も継続して活動を続けていくために、運営費用の一部を利用者の皆様に負担していただく予定です。*/}
                 </Typography>
-            </Container>
+            </StyledContainer1>
             {
                 isStatus === 1 &&
                 <h2>グループ未登録のため、この操作は出来ません。</h2>
@@ -149,23 +149,22 @@ export default function Membership() {
                             template?.payment_membership_template?.map((membership, index) => (
                                 <Grid item xs={12} sm={6} md={6} key={index}>
                                     <Card>
-                                        <CardHeader
+                                        <StyledCardHeader1
                                             title={membership.title}
                                             // subheader={tier.subheader}
                                             titleTypographyProps={{align: 'center'}}
                                             subheaderTypographyProps={{align: 'center'}}
                                             // action={tier.title === 'Pro' ? <StarIcon/> : null}
-                                            className={classes.cardHeader}
                                         />
                                         <CardContent>
-                                            <div className={classes.cardPricing}>
+                                            <StyledDivCardPricing>
                                                 <Typography component="h2" variant="h3" color="textPrimary">
                                                     {/*${tier.price}*/}
                                                 </Typography>
                                                 <Typography variant="h6" color="textSecondary">
                                                     {membership.plan}
                                                 </Typography>
-                                            </div>
+                                            </StyledDivCardPricing>
                                             <ul>
                                                 {membership.comment}
                                             </ul>

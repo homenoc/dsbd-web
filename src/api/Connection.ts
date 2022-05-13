@@ -7,8 +7,8 @@ export function Post(id: number, data: ConnectionAddData): Promise<{ error: stri
     return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/connection", data, {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: Cookies.get('user_token'),
-            ACCESS_TOKEN: Cookies.get('access_token'),
+            USER_TOKEN: Cookies.get('user_token')!,
+            ACCESS_TOKEN: Cookies.get('access_token')!,
         }
     }).then(res => {
         return {

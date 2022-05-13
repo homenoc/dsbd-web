@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
 import {
     Button,
-    Card,
     CardActions,
     CardContent, Chip,
     FormControl, FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {TicketData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {Solved} from "../../components/Dashboard/Solved/Open";
@@ -22,15 +19,15 @@ import {useSelector} from "react-redux";
 import {Get} from "../../api/Info";
 import {SupportAddDialog} from "./SupportAddDialog";
 import {Put} from "../../api/Support";
+import {StyledCardRoot3, StyledPaperRootInput, StyledSearchInput, StyledTypographyTitle} from "../../style";
 
 
 export default function Support() {
-    const classes = useStyles();
     const [tickets, setTickets] = useState<TicketData[]>([]);
     const [initTickets, setInitTickets] = useState<TicketData[]>([]);
     const [group, setGroupID] = useState(0);
     const infos = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(false);
 
@@ -48,7 +45,7 @@ export default function Support() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -98,23 +95,22 @@ export default function Support() {
     }
 
     const clickDetailPage = (id: number) => {
-        history.push('/dashboard/support/' + id);
+        navigate('/dashboard/support/' + id);
     }
 
     return (
         <Dashboard title="Ticket Info">
             <SupportAddDialog key={"support_add_dialog"} groupEnable={group !== 0}/>
             <br/>
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledSearchInput
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={false} control={<Radio color="primary"/>} label="未解決"/>
@@ -128,11 +124,11 @@ export default function Support() {
             {
                 tickets !== null &&
                 tickets.filter(ticket => ticket.solved === value).map((ticket: TicketData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCardRoot3>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {ticket.id}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {ticket.title}
                             </Typography>
@@ -180,7 +176,7 @@ export default function Support() {
                                         onClick={() => clickSolvedStatus(ticket.id, true)}>解決済み</Button>
                             }
                         </CardActions>
-                    </Card>
+                    </StyledCardRoot3>
                 ))
             }
         </Dashboard>

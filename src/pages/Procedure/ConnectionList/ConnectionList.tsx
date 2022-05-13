@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import useStyles from "../styles"
 import {
-    Button,
-    Card,
     CardActions,
-    CardContent, Chip,
-    InputBase,
-    Paper,
+    CardContent,
     Typography
-} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {InfosData} from "../../../interface";
 import {useSnackbar} from "notistack";
 import Cookies from "js-cookie";
@@ -20,14 +15,14 @@ import {Get} from "../../../api/Info";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import {ConnectionListDeleteDialog} from "./ConnectionListDeleteDialog";
 import {ConnectionListChangeDialog} from "./ConnectionListChangeDialog";
+import {StyledCardRoot3, StyledPaperRootInput, StyledSearchInput, StyledTypographyTitle} from "../../../style";
 
 
 export default function ConnectionList() {
-    const classes = useStyles();
     const [infos, setInfos] = useState<InfosData[]>([]);
     const [initInfos, setInitInfos] = useState<InfosData[]>([]);
     const info = useSelector((state: RootState) => state.infos);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -44,7 +39,7 @@ export default function ConnectionList() {
                     store.dispatch(clearInfos());
                     store.dispatch(clearTemplates());
                     enqueueSnackbar(tmpData.error, {variant: "error"});
-                    history.push("/");
+                    navigate("/");
                 } else {
                     enqueueSnackbar(tmpData.error, {variant: "error"});
                     Get().then();
@@ -76,24 +71,23 @@ export default function ConnectionList() {
 
     return (
         <Dashboard title="接続変更/廃止手続き">
-            <Card className={classes.root}>
+            <StyledCardRoot3>
                 <CardContent>
                     接続変更手続き（JPNIC管理者連絡窓口やJPNIC技術連絡窓口などのJPNICに登録している情報を変更、IPアドレスの廃止をご希望の方もお選びください。）
                     <br/>
                     接続削除手続き（サービスに属している接続も廃止になりますのでご注意ください。）
                 </CardContent>
-            </Card>
+            </StyledCardRoot3>
             <br/>
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledSearchInput
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 infos == null &&
                 <h3>現在、有効なサービスはありません。</h3>
@@ -101,14 +95,14 @@ export default function ConnectionList() {
             {
                 infos != null &&
                 infos.map((tmpInfo: InfosData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCardRoot3>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {tmpInfo.service_id}
                             </Typography>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 {/*ID: {tmpInfo.id}*/}
-                            </Typography>
+                            </StyledTypographyTitle>
                             &nbsp;
                             {/*<Pass key={"pass" + index} pass={connection.open}/>*/}
                             <br/>
@@ -117,30 +111,9 @@ export default function ConnectionList() {
                             <ConnectionListChangeDialog key={"connection_list_change_dialog"} info={tmpInfo}/>
                             <ConnectionListDeleteDialog key={"connection_list_delete_dialog"} info={tmpInfo}/>
                         </CardActions>
-                    </Card>
+                    </StyledCardRoot3>
                 ))
             }
         </Dashboard>
     );
-}
-
-function Pass(props: { pass: boolean }): any {
-    const {pass} = props;
-    if (pass) {
-        return (
-            <Chip
-                size="small"
-                color="primary"
-                label="審査済み"
-            />
-        );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="未審査"
-            />
-        );
-    }
 }

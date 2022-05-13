@@ -7,8 +7,8 @@ export function Post(data: ServiceAddData): Promise<{ error: string; data: any }
     return axios.post(restfulApiConfig.apiURL + "/service", data, {
         headers: {
             'Content-Type': 'application/json',
-            USER_TOKEN: Cookies.get('user_token'),
-            ACCESS_TOKEN: Cookies.get('access_token'),
+            USER_TOKEN: Cookies.get('user_token')!,
+            ACCESS_TOKEN: Cookies.get('access_token')!,
         }
     }).then(res => {
         return {

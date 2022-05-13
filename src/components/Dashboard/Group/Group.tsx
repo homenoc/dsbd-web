@@ -2,7 +2,9 @@ import {GroupData} from "../../../interface";
 import React from "react";
 import classesCSS from "./style.module.scss";
 
-export function GroupGet(props: { group: GroupData }): any {
+export function GroupGet(props: {
+    group: GroupData
+}): any {
     const {group} = props;
 
     return (
