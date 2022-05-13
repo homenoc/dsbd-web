@@ -21,11 +21,13 @@ import {restfulApiConfig} from "./api/Config";
 import GroupAdd from "./pages/Add/GroupAdd/GroupAdd";
 import ServiceAdd from './pages/Add/ServiceAdd/ServiceAdd';
 import ConnectionAdd from "./pages/Add/ConnectionAdd/ConnectionAdd";
+import NotFound from "./pages/Etc/404";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="*" element={<NotFound/>}/>
                 <Route path='/' element={<SignIn/>}/> {/*not foundの時*/}
                 <Route path="/login" element={<SignIn/>}/>
                 <Route path="/register" element={<SignUp/>}/>
