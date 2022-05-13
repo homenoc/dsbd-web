@@ -18,6 +18,9 @@ import ConnectionList from "./pages/Procedure/ConnectionList/ConnectionList";
 import Membership from "./pages/Membership/Membership";
 import Donate from "./pages/Donate/Donate";
 import {restfulApiConfig} from "./api/Config";
+import GroupAdd from "./pages/Add/GroupAdd/GroupAdd";
+import ServiceAdd from './pages/Add/ServiceAdd/ServiceAdd';
+import ConnectionAdd from "./pages/Add/ConnectionAdd/ConnectionAdd";
 
 function App() {
     return (
@@ -39,6 +42,9 @@ function App() {
                 }
 
                 <Route path="/dashboard/add" element={<PrivateRoute children={<Add/>}/>}/>
+                <Route path="/dashboard/add/group" element={<PrivateRoute children={<GroupAdd/>}/>}/>
+                <Route path="/dashboard/add/service" element={<PrivateRoute children={<ServiceAdd/>}/>}/>
+                <Route path="/dashboard/add/connection" element={<PrivateRoute children={<ConnectionAdd/>}/>}/>
                 <Route path="/dashboard/info" element={<PrivateRoute children={<Info/>}/>}/>
                 <Route path="/dashboard/support" element={<PrivateRoute children={<Support/>}/>}/>
                 <Route path="/dashboard/support/:id" element={<PrivateRoute children={<SupportDetail/>}/>}/>

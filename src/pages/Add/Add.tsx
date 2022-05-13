@@ -1,17 +1,14 @@
 import React, {useEffect} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
 import {Button, Grid, Step, StepLabel, Stepper} from "@mui/material";
-import {clearInfos, clearTemplates} from "../../store/action/Actions";
+import {clearInfos, clearTemplates, renewInfos} from "../../store/action/Actions";
 import store, {RootState} from "../../store";
 import {DefaultTemplateData, InfoData, TemplateData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
-import ServiceAddDialogs from "./ServiceAdd/ServiceAdd";
-import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
 import {useNavigate} from "react-router-dom";
-import GroupAddDialogs from "./GroupAdd/GroupAdd";
 
 function getSteps() {
     return ['グループ登録', '初期審査中', 'サービス情報の登録', '審査中', '接続情報の登録', '開通作業中'];
@@ -19,9 +16,6 @@ function getSteps() {
 
 export default function Add() {
     const [data, setData] = React.useState<InfoData>();
-    const [openGroup, setOpenGroup] = React.useState(false);
-    const [openService, setOpenService] = React.useState(false);
-    const [openConnection, setOpenConnection] = React.useState(false);
     const [template, setTemplate] = React.useState<TemplateData>(DefaultTemplateData);
     const infos = useSelector((state: RootState) => state.infos);
     const navigate = useNavigate();
@@ -45,12 +39,12 @@ export default function Add() {
                 }
             }
         })
+        Get().then();
     }, []);
 
     useEffect(() => {
         // info
-        const length = infos.length;
-        const tmpData = infos[length - 1];
+        const tmpData = infos[infos.length - 1];
 
         if (tmpData.error !== undefined || tmpData.data != null) {
             if (tmpData.error !== undefined) {
@@ -69,20 +63,24 @@ export default function Add() {
                 // add group
                 if (tmpData.data.user?.group_id === 0) {
                     setActiveStep(0);
+                    console.log("0: グループ登録")
                 } else if (!tmpData.data.group?.pass) {
                     setActiveStep(1);
                 } else if (tmpData.data.group?.add_allow) {
                     setActiveStep(2);
+                    console.log("2:グループ審査中")
                 } else if (tmpData.data.service != null && tmpData.data.service?.filter(value => !value.pass).length > 0) {
                     setActiveStep(3);
+                    console.log("3:サービス登録")
                 } else if (tmpData.data.service != null && tmpData.data.service?.filter(value => value.add_allow).length > 0) {
                     setActiveStep(4);
+                    console.log("4:サービス審査中")
                 } else if (tmpData.data.connection != null && tmpData.data.connection?.filter(value => !value.open).length > 0) {
                     setActiveStep(5);
+                    console.log("5:接続情報登録")
                 } else {
                     setActiveStep(6);
                 }
-
             } else {
                 console.log("Renew");
                 Get().then();
@@ -113,9 +111,7 @@ export default function Add() {
                             <div>アカウント登録後、以下の「グループ情報の申請」のボタンより申請を行ってください。</div>
                             <br/>
                             <Button variant="contained" color={"primary"}
-                                    onClick={() => setOpenGroup(true)}>グループ情報の申請（初期申請）</Button>
-                            <GroupAddDialogs open={openGroup} setOpen={setOpenGroup}
-                                             userData={data.user}/>
+                                    onClick={() => navigate("/dashboard/add/group")}>グループ情報の申請（初期申請）</Button>
                         </div>
                     }
                 </Grid>
@@ -136,9 +132,7 @@ export default function Add() {
                             <div>ネットワーク接続を希望の方は、「サービス情報の申請」申請ボタンより行ってください。</div>
                             <br/>
                             <Button variant="contained" color={"primary"}
-                                    onClick={() => setOpenService(true)}>サービス情報の申請</Button>
-                            <ServiceAddDialogs template={template} open={openService} setOpen={setOpenService}
-                                               groupData={data?.group}/>
+                                    onClick={() => navigate("/dashboard/add/service")}>サービス情報の申請</Button>
                         </div>
                     }
                 </Grid>
@@ -148,10 +142,7 @@ export default function Add() {
                         <div>
                             <div>接続先の情報を登録する必要があるため、「接続情報の申請」ボタンより申請を行ってください。</div>
                             <Button variant="contained" color={"primary"}
-                                    onClick={() => setOpenConnection(true)}>接続情報の申請</Button>
-                            <ConnectionAddDialogs open={openConnection} setOpen={setOpenConnection}
-                                                  serviceData={data?.service}
-                                                  template={template}/>
+                                    onClick={() => navigate("/dashboard/add/connection")}>接続情報の申請</Button>
                         </div>
                     }
                 </Grid>
