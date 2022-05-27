@@ -41,6 +41,7 @@ export default function ConnectionAdd() {
     const [ipv6BGPRoute, setIPv6BGPRoute] = React.useState(false);
     const [isComment, setIsComment] = React.useState(false);
     const [isInternet, setIsInternet] = React.useState(false);
+    const [isGlobalAs, setIsGlobalAs] = React.useState(false);
 
 
     useEffect(() => {
@@ -228,6 +229,7 @@ export default function ConnectionAdd() {
                                     checkBgpRoute(Number(event.target.value));
                                     const tmpService = infos[infos.length - 1]?.data?.service?.filter(data => data.id === Number(event.target.value));
                                     if (tmpService != null) {
+                                        setIsGlobalAs(tmpService[0].service_type === "IP3B")
                                         setServiceCode(tmpService[0].service_type);
                                     }
                                     setServiceID(Number(event.target.value));
@@ -246,9 +248,8 @@ export default function ConnectionAdd() {
                         ipBGPRoute &&
                         <Grid item xs={12}>
                             <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
-
                             {
-                                ipBGPRoute && ipv4BGPRoute &&
+                                ((ipBGPRoute && ipv4BGPRoute)||(ipBGPRoute && isGlobalAs)) &&
                                 <StyledFormControlFormSelect>
                                     <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                                     <FormHelperText>
@@ -281,7 +282,7 @@ export default function ConnectionAdd() {
                                 </StyledFormControlFormSelect>
                             }
                             {
-                                ipBGPRoute && ipv6BGPRoute &&
+                                ((ipBGPRoute && ipv6BGPRoute)||(ipBGPRoute && isGlobalAs)) &&
                                 <StyledFormControlFormSelect>
                                     <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                                     <FormHelperText>
