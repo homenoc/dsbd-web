@@ -15,8 +15,7 @@ import UserList from "./pages/Procedure/UserList/UserList";
 import UserDetail from "./pages/Procedure/UserList/UserDetail/UserDetail";
 import ServiceList from "./pages/Procedure/ServiceList/ServiceList";
 import ConnectionList from "./pages/Procedure/ConnectionList/ConnectionList";
-import Membership from "./pages/Membership/Membership";
-import Donate from "./pages/Donate/Donate";
+import Payment from "./pages/Payment/Payment";
 import {restfulApiConfig} from "./api/Config";
 import GroupAdd from "./pages/Add/GroupAdd/GroupAdd";
 import ServiceAdd from './pages/Add/ServiceAdd/ServiceAdd';
@@ -36,11 +35,7 @@ function App() {
 
                 {
                     restfulApiConfig.enableMoney &&
-                    <Route path="/dashboard/membership" element={<PrivateRoute children={<Membership/>}/>}/>
-                }
-                {
-                    restfulApiConfig.enableMoney &&
-                    <Route path="/dashboard/donate" element={<PrivateRoute children={<Donate/>}/>}/>
+                    <Route path="/dashboard/payment" element={<PrivateRoute children={<Payment/>}/>}/>
                 }
 
                 <Route path="/dashboard/add" element={<PrivateRoute children={<Add/>}/>}/>

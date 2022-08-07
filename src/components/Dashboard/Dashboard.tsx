@@ -19,11 +19,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import PaymentIcon from '@mui/icons-material/Payment';
 import {
-    StyledContainer1,
-    StyledDivAppBarShift,
     StyledDivDashboardRoot,
     StyledDivDashboardToolBarIcon,
-    StyledMainContent,
     StyledTypographyPageTitle
 } from "./styles";
 import {useNavigate} from "react-router-dom";
@@ -33,7 +30,6 @@ import Cookies from "js-cookie";
 import store from "../../store";
 import {clearInfos, clearTemplates} from "../../store/action/Actions";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import MoneyIcon from '@mui/icons-material/Money';
 import {restfulApiConfig} from "../../api/Config";
 import {muiColorTheme} from "../Theme";
 
@@ -102,7 +98,7 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 export default function Dashboard(props: any) {
     const navigate = useNavigate();
     // Menu Bar
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -123,11 +119,8 @@ export default function Dashboard(props: any) {
     const AddPage = () => {
         navigate("/dashboard/add");
     }
-    const MembershipPage = () => {
-        navigate("/dashboard/membership");
-    }
-    const DonatePage = () => {
-        navigate("/dashboard/donate");
+    const PaymentPage = () => {
+        navigate("/dashboard/payment");
     }
     const SupportPage = () => {
         navigate("/dashboard/support");
@@ -198,20 +191,11 @@ export default function Dashboard(props: any) {
                     </ListItem>
                     {
                         restfulApiConfig.enableMoney &&
-                        <ListItem button onClick={MembershipPage}>
+                        <ListItem button onClick={PaymentPage}>
                             <ListItemIcon>
                                 <PaymentIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="会費"/>
-                        </ListItem>
-                    }
-                    {
-                        restfulApiConfig.enableMoney &&
-                        <ListItem button onClick={DonatePage}>
-                            <ListItemIcon>
-                                <MoneyIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="寄付"/>
+                            <ListItemText primary="会費/寄付"/>
                         </ListItem>
                     }
                     <ListItem button onClick={SupportPage}>

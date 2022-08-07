@@ -91,8 +91,8 @@ export default function Dashboard() {
         navigate("/dashboard/add");
     }
 
-    const moveMembershipPage = () => {
-        navigate("/dashboard/membership");
+    const movePaymentPage = () => {
+        navigate("/dashboard/payment");
     }
 
     return (
@@ -120,7 +120,7 @@ export default function Dashboard() {
 
                             </CardContent>
                             <CardActions>
-                                <Button size="small" variant="outlined" onClick={moveMembershipPage}>
+                                <Button size="small" variant="outlined" onClick={movePaymentPage}>
                                     会費のお支払いはこちらから
                                 </Button>
                             </CardActions>

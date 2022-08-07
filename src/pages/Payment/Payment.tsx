@@ -10,13 +10,14 @@ import {useSelector} from "react-redux";
 import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
-import "./membership.scss";
+import "./payment.scss";
 import {PaymentDialog} from "../../components/Dashboard/Payment/Payment";
 import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
 import {StyledContainer1} from "../../style";
+import {restfulApiConfig} from "../../api/Config";
 
 
-export default function Membership() {
+export default function Payment() {
     const [data, setData] = React.useState<InfoData>();
     const [template, setTemplate] = React.useState<TemplateData>();
     const infos = useSelector((state: RootState) => state.infos);
@@ -87,14 +88,14 @@ export default function Membership() {
     }, []);
 
     const DonatePage = () => {
-        navigate("/dashboard/donate");
+        window.open(restfulApiConfig.donateURL, '_blank')
     }
 
     return (
-        <DashboardComponent title="Membership">
+        <DashboardComponent title="Payment">
             <StyledContainer1 maxWidth="sm">
                 {/*<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>*/}
-                {/*    Membership*/}
+                {/*    Payment*/}
                 {/*</Typography>*/}
                 <Typography variant="h5" align="center" color="textSecondary" component="p">
                     当団体ではネットワーク接続などをご利用頂いている皆様に「会費」として運営費用の一部を2021年から負担して頂くことになりました。
@@ -103,82 +104,82 @@ export default function Membership() {
             </StyledContainer1>
             {
                 isStatus === 1 &&
-                <h2>グループ未登録のため、この操作は出来ません。</h2>
+              <h2>グループ未登録のため、この操作は出来ません。</h2>
             }
             {
                 isStatus === 2 &&
-                <h2>{data?.group?.member_info}のため、費用は免除されます。</h2>
+              <h2>{data?.group?.member_info}のため、費用は免除されます。</h2>
             }
             {
                 isStatus === 3 &&
-                <h2>開通処理後、会費の支払いを行ってください。</h2>
+              <h2>開通処理後、会費の支払いを行ってください。</h2>
             }
             {
                 isStatus === 4 &&
-                <div>
-                    <h3>定期支払いを解約する場合は、解約になりますので、「各種手続き ⇛ 退会手続き」をお選びください。</h3>
-                    <br/>
-                    <h2>支払い済みです。</h2>
-                    <h2>有効期限: {data?.group?.member_expired}</h2>
-                    <h2>Plan: {data?.group?.payment_membership_template}</h2>
-                    {
-                        data?.group?.discount_rate !== 100 && data?.group?.discount_rate !== 0 &&
-                        <h2>{data?.group?.member_info}</h2>
-                    }
-                    {
-                        data?.group?.automatic_update &&
-                        <div>
-                            <h2>自動更新が有効</h2>
-                            <PaymentCardChangeDialog key={"payment_card_change_dialog"}/>
-                        </div>
-                    }
-                    {
-                        !data?.group?.automatic_update &&
-                        <div>
-                            <h2>自動更新が無効</h2>
-                        </div>
-                    }
-                </div>
+              <div>
+                <h3>定期支払いを解約する場合は、解約になりますので、「各種手続き ⇛ 退会手続き」をお選びください。</h3>
+                <br/>
+                <h2>支払い済みです。</h2>
+                <h2>有効期限: {data?.group?.member_expired}</h2>
+                <h2>Plan: {data?.group?.payment_membership_template}</h2>
+                  {
+                      data?.group?.discount_rate !== 100 && data?.group?.discount_rate !== 0 &&
+                    <h2>{data?.group?.member_info}</h2>
+                  }
+                  {
+                      data?.group?.automatic_update &&
+                    <div>
+                      <h2>自動更新が有効</h2>
+                      <PaymentCardChangeDialog key={"payment_card_change_dialog"}/>
+                    </div>
+                  }
+                  {
+                      !data?.group?.automatic_update &&
+                    <div>
+                      <h2>自動更新が無効</h2>
+                    </div>
+                  }
+              </div>
             }
             {
                 isStatus === 0 &&
-                <Container maxWidth="md" component="main">
-                    <h3>支払いを行うと自動定期支払いになりますので、ご注意ください。</h3>
-                    <Grid container spacing={5} alignItems="flex-end">
-                        {
-                            template?.payment_membership_template?.map((membership, index) => (
-                                <Grid item xs={12} sm={6} md={6} key={index}>
-                                    <Card>
-                                        <StyledCardHeader1
-                                            title={membership.title}
-                                            // subheader={tier.subheader}
-                                            titleTypographyProps={{align: 'center'}}
-                                            subheaderTypographyProps={{align: 'center'}}
-                                            // action={tier.title === 'Pro' ? <StarIcon/> : null}
-                                        />
-                                        <CardContent>
-                                            <StyledDivCardPricing>
-                                                <Typography component="h2" variant="h3" color="textPrimary">
-                                                    {/*${tier.price}*/}
-                                                </Typography>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    {membership.plan}
-                                                </Typography>
-                                            </StyledDivCardPricing>
-                                            <ul>
-                                                {membership.comment}
-                                            </ul>
-                                        </CardContent>
-                                        <CardActions>
-                                            <PaymentDialog key={"payment_" + membership.ID} itemID={membership.ID}
-                                                           url={"membership"}/>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            ))
-                        }
-                    </Grid>
-                </Container>
+              <Container maxWidth="md" component="main">
+                <h3>支払いを行うと自動定期支払いになりますので、ご注意ください。</h3>
+                <Grid container spacing={5} alignItems="flex-end">
+                    {
+                        template?.payment_membership_template?.map((membership, index) => (
+                            <Grid item xs={12} sm={6} md={6} key={index}>
+                                <Card>
+                                    <StyledCardHeader1
+                                        title={membership.title}
+                                        // subheader={tier.subheader}
+                                        titleTypographyProps={{align: 'center'}}
+                                        subheaderTypographyProps={{align: 'center'}}
+                                        // action={tier.title === 'Pro' ? <StarIcon/> : null}
+                                    />
+                                    <CardContent>
+                                        <StyledDivCardPricing>
+                                            <Typography component="h2" variant="h3" color="textPrimary">
+                                                {/*${tier.price}*/}
+                                            </Typography>
+                                            <Typography variant="h6" color="textSecondary">
+                                                {membership.plan}
+                                            </Typography>
+                                        </StyledDivCardPricing>
+                                        <ul>
+                                            {membership.comment}
+                                        </ul>
+                                    </CardContent>
+                                    <CardActions>
+                                        <PaymentDialog key={"payment_" + membership.ID} itemID={membership.ID}
+                                                       url={"membership"}/>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))
+                    }
+                </Grid>
+              </Container>
             }
             <br/>
             <br/>

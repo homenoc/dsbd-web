@@ -67,6 +67,7 @@ function CheckoutForm(props: {
     const {enqueueSnackbar} = useSnackbar();
 
     const cardStyle = {
+        hidePostalCode: true,
         style: {
             base: {
                 color: "#32325d",
