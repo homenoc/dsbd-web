@@ -92,9 +92,9 @@ export default function ConnectionAdd() {
             connection_type: Yup.string()
                 .required('接続情報を選択してください')
                 .min(1, "正しく選択してください"),
-            noc_id: Yup.number()
-                .required('希望NOCを選択してください')
-                .moreThan(0, "正しく選択してください"),
+            preferred_ap: Yup.string()
+                .required('希望のアクセスポイントを選択してください')
+                .min(1, "正しく選択してください"),
             monitor: Yup.bool(),
         }
 
@@ -152,7 +152,7 @@ export default function ConnectionAdd() {
             ipv6_route_comment: "",
             ntt: "",
             ntt_comment: "",
-            noc_id: 0,
+            preferred_ap: "",
             term_ip: "",
             monitor: false
         }
@@ -167,7 +167,7 @@ export default function ConnectionAdd() {
         console.log(data, e)
         let request: any = {
             connection_type: data.connection_type,
-            noc_id: data.noc_id,
+            preferred_ap: data.preferred_ap,
             monitor: data.monitor,
         };
 
@@ -432,29 +432,23 @@ export default function ConnectionAdd() {
                       </Grid>
                     }
                     <Grid item xs={12}>
-                        <FormControl component="fieldset" error={errors?.hasOwnProperty("noc_id")}>
-                            <FormLabel component="legend">3.1. ご希望の接続終端NOCをお選びください</FormLabel>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("preferred_ap")}>
+                            <FormLabel component="legend">3.1. ご希望の接続終端場所をお選びください</FormLabel>
                             <FormHelperText>
-                                {errors?.noc_id && errors.noc_id?.message}
+                                {errors?.preferred_ap && errors.preferred_ap?.message}
                             </FormHelperText>
                             <Controller
-                                name="noc_id"
+                                name="preferred_ap"
                                 control={control}
                                 render={({field, fieldState}) => (
                                     <Select
                                         aria-label="gender"
-                                        onChange={(e) => {
-                                            const value = Number(e.target.value)
-                                            if (!isNaN(value)) {
-                                                field.onChange(value)
-                                            }
-                                        }}
-                                        value={field.value === undefined ? '' : field.value}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value}
                                     >
                                         {
-                                            template.nocs?.map((row, index) => (
-                                                <MenuItem key={"noc_id_" + index}
-                                                          value={row.ID}>{row.name}</MenuItem>
+                                            template.preferred_ap?.map((row, index) => (
+                                                <MenuItem key={"preferred_ap_" + index} value={row}>{row}</MenuItem>
                                             ))
 
                                         }

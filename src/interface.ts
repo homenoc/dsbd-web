@@ -321,10 +321,8 @@ export interface TemplateData {
     connections?: ConnectionTemplateData[]
     ipv4?: string[]
     ipv6?: string[]
-    nocs?: NOCTemplateData[]
     ntts?: string[]
-    tunnel_endpoint_router?: TunnelEndPointRouterTemplateData[]
-    tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
+    preferred_ap?: string[]
     ipv4_route?: string[]
     ipv6_route?: string[]
     payment_membership_template?: PaymentMembershipTemplate[]
@@ -430,10 +428,7 @@ export const DefaultTemplateData: TemplateData = {
     services: undefined,
     ipv4: undefined,
     ipv6: undefined,
-    nocs: undefined,
     ntts: undefined,
-    tunnel_endpoint_router: undefined,
-    tunnel_endpoint_router_ip: undefined,
 }
 
 export const DefaultGroupAddData: GroupAddData = {
