@@ -29,9 +29,8 @@ import {
     StyledTextFieldVeryShort1
 } from "../../../style";
 import {ObjectShape} from "yup/lib/object";
-import {LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import DatePicker from "@mui/lab/DatePicker";
+import {LocalizationProvider, DesktopDatePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import moment from "moment";
 import {phoneRegExp, v4NetworkNameRegExp, v6NetworkNameRegExp} from "../reg";
 import {Post} from "../../../api/Service";
@@ -612,745 +611,166 @@ export default function ServiceAdd() {
                     </Grid>
                     {
                         serviceTemplateId !== 4 &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel>1.1.1. 割り当てを希望するIPアドレスをお知らせください</FormLabel>
-                                {/*    IPv4*/}
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={isIpv4}
-                                            onChange={() => setIsIpv4(!isIpv4)}
-                                            name="is_ipv4"
-                                            color="primary"
-                                        />
-                                    }
-                                    label="IPv4アドレスのアサインを希望する"
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.1.1. 割り当てを希望するIPアドレスをお知らせください</FormLabel>
+                            {/*    IPv4*/}
+                          <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isIpv4}
+                                    onChange={() => setIsIpv4(!isIpv4)}
+                                    name="is_ipv4"
+                                    color="primary"
                                 />
-                                {
-                                    isIpv4 && serviceTemplateId !== 4 &&
-                                    <div>
-                                        <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
-                                        <Box sx={{minWidth: 20}}>
-                                            <Select aria-label="gender" id="ipv4_subnet" value={ipv4Prefix}
-                                                    onChange={(event) => {
-                                                        setIpv4Prefix(event.target.value)
-                                                        const tmpPrefix = template.ipv4?.find(item => item.subnet === event.target.value);
-                                                        if (tmpPrefix != null) {
-                                                            let addressCount = tmpPrefix.quantity
-                                                            if (tmpPrefix.quantity - 2 < 0) {
-                                                                addressCount = 0
-                                                            }
-                                                            setIpv4Count(addressCount)
-                                                        }
-                                                    }}
-                                            >
-                                                <MenuItem value={"None"} disabled={true}>なし</MenuItem>
-                                                {
-                                                    template.ipv4?.map((map, index) => (
-                                                        !map.hide &&
-                                                        <MenuItem key={index}
-                                                                  value={map.subnet}>{(map.subnet)}</MenuItem>
-                                                    ))
-                                                }
-                                            </Select>
-                                        </Box>
-                                        <br/>
-                                        <StyledTextFieldShort
-                                            id="route_v4"
-                                            label="IPv4ネットワーク名"
-                                            multiline
-                                            variant="outlined"
-                                            {...register('route_v4')}
-                                            error={!!errors.route_v4}
-                                        />
-                                    </div>
-                                }
-                                {/*    IPv6*/}
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={isIpv6}
-                                            onChange={() => setIsIpv6(!isIpv6)}
-                                            name="is_ipv6"
-                                            color="primary"
-                                        />
-                                    }
-                                    label="IPv6アドレスのアサインを希望する"
-                                />
-                                <br/>
-                                {
-                                    isIpv6 && serviceTemplateId !== 4 &&
-                                    <div>
-                                        <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
-                                        <Box sx={{minWidth: 20}}>
-                                            <Select aria-label="gender" id="ipv6_subnet" value={ipv6Prefix}
-                                                    onChange={(event) =>
-                                                        setIpv6Prefix(event.target.value)}
-                                            >
-                                                <MenuItem value={"None"} disabled={true}>なし</MenuItem>
-                                                {
-                                                    template.ipv6?.map((map, index) => (
-                                                        !map.hide &&
-                                                        <MenuItem key={index}
-                                                                  value={map.subnet}>{(map.subnet)}</MenuItem>
-                                                    ))
-                                                }
-                                            </Select>
-                                        </Box>
-                                        <br/>
-                                        <StyledTextFieldShort
-                                            id="route_v6"
-                                            label="IPv6ネットワーク名"
-                                            multiline
-                                            variant="outlined"
-                                            {...register('route_v6')}
-                                            error={!!errors.route_v6}
-                                        />
-                                    </div>
-                                }
-                            </FormControl>
-                            <br/>
+                            }
+                            label="IPv4アドレスのアサインを希望する"
+                          />
                             {
                                 isIpv4 && serviceTemplateId !== 4 &&
-                                <FormControl component="fieldset">
-                                    <FormLabel>1.1.2. IPv4のネットワークプランをお知らせください</FormLabel>
-                                    <div> IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。</div>
-                                    <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
-                                    <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
-                                    <br/>
-                                    {controlledPlanFields.map((field, index) => {
-                                        return (
-                                            <StyledRootForm1 noValidate autoComplete="off">
-                                                <StyledTextFieldMedium
-                                                    required
-                                                    key={"name_" + index}
-                                                    label="Name"
-                                                    variant="outlined"
-                                                    {...register(`plan.${index}.name`, {
-                                                        required: true
-                                                    })}
-                                                    error={!!errors.plan?.[index]?.name}
-                                                />
-                                                <StyledTextFieldTooVeryShort
-                                                    required
-                                                    key={"after_" + index}
-                                                    label="直後"
-                                                    type="number"
-                                                    variant="outlined"
-                                                    {...register(`plan.${index}.after`, {
-                                                        required: true
-                                                    })}
-                                                    error={!!errors.plan?.[index]?.after}
-                                                />
-                                                <StyledTextFieldTooVeryShort
-                                                    required
-                                                    key={"half_year_" + index}
-                                                    label="半年後"
-                                                    type="number"
-                                                    variant="outlined"
-                                                    {...register(`plan.${index}.half_year`, {
-                                                        required: true
-                                                    })}
-                                                    error={!!errors.plan?.[index]?.half_year}
-                                                />
-                                                <StyledTextFieldTooVeryShort
-                                                    required
-                                                    key={"one_year_" + index}
-                                                    label="1年後"
-                                                    type="number"
-                                                    variant="outlined"
-                                                    {...register(`plan.${index}.one_year`, {
-                                                        required: true
-                                                    })}
-                                                    error={!!errors.plan?.[index]?.one_year}
-                                                />
-                                                {index >= 0 && (
-                                                    <Button
-                                                        key={"ip_delete_" + index}
-                                                        size="medium"
-                                                        variant="contained"
-                                                        color="secondary"
-                                                        onClick={() => removePlan(index)}
-                                                    >
-                                                        削除
-                                                    </Button>
-                                                )}
-                                            </StyledRootForm1>
-                                        )
-                                    })}
-                                    <br/>
-                                    <Box sx={{width: 100}}>
-                                        <Button
-                                            key={"ip_add_append"}
-                                            size="small"
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() =>
-                                                appendPlan({
-                                                    name: "",
-                                                    after: 0,
-                                                    half_year: 0,
-                                                    one_year: 0,
-                                                })
-                                            }
-                                        >
-                                            追加
-                                        </Button>
-                                    </Box>
-                                    <br/>
-                                    <TableContainer component={Paper}>
-                                        <StyledTableRoot size="small" aria-label="a dense table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Name</TableCell>
-                                                    <TableCell align="right">直後</TableCell>
-                                                    <TableCell align="right">半年後</TableCell>
-                                                    <TableCell align="right">1年後</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow key={"min_and_max"}>
-                                                    <TableCell component="th" scope="row"><b>(合計)</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Calc.after}</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Calc.half_year}</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Calc.one_year}</b></TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                            <TableBody>
-                                                <TableRow key={"min_and_max"}>
-                                                    <TableCell component="th"
-                                                               scope="row"><b>(必要最低IP数/最大IP数)</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Count / 4}/{ipv4Count - 2}</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Count / 4}/{ipv4Count - 2}</b></TableCell>
-                                                    <TableCell
-                                                        align="right"><b>{ipv4Count / 2}/{ipv4Count - 2}</b></TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </StyledTableRoot>
-                                    </TableContainer>
-                                    {
-                                        ipv4Count - 2 < ipv4Calc.after &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            直後のアドレス数が超えています。
-                                        </Typography>
-                                    }
-                                    {
-                                        ipv4Calc.after < ipv4Count / 4 &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            直後のアドレス数が少ないです。
-                                        </Typography>
-                                    }
-                                    {
-                                        ipv4Count - 2 < ipv4Calc.half_year &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            半年後のアドレス数が超えています。
-                                        </Typography>
-                                    }
-                                    {
-                                        ipv4Calc.half_year < ipv4Count / 4 &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            半年後のアドレス数が少ないです。
-                                        </Typography>
-                                    }
-                                    {
-                                        ipv4Count - 2 < ipv4Calc.one_year &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            1年後のアドレス数が超えています。
-                                        </Typography>
-                                    }
-                                    {
-                                        ipv4Calc.one_year < ipv4Count / 2 &&
-                                        <Typography variant="inherit" color="textSecondary">
-                                            1年後のアドレス数が少ないです。
-                                        </Typography>
-                                    }
-                                </FormControl>
-                            }
-                        </Grid>
-                    }
-                    {
-                        serviceTemplateId === 4 &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel>1.1.1. AS番号</FormLabel>
-                                <Typography variant="subtitle1" gutterBottom component="div">
-                                    広報したいAS番号をこちらにお書きください。
-                                </Typography>
-                                <StyledTextFieldVeryShort1
-                                    required
-                                    id="asn"
-                                    label="ASN"
-                                    variant="outlined"
-                                    {...register('asn')}
-                                    error={!!errors.asn}
-                                />
-                                <div>複数ある場合は、コンマ「,」で区切ってください。</div>
-                            </FormControl>
-                        </Grid>
-                    }
-                    {
-                        serviceTemplateId === 4 &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel>1.1.2. 広報する経路など</FormLabel>
-                                <Typography variant="subtitle1" gutterBottom component="div">
-                                    広報する経路などありましたら、こちらにお書きください。
-                                </Typography>
-                                <StyledTextFieldVeryLong
-                                    id="bgp_comment"
-                                    label="bgp_comment"
-                                    multiline
-                                    rows={4}
-                                    variant="outlined"
-                                    {...register('bgp_comment')}
-                                    error={!!errors.bgp_comment}
-                                />
-                            </FormControl>
-                        </Grid>
-                    }
-                    {
-                        serviceTemplateId !== 4 &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel>1.2.1. 基本登録情報</FormLabel>
-                                <div>JPNIC/HomeNOCに登録する情報を記入してください。</div>
-                                <div>（注意：郵便番号はハイフンを入力してください。）</div>
-                                <StyledRootForm noValidate autoComplete="off">
-                                    <StyledTextFieldShort
-                                        id="org"
-                                        label="組織名"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('org')}
-                                        error={!!errors.org}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.org?.message}
-                                    </Typography>
-                                    <StyledTextFieldShort
-                                        id="org_en"
-                                        label="組織名(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('org_en')}
-                                        error={!!errors.org_en}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.org_en?.message}
-                                    </Typography>
-                                    <StyledTextFieldVeryShort1
-                                        id="postcode"
-                                        label="郵便番号"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('postcode')}
-                                        error={!!errors.postcode}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.postcode?.message}
-                                    </Typography>
-                                    <StyledTextFieldLong
-                                        id="address"
-                                        label="住所(日本語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('address')}
-                                        error={!!errors.address}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.address?.message}
-                                    </Typography>
-                                    <StyledTextFieldLong
-                                        id="address_en"
-                                        label="住所(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('address_en')}
-                                        error={!!errors.address_en}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.address_en?.message}
-                                    </Typography>
-                                </StyledRootForm>
-                            </FormControl>
-                        </Grid>
-                    }
-                    {
-                        serviceTemplateId !== 4 &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel>1.2.2. 管理者連絡窓口</FormLabel>
-                                <div>割り当てるIPアドレスの管理連絡窓口をご記入ください。</div>
-                                <div>（注意：郵便番号はハイフンを入力してください。）</div>
-                                <FormControlLabel
-                                    control={<Controller
-                                        control={control}
-                                        name="jpnic_admin.is_group"
-                                        render={({field: {onChange}}) => (
-                                            <Checkbox
-                                                color="primary"
-                                                onChange={e => onChange(e.target.checked)}
-                                            />
-                                        )}/>
-                                    }
-                                    label={
-                                        <Typography color={errors.jpnic_admin?.is_group ? 'error' : 'inherit'}>
-                                            グループハンドルで登録する
-                                        </Typography>
-                                    }
-                                />
-                                <FormControlLabel
-                                    control={<Controller
-                                        control={control}
-                                        name="jpnic_admin.hidden"
-                                        render={({field: {onChange}}) => (
-                                            <Checkbox
-                                                color="primary"
-                                                onChange={e => onChange(e.target.checked)}
-                                            />
-                                        )}/>
-                                    }
-                                    label={
-                                        <Typography color={errors.jpnic_admin?.hidden ? 'error' : 'inherit'}>
-                                            非公開
-                                        </Typography>
-                                    }
-                                />
+                              <div>
+                                <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
+                                <Box sx={{minWidth: 20}}>
+                                  <Select aria-label="gender" id="ipv4_subnet" value={ipv4Prefix}
+                                          onChange={(event) => {
+                                              setIpv4Prefix(event.target.value)
+                                              const tmpPrefix = template.ipv4?.find(item => item.subnet === event.target.value);
+                                              if (tmpPrefix != null) {
+                                                  let addressCount = tmpPrefix.quantity
+                                                  if (tmpPrefix.quantity - 2 < 0) {
+                                                      addressCount = 0
+                                                  }
+                                                  setIpv4Count(addressCount)
+                                              }
+                                          }}
+                                  >
+                                    <MenuItem value={"None"} disabled={true}>なし</MenuItem>
+                                      {
+                                          template.ipv4?.map((map, index) => (
+                                              !map.hide &&
+                                              <MenuItem key={index}
+                                                        value={map.subnet}>{(map.subnet)}</MenuItem>
+                                          ))
+                                      }
+                                  </Select>
+                                </Box>
                                 <br/>
-                                <StyledRootForm noValidate autoComplete="off">
-                                    <StyledTextFieldShort
-                                        id="org"
-                                        label="組織名"
-                                        multiline
-                                        variant="outlined"
-                                        {...register("jpnic_admin.org")}
-                                        error={!!errors.jpnic_admin?.org?.message}
-                                    />
-                                    <StyledTextFieldShort
-                                        id="org_en"
-                                        label="組織名(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register("jpnic_admin.org_en")}
-                                        error={!!errors.jpnic_admin?.org_en?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldShort
-                                        id="name"
-                                        label="グループ名/氏名"
-                                        multiline
-                                        variant="outlined"
-                                        {...register("jpnic_admin.name")}
-                                        error={!!errors.jpnic_admin?.name?.message}
-                                    />
-                                    <StyledTextFieldShort
-                                        id="name_en"
-                                        label="グループ名/氏名(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register("jpnic_admin.name_en")}
-                                        error={!!errors.jpnic_admin?.name_en?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldVeryShort1
-                                        id="postcode"
-                                        label="郵便番号"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.postcode')}
-                                        error={!!errors.jpnic_admin?.postcode?.message}
-                                    />
-                                    <StyledTextFieldLong
-                                        id="address"
-                                        label="住所(日本語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.address')}
-                                        error={!!errors.jpnic_admin?.address?.message}
-                                    />
-                                    <StyledTextFieldLong
-                                        id="address_en"
-                                        label="住所(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.address_en')}
-                                        error={!!errors.jpnic_admin?.address_en?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldMedium
-                                        id="dept"
-                                        label="部署(日本語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.dept')}
-                                        error={!!errors.jpnic_admin?.dept?.message}
-                                    />
-                                    <StyledTextFieldMedium
-                                        id="dept_en"
-                                        label="部署(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.dept_en')}
-                                        error={!!errors.jpnic_admin?.dept_en?.message}
-                                    />
-                                    <StyledTextFieldMedium
-                                        id="title"
-                                        label="肩書(日本語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.title')}
-                                        error={!!errors.jpnic_admin?.title?.message}
-                                    />
-                                    <StyledTextFieldMedium
-                                        id="title_en"
-                                        label="肩書(英語)"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.title_en')}
-                                        error={!!errors.jpnic_admin?.title_en?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldMedium
-                                        id="tel"
-                                        label="電話番号"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.tel')}
-                                        error={!!errors.jpnic_admin?.tel?.message}
-                                    />
-                                    <StyledTextFieldMedium
-                                        id="fax"
-                                        label="Fax"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.fax')}
-                                        error={!!errors.jpnic_admin?.fax?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldLong
-                                        id="email"
-                                        label="E-Mail"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.mail')}
-                                        error={!!errors.jpnic_admin?.mail?.message}
-                                    />
-                                    <br/>
-                                    <StyledTextFieldMedium
-                                        id="country"
-                                        label="居住地"
-                                        multiline
-                                        variant="outlined"
-                                        {...register('jpnic_admin.country')}
-                                        error={!!errors.jpnic_admin?.country?.message}
-                                    />
-                                </StyledRootForm>
-                            </FormControl>
-                        </Grid>
-                    }
-                    {
-                        serviceTemplateId !== 4 &&
-                        <Grid item xs={12}>
+                                <StyledTextFieldShort
+                                  id="route_v4"
+                                  label="IPv4ネットワーク名"
+                                  multiline
+                                  variant="outlined"
+                                  {...register('route_v4')}
+                                  error={!!errors.route_v4}
+                                />
+                              </div>
+                            }
+                            {/*    IPv6*/}
+                          <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isIpv6}
+                                    onChange={() => setIsIpv6(!isIpv6)}
+                                    name="is_ipv6"
+                                    color="primary"
+                                />
+                            }
+                            label="IPv6アドレスのアサインを希望する"
+                          />
+                          <br/>
+                            {
+                                isIpv6 && serviceTemplateId !== 4 &&
+                              <div>
+                                <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
+                                <Box sx={{minWidth: 20}}>
+                                  <Select aria-label="gender" id="ipv6_subnet" value={ipv6Prefix}
+                                          onChange={(event) =>
+                                              setIpv6Prefix(event.target.value)}
+                                  >
+                                    <MenuItem value={"None"} disabled={true}>なし</MenuItem>
+                                      {
+                                          template.ipv6?.map((map, index) => (
+                                              !map.hide &&
+                                              <MenuItem key={index}
+                                                        value={map.subnet}>{(map.subnet)}</MenuItem>
+                                          ))
+                                      }
+                                  </Select>
+                                </Box>
+                                <br/>
+                                <StyledTextFieldShort
+                                  id="route_v6"
+                                  label="IPv6ネットワーク名"
+                                  multiline
+                                  variant="outlined"
+                                  {...register('route_v6')}
+                                  error={!!errors.route_v6}
+                                />
+                              </div>
+                            }
+                        </FormControl>
+                        <br/>
+                          {
+                              isIpv4 && serviceTemplateId !== 4 &&
                             <FormControl component="fieldset">
-                                <FormLabel>1.2.3. 技術連絡担当者</FormLabel>
-                                <div>割り当てるIPアドレスの管理連絡窓口をご記入ください</div>
-                                <div>（注意：郵便番号はハイフンを入力してください。）</div>
-                                {controlledJpnicTechFields.map((field, index) => {
+                              <FormLabel>1.1.2. IPv4のネットワークプランをお知らせください</FormLabel>
+                              <div> IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。</div>
+                              <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
+                              <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
+                              <br/>
+                                {controlledPlanFields.map((field, index) => {
                                     return (
                                         <StyledRootForm1 noValidate autoComplete="off">
-                                            <FormControlLabel
-                                                control={<Controller
-                                                    control={control}
-                                                    name={`jpnic_tech.${index}.is_group`}
-                                                    render={({field: {onChange}}) => (
-                                                        <Checkbox
-                                                            color="primary"
-                                                            onChange={e => onChange(e.target.checked)}
-                                                        />
-                                                    )}/>
-                                                }
-                                                label={
-                                                    <Typography
-                                                        color={errors.jpnic_tech?.[index]?.is_group ? 'error' : 'inherit'}>
-                                                        グループハンドルで登録する
-                                                    </Typography>
-                                                }
-                                            />
-                                            <FormControlLabel
-                                                control={<Controller
-                                                    control={control}
-                                                    name={`jpnic_tech.${index}.hidden`}
-                                                    render={({field: {onChange}}) => (
-                                                        <Checkbox
-                                                            color="primary"
-                                                            onChange={e => onChange(e.target.checked)}
-                                                        />
-                                                    )}/>
-                                                }
-                                                label={
-                                                    <Typography
-                                                        color={errors.jpnic_tech?.[index]?.hidden ? 'error' : 'inherit'}>
-                                                        非公開
-                                                    </Typography>
-                                                }
-                                            />
-                                            <br/>
-                                            <StyledTextFieldShort
-                                                id={"jpnic_tech_" + index + "_org"}
-                                                key={"jpnic-tech_org_" + index}
-                                                label="組織名"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.org`)}
-                                                error={!!errors.jpnic_tech?.[index]?.org}
-                                            />
-                                            <StyledTextFieldShort
-                                                id={"jpnic_tech_" + index + "_org_en"}
-                                                label="組織名(英語)"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.org_en`)}
-                                                error={!!errors.jpnic_tech?.[index]?.org_en}
-                                            />
-                                            <br/>
-                                            <StyledTextFieldShort
-                                                id={"jpnic_tech_" + index + "_name"}
-                                                label="グループ名/氏名"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.name`)}
-                                                error={!!errors.jpnic_tech?.[index]?.name}
-                                            />
-                                            <StyledTextFieldShort
-                                                id={"jpnic_tech_" + index + "_name_en"}
-                                                label="グループ名/氏名(英語)"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.name_en`)}
-                                                error={!!errors.jpnic_tech?.[index]?.name_en}
-                                            />
-                                            <br/>
-                                            <StyledTextFieldVeryShort1
-                                                id={"jpnic_tech_" + index + "_postcode"}
-                                                label="郵便番号"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.postcode`)}
-                                                error={!!errors.jpnic_tech?.[index]?.postcode}
-                                            />
-                                            <StyledTextFieldLong
-                                                id={"jpnic_tech_" + index + "_address"}
-                                                label="住所(日本語)"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.address`)}
-                                                error={!!errors.jpnic_tech?.[index]?.address?.message}
-                                            />
-                                            <StyledTextFieldLong
-                                                id={"jpnic_tech_" + index + "_address_en"}
-                                                label="住所(英語)"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.address_en`)}
-                                                error={!!errors.jpnic_tech?.[index]?.address_en?.message}
-                                            />
-                                            <br/>
                                             <StyledTextFieldMedium
-                                                id={"jpnic_tech_" + index + "_dept"}
-                                                label="部署(日本語)"
-                                                multiline
+                                                required
+                                                key={"name_" + index}
+                                                label="Name"
                                                 variant="outlined"
-                                                {...register(`jpnic_tech.${index}.dept`)}
-                                                error={!!errors.jpnic_tech?.[index]?.dept?.message}
+                                                {...register(`plan.${index}.name`, {
+                                                    required: true
+                                                })}
+                                                error={!!errors.plan?.[index]?.name}
                                             />
-                                            <StyledTextFieldMedium
-                                                id={"jpnic_tech_" + index + "_dept_en"}
-                                                label="部署(英語)"
-                                                multiline
+                                            <StyledTextFieldTooVeryShort
+                                                required
+                                                key={"after_" + index}
+                                                label="直後"
+                                                type="number"
                                                 variant="outlined"
-                                                {...register(`jpnic_tech.${index}.dept_en`)}
-                                                error={!!errors.jpnic_tech?.[index]?.dept_en?.message}
+                                                {...register(`plan.${index}.after`, {
+                                                    required: true
+                                                })}
+                                                error={!!errors.plan?.[index]?.after}
                                             />
-                                            <StyledTextFieldMedium
-                                                id="title"
-                                                label="肩書(日本語)"
-                                                multiline
+                                            <StyledTextFieldTooVeryShort
+                                                required
+                                                key={"half_year_" + index}
+                                                label="半年後"
+                                                type="number"
                                                 variant="outlined"
-                                                {...register(`jpnic_tech.${index}.title`)}
-                                                error={!!errors.jpnic_tech?.[index]?.title?.message}
+                                                {...register(`plan.${index}.half_year`, {
+                                                    required: true
+                                                })}
+                                                error={!!errors.plan?.[index]?.half_year}
                                             />
-                                            <StyledTextFieldMedium
-                                                id="title_en"
-                                                label="肩書(英語)"
-                                                multiline
+                                            <StyledTextFieldTooVeryShort
+                                                required
+                                                key={"one_year_" + index}
+                                                label="1年後"
+                                                type="number"
                                                 variant="outlined"
-                                                {...register(`jpnic_tech.${index}.title_en`)}
-                                                error={!!errors.jpnic_tech?.[index]?.title_en?.message}
+                                                {...register(`plan.${index}.one_year`, {
+                                                    required: true
+                                                })}
+                                                error={!!errors.plan?.[index]?.one_year}
                                             />
-                                            <br/>
-                                            <StyledTextFieldMedium
-                                                id={"jpnic_tech_" + index + "_tel"}
-                                                label="電話番号"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.tel`)}
-                                                error={!!errors.jpnic_tech?.[index]?.tel?.message}
-                                            />
-                                            <StyledTextFieldMedium
-                                                id={"jpnic_tech_" + index + "_fax"}
-                                                label="Fax"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.fax`)}
-                                                error={!!errors.jpnic_tech?.[index]?.fax?.message}
-                                            />
-                                            <br/>
-                                            <StyledTextFieldLong
-                                                id={"jpnic_tech_" + index + "_email"}
-                                                label="E-Mail"
-                                                multiline
-                                                variant="outlined"
-                                                type={"email"}
-                                                {...register(`jpnic_tech.${index}.mail`)}
-                                                error={!!errors.jpnic_tech?.[index]?.mail?.message}
-                                            />
-                                            <br/>
-                                            <StyledTextFieldMedium
-                                                id={"jpnic_tech_" + index + "_country"}
-                                                label="居住地"
-                                                multiline
-                                                variant="outlined"
-                                                {...register(`jpnic_tech.${index}.country`)}
-                                                error={!!errors.jpnic_tech?.[index]?.country?.message}
-                                            />
-                                            {
-                                                index === 0 &&
-                                                <Button
-                                                    key={"copy_jpnic_admin_" + index}
-                                                    size="medium"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={() => {
-                                                        setValue("jpnic_tech.0", jpnicAdmin)
-                                                    }}
-                                                >
-                                                    JPNIC管理者連絡窓口をコピー
-                                                </Button>
-                                            }
-                                            <br/>
                                             {index >= 0 && (
                                                 <Button
                                                     key={"ip_delete_" + index}
                                                     size="medium"
                                                     variant="contained"
                                                     color="secondary"
-                                                    onClick={() => removeJpnicTech(index)}
+                                                    onClick={() => removePlan(index)}
                                                 >
                                                     削除
                                                 </Button>
@@ -1358,22 +778,619 @@ export default function ServiceAdd() {
                                         </StyledRootForm1>
                                     )
                                 })}
-                                <br/>
-                                <Box sx={{width: 100}}>
-                                    <Button
-                                        key={"jpnic_tech_add_append"}
-                                        size="small"
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() =>
-                                            appendJpnicTech({})
-                                        }
-                                    >
-                                        追加
-                                    </Button>
-                                </Box>
+                              <br/>
+                              <Box sx={{width: 100}}>
+                                <Button
+                                  key={"ip_add_append"}
+                                  size="small"
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={() =>
+                                      appendPlan({
+                                          name: "",
+                                          after: 0,
+                                          half_year: 0,
+                                          one_year: 0,
+                                      })
+                                  }
+                                >
+                                  追加
+                                </Button>
+                              </Box>
+                              <br/>
+                              <TableContainer component={Paper}>
+                                <StyledTableRoot size="small" aria-label="a dense table">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>Name</TableCell>
+                                      <TableCell align="right">直後</TableCell>
+                                      <TableCell align="right">半年後</TableCell>
+                                      <TableCell align="right">1年後</TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow key={"min_and_max"}>
+                                      <TableCell component="th" scope="row"><b>(合計)</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Calc.after}</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Calc.half_year}</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Calc.one_year}</b></TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                  <TableBody>
+                                    <TableRow key={"min_and_max"}>
+                                      <TableCell component="th"
+                                                 scope="row"><b>(必要最低IP数/最大IP数)</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Count / 4}/{ipv4Count - 2}</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Count / 4}/{ipv4Count - 2}</b></TableCell>
+                                      <TableCell
+                                        align="right"><b>{ipv4Count / 2}/{ipv4Count - 2}</b></TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </StyledTableRoot>
+                              </TableContainer>
+                                {
+                                    ipv4Count - 2 < ipv4Calc.after &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    直後のアドレス数が超えています。
+                                  </Typography>
+                                }
+                                {
+                                    ipv4Calc.after < ipv4Count / 4 &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    直後のアドレス数が少ないです。
+                                  </Typography>
+                                }
+                                {
+                                    ipv4Count - 2 < ipv4Calc.half_year &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    半年後のアドレス数が超えています。
+                                  </Typography>
+                                }
+                                {
+                                    ipv4Calc.half_year < ipv4Count / 4 &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    半年後のアドレス数が少ないです。
+                                  </Typography>
+                                }
+                                {
+                                    ipv4Count - 2 < ipv4Calc.one_year &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    1年後のアドレス数が超えています。
+                                  </Typography>
+                                }
+                                {
+                                    ipv4Calc.one_year < ipv4Count / 2 &&
+                                  <Typography variant="inherit" color="textSecondary">
+                                    1年後のアドレス数が少ないです。
+                                  </Typography>
+                                }
                             </FormControl>
-                        </Grid>
+                          }
+                      </Grid>
+                    }
+                    {
+                        serviceTemplateId === 4 &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.1.1. AS番号</FormLabel>
+                          <Typography variant="subtitle1" gutterBottom component="div">
+                            広報したいAS番号をこちらにお書きください。
+                          </Typography>
+                          <StyledTextFieldVeryShort1
+                            required
+                            id="asn"
+                            label="ASN"
+                            variant="outlined"
+                            {...register('asn')}
+                            error={!!errors.asn}
+                          />
+                          <div>複数ある場合は、コンマ「,」で区切ってください。</div>
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        serviceTemplateId === 4 &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.1.2. 広報する経路など</FormLabel>
+                          <Typography variant="subtitle1" gutterBottom component="div">
+                            広報する経路などありましたら、こちらにお書きください。
+                          </Typography>
+                          <StyledTextFieldVeryLong
+                            id="bgp_comment"
+                            label="bgp_comment"
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                            {...register('bgp_comment')}
+                            error={!!errors.bgp_comment}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        serviceTemplateId !== 4 &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.2.1. 基本登録情報</FormLabel>
+                          <div>JPNIC/HomeNOCに登録する情報を記入してください。</div>
+                          <div>（注意：郵便番号はハイフンを入力してください。）</div>
+                          <StyledRootForm noValidate autoComplete="off">
+                            <StyledTextFieldShort
+                              id="org"
+                              label="組織名"
+                              multiline
+                              variant="outlined"
+                              {...register('org')}
+                              error={!!errors.org}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.org?.message}
+                            </Typography>
+                            <StyledTextFieldShort
+                              id="org_en"
+                              label="組織名(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register('org_en')}
+                              error={!!errors.org_en}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.org_en?.message}
+                            </Typography>
+                            <StyledTextFieldVeryShort1
+                              id="postcode"
+                              label="郵便番号"
+                              multiline
+                              variant="outlined"
+                              {...register('postcode')}
+                              error={!!errors.postcode}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.postcode?.message}
+                            </Typography>
+                            <StyledTextFieldLong
+                              id="address"
+                              label="住所(日本語)"
+                              multiline
+                              variant="outlined"
+                              {...register('address')}
+                              error={!!errors.address}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.address?.message}
+                            </Typography>
+                            <StyledTextFieldLong
+                              id="address_en"
+                              label="住所(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register('address_en')}
+                              error={!!errors.address_en}
+                            />
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.address_en?.message}
+                            </Typography>
+                          </StyledRootForm>
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        serviceTemplateId !== 4 &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.2.2. 管理者連絡窓口</FormLabel>
+                          <div>割り当てるIPアドレスの管理連絡窓口をご記入ください。</div>
+                          <div>（注意：郵便番号はハイフンを入力してください。）</div>
+                          <FormControlLabel
+                            control={<Controller
+                                control={control}
+                                name="jpnic_admin.is_group"
+                                render={({field: {onChange}}) => (
+                                    <Checkbox
+                                        color="primary"
+                                        onChange={e => onChange(e.target.checked)}
+                                    />
+                                )}/>
+                            }
+                            label={
+                                <Typography color={errors.jpnic_admin?.is_group ? 'error' : 'inherit'}>
+                                    グループハンドルで登録する
+                                </Typography>
+                            }
+                          />
+                          <FormControlLabel
+                            control={<Controller
+                                control={control}
+                                name="jpnic_admin.hidden"
+                                render={({field: {onChange}}) => (
+                                    <Checkbox
+                                        color="primary"
+                                        onChange={e => onChange(e.target.checked)}
+                                    />
+                                )}/>
+                            }
+                            label={
+                                <Typography color={errors.jpnic_admin?.hidden ? 'error' : 'inherit'}>
+                                    非公開
+                                </Typography>
+                            }
+                          />
+                          <br/>
+                          <StyledRootForm noValidate autoComplete="off">
+                            <StyledTextFieldShort
+                              id="org"
+                              label="組織名"
+                              multiline
+                              variant="outlined"
+                              {...register("jpnic_admin.org")}
+                              error={!!errors.jpnic_admin?.org?.message}
+                            />
+                            <StyledTextFieldShort
+                              id="org_en"
+                              label="組織名(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register("jpnic_admin.org_en")}
+                              error={!!errors.jpnic_admin?.org_en?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldShort
+                              id="name"
+                              label="グループ名/氏名"
+                              multiline
+                              variant="outlined"
+                              {...register("jpnic_admin.name")}
+                              error={!!errors.jpnic_admin?.name?.message}
+                            />
+                            <StyledTextFieldShort
+                              id="name_en"
+                              label="グループ名/氏名(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register("jpnic_admin.name_en")}
+                              error={!!errors.jpnic_admin?.name_en?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldVeryShort1
+                              id="postcode"
+                              label="郵便番号"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.postcode')}
+                              error={!!errors.jpnic_admin?.postcode?.message}
+                            />
+                            <StyledTextFieldLong
+                              id="address"
+                              label="住所(日本語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.address')}
+                              error={!!errors.jpnic_admin?.address?.message}
+                            />
+                            <StyledTextFieldLong
+                              id="address_en"
+                              label="住所(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.address_en')}
+                              error={!!errors.jpnic_admin?.address_en?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldMedium
+                              id="dept"
+                              label="部署(日本語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.dept')}
+                              error={!!errors.jpnic_admin?.dept?.message}
+                            />
+                            <StyledTextFieldMedium
+                              id="dept_en"
+                              label="部署(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.dept_en')}
+                              error={!!errors.jpnic_admin?.dept_en?.message}
+                            />
+                            <StyledTextFieldMedium
+                              id="title"
+                              label="肩書(日本語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.title')}
+                              error={!!errors.jpnic_admin?.title?.message}
+                            />
+                            <StyledTextFieldMedium
+                              id="title_en"
+                              label="肩書(英語)"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.title_en')}
+                              error={!!errors.jpnic_admin?.title_en?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldMedium
+                              id="tel"
+                              label="電話番号"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.tel')}
+                              error={!!errors.jpnic_admin?.tel?.message}
+                            />
+                            <StyledTextFieldMedium
+                              id="fax"
+                              label="Fax"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.fax')}
+                              error={!!errors.jpnic_admin?.fax?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldLong
+                              id="email"
+                              label="E-Mail"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.mail')}
+                              error={!!errors.jpnic_admin?.mail?.message}
+                            />
+                            <br/>
+                            <StyledTextFieldMedium
+                              id="country"
+                              label="居住地"
+                              multiline
+                              variant="outlined"
+                              {...register('jpnic_admin.country')}
+                              error={!!errors.jpnic_admin?.country?.message}
+                            />
+                          </StyledRootForm>
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        serviceTemplateId !== 4 &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                          <FormLabel>1.2.3. 技術連絡担当者</FormLabel>
+                          <div>割り当てるIPアドレスの管理連絡窓口をご記入ください</div>
+                          <div>（注意：郵便番号はハイフンを入力してください。）</div>
+                            {controlledJpnicTechFields.map((field, index) => {
+                                return (
+                                    <StyledRootForm1 noValidate autoComplete="off">
+                                        <FormControlLabel
+                                            control={<Controller
+                                                control={control}
+                                                name={`jpnic_tech.${index}.is_group`}
+                                                render={({field: {onChange}}) => (
+                                                    <Checkbox
+                                                        color="primary"
+                                                        onChange={e => onChange(e.target.checked)}
+                                                    />
+                                                )}/>
+                                            }
+                                            label={
+                                                <Typography
+                                                    color={errors.jpnic_tech?.[index]?.is_group ? 'error' : 'inherit'}>
+                                                    グループハンドルで登録する
+                                                </Typography>
+                                            }
+                                        />
+                                        <FormControlLabel
+                                            control={<Controller
+                                                control={control}
+                                                name={`jpnic_tech.${index}.hidden`}
+                                                render={({field: {onChange}}) => (
+                                                    <Checkbox
+                                                        color="primary"
+                                                        onChange={e => onChange(e.target.checked)}
+                                                    />
+                                                )}/>
+                                            }
+                                            label={
+                                                <Typography
+                                                    color={errors.jpnic_tech?.[index]?.hidden ? 'error' : 'inherit'}>
+                                                    非公開
+                                                </Typography>
+                                            }
+                                        />
+                                        <br/>
+                                        <StyledTextFieldShort
+                                            id={"jpnic_tech_" + index + "_org"}
+                                            key={"jpnic-tech_org_" + index}
+                                            label="組織名"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.org`)}
+                                            error={!!errors.jpnic_tech?.[index]?.org}
+                                        />
+                                        <StyledTextFieldShort
+                                            id={"jpnic_tech_" + index + "_org_en"}
+                                            label="組織名(英語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.org_en`)}
+                                            error={!!errors.jpnic_tech?.[index]?.org_en}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldShort
+                                            id={"jpnic_tech_" + index + "_name"}
+                                            label="グループ名/氏名"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.name`)}
+                                            error={!!errors.jpnic_tech?.[index]?.name}
+                                        />
+                                        <StyledTextFieldShort
+                                            id={"jpnic_tech_" + index + "_name_en"}
+                                            label="グループ名/氏名(英語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.name_en`)}
+                                            error={!!errors.jpnic_tech?.[index]?.name_en}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldVeryShort1
+                                            id={"jpnic_tech_" + index + "_postcode"}
+                                            label="郵便番号"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.postcode`)}
+                                            error={!!errors.jpnic_tech?.[index]?.postcode}
+                                        />
+                                        <StyledTextFieldLong
+                                            id={"jpnic_tech_" + index + "_address"}
+                                            label="住所(日本語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.address`)}
+                                            error={!!errors.jpnic_tech?.[index]?.address?.message}
+                                        />
+                                        <StyledTextFieldLong
+                                            id={"jpnic_tech_" + index + "_address_en"}
+                                            label="住所(英語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.address_en`)}
+                                            error={!!errors.jpnic_tech?.[index]?.address_en?.message}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldMedium
+                                            id={"jpnic_tech_" + index + "_dept"}
+                                            label="部署(日本語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.dept`)}
+                                            error={!!errors.jpnic_tech?.[index]?.dept?.message}
+                                        />
+                                        <StyledTextFieldMedium
+                                            id={"jpnic_tech_" + index + "_dept_en"}
+                                            label="部署(英語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.dept_en`)}
+                                            error={!!errors.jpnic_tech?.[index]?.dept_en?.message}
+                                        />
+                                        <StyledTextFieldMedium
+                                            id="title"
+                                            label="肩書(日本語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.title`)}
+                                            error={!!errors.jpnic_tech?.[index]?.title?.message}
+                                        />
+                                        <StyledTextFieldMedium
+                                            id="title_en"
+                                            label="肩書(英語)"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.title_en`)}
+                                            error={!!errors.jpnic_tech?.[index]?.title_en?.message}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldMedium
+                                            id={"jpnic_tech_" + index + "_tel"}
+                                            label="電話番号"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.tel`)}
+                                            error={!!errors.jpnic_tech?.[index]?.tel?.message}
+                                        />
+                                        <StyledTextFieldMedium
+                                            id={"jpnic_tech_" + index + "_fax"}
+                                            label="Fax"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.fax`)}
+                                            error={!!errors.jpnic_tech?.[index]?.fax?.message}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldLong
+                                            id={"jpnic_tech_" + index + "_email"}
+                                            label="E-Mail"
+                                            multiline
+                                            variant="outlined"
+                                            type={"email"}
+                                            {...register(`jpnic_tech.${index}.mail`)}
+                                            error={!!errors.jpnic_tech?.[index]?.mail?.message}
+                                        />
+                                        <br/>
+                                        <StyledTextFieldMedium
+                                            id={"jpnic_tech_" + index + "_country"}
+                                            label="居住地"
+                                            multiline
+                                            variant="outlined"
+                                            {...register(`jpnic_tech.${index}.country`)}
+                                            error={!!errors.jpnic_tech?.[index]?.country?.message}
+                                        />
+                                        {
+                                            index === 0 &&
+                                          <Button
+                                            key={"copy_jpnic_admin_" + index}
+                                            size="medium"
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => {
+                                                setValue("jpnic_tech.0", jpnicAdmin)
+                                            }}
+                                          >
+                                            JPNIC管理者連絡窓口をコピー
+                                          </Button>
+                                        }
+                                        <br/>
+                                        {index >= 0 && (
+                                            <Button
+                                                key={"ip_delete_" + index}
+                                                size="medium"
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={() => removeJpnicTech(index)}
+                                            >
+                                                削除
+                                            </Button>
+                                        )}
+                                    </StyledRootForm1>
+                                )
+                            })}
+                          <br/>
+                          <Box sx={{width: 100}}>
+                            <Button
+                              key={"jpnic_tech_add_append"}
+                              size="small"
+                              variant="contained"
+                              color="primary"
+                              onClick={() =>
+                                  appendJpnicTech({
+                                      hidden: false,
+                                      is_group: false,
+                                      org: "",
+                                      org_en: "",
+                                      mail: "",
+                                      postcode: "",
+                                      address: "",
+                                      address_en: "",
+                                      name: "",
+                                      name_en: "",
+                                      dept: "",
+                                      dept_en: "",
+                                      title: "",
+                                      title_en: "",
+                                      country: "",
+                                      tel: "",
+                                      fax: "",
+                                  })
+                              }
+                            >
+                              追加
+                            </Button>
+                          </Box>
+                        </FormControl>
+                      </Grid>
                     }
                     <Grid item xs={12}>
                         <FormControl component="fieldset">
@@ -1389,7 +1406,7 @@ export default function ServiceAdd() {
                                                      field: {onChange, value},
                                                      fieldState: {error, invalid}
                                                  }) => (
-                                            <DatePicker
+                                            <DesktopDatePicker
                                                 label="Date of start date"
                                                 disablePast
                                                 value={value}
@@ -1418,30 +1435,30 @@ export default function ServiceAdd() {
                             />
                             {
                                 !isPermanent &&
-                                <Box sx={{width: 200}}>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <br/>
-                                        <Controller
-                                            name="end_date"
-                                            control={control}
-                                            render={
-                                                ({
-                                                     field: {onChange, value},
-                                                     fieldState: {error, invalid}
-                                                 }) => (
-                                                    <DatePicker
-                                                        disablePast
-                                                        label="Date of end date"
-                                                        value={value}
-                                                        onChange={(value) =>
-                                                            onChange(moment(value).format("YYYY-MM-DD"))
-                                                        }
-                                                        renderInput={(params) => <TextField {...params} />}
-                                                    />
-                                                )}
-                                        />
-                                    </LocalizationProvider>
-                                </Box>
+                              <Box sx={{width: 200}}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                  <br/>
+                                  <Controller
+                                    name="end_date"
+                                    control={control}
+                                    render={
+                                        ({
+                                             field: {onChange, value},
+                                             fieldState: {error, invalid}
+                                         }) => (
+                                            <DesktopDatePicker
+                                                disablePast
+                                                label="Date of end date"
+                                                value={value}
+                                                onChange={(value) =>
+                                                    onChange(moment(value).format("YYYY-MM-DD"))
+                                                }
+                                                renderInput={(params) => <TextField {...params} />}
+                                            />
+                                        )}
+                                  />
+                                </LocalizationProvider>
+                              </Box>
                             }
                         </FormControl>
                     </Grid>
@@ -1510,18 +1527,18 @@ export default function ServiceAdd() {
                                 />
                                 {
                                     isTrafficAs &&
-                                    <div>
-                                        <StyledTextFieldVeryShort1
-                                            id="max_bandwidth_as"
-                                            label="AS番号"
-                                            multiline
-                                            type="number"
-                                            variant="outlined"
-                                            {...register('max_bandwidth_as')}
-                                            error={!!errors.max_bandwidth_as}
-                                        />
-                                        <div>複数ある場合は、コンマ「,」で区切ってください。</div>
-                                    </div>
+                                  <div>
+                                    <StyledTextFieldVeryShort1
+                                      id="max_bandwidth_as"
+                                      label="AS番号"
+                                      multiline
+                                      type="number"
+                                      variant="outlined"
+                                      {...register('max_bandwidth_as')}
+                                      error={!!errors.max_bandwidth_as}
+                                    />
+                                    <div>複数ある場合は、コンマ「,」で区切ってください。</div>
+                                  </div>
                                 }
                                 <br/>
                                 <b>※ 大量の通信とは平均20Mbps程度の通信が常時発生する状況を指します</b>

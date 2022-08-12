@@ -27,9 +27,8 @@ import {
     StyledTextFieldVeryShort1
 } from "../../../style";
 import {ObjectShape} from "yup/lib/object";
-import {LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import DatePicker from "@mui/lab/DatePicker";
+import {LocalizationProvider, DesktopDatePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import moment from "moment";
 import {Post} from "../../../api/Group";
 
@@ -42,9 +41,9 @@ export default function GroupAdd() {
     const usageURL = "https://www.homenoc.ad.jp/usage/";
     const feeURL = "https://www.homenoc.ad.jp/rules/fee/";
 
-    useEffect(()=>{
+    useEffect(() => {
         Get().then();
-    },[])
+    }, [])
 
     useEffect(() => {
         // info
@@ -150,6 +149,8 @@ export default function GroupAdd() {
     const is_student = watch('is_student');
     const onSubmit = (data: any, e: any) => {
         console.log(data, e)
+        console.log(data.student_expired)
+        const studentDate = data.student_expired.getFullYear() + "-" + ('00' + (data.student_expired.getMonth() + 1)).slice(-2) + "-" + data.student_expired.getDate()
         // check question item
         let question: string;
         let request: any = {
@@ -175,6 +176,7 @@ export default function GroupAdd() {
                 "4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、GitHub、成果物などがありましたら教えてください。\n" + data.question4;
         }
         request.question = question;
+        request.student_expired = studentDate
 
         console.log("OK");
         Post(request).then(res => {
@@ -188,8 +190,6 @@ export default function GroupAdd() {
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
         })
-        enqueueSnackbar('OK', {variant: "success"});
-        navigate("/dashboard/add");
     };
     const onError = (errors: any, e: any) => {
         console.log(errors, e)
@@ -277,109 +277,109 @@ export default function GroupAdd() {
                         <br/>
                         {
                             !isMember &&
-                            <div>
-                                <FormControl component="fieldset">
-                                    <FormLabel>1.1. どこで当団体のことを知りましたか？</FormLabel>
-                                    <Typography variant="subtitle1" gutterBottom component="div">
-                                        当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。
-                                    </Typography>
-                                    <StyledTextFieldVeryLong
-                                        id="question1"
-                                        // name="question1"
-                                        label="question1"
-                                        multiline
-                                        rows={4}
-                                        variant="outlined"
-                                        {...register('question1')}
-                                        error={!!errors.question1}
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.question1?.message}
-                                    </Typography>
-                                </FormControl>
-                                <br/>
-                                <FormControl component="fieldset">
-                                    <FormLabel>1.2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
-                                    <Typography variant="subtitle1" gutterBottom component="div">
-                                        例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]
-                                    </Typography>
-                                    <StyledTextFieldVeryLong
-                                        id="question2"
-                                        label="question2"
-                                        multiline
-                                        rows={4}
-                                        variant="outlined"
-                                        {...register('question2')}
-                                        error={!!errors.question2}
-
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.question2?.message}
-                                    </Typography>
-                                </FormControl>
-                                <br/>
-                                <FormControl component="fieldset">
-                                    <FormLabel>1.3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
-                                    <Typography variant="subtitle1" gutterBottom component="div">
-                                        PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。
-                                    </Typography>
-                                    <StyledTextFieldVeryLong
-                                        id="question3"
-                                        label="question3"
-                                        multiline
-                                        rows={4}
-                                        variant="outlined"
-                                        {...register('question3')}
-                                        error={!!errors.question3}
-
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.question3?.message}
-                                    </Typography>
-                                </FormControl>
-                                <br/>
-                                <FormControl component="fieldset">
-                                    <FormLabel>1.4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、
-                                        GitHub、成果物などがありましたら教えてください。</FormLabel>
-                                    <Typography variant="subtitle1" gutterBottom component="div">
-                                        (発信しているコンテンツなどがなければ、「なし」とお答えください)
-                                    </Typography>
-                                    <StyledTextFieldVeryLong
-                                        id="question4"
-                                        label="question4"
-                                        multiline
-                                        rows={4}
-                                        variant="outlined"
-                                        {...register('question4')}
-                                        error={!!errors.question4}
-
-                                    />
-                                    <Typography variant="inherit" color="textSecondary">
-                                        {errors.question4?.message}
-                                    </Typography>
-                                </FormControl>
-                            </div>
-                        } {
-                        isMember &&
-                        <FormControl component="fieldset">
-                            <FormLabel>1.1. 登録者の名前と既存のサービスコードを記入してください</FormLabel>
-                            <Typography variant="subtitle1" gutterBottom component="div">
-                                登録者の名前と既存のサービスコードを記入してください。
-                            </Typography>
-                            <StyledTextFieldVeryLong
+                          <div>
+                            <FormControl component="fieldset">
+                              <FormLabel>1.1. どこで当団体のことを知りましたか？</FormLabel>
+                              <Typography variant="subtitle1" gutterBottom component="div">
+                                当団体の運営委員より紹介を受けた方は紹介者の名前を記入してください。
+                              </Typography>
+                              <StyledTextFieldVeryLong
                                 id="question1"
-                                // name="question1"
+                                  // name="question1"
                                 label="question1"
                                 multiline
                                 rows={4}
                                 variant="outlined"
                                 {...register('question1')}
                                 error={!!errors.question1}
-                            />
-                            <Typography variant="inherit" color="textSecondary">
-                                {errors.question1?.message}
-                            </Typography>
-                        </FormControl>
+                              />
+                              <Typography variant="inherit" color="textSecondary">
+                                  {errors.question1?.message}
+                              </Typography>
+                            </FormControl>
+                            <br/>
+                            <FormControl component="fieldset">
+                              <FormLabel>1.2. どのような用途で当団体のネットワークに接続しますか？</FormLabel>
+                              <Typography variant="subtitle1" gutterBottom component="div">
+                                例) 研究目的、勉強、自宅サーバ用途（商用利用は不可）[10文字以上]
+                              </Typography>
+                              <StyledTextFieldVeryLong
+                                id="question2"
+                                label="question2"
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                {...register('question2')}
+                                error={!!errors.question2}
+
+                              />
+                              <Typography variant="inherit" color="textSecondary">
+                                  {errors.question2?.message}
+                              </Typography>
+                            </FormControl>
+                            <br/>
+                            <FormControl component="fieldset">
+                              <FormLabel>1.3. アドレスを当団体から割り当てる必要はありますか？</FormLabel>
+                              <Typography variant="subtitle1" gutterBottom component="div">
+                                PIアドレスやAS番号をお持ちの方は、それらをご利用いただくことも可能です。
+                              </Typography>
+                              <StyledTextFieldVeryLong
+                                id="question3"
+                                label="question3"
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                {...register('question3')}
+                                error={!!errors.question3}
+
+                              />
+                              <Typography variant="inherit" color="textSecondary">
+                                  {errors.question3?.message}
+                              </Typography>
+                            </FormControl>
+                            <br/>
+                            <FormControl component="fieldset">
+                              <FormLabel>1.4. 情報発信しているSNS(Twitter,Facebook)やWebサイト、
+                                GitHub、成果物などがありましたら教えてください。</FormLabel>
+                              <Typography variant="subtitle1" gutterBottom component="div">
+                                (発信しているコンテンツなどがなければ、「なし」とお答えください)
+                              </Typography>
+                              <StyledTextFieldVeryLong
+                                id="question4"
+                                label="question4"
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                {...register('question4')}
+                                error={!!errors.question4}
+
+                              />
+                              <Typography variant="inherit" color="textSecondary">
+                                  {errors.question4?.message}
+                              </Typography>
+                            </FormControl>
+                          </div>
+                        } {
+                        isMember &&
+                      <FormControl component="fieldset">
+                        <FormLabel>1.1. 登録者の名前と既存のサービスコードを記入してください</FormLabel>
+                        <Typography variant="subtitle1" gutterBottom component="div">
+                          登録者の名前と既存のサービスコードを記入してください。
+                        </Typography>
+                        <StyledTextFieldVeryLong
+                          id="question1"
+                            // name="question1"
+                          label="question1"
+                          multiline
+                          rows={4}
+                          variant="outlined"
+                          {...register('question1')}
+                          error={!!errors.question1}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.question1?.message}
+                        </Typography>
+                      </FormControl>
                     }
                         <br/>
                         <FormControl component="fieldset">
@@ -527,33 +527,33 @@ export default function GroupAdd() {
                             />
                             {
                                 is_student &&
-                                <div>
+                              <div>
+                                <br/>
+                                <div>確認のため在学を証明するもの（学生証）を提出していただく場合もありますが、ご了承ください。</div>
+                                <Box sx={{width: 200}}>
+                                  <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <br/>
-                                    <div>確認のため在学を証明するもの（学生証）を提出していただく場合もありますが、ご了承ください。</div>
-                                    <Box sx={{width: 200}}>
-                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                            <br/>
-                                            <Controller
-                                                name="student_expired"
-                                                control={control}
-                                                render={({
-                                                             field: {onChange, value},
-                                                             fieldState: {error, invalid}
-                                                         }) => (
-                                                    <DatePicker
-                                                        label="Date of Student Expired"
-                                                        disablePast
-                                                        value={value}
-                                                        onChange={(value) =>
-                                                            onChange(moment(value).format("YYYY-MM-DD"))
-                                                        }
-                                                        renderInput={(params) => <TextField {...params} />}
-                                                    />
-                                                )}
-                                            />
-                                        </LocalizationProvider>
-                                    </Box>
-                                </div>
+                                    <Controller
+                                      name="student_expired"
+                                      control={control}
+                                      render={({
+                                                   field: {onChange, value},
+                                                   fieldState: {error, invalid}
+                                               }) => (
+                                          <DesktopDatePicker
+                                              label="Date of Student Expired"
+                                              disablePast
+                                              value={value}
+                                              onChange={(value) =>
+                                                  onChange(moment(value).format("YYYY-MM-DD"))
+                                              }
+                                              renderInput={(params) => <TextField {...params} />}
+                                          />
+                                      )}
+                                    />
+                                  </LocalizationProvider>
+                                </Box>
+                              </div>
                             }
                         </FormControl>
                     </Grid>
