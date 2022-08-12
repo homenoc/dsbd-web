@@ -209,12 +209,12 @@ export interface BGPRouterDetailData {
     comment: string
     enable: boolean
     hostname: string
-    noc: NocTemplateData
+    noc: NOCTemplateData
     noc_id: number
     tunnel_endpoint_router: null
 }
 
-export interface NocTemplateData {
+export interface NOCTemplateData {
     CreatedAt: string
     DeletedAt: string
     ID: number
@@ -274,22 +274,17 @@ export interface TunnelEndPointRouterIPTemplateData {
 }
 
 export interface ConnectionTemplateData {
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
     name: string
     type: string
     comment: string
     need_comment: boolean
     need_cross_connect: boolean
     need_internet: boolean
-    l2: boolean
-    l3: boolean
+    is_l2: boolean
+    is_l3: boolean
 }
 
 export interface ServiceTemplateData {
-    ID: number
     name: string
     comment: string
     hidden: boolean
@@ -315,35 +310,24 @@ export interface IPRouteData {
 }
 
 export interface PaymentMembershipTemplate {
-    ID: number
     title: string
     plan: string
-    monthly: boolean
-    yearly: boolean
-    fee: number
-    comment: string
-}
-
-export interface PaymentDonateTemplate {
-    ID: number
-    name: string
-    fee: number
-    comment: string
+    price_id: string
+    fee: string
 }
 
 export interface TemplateData {
     services?: ServiceTemplateData[]
     connections?: ConnectionTemplateData[]
-    ipv4?: IPTemplateData[]
-    ipv6?: IPTemplateData[]
-    nocs?: NocTemplateData[]
-    ntts?: NTTTemplateData[]
+    ipv4?: string[]
+    ipv6?: string[]
+    nocs?: NOCTemplateData[]
+    ntts?: string[]
     tunnel_endpoint_router?: TunnelEndPointRouterTemplateData[]
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
-    ipv4_route?: IPRouteData[]
-    ipv6_route?: IPRouteData[]
+    ipv4_route?: string[]
+    ipv6_route?: string[]
     payment_membership_template?: PaymentMembershipTemplate[]
-    payment_donate_template?: PaymentDonateTemplate[]
 }
 
 export interface GroupAddData {

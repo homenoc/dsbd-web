@@ -34,14 +34,8 @@ export default function ConnectionAdd() {
     const [template, setTemplate] = React.useState<TemplateData>(DefaultTemplateData);
     const navigate = useNavigate();
     const infos = useSelector((state: RootState) => state.infos);
-    const [serviceCode, setServiceCode] = React.useState("");
+    const [serviceType, setServiceType] = React.useState("");
     const [serviceID, setServiceID] = React.useState(0);
-    const [ipBGPRoute, setIPBGPRoute] = React.useState(false);
-    const [ipv4BGPRoute, setIPv4BGPRoute] = React.useState(false);
-    const [ipv6BGPRoute, setIPv6BGPRoute] = React.useState(false);
-    const [isComment, setIsComment] = React.useState(false);
-    const [isInternet, setIsInternet] = React.useState(false);
-    const [isGlobalAs, setIsGlobalAs] = React.useState(false);
 
 
     useEffect(() => {
@@ -95,38 +89,52 @@ export default function ConnectionAdd() {
 
     const validationSchema = Yup.lazy(values => {
         let obj: ObjectShape = {
-            connection_template_id: Yup.number()
+            connection_type: Yup.string()
                 .required('接続情報を選択してください')
-                .moreThan(0, "接続情報を選択してください"),
+                .min(1, "正しく選択してください"),
             noc_id: Yup.number()
                 .required('希望NOCを選択してください')
                 .moreThan(0, "正しく選択してください"),
             monitor: Yup.bool(),
         }
 
-        if (isComment) {
+        if ((template.connections?.find(ct => ct.type === values.connection_type)?.need_comment ?? false)) {
             obj["connection_comment"] = Yup.string()
                 .required('その他の項目を入力してください')
         }
-        if (isInternet) {
-            obj["ntt_template_id"] = Yup.number()
-                .required('希望NOCを選択してください')
-                .moreThan(0, "正しく選択してください")
+        if ((template.connections?.find(ct => ct.type === values.connection_type)?.need_internet ?? false)) {
+            obj["ntt"] = Yup.string()
+                .required('接続情報(NTT)を選択してください')
+                .min(1, "正しく選択してください")
+            obj["ntt_comment"] = Yup.string()
             obj["address"] = Yup.string()
                 .required("終端先ユーザの市町村を入力してください")
             obj["term_ip"] = Yup.string()
                 .required("終端アドレスを入力してください")
         }
 
-        if (ipv4BGPRoute) {
-            obj["ipv4_route_template_id"] = Yup.number()
-                .required('IPv4経路広告方法を選択してください')
-                .moreThan(0, "IPv4経路広告方法を選択してください")
-        }
-        if (ipv6BGPRoute) {
-            obj["ipv6_route_template_id"] = Yup.number()
-                .required('IPv4経路広告方法を選択してください')
-                .moreThan(0, "IPv4経路広告方法を選択してください")
+
+        if ((template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route)) {
+            if (
+                (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
+                obj["ipv4_route"] = Yup.string()
+                    .required('IPv4経路広告方法を選択してください')
+                    .min(1, "正しく選択してください")
+                obj["ipv4_route_comment"] = Yup.string()
+            }
+            if (
+                (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
+                obj["ipv6_route"] = Yup.string()
+                    .required('IPv6経路広告方法を選択してください')
+                    .min(1, "正しく選択してください")
+                obj["ipv6_route_comment"] = Yup.string()
+            }
         }
 
         return Yup.object().shape(obj)
@@ -136,38 +144,72 @@ export default function ConnectionAdd() {
         resolver: yupResolver(validationSchema),
         defaultValues: {
             address: "",
-            connection_template_id: 0,
+            connection_type: "",
             connection_comment: "",
-            ipv4_route_template_id: 0,
-            ipv6_route_template_id: 0,
-            ntt_template_id: 0,
+            ipv4_route: "",
+            ipv4_route_comment: "",
+            ipv6_route: "",
+            ipv6_route_comment: "",
+            ntt: "",
+            ntt_comment: "",
             noc_id: 0,
             term_ip: "",
             monitor: false
         }
     });
+
+    const connectionType = watch("connection_type");
+    const ipv4Route = watch("ipv4_route");
+    const ipv6Route = watch("ipv6_route");
+    const ntt = watch("ntt");
+
     const onSubmit = (data: any, e: any) => {
         console.log(data, e)
         let request: any = {
-            connection_template_id: data.connection_template_id,
+            connection_type: data.connection_type,
             noc_id: data.noc_id,
             monitor: data.monitor,
         };
 
-        if (isComment) {
-            request.connection_template_id = data.connection_template_id
+        if ((template.connections?.find(ct => ct.type === connectionType)?.need_comment ?? false)) {
+            request.comment_type = data.comment_type
         }
-        if (isInternet) {
-            request.ntt_template_id = data.ntt_template_id
+        if ((template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false)) {
+            // check ntt(etc) form
+            if (data.ntt === "etc") {
+                request.ntt = data.ntt_comment
+            } else {
+                request.ntt = data.ntt
+            }
             request.address = data.address
             request.term_ip = data.term_ip
         }
 
-        if (ipv4BGPRoute) {
-            request.ipv4_route_template_id = data.ipv4_route_template_id
-        }
-        if (ipv6BGPRoute) {
-            request.ipv6_route_template_id = data.ipv6_route_template_id
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route) {
+            if (
+                (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
+                // check ipv4_route(etc) form
+                if (data.ipv4_route === "etc") {
+                    request.ipv4_route = data.ipv4_route_comment
+                } else {
+                    request.ipv4_route = data.ipv4_route
+                }
+            }
+            if (
+                (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
+                // check ipv4_route(etc) form
+                if (data.ipv6_route === "etc") {
+                    request.ipv6_route = data.ipv6_route_comment
+                } else {
+                    request.ipv6_route = data.ipv6_route
+                }
+            }
         }
 
         // check
@@ -196,28 +238,20 @@ export default function ConnectionAdd() {
         enqueueSnackbar("入力した内容を確認してください。", {variant: "error"});
     };
 
-    const checkBgpRoute = (id: number) => {
-        const dataExtra = infos[infos.length - 1]?.data?.service?.filter(item => item.id === id);
-        console.log(dataExtra);
-        if (dataExtra != null) {
-            setIPBGPRoute(dataExtra[0].need_route);
-            const dataIPv4 = dataExtra[0].ip?.filter(item => item.version === 4);
-            if (dataIPv4 !== undefined && dataIPv4.length > 0) {
-                setIPv4BGPRoute(true)
-            }
-            const dataIPv6 = dataExtra[0].ip?.filter(item => item.version === 6);
-            if (dataIPv6 !== undefined && dataIPv6.length > 0) {
-                setIPv6BGPRoute(true)
-            }
-        } else {
-            enqueueSnackbar('Templateから情報が見つかりません。', {variant: "error"});
-        }
-    }
-
     return (
         <DashboardComponent title="接続情報の追加">
             <Fragment>
                 <Grid container spacing={3}>
+                    <Button onClick={() => {
+                        console.log(infos[infos.length - 1]?.data?.service)
+                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID))
+                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip)
+                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4))
+                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4))
+                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6) ?? 0)
+                        console.log((infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0))
+
+                    }}>Test</Button>
                     <Grid item xs={12}>
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("service_code")}>
                             <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
@@ -226,13 +260,11 @@ export default function ConnectionAdd() {
                                 labelId="service_code"
                                 id="service_code"
                                 onChange={(event) => {
-                                    checkBgpRoute(Number(event.target.value));
                                     const tmpService = infos[infos.length - 1]?.data?.service?.filter(data => data.id === Number(event.target.value));
                                     if (tmpService != null) {
-                                        setIsGlobalAs(tmpService[0].service_type === "IP3B")
-                                        setServiceCode(tmpService[0].service_type);
+                                        setServiceType(tmpService[0].service_type)
+                                        setServiceID(tmpService[0].id);
                                     }
-                                    setServiceID(Number(event.target.value));
                                 }}
                             >
                                 {
@@ -245,142 +277,163 @@ export default function ConnectionAdd() {
                         </FormControl>
                     </Grid>
                     {
-                        ipBGPRoute &&
-                        <Grid item xs={12}>
-                            <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
-                            {
-                                ((ipBGPRoute && ipv4BGPRoute)||(ipBGPRoute && isGlobalAs)) &&
-                                <StyledFormControlFormSelect>
-                                    <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
-                                    <FormHelperText>
-                                        {errors?.ipv4_route_template_id && errors.ipv4_route_template_id?.message}
-                                    </FormHelperText>
-                                    <Controller
-                                        name="ipv4_route_template_id"
-                                        control={control}
-                                        render={({field, fieldState}) => (
-                                            <Select
-                                                aria-label="gender"
-                                                onChange={(e) => {
-                                                    const value = Number(e.target.value)
-                                                    if (!isNaN(value)) {
-                                                        field.onChange(value)
-                                                    }
-                                                }}
-                                                value={field.value === undefined ? '' : field.value}
-                                            >
-                                                {
-                                                    template.ipv4_route?.map((row, index) => (
-                                                        <MenuItem key={"ipv4_route_template_id_" + index}
-                                                                  value={row.ID}>{row.name}</MenuItem>
-                                                    ))
 
-                                                }
-                                            </Select>
-                                        )}
-                                    />
-                                </StyledFormControlFormSelect>
-                            }
-                            {
-                                ((ipBGPRoute && ipv6BGPRoute)||(ipBGPRoute && isGlobalAs)) &&
-                                <StyledFormControlFormSelect>
-                                    <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
-                                    <FormHelperText>
-                                        {errors?.ipv6_route_template_id && errors.ipv6_route_template_id?.message}
-                                    </FormHelperText>
-                                    <Controller
-                                        name="ipv6_route_template_id"
-                                        control={control}
-                                        render={({field, fieldState}) => (
-                                            <Select
-                                                aria-label="gender"
-                                                onChange={(e) => {
-                                                    const value = Number(e.target.value)
-                                                    if (!isNaN(value)) {
-                                                        field.onChange(value)
-                                                    }
-                                                }}
-                                                value={field.value === undefined ? '' : field.value}
-                                            >
-                                                {
-                                                    template.ipv6_route?.map((row, index) => (
-                                                        <MenuItem key={"ipv6_route_template_id_" + index}
-                                                                  value={row.ID}>{row.name}</MenuItem>
-                                                    ))
-
-                                                }
-                                            </Select>
-                                        )}
-                                    />
-                                </StyledFormControlFormSelect>
-                            }
-                        </Grid>
-                    }
-
-                    {
-                        serviceCode !== "" &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset" error={errors?.hasOwnProperty("connection_template_id")}>
-                                <FormLabel>2. 接続方式をお選びください</FormLabel>
-                                <div>接続情報を登録するサービスコードを以下からお選びください。</div>
-                                <FormHelperText>
-                                    {errors?.connection_template_id && errors.connection_template_id?.message}
-                                </FormHelperText>
-                                <Controller
-                                    name="connection_template_id"
-                                    control={control}
-                                    render={({field, fieldState}) => (
-                                        <RadioGroup
-                                            aria-label="gender"
-                                            onChange={(e) => {
-                                                const value = parseInt(e.target.value)
-                                                if (!isNaN(value)) {
-                                                    const con = template.connections?.filter(item => item.ID === value)
-                                                    setIsComment(!(con === undefined || con.length !== 1 || !con[0].need_comment));
-                                                    setIsInternet(!(con === undefined || con.length !== 1 || !con[0].need_internet));
-                                                    field.onChange(value)
-                                                }
-                                            }}
-                                            value={field.value === undefined ? '' : field.value}
-                                        >
-                                            {
-                                                template.connections?.map(map => (
-                                                    ((~serviceCode.indexOf("2") && map.l2) || (~serviceCode.indexOf("3") && map.l3)) &&
-                                                    <FormControlLabel key={"connection_template_" + map.ID}
-                                                                      value={map.ID} control={<Radio/>}
-                                                                      label={(map.name) + ": (" + (map.comment) + ")"}/>
-                                                ))
-                                            }
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
-                        </Grid>
+                        serviceID !== 0 &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)!.need_route &&
+                      <Grid item xs={12}>
+                        <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
+                          {
+                              (
+                                  infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0 &&
+                            <StyledFormControlFormSelect>
+                              <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
+                              <FormHelperText>
+                                  {errors?.ipv4_route && errors.ipv4_route?.message}
+                              </FormHelperText>
+                              <Controller
+                                name="ipv4_route"
+                                control={control}
+                                render={({field, fieldState}) => (
+                                    <Select
+                                        aria-label="gender"
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value)
+                                        }}
+                                        value={field.value}
+                                    >
+                                        {
+                                            template.ipv4_route?.map((v4Route, index) => (
+                                                <MenuItem key={"ipv4_route_" + index}
+                                                          value={v4Route}>{v4Route}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                )}
+                              />
+                            </StyledFormControlFormSelect>
+                          }
+                          {
+                              (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0 &&
+                            <StyledFormControlFormSelect>
+                              <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
+                              <FormHelperText>
+                                  {errors?.ipv6_route && errors.ipv6_route?.message}
+                              </FormHelperText>
+                              <Controller
+                                name="ipv6_route"
+                                control={control}
+                                render={({field, fieldState}) => (
+                                    <Select
+                                        aria-label="gender"
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value)
+                                        }}
+                                        value={field.value}
+                                    >
+                                        {
+                                            template.ipv6_route?.map((v6Route, index) => (
+                                                <MenuItem key={"ipv6_route_" + index}
+                                                          value={v6Route}>{v6Route}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                )}
+                              />
+                            </StyledFormControlFormSelect>
+                          }
+                      </Grid>
                     }
                     {
-                        isComment &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset" error={errors?.hasOwnProperty("comment")}>
-                                <FormLabel component="legend">2.1. その他</FormLabel>
-                                <div> Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</div>
-                                <FormHelperText>
-                                    {errors?.connection_comment && errors.connection_comment?.message}
-                                </FormHelperText>
-                                <StyledTextFieldLong
-                                    variant="outlined"
-                                    margin="normal"
-                                    fullWidth
-                                    label="ご希望の接続方式をご記入ください"
-                                    id="comment"
-                                    {...register(`connection_comment`, {required: true})}
-                                    error={!!errors.connection_comment}
-                                />
-                            </FormControl>
-                        </Grid>
+                        ipv4Route === "etc" &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
+                          <FormLabel component="legend">1.1.1. IPv4 BGP広報経路(その他)</FormLabel>
+                          <StyledTextFieldLong
+                            key={"ipv4_route_comment"}
+                            label="IPv4 BGP広報経路(その他)"
+                            variant="outlined"
+                            {...register(`ipv4_route_comment`, {required: true})}
+                            error={!!errors.ipv4_route_comment}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        ipv6Route === "etc" &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
+                          <FormLabel component="legend">1.1.2. IPv6 BGP広報経路(その他)</FormLabel>
+                          <StyledTextFieldLong
+                            key={"ipv6_route_comment"}
+                            label="IPv6 BGP広報経路(その他)"
+                            variant="outlined"
+                            {...register(`ipv6_route_comment`, {required: true})}
+                            error={!!errors.ipv6_route_comment}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        serviceType !== "" &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("connection_type")}>
+                          <FormLabel>2. 接続方式をお選びください</FormLabel>
+                          <div>接続情報を登録するサービスコードを以下からお選びください。</div>
+                          <FormHelperText>
+                              {errors?.connection_type && errors.connection_type?.message}
+                          </FormHelperText>
+                          <Controller
+                            name="connection_type"
+                            control={control}
+                            render={({field, fieldState}) => (
+                                <RadioGroup
+                                    aria-label="gender"
+                                    onChange={(e) => {
+                                        field.onChange(e.target.value)
+                                    }}
+                                    value={field.value}
+                                >
+                                    {
+                                        template.connections?.map(map => (
+                                            (
+                                                (!template.services?.find(st => st.type === serviceType)!.need_route && map.is_l2) ||
+                                                (template.services?.find(st => st.type === serviceType)!.need_route && map.is_l3)
+                                            ) &&
+                                            <FormControlLabel key={"connection_type_" + map.type}
+                                                              value={map.type} control={<Radio/>}
+                                                              label={(map.name) + ": (" + (map.comment) + ")"}/>
+                                        ))
+                                    }
+                                </RadioGroup>
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        (template.connections?.find(ct => ct.type === connectionType)?.need_comment ?? false) &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("comment")}>
+                          <FormLabel component="legend">2.1. その他</FormLabel>
+                          <div> Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</div>
+                          <FormHelperText>
+                              {errors?.connection_comment && errors.connection_comment?.message}
+                          </FormHelperText>
+                          <StyledTextFieldLong
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="ご希望の接続方式をご記入ください"
+                            id="comment"
+                            {...register(`connection_comment`, {required: true})}
+                            error={!!errors.connection_comment}
+                          />
+                        </FormControl>
+                      </Grid>
                     }
                     <Grid item xs={12}>
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("noc_id")}>
-                            <FormLabel component="legend">3.1. 接続終端NOCをお選びください</FormLabel>
+                            <FormLabel component="legend">3.1. ご希望の接続終端NOCをお選びください</FormLabel>
                             <FormHelperText>
                                 {errors?.noc_id && errors.noc_id?.message}
                             </FormHelperText>
@@ -411,81 +464,94 @@ export default function ConnectionAdd() {
                         </FormControl>
                         <br/>
                         <div>(当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください)</div>
+                        <div>NOCの収容率などにより、ご希望にお答えできない場合がございます。</div>
                     </Grid>
                     {
-                        isInternet &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset" error={errors?.hasOwnProperty("address")}>
-                                <FormLabel component="legend">3.2. 終端先ユーザの都道府県市町村</FormLabel>
-                                <div>都道府県と市町村のみ記入してください。例) 大阪府貝塚市</div>
-                                <FormHelperText>
-                                    {errors?.address && errors.address?.message}
-                                </FormHelperText>
-                                <StyledTextFieldLong
-                                    key={"address"}
-                                    label="終端先ユーザの都道府県市町村"
-                                    variant="outlined"
-                                    {...register(`address`, {required: true})}
-                                    error={!!errors.address}
-                                />
-                            </FormControl>
-                        </Grid>
+                        (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("address")}>
+                          <FormLabel component="legend">3.2. 終端先ユーザの都道府県市町村</FormLabel>
+                          <div>都道府県と市町村のみ記入してください。例) 大阪府貝塚市</div>
+                          <FormHelperText>
+                              {errors?.address && errors.address?.message}
+                          </FormHelperText>
+                          <StyledTextFieldLong
+                            key={"address"}
+                            label="終端先ユーザの都道府県市町村"
+                            variant="outlined"
+                            {...register(`address`, {required: true})}
+                            error={!!errors.address}
+                          />
+                        </FormControl>
+                      </Grid>
                     }
                     {
-                        isInternet &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
-                                <FormLabel component="legend">3.3. トンネル終端IPアドレス</FormLabel>
-                                <div>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</div>
-                                <FormHelperText>
-                                    {errors?.term_ip && errors.term_ip?.message}
-                                </FormHelperText>
-                                <StyledTextFieldLong
-                                    key={"term_ip"}
-                                    label="終端アドレス"
-                                    variant="outlined"
-                                    {...register(`term_ip`, {required: true})}
-                                    error={!!errors.term_ip}
-                                />
-                            </FormControl>
-                        </Grid>
+                        (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
+                          <FormLabel component="legend">3.3. トンネル終端IPアドレス</FormLabel>
+                          <div>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</div>
+                          <FormHelperText>
+                              {errors?.term_ip && errors.term_ip?.message}
+                          </FormHelperText>
+                          <StyledTextFieldLong
+                            key={"term_ip"}
+                            label="終端アドレス"
+                            variant="outlined"
+                            {...register(`term_ip`, {required: true})}
+                            error={!!errors.term_ip}
+                          />
+                        </FormControl>
+                      </Grid>
                     }
                     {
-                        isInternet &&
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset" error={errors?.hasOwnProperty("ntt_template_id")}>
-                                <FormLabel component="legend">3.4. 接続終端場所にNTTフレッツ光が利用可能かをお知らせください</FormLabel>
-                                <div>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</div>
-                                <div>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</div>
-                                <FormHelperText>
-                                    {errors?.ntt_template_id && errors.ntt_template_id?.message}
-                                </FormHelperText>
-                                <Controller
-                                    name="ntt_template_id"
-                                    control={control}
-                                    render={({field, fieldState}) => (
-                                        <RadioGroup
-                                            aria-label="gender"
-                                            onChange={(e) => {
-                                                const value = parseInt(e.target.value)
-                                                if (!isNaN(value)) {
-                                                    field.onChange(value)
-                                                }
-                                            }}
-                                            value={field.value === undefined ? '' : field.value}
-                                        >
-                                            {
-                                                template.ntts?.map(map => (
-                                                    <FormControlLabel key={"ntt_template_id_" + map.ID}
-                                                                      value={map.ID} control={<Radio/>}
-                                                                      label={(map.name) + ": (" + (map.comment) + ")"}/>
-                                                ))
-                                            }
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
-                        </Grid>
+                        (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("ntt_template_id")}>
+                          <FormLabel component="legend">3.4.
+                            接続終端場所にNTTフレッツ光が利用可能かをお知らせください</FormLabel>
+                          <div>接続方式に構内接続をご希望の方は何も選択せず次の項目に進んでください</div>
+                          <div>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</div>
+                          <FormHelperText>
+                              {errors?.ntt && errors.ntt?.message}
+                          </FormHelperText>
+                          <Controller
+                            name="ntt"
+                            control={control}
+                            render={({field, fieldState}) => (
+                                <RadioGroup
+                                    aria-label="gender"
+                                    onChange={(e) => {
+                                        field.onChange(e.target.value)
+                                    }}
+                                    value={field.value}
+                                >
+                                    {
+                                        template.ntts?.map(ntt => (
+                                            <FormControlLabel key={"ntt_" + ntt} value={ntt} control={<Radio/>}
+                                                              label={ntt}/>
+                                        ))
+                                    }
+                                </RadioGroup>
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    }
+                    {
+                        ntt === "etc" &&
+                      <Grid item xs={12}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
+                          <FormLabel component="legend">3.4.1. 接続終端場所の利用状況(その他)</FormLabel>
+                          <StyledTextFieldLong
+                            key={"ntt_comment"}
+                            label="NTT(その他)"
+                            variant="outlined"
+                            {...register(`ntt_comment`, {required: true})}
+                            error={!!errors.ntt_comment}
+                          />
+                        </FormControl>
+                      </Grid>
                     }
                     <Grid item xs={12}>
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("monitor")}>

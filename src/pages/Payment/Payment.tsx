@@ -167,12 +167,12 @@ export default function Payment() {
                                             </Typography>
                                         </StyledDivCardPricing>
                                         <ul>
-                                            {membership.comment}
+                                            {/*{membership.comment}*/}
                                         </ul>
                                     </CardContent>
                                     <CardActions>
-                                        <PaymentDialog key={"payment_" + membership.ID} itemID={membership.ID}
-                                                       url={"membership"}/>
+                                        {/*<PaymentDialog key={"payment_" + membership.ID} itemID={membership.ID}*/}
+                                        {/*               url={"membership"}/>*/}
                                     </CardActions>
                                 </Card>
                             </Grid>

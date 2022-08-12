@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect} from "react";
-import DashboardComponent from "../../../components/Dashboard/Dashboard";
 import {Get, GetTemplate} from "../../../api/Info";
+import DashboardComponent from "../../../components/Dashboard/Dashboard";
 import Cookies from "js-cookie";
 import store, {RootState} from "../../../store";
 import {clearInfos, clearTemplates} from "../../../store/action/Actions";
@@ -15,7 +15,7 @@ import {
     FormControl,
     FormControlLabel, FormHelperText, FormLabel,
     Grid, MenuItem, Paper, Radio, RadioGroup, Select, TableBody, TableCell, TableContainer, TableHead, TableRow,
-    TextField, Typography
+    TextField, TextFieldProps, Typography
 } from "@mui/material";
 import {useForm, Controller, useFieldArray} from "react-hook-form";
 import * as Yup from 'yup';
@@ -107,9 +107,9 @@ export default function ServiceAdd() {
 
     const validationSchema = Yup.lazy(values => {
         let obj: ObjectShape = {
-            service_template_id: Yup.number()
-                .required('service template is required')
-                .moreThan(0, 'サービスを選択してください'),
+            service_type: Yup.string()
+                .min(1)
+                .required('service template is required'),
             acceptTerms: Yup.bool().oneOf([true], '利用の規約に同意しないと次へ進めません。'),
             hidden: Yup.bool(),
             start_date: Yup.date()
@@ -135,7 +135,7 @@ export default function ServiceAdd() {
         }
 
         // L2, L3 Static, L3 BGP, CoLocation
-        if ((0 < values.service_template_id && values.service_template_id <= 3) || (5 <= values.service_template_id && values.service_template_id <= 7)) {
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === values.service_type)!.need_jpnic) {
             obj["org"] = Yup.string()
                 .required('Org is required')
                 .max(255, 'Org must not exceed 255 characters')
@@ -260,7 +260,7 @@ export default function ServiceAdd() {
             )
         }
         // Transit AS
-        if (values.service_template_id === 4) {
+        if (values.service_type === "IP3B") {
             obj["bgp_comment"] = Yup.string()
                 .required(`入力してください`)
         }
@@ -272,7 +272,7 @@ export default function ServiceAdd() {
                 .max(12, 'Network Name must not exceed 12 characters')
                 .matches(v4NetworkNameRegExp, '文字形式に誤りがあります。')
             // L2, L3 Static, L3 BGP, CoLocation
-            if ((0 < values.service_template_id && values.service_template_id <= 3) || (5 <= values.service_template_id && values.service_template_id <= 7)) {
+            if (template.services?.find(serviceTemplate => serviceTemplate.type === values.service_type)!.need_jpnic) {
                 obj["plan"] = Yup.array().of(
                     Yup.object().shape({
                         name: Yup.string()
@@ -303,7 +303,7 @@ export default function ServiceAdd() {
     const {register, control, setValue, handleSubmit, formState: {errors}, watch} = useForm({
         resolver: yupResolver(validationSchema),
         defaultValues: {
-            service_template_id: 0,
+            service_type: "",
             route_v4: "",
             route_v6: "",
             org: "",
@@ -424,7 +424,14 @@ export default function ServiceAdd() {
         };
     });
 
-    const serviceTemplateId = watch("service_template_id");
+    const getBool = (dataBool: boolean | undefined) => {
+        if (dataBool === true) {
+            return true
+        }
+        return false
+    };
+
+    const serviceType = watch("service_type");
 
     const onSubmit = (data: any, e: any) => {
         console.log(data, e)
@@ -442,7 +449,7 @@ export default function ServiceAdd() {
         }
 
         let request: any = {
-            service_template_id: data.service_template_id,
+            service_type: data.service_type,
             org: data.org,
             org_en: data.org_en,
             postcode: data.postcode,
@@ -471,7 +478,7 @@ export default function ServiceAdd() {
 
 
         // L2, L3 Static, L3 BGP, CoLocation
-        if ((1 <= serviceTemplateId && serviceTemplateId <= 3) || (5 <= serviceTemplateId && serviceTemplateId <= 7)) {
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) {
             request.jpnic_admin = data.jpnic_admin;
             request.jpnic_tech = data.jpnic_tech;
             let ip: any[] = [];
@@ -532,7 +539,7 @@ export default function ServiceAdd() {
         }
 
         // Transit AS
-        if (serviceTemplateId === 4) {
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) {
             request.bgp_comment = data.bgp_comment;
             const ip = [{
                 version: 4,
@@ -571,34 +578,31 @@ export default function ServiceAdd() {
 
 
     return (
-        <DashboardComponent title="サービス情報の追加">
+        // eslint-disable-next-line react/jsx-no-undef
+        <DashboardComponent title={"サービス情報の追加"}>
             <Fragment>
                 <Grid container spacing={3}>
                     <br/>
                     <Grid item xs={12}>
-                        <FormControl component="fieldset" error={errors?.hasOwnProperty("service_template_id")}>
+                        <FormControl component="fieldset" error={errors?.hasOwnProperty("service_type")}>
                             <FormLabel>1. ご希望のサービスをお選びください</FormLabel>
                             <FormHelperText>
-                                {errors?.service_template_id && errors.service_template_id?.message}
+                                {errors?.service_type && errors.service_type?.message}
                             </FormHelperText>
                             <Controller
-                                name="service_template_id"
+                                name="service_type"
                                 control={control}
                                 render={({field, fieldState}) => (
                                     <RadioGroup
                                         aria-label="gender"
                                         onChange={(e) => {
-                                            const value = parseInt(e.target.value)
-                                            if (!isNaN(value)) {
-                                                field.onChange(value)
-                                            }
+                                            field.onChange(e.target.value)
                                         }}
                                         value={field.value === undefined ? '' : field.value}
                                     >
                                         {
                                             template.services?.map(map => (
-                                                !map.hidden &&
-                                                <FormControlLabel key={"service_template_" + map.ID} value={map.ID}
+                                                <FormControlLabel key={"service_template_" + map.type} value={map.type}
                                                                   control={<Radio/>}
                                                                   label={(map.name) + ": (" + (map.comment) + ")"}/>
                                             ))
@@ -610,7 +614,7 @@ export default function ServiceAdd() {
                         <br/>
                     </Grid>
                     {
-                        serviceTemplateId !== 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.1.1. 割り当てを希望するIPアドレスをお知らせください</FormLabel>
@@ -627,29 +631,26 @@ export default function ServiceAdd() {
                             label="IPv4アドレスのアサインを希望する"
                           />
                             {
-                                isIpv4 && serviceTemplateId !== 4 &&
+                                isIpv4 &&
+                                getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                               <div>
                                 <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
                                 <Box sx={{minWidth: 20}}>
                                   <Select aria-label="gender" id="ipv4_subnet" value={ipv4Prefix}
                                           onChange={(event) => {
                                               setIpv4Prefix(event.target.value)
-                                              const tmpPrefix = template.ipv4?.find(item => item.subnet === event.target.value);
+                                              const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
                                               if (tmpPrefix != null) {
-                                                  let addressCount = tmpPrefix.quantity
-                                                  if (tmpPrefix.quantity - 2 < 0) {
-                                                      addressCount = 0
-                                                  }
+                                                  let addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1)))
+                                                  console.log("addressCount: " + addressCount)
                                                   setIpv4Count(addressCount)
                                               }
                                           }}
                                   >
                                     <MenuItem value={"None"} disabled={true}>なし</MenuItem>
                                       {
-                                          template.ipv4?.map((map, index) => (
-                                              !map.hide &&
-                                              <MenuItem key={index}
-                                                        value={map.subnet}>{(map.subnet)}</MenuItem>
+                                          template.ipv4?.map((v4, index) => (
+                                              <MenuItem key={index} value={v4}>{(v4)}</MenuItem>
                                           ))
                                       }
                                   </Select>
@@ -679,7 +680,8 @@ export default function ServiceAdd() {
                           />
                           <br/>
                             {
-                                isIpv6 && serviceTemplateId !== 4 &&
+                                isIpv6 &&
+                                getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                               <div>
                                 <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
                                 <Box sx={{minWidth: 20}}>
@@ -689,10 +691,8 @@ export default function ServiceAdd() {
                                   >
                                     <MenuItem value={"None"} disabled={true}>なし</MenuItem>
                                       {
-                                          template.ipv6?.map((map, index) => (
-                                              !map.hide &&
-                                              <MenuItem key={index}
-                                                        value={map.subnet}>{(map.subnet)}</MenuItem>
+                                          template.ipv6?.map((v6, index) => (
+                                              <MenuItem key={index} value={v6}>{(v6)}</MenuItem>
                                           ))
                                       }
                                   </Select>
@@ -711,7 +711,8 @@ export default function ServiceAdd() {
                         </FormControl>
                         <br/>
                           {
-                              isIpv4 && serviceTemplateId !== 4 &&
+                              isIpv4 &&
+                              getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                             <FormControl component="fieldset">
                               <FormLabel>1.1.2. IPv4のネットワークプランをお知らせください</FormLabel>
                               <div> IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。</div>
@@ -874,7 +875,7 @@ export default function ServiceAdd() {
                       </Grid>
                     }
                     {
-                        serviceTemplateId === 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.1.1. AS番号</FormLabel>
@@ -894,7 +895,7 @@ export default function ServiceAdd() {
                       </Grid>
                     }
                     {
-                        serviceTemplateId === 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.1.2. 広報する経路など</FormLabel>
@@ -914,7 +915,7 @@ export default function ServiceAdd() {
                       </Grid>
                     }
                     {
-                        serviceTemplateId !== 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.2.1. 基本登録情報</FormLabel>
@@ -981,7 +982,7 @@ export default function ServiceAdd() {
                       </Grid>
                     }
                     {
-                        serviceTemplateId !== 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.2.2. 管理者連絡窓口</FormLabel>
@@ -1154,7 +1155,7 @@ export default function ServiceAdd() {
                       </Grid>
                     }
                     {
-                        serviceTemplateId !== 4 &&
+                        getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                       <Grid item xs={12}>
                         <FormControl component="fieldset">
                           <FormLabel>1.2.3. 技術連絡担当者</FormLabel>
@@ -1402,18 +1403,16 @@ export default function ServiceAdd() {
                                     <Controller
                                         name="start_date"
                                         control={control}
-                                        render={({
-                                                     field: {onChange, value},
-                                                     fieldState: {error, invalid}
-                                                 }) => (
+                                        render={({field: {onChange, value},}) => (
                                             <DesktopDatePicker
                                                 label="Date of start date"
+                                                inputFormat="yyyy/MM/dd"
                                                 disablePast
                                                 value={value}
-                                                onChange={(value) =>
+                                                onChange={(value: any) =>
                                                     onChange(moment(value).format("YYYY-MM-DD"))
                                                 }
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params: any) => <TextField {...params} />}
                                             />
                                         )}
                                     />
@@ -1444,16 +1443,18 @@ export default function ServiceAdd() {
                                     render={
                                         ({
                                              field: {onChange, value},
-                                             fieldState: {error, invalid}
+                                             fieldState: {}
                                          }) => (
                                             <DesktopDatePicker
                                                 disablePast
                                                 label="Date of end date"
+                                                inputFormat="yyyy/MM/dd"
                                                 value={value}
-                                                onChange={(value) =>
+                                                onChange={(value: any) =>
                                                     onChange(moment(value).format("YYYY-MM-DD"))
                                                 }
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) =>
+                                                    <TextField {...params} />}
                                             />
                                         )}
                                   />
