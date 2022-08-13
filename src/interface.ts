@@ -1,3 +1,8 @@
+export const memberTypeStandard = {id: 1, name: "一般会員"}
+export const memberTypeStudent = {id: 70, name: "学生会員"}
+export const memberTypeCommittee = {id: 90, name: "運営委員"}
+export const memberTypeDisable = {id: 99, name: ""}
+
 export interface InfoData {
     user?: UserData
     group?: GroupData
@@ -24,7 +29,6 @@ export interface UserData {
 
 export interface GroupData {
     id: number
-    payment_membership_template: string
     agree: boolean
     question: string
     org: string
@@ -35,13 +39,13 @@ export interface GroupData {
     tel: string
     country: string
     contract: string
-    paid: boolean
-    discount_rate: number
-    automatic_update: boolean
-    member_info: string
+    coupon_id: string
+    member_type_id: number
+    member_type: string
     member_expired: string
+    is_expired: boolean
+    is_stripe_id: boolean
     fee: number
-    lock: boolean
     expired_status: number
     status: number
     pass: boolean
@@ -325,7 +329,7 @@ export interface TemplateData {
     preferred_ap?: string[]
     ipv4_route?: string[]
     ipv6_route?: string[]
-    payment_membership_template?: PaymentMembershipTemplate[]
+    payment_membership?: PaymentMembershipTemplate[]
 }
 
 export interface GroupAddData {

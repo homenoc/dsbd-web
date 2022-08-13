@@ -100,55 +100,55 @@ export default function Dashboard() {
             <Grid container spacing={3}>
                 <Grid item xs={8}>
                     {
-                        restfulApiConfig.enableMoney && !data?.group?.paid && data?.info?.length != undefined &&
-                        <StyledCardRoot3 key={"payment_notice"}>
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                    会費のお支払いについて
-                                </Typography>
-                                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                                    <Chip
-                                        label="重要"
-                                        color="secondary"
-                                    />
-                                </StyledTypographyTitle>
-                                <h3>開通処理が完了致しましたので、会費のお支払いをお願いいたします。</h3>
-                                <h3>（開通処理後に1週間以内に支払いが行われない場合は、未開通処理を行います。）</h3>
+                        restfulApiConfig.enableMoney && data?.group?.is_expired && data?.info?.length != undefined &&
+                      <StyledCardRoot3 key={"payment_notice"}>
+                        <CardContent>
+                          <Typography variant="h5" component="h2">
+                            会費のお支払いについて
+                          </Typography>
+                          <StyledTypographyTitle color="textSecondary" gutterBottom>
+                            <Chip
+                              label="重要"
+                              color="secondary"
+                            />
+                          </StyledTypographyTitle>
+                          <h3>開通処理が完了致しましたので、会費のお支払いをお願いいたします。</h3>
+                          <h3>（開通処理後に1週間以内に支払いが行われない場合は、未開通処理を行います。）</h3>
 
-                                <br/>
-                                以下の「会費のお支払いはこちらから」ボタンより手続きを進めてください
+                          <br/>
+                          以下の「会費のお支払いはこちらから」ボタンより手続きを進めてください
 
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" variant="outlined" onClick={movePaymentPage}>
-                                    会費のお支払いはこちらから
-                                </Button>
-                            </CardActions>
-                        </StyledCardRoot3>
+                        </CardContent>
+                        <CardActions>
+                          <Button size="small" variant="outlined" onClick={movePaymentPage}>
+                            会費のお支払いはこちらから
+                          </Button>
+                        </CardActions>
+                      </StyledCardRoot3>
                     }
                     {
                         status !== 3 &&
-                        <StyledCardRoot3 key={"add_notice"}>
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                    申請手続きのお知らせ
-                                </Typography>
-                                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                                    <Chip
-                                        label="重要"
-                                        color="secondary"
-                                    />
-                                </StyledTypographyTitle>
-                                <br/>
-                                以下の「申請ページはこちら」ボタンより手続きを進めてください
+                      <StyledCardRoot3 key={"add_notice"}>
+                        <CardContent>
+                          <Typography variant="h5" component="h2">
+                            申請手続きのお知らせ
+                          </Typography>
+                          <StyledTypographyTitle color="textSecondary" gutterBottom>
+                            <Chip
+                              label="重要"
+                              color="secondary"
+                            />
+                          </StyledTypographyTitle>
+                          <br/>
+                          以下の「申請ページはこちら」ボタンより手続きを進めてください
 
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" variant="outlined" onClick={moveAddPage}>
-                                    申請ページはこちら
-                                </Button>
-                            </CardActions>
-                        </StyledCardRoot3>
+                        </CardContent>
+                        <CardActions>
+                          <Button size="small" variant="outlined" onClick={moveAddPage}>
+                            申請ページはこちら
+                          </Button>
+                        </CardActions>
+                      </StyledCardRoot3>
                     }
                     {
                         data?.notice?.map((notice, index) =>
@@ -163,24 +163,24 @@ export default function Dashboard() {
                                     <StyledTypographyTitle color="textSecondary" gutterBottom>
                                         {
                                             notice.info &&
-                                            <Chip
-                                                label="情報"
-                                                color="primary"
-                                            />
+                                          <Chip
+                                            label="情報"
+                                            color="primary"
+                                          />
                                         }
                                         {
                                             notice.important &&
-                                            <Chip
-                                                label="重要"
-                                                color="secondary"
-                                            />
+                                          <Chip
+                                            label="重要"
+                                            color="secondary"
+                                          />
                                         }
                                         {
                                             notice.fault &&
-                                            <Chip
-                                                label="障害"
-                                                color="secondary"
-                                            />
+                                          <Chip
+                                            label="障害"
+                                            color="secondary"
+                                          />
                                         }
                                     </StyledTypographyTitle>
                                     <br/>
@@ -199,60 +199,46 @@ export default function Dashboard() {
                 <Grid item xs={4}>
                     {
                         restfulApiConfig.enableMoney &&
-                        <StyledCardRoot3 key={"student"}>
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                    会員情報
-                                </Typography>
-                                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                                    {
-                                        data?.group?.paid && <h3>失効期限: {data?.group?.member_expired}</h3>
-                                    }
-                                </StyledTypographyTitle>
-                                <br/>
-                                {
-                                    data?.group?.paid &&
-                                    <div>
-                                        <h3>Plan: {data?.group?.payment_membership_template}</h3>
-                                        {
-                                            data?.group?.automatic_update &&
-                                            <h4>自動更新が有効</h4>
-                                        }
-                                        {
-                                            !data?.group?.automatic_update &&
-                                            <h4>自動更新が無効</h4>
-                                        }
-                                        <Chip
-                                            size="small"
-                                            color="primary"
-                                            label="支払い済み"
-                                        />
-                                    </div>
-                                }
-                                {
-                                    !data?.group?.paid && data?.info?.length == undefined &&
-                                    <div>
-                                        <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
-                                        <Chip
-                                            size="small"
-                                            color={"secondary"}
-                                            label="未払い"
-                                        />
-                                    </div>
-                                }
-                                {
-                                    !data?.group?.paid && data?.info?.length != undefined &&
-                                    <div>
-                                        <h3>支払い手続きを行ってください。</h3>
-                                        <Chip
-                                            size="small"
-                                            color={"secondary"}
-                                            label="未払い"
-                                        />
-                                    </div>
-                                }
-                            </CardContent>
-                        </StyledCardRoot3>
+                      <StyledCardRoot3 key={"student"}>
+                        <CardContent>
+                          <Typography variant="h5" component="h2">
+                            会員情報
+                          </Typography>
+                          <StyledTypographyTitle color="textSecondary" gutterBottom>
+                            <h3>会員種別: {data?.group?.member_type}</h3>
+                              {
+                                  data?.group?.member_expired != null &&
+                                <h3>失効期限: {data?.group?.member_expired.split("T")[0] ?? "---"}</h3>
+                              }
+                              {
+                                  data?.group?.is_expired && <h2 color={"secondary"}>期限切れ</h2>
+                              }
+                          </StyledTypographyTitle>
+                          <br/>
+                            {
+                                data?.group?.is_expired && data?.info?.length == null &&
+                              <div>
+                                <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
+                                <Chip
+                                  size="small"
+                                  color={"secondary"}
+                                  label="未払い"
+                                />
+                              </div>
+                            }
+                            {
+                                data?.group?.is_expired && data?.info?.length != null &&
+                              <div>
+                                <h3>支払い手続きを行ってください。</h3>
+                                <Chip
+                                  size="small"
+                                  color={"secondary"}
+                                  label="未払い"
+                                />
+                              </div>
+                            }
+                        </CardContent>
+                      </StyledCardRoot3>
                     }
                     {/*<Button onClick={() => test1()}>Test1</Button>*/}
                     {/*<Button onClick={() => test2()}>Test2</Button>*/}

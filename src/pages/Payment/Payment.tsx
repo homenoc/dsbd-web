@@ -11,10 +11,9 @@ import {Get, GetTemplate} from "../../api/Info";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 import "./payment.scss";
-import {PaymentDialog} from "../../components/Dashboard/Payment/Payment";
-import {PaymentCardChangeDialog} from "../../components/Dashboard/Payment/Card";
 import {StyledContainer1} from "../../style";
 import {restfulApiConfig} from "../../api/Config";
+import {GetPayment, PostSubscribe} from "../../api/payment";
 
 
 export default function Payment() {
@@ -49,12 +48,14 @@ export default function Payment() {
 
                 if (tmpData.data.user?.group_id == null) {
                     setIsStatus(1);
-                } else if (tmpData.data.group?.discount_rate === 100) {
+                } else if ((tmpData.data.group?.member_type_id ?? 0) >= 50) {
                     setIsStatus(2);
                 } else if (tmpData.data.info?.length == null) {
                     setIsStatus(3);
-                } else if (tmpData.data.group?.paid) {
+                } else if (tmpData.data.group?.is_stripe_id && tmpData.data.group?.is_expired) {
                     setIsStatus(4);
+                } else if (!tmpData.data.group?.is_expired) {
+                    setIsStatus(5);
                 }
             }
 
@@ -87,6 +88,28 @@ export default function Payment() {
         })
     }, []);
 
+    const subscribe = (plan: string) => {
+        PostSubscribe(plan).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                window.open(res.data, '_blank');
+            } else {
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+        })
+    }
+
+    const getPayment = () => {
+        GetPayment().then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                window.open(res.data, '_blank');
+            } else {
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+        })
+    }
+
     const DonatePage = () => {
         window.open(restfulApiConfig.donateURL, '_blank')
     }
@@ -98,17 +121,21 @@ export default function Payment() {
                 {/*    Payment*/}
                 {/*</Typography>*/}
                 <Typography variant="h5" align="center" color="textSecondary" component="p">
-                    当団体ではネットワーク接続などをご利用頂いている皆様に「会費」として運営費用の一部を2021年から負担して頂くことになりました。
+                    当団体ではネットワーク接続などをご利用頂いている皆様に「会費」として運営費用の一部を負担して頂くことになりました。
                     {/*今後も継続して活動を続けていくために、運営費用の一部を利用者の皆様に負担していただく予定です。*/}
                 </Typography>
             </StyledContainer1>
+            {
+                data?.group?.coupon_id !== "" &&
+              <h2>クーポンID：{data?.group?.coupon_id}</h2>
+            }
             {
                 isStatus === 1 &&
               <h2>グループ未登録のため、この操作は出来ません。</h2>
             }
             {
                 isStatus === 2 &&
-              <h2>{data?.group?.member_info}のため、費用は免除されます。</h2>
+              <h2>{data?.group?.member_type}のため、費用は免除されます。</h2>
             }
             {
                 isStatus === 3 &&
@@ -117,37 +144,47 @@ export default function Payment() {
             {
                 isStatus === 4 &&
               <div>
+                <h3>期限切れ</h3>
+                <p>以下の「支払い履歴/情報/プラン変更」から支払い状況を確認してください</p>
+                <p>ご不明な場合などがありましたら、Supportチャットにてご連絡のほどお願いいたします。</p>
+                <Button variant={"contained"} color="primary" onClick={getPayment}>
+                  支払い履歴/情報/プラン変更
+                </Button>
+                <h3>会員種別: {data?.group?.member_type}</h3>
+                  {
+                      data?.group?.member_expired != null &&
+                    <h3>有効期限: {data?.group?.member_expired.split("T")[0] ?? "---"}</h3>
+                  }
+              </div>
+            }
+            {
+                isStatus === 5 &&
+              <div>
                 <h3>定期支払いを解約する場合は、解約になりますので、「各種手続き ⇛ 退会手続き」をお選びください。</h3>
                 <br/>
                 <h2>支払い済みです。</h2>
-                <h2>有効期限: {data?.group?.member_expired}</h2>
-                <h2>Plan: {data?.group?.payment_membership_template}</h2>
+                <Button variant={"contained"} color="primary" onClick={getPayment}>
+                  支払い履歴/情報/プラン変更
+                </Button>
+                <h3>会員種別: {data?.group?.member_type}</h3>
                   {
-                      data?.group?.discount_rate !== 100 && data?.group?.discount_rate !== 0 &&
-                    <h2>{data?.group?.member_info}</h2>
-                  }
-                  {
-                      data?.group?.automatic_update &&
-                    <div>
-                      <h2>自動更新が有効</h2>
-                      <PaymentCardChangeDialog key={"payment_card_change_dialog"}/>
-                    </div>
-                  }
-                  {
-                      !data?.group?.automatic_update &&
-                    <div>
-                      <h2>自動更新が無効</h2>
-                    </div>
+                      data?.group?.member_expired != null &&
+                    <h3>有効期限: {data?.group?.member_expired.split("T")[0] ?? "---"}</h3>
                   }
               </div>
             }
             {
                 isStatus === 0 &&
               <Container maxWidth="md" component="main">
+                <h3>会員種別: {data?.group?.member_type}</h3>
+                  {
+                      data?.group?.member_expired != null &&
+                    <h3>失効期限: {data?.group?.member_expired.split("T")[0] ?? "---"}</h3>
+                  }
                 <h3>支払いを行うと自動定期支払いになりますので、ご注意ください。</h3>
                 <Grid container spacing={5} alignItems="flex-end">
                     {
-                        template?.payment_membership_template?.map((membership, index) => (
+                        template?.payment_membership?.map((membership, index) => (
                             <Grid item xs={12} sm={6} md={6} key={index}>
                                 <Card>
                                     <StyledCardHeader1
@@ -160,10 +197,10 @@ export default function Payment() {
                                     <CardContent>
                                         <StyledDivCardPricing>
                                             <Typography component="h2" variant="h3" color="textPrimary">
-                                                {/*${tier.price}*/}
+                                                {membership.fee}円
                                             </Typography>
                                             <Typography variant="h6" color="textSecondary">
-                                                {membership.plan}
+                                                /{membership.plan}
                                             </Typography>
                                         </StyledDivCardPricing>
                                         <ul>
@@ -171,14 +208,18 @@ export default function Payment() {
                                         </ul>
                                     </CardContent>
                                     <CardActions>
-                                        {/*<PaymentDialog key={"payment_" + membership.ID} itemID={membership.ID}*/}
-                                        {/*               url={"membership"}/>*/}
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            onClick={() => subscribe(membership.plan)}
+                                        >支払う</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>
                         ))
                     }
                 </Grid>
+                <p>失効期限は自動更新時に期限更新されます</p>
               </Container>
             }
             <br/>
