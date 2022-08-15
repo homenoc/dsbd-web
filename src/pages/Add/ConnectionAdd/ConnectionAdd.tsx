@@ -396,7 +396,7 @@ export default function ConnectionAdd() {
                                     {
                                         template.connections?.map(map => (
                                             (
-                                                (!template.services?.find(st => st.type === serviceType)!.need_route && map.is_l2) ||
+                                                (template.services?.find(st => st.type === serviceType)!.need_route && map.is_l2) ||
                                                 (template.services?.find(st => st.type === serviceType)!.need_route && map.is_l3)
                                             ) &&
                                             <FormControlLabel key={"connection_type_" + map.type}
