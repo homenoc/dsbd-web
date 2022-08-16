@@ -442,7 +442,7 @@ export default function ServiceAdd() {
             end_date = data.end_date.getFullYear() + '-' + ('00' + (data.end_date.getMonth() + 1)).slice(-2) +
                 '-' + ('00' + (data.end_date.getDate())).slice(-2)
             // error process
-            if (data.start_date > data.end_date) {
+            if (data.start_date >= data.end_date) {
                 enqueueSnackbar("終了時間を修正してください。", {variant: "error"});
                 return;
             }
@@ -471,7 +471,7 @@ export default function ServiceAdd() {
         // error process
         let base_start_date = new Date();
         base_start_date.setDate(base_start_date.getDate() + 7);
-        if (data.start_date >= base_start_date) {
+        if (data.start_date < base_start_date) {
             enqueueSnackbar("開始時間を修正してください。", {variant: "error"});
             return;
         }
