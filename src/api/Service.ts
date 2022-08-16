@@ -1,9 +1,8 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {ServiceAddData} from "../interface";
 import Cookies from "js-cookie";
 
-export function Post(data: ServiceAddData): Promise<{ error: string; data: any }> {
+export function Post(data: any): Promise<{ error: string; data: any }> {
     return axios.post(restfulApiConfig.apiURL + "/service", data, {
         headers: {
             'Content-Type': 'application/json',

@@ -347,29 +347,6 @@ export interface GroupAddData {
     student_expired: string
 }
 
-export interface ServiceAddData {
-    jpnic_admin?: ServiceAddJPNICData
-    jpnic_tech?: ServiceAddJPNICData[]
-    service_template_id: number
-    service_comment: string
-    org?: string
-    org_en?: string
-    postcode?: string
-    address?: string
-    address_en?: string
-    route_v4?: string
-    route_v6?: string
-    avg_upstream: number
-    max_upstream: number
-    avg_downstream: number
-    max_downstream: number
-    max_bandwidth_as?: string
-    asn?: number
-    ip?: ServiceAddIPData[]
-    start_date: string
-    end_date?: string
-}
-
 export interface ServiceAddJPNICData {
     org: string
     org_en: string
@@ -400,18 +377,6 @@ export interface ServiceAddIPv4PlanData {
     after: number
     half_year: number
     one_year: number
-}
-
-export interface ConnectionAddData {
-    address: string
-    connection_template_id: number
-    connection_comment: string
-    ipv4_route_template_id?: number
-    ipv6_route_template_id?: number
-    ntt_template_id: number
-    noc_id: number
-    term_ip: string
-    monitor: boolean
 }
 
 export interface SupportAddData {
@@ -450,29 +415,6 @@ export const DefaultGroupAddData: GroupAddData = {
     student_expired: "",
 }
 
-export const DefaultServiceAddData: ServiceAddData = {
-    jpnic_admin: undefined,
-    jpnic_tech: undefined,
-    service_template_id: 0,
-    service_comment: "",
-    org: undefined,
-    org_en: undefined,
-    postcode: undefined,
-    address: undefined,
-    address_en: undefined,
-    route_v4: undefined,
-    route_v6: undefined,
-    avg_upstream: 10,
-    max_upstream: 100,
-    avg_downstream: 10,
-    max_downstream: 100,
-    max_bandwidth_as: undefined,
-    asn: undefined,
-    ip: undefined,
-    start_date: "",
-    end_date: undefined
-}
-
 export const DefaultServiceAddJPNICData: ServiceAddJPNICData = {
     org: "",
     org_en: "",
@@ -494,16 +436,6 @@ export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData = {
     after: 0,
     half_year: 0,
     one_year: 0,
-}
-
-export const DefaultConnectionAddData: ConnectionAddData = {
-    address: "",
-    connection_template_id: 0,
-    connection_comment: "",
-    ntt_template_id: 0,
-    noc_id: 0,
-    term_ip: "",
-    monitor: false
 }
 
 export const DefaultAddIP: ServiceAddIPData = {
