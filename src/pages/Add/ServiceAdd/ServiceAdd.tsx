@@ -541,21 +541,6 @@ export default function ServiceAdd() {
         // Transit AS
         if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) {
             request.bgp_comment = data.bgp_comment;
-            const ip = [{
-                version: 4,
-                ip: "",
-                name: "",
-                start_date: start_date,
-                end_date: end_date,
-            }, {
-                version: 6,
-                ip: "",
-                name: "",
-                start_date: start_date,
-                end_date: end_date,
-            }]
-
-            request.ip = ip;
         }
         console.log(request)
 
