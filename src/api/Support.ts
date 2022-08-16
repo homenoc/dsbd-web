@@ -1,6 +1,6 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {ServiceAddData, SupportAddData} from "../interface";
+import {SupportAddData} from "../interface";
 import Cookies from "js-cookie";
 
 export function Post(data: SupportAddData): Promise<{ error: string | undefined; data: any }> {

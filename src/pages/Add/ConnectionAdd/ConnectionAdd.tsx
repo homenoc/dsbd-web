@@ -24,6 +24,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {
     StyledFormControlFormSelect,
     StyledTextFieldLong,
+    StyledTextFieldVeryLong,
 } from "../../../style";
 import {ObjectShape} from "yup/lib/object";
 import {Post} from "../../../api/Connection";
@@ -96,6 +97,7 @@ export default function ConnectionAdd() {
                 .required('希望のアクセスポイントを選択してください')
                 .min(1, "正しく選択してください"),
             monitor: Yup.bool(),
+            comment: Yup.string(),
         }
 
         if ((template.connections?.find(ct => ct.type === values.connection_type)?.need_comment ?? false)) {
@@ -154,7 +156,8 @@ export default function ConnectionAdd() {
             ntt_comment: "",
             preferred_ap: "",
             term_ip: "",
-            monitor: false
+            monitor: false,
+            comment: ""
         }
     });
 
@@ -569,6 +572,23 @@ export default function ConnectionAdd() {
                                     )}/>
                                 }
                                 label={<Typography>希望する</Typography>}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                            <FormLabel>5. その他</FormLabel>
+                            <Typography variant="subtitle1" gutterBottom component="div">
+                                その他、なにかありましたらこちらにお書きください
+                            </Typography>
+                            <StyledTextFieldVeryLong
+                                id="comment"
+                                label="comment"
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                {...register('comment')}
+                                error={!!errors.comment}
                             />
                         </FormControl>
                     </Grid>
