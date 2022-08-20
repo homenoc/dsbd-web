@@ -229,6 +229,7 @@ export default function ConnectionAdd() {
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 Get().then();
+                navigate("/dashboard/add")
             } else {
                 console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -245,16 +246,6 @@ export default function ConnectionAdd() {
         <DashboardComponent title="接続情報の追加">
             <Fragment>
                 <Grid container spacing={3}>
-                    <Button onClick={() => {
-                        console.log(infos[infos.length - 1]?.data?.service)
-                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID))
-                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip)
-                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4))
-                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4))
-                        console.log(infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6) ?? 0)
-                        console.log((infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0))
-
-                    }}>Test</Button>
                     <Grid item xs={12}>
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("service_code")}>
                             <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
@@ -280,14 +271,24 @@ export default function ConnectionAdd() {
                         </FormControl>
                     </Grid>
                     {
-
                         serviceID !== 0 &&
-                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)!.need_route &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route &&
+                        infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip == null &&
+                        <h1>管理者側の設定に不備がありますので、チャットよりお問い合わせください</h1>
+                    }
+                    {
+                        serviceID !== 0 &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route &&
+                        infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip != null &&
                       <Grid item xs={12}>
+
                         <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
                           {
                               (
-                                  infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0 &&
+                                  (
+                                      (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as)
+                                      ||
+                                      (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0)! > 0)) &&
                             <StyledFormControlFormSelect>
                               <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                               <FormHelperText>
@@ -316,7 +317,11 @@ export default function ConnectionAdd() {
                             </StyledFormControlFormSelect>
                           }
                           {
-                              (infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0 &&
+                              (
+                                  (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as)
+                                  ||
+                                  ((infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)?.ip?.filter(ip => ip.version === 6)?.length ?? 0)! > 0)
+                              ) &&
                             <StyledFormControlFormSelect>
                               <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                               <FormHelperText>
