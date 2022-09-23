@@ -7,4 +7,5 @@ RUN npm run build-prod
 
 FROM nginx:latest
 WORKDIR /usr/share/nginx/html
+COPY ./nginx-default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /builder/dsbd-web/build ./
