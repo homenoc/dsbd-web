@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 name: Publish Docker image(v5)
-=======
-name: Publish Docker image(prod)
->>>>>>> origin/develop
 
 on:
   push:
