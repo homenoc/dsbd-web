@@ -272,13 +272,13 @@ export default function ConnectionAdd() {
                     </Grid>
                     {
                         serviceID !== 0 &&
-                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_bgp &&
                         infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip == null &&
                         <h1>管理者側の設定に不備がありますので、チャットよりお問い合わせください</h1>
                     }
                     {
                         serviceID !== 0 &&
-                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_bgp &&
                         infos[infos.length - 1]?.data?.service?.find(service => service.id === serviceID)!.ip != null &&
                       <Grid item xs={12}>
 
