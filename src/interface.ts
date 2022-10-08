@@ -297,6 +297,7 @@ export interface ServiceTemplateData {
     need_global_as: boolean
     need_jpnic: boolean
     need_route: boolean
+    need_bgp: boolean
 }
 
 export interface IPRouteData {
