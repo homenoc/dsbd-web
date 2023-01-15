@@ -1,10 +1,10 @@
-import {combineReducers} from 'redux'
-import infos from "./infoReducer";
-import templates from "./templateReducer";
+import { combineReducers } from 'redux'
+import infos from './infoReducer'
+import templates from './templateReducer'
 
 const rootReducer = combineReducers({
-    infos,
-    templates
+  infos,
+  templates,
 })
 
 export default rootReducer
