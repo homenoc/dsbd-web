@@ -136,7 +136,7 @@ export default function ConnectionAdd() {
     if (
       template.services?.find(
         (serviceTemplate) => serviceTemplate.type === serviceType
-      )?.need_route
+      )?.need_bgp
     ) {
       if (
         (infos[infos.length - 1]?.data?.service
@@ -231,7 +231,7 @@ export default function ConnectionAdd() {
     if (
       template.services?.find(
         (serviceTemplate) => serviceTemplate.type === serviceType
-      )?.need_route
+      )?.need_bgp
     ) {
       if (
         (infos[infos.length - 1]?.data?.service
