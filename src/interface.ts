@@ -80,6 +80,7 @@ export interface ServiceData {
 
 export interface JPNICData {
   id: number
+  jpnic_handle: string
   name: string
   name_en: string
   mail: string
