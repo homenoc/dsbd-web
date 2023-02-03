@@ -136,7 +136,6 @@ export default function ServiceAdd() {
         [true],
         '利用の規約に同意しないと次へ進めません。'
       ),
-      hidden: Yup.bool(),
       start_date: Yup.date().required('利用開始日を入力してください'),
       end_date: Yup.date(),
       avg_upstream: Yup.number()
@@ -184,7 +183,6 @@ export default function ServiceAdd() {
         .min(6, 'Address(English) must be at least 6 characters')
         .max(255, 'Address(English) must not exceed 255 characters')
       obj.jpnic_admin = Yup.object().shape({
-        hidden: Yup.bool(),
         is_group: Yup.bool(),
         org: Yup.string()
           .required('組織名を入力してください')
@@ -238,7 +236,6 @@ export default function ServiceAdd() {
       })
       obj.jpnic_tech = Yup.array().of(
         Yup.object().shape({
-          hidden: Yup.bool(),
           is_group: Yup.bool(),
           org: Yup.string()
             .required('組織名を入力してください')
@@ -352,7 +349,6 @@ export default function ServiceAdd() {
       address_en: '',
       plan: [{ name: '', after: 0, half_year: 0, one_year: 0 }],
       jpnic_admin: {
-        hidden: false,
         is_group: false,
         org: '',
         org_en: '',
@@ -372,7 +368,6 @@ export default function ServiceAdd() {
       },
       jpnic_tech: [
         {
-          hidden: false,
           is_group: false,
           org: '',
           org_en: '',
@@ -1122,27 +1117,6 @@ export default function ServiceAdd() {
                     </Typography>
                   }
                 />
-                <FormControlLabel
-                  control={
-                    <Controller
-                      control={control}
-                      name="jpnic_admin.hidden"
-                      render={({ field: { onChange } }) => (
-                        <Checkbox
-                          color="primary"
-                          onChange={(e) => onChange(e.target.checked)}
-                        />
-                      )}
-                    />
-                  }
-                  label={
-                    <Typography
-                      color={errors.jpnic_admin?.hidden ? 'error' : 'inherit'}
-                    >
-                      非公開
-                    </Typography>
-                  }
-                />
                 <br />
                 <StyledRootForm noValidate autoComplete="off">
                   <StyledTextFieldShort
@@ -1310,31 +1284,6 @@ export default function ServiceAdd() {
                             }
                           >
                             グループハンドルで登録する
-                          </Typography>
-                        }
-                      />
-                      <FormControlLabel
-                        control={
-                          <Controller
-                            control={control}
-                            name={`jpnic_tech.${index}.hidden`}
-                            render={({ field: { onChange } }) => (
-                              <Checkbox
-                                color="primary"
-                                onChange={(e) => onChange(e.target.checked)}
-                              />
-                            )}
-                          />
-                        }
-                        label={
-                          <Typography
-                            color={
-                              errors.jpnic_tech?.[index]?.hidden
-                                ? 'error'
-                                : 'inherit'
-                            }
-                          >
-                            非公開
                           </Typography>
                         }
                       />
@@ -1506,7 +1455,6 @@ export default function ServiceAdd() {
                     color="primary"
                     onClick={() =>
                       appendJpnicTech({
-                        hidden: false,
                         is_group: false,
                         org: '',
                         org_en: '',
