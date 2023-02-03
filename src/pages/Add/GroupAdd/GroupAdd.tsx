@@ -42,9 +42,9 @@ export default function GroupAdd() {
   const navigate = useNavigate()
   const infos = useSelector((state: RootState) => state.infos)
 
-  const privacyPolicyURL = 'https://www.homenoc.ad.jp/rules/privacy/'
+  const privacyPolicyURL = 'https://www.homenoc.ad.jp/about/privacy/'
   const usageURL = 'https://www.homenoc.ad.jp/usage/'
-  const feeURL = 'https://www.homenoc.ad.jp/rules/fee/'
+  const feeURL = 'https://www.homenoc.ad.jp/about/membership/'
 
   useEffect(() => {
     Get().then()
