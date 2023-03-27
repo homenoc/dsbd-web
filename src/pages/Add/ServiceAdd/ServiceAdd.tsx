@@ -684,7 +684,7 @@ export default function ServiceAdd() {
                   ) && (
                     <div>
                       <p>
-                        (英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)
+                        (英大文字, 数字, "-" (ハイフン) のみを用いて12文字以内)
                       </p>
                       <Box sx={{ minWidth: 20 }}>
                         <Select
@@ -747,7 +747,7 @@ export default function ServiceAdd() {
                   ) && (
                     <div>
                       <p>
-                        (英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)
+                        (英大文字, 数字, "-" (ハイフン) のみを用いて12文字以内)
                       </p>
                       <Box sx={{ minWidth: 20 }}>
                         <Select
