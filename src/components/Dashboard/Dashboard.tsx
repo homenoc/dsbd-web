@@ -16,6 +16,7 @@ import {
   Theme,
   Box,
   Typography,
+  ListItemButton, List,
 } from '@mui/material'
 import MuiDrawer from '@mui/material/Drawer'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
@@ -181,45 +182,47 @@ export default function Dashboard(props: any) {
             </IconButton>
           </StyledDivDashboardToolBarIcon>
           <Divider />
-          <ListItem button onClick={DashboardPage}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
-          <ListItem button onClick={InfoPage}>
-            <ListItemIcon>
-              <TocIcon />
-            </ListItemIcon>
-            <ListItemText primary="Info" />
-          </ListItem>
-          <ListItem button onClick={AddPage}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary="申請" />
-          </ListItem>
-          {restfulApiConfig.enableMoney && (
-            <ListItem button onClick={PaymentPage}>
+          <List component="nav">
+            <ListItemButton onClick={DashboardPage}>
               <ListItemIcon>
-                <PaymentIcon />
+                <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="会費/寄付" />
-            </ListItem>
-          )}
-          <ListItem button onClick={SupportPage}>
-            <ListItemIcon>
-              <ChatIcon />
-            </ListItemIcon>
-            <ListItemText primary="Support" />
-          </ListItem>
-          <ListItem button onClick={ProcedurePage}>
-            <ListItemIcon>
-              <NoteAddOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="各種手続き" />
-          </ListItem>
-          <Divider />
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            <ListItemButton onClick={InfoPage}>
+              <ListItemIcon>
+                <TocIcon />
+              </ListItemIcon>
+              <ListItemText primary="Info" />
+            </ListItemButton>
+            <ListItemButton onClick={AddPage}>
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="申請" />
+            </ListItemButton>
+            {restfulApiConfig.enableMoney && (
+              <ListItemButton onClick={PaymentPage}>
+                <ListItemIcon>
+                  <PaymentIcon />
+                </ListItemIcon>
+                <ListItemText primary="会費/寄付" />
+              </ListItemButton>
+            )}
+            <ListItemButton onClick={SupportPage}>
+              <ListItemIcon>
+                <ChatIcon />
+              </ListItemIcon>
+              <ListItemText primary="Support" />
+            </ListItemButton>
+            <ListItemButton onClick={ProcedurePage}>
+              <ListItemIcon>
+                <NoteAddOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="各種手続き" />
+            </ListItemButton>
+            <Divider />
+          </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <StyledDivDashboardToolBarIcon />
