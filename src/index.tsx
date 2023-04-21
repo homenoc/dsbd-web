@@ -1,22 +1,23 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { SnackbarProvider } from 'notistack'
 import { Provider } from 'react-redux'
+import { createRoot } from 'react-dom/client'
 import store from './store'
 
-ReactDOM.render(
-  <React.StrictMode>
+const container = document.getElementById('root')
+if (container) {
+  const root = createRoot(container)
+  root.render(
     <Provider store={store}>
       <SnackbarProvider maxSnack={3}>
         <App />
       </SnackbarProvider>
     </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+  )
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

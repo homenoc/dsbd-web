@@ -31,10 +31,11 @@ import {
   StyledTextFieldVeryLong,
   StyledTextFieldVeryShort1,
 } from '../../../style'
-import { ObjectShape } from 'yup/lib/object'
-import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers'
+import {
+  LocalizationProvider,
+  DatePicker,
+} from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import moment from 'moment'
 import { Post } from '../../../api/Group'
 
 export default function GroupAdd() {
@@ -81,51 +82,66 @@ export default function GroupAdd() {
     }
   }, [infos])
 
-  const validationSchema = Yup.lazy((values) => {
-    const obj: ObjectShape = {
-      agree: Yup.bool().oneOf(
-        [true],
-        '利用の規約に同意しないと次へ進めません。'
-      ),
-      isMember: Yup.bool(),
-      org: Yup.string()
-        .required('Org is required')
-        .max(255, 'Org must not exceed 255 characters'),
-      org_en: Yup.string()
-        .required('Org(English) is required')
-        .max(255, 'Org(English) must not exceed 255 characters'),
-      postcode: Yup.string()
-        .required('PostCode is required')
-        .min(8, 'PostCode must be at least 8 characters')
-        .max(8, 'PostCode must not exceed 8 characters'),
-      address: Yup.string()
-        .required('Address is required')
-        .min(6, 'Address must be at least 6 characters')
-        .max(255, 'Address must not exceed 255 characters'),
-      address_en: Yup.string()
-        .required('Address(English) is required')
-        .min(6, 'Address(English) must be at least 6 characters')
-        .max(255, 'Address(English) must not exceed 255 characters'),
-      tel: Yup.string()
-        .required('Tel is required')
-        .min(6, 'Tel must be at least 6 characters')
-        .max(30, 'Tel must not exceed 30 characters'),
-      country: Yup.string()
-        .required('Country is required')
-        .min(2, 'Country must be at least 2 characters')
-        .max(40, 'Country must not exceed 40 characters'),
-      contract: Yup.string().required('通知方法を選択してください'),
-      is_student: Yup.bool(),
-      student_expired: Yup.date(),
-    }
-    if (!values.isMember) {
-      obj.question1 = Yup.string().min(2, '2文字以上入力してください。')
-      obj.question2 = Yup.string().min(10, '10文字以上入力してください。')
-      obj.question3 = Yup.string().min(2, '2文字以上入力してください。')
-      obj.question4 = Yup.string().min(2, '2文字以上入力してください。')
-    }
-
-    return Yup.object().shape(obj)
+  const validationSchema = Yup.object().shape({
+    agree: Yup.bool().oneOf([true], '利用の規約に同意しないと次へ進めません。'),
+    isMember: Yup.bool(),
+    org: Yup.string()
+      .required('Org is required')
+      .max(255, 'Org must not exceed 255 characters'),
+    org_en: Yup.string()
+      .required('Org(English) is required')
+      .max(255, 'Org(English) must not exceed 255 characters'),
+    postcode: Yup.string()
+      .required('PostCode is required')
+      .min(8, 'PostCode must be at least 8 characters')
+      .max(8, 'PostCode must not exceed 8 characters'),
+    address: Yup.string()
+      .required('Address is required')
+      .min(6, 'Address must be at least 6 characters')
+      .max(255, 'Address must not exceed 255 characters'),
+    address_en: Yup.string()
+      .required('Address(English) is required')
+      .min(6, 'Address(English) must be at least 6 characters')
+      .max(255, 'Address(English) must not exceed 255 characters'),
+    tel: Yup.string()
+      .required('Tel is required')
+      .min(6, 'Tel must be at least 6 characters')
+      .max(30, 'Tel must not exceed 30 characters'),
+    country: Yup.string()
+      .required('Country is required')
+      .min(2, 'Country must be at least 2 characters')
+      .max(40, 'Country must not exceed 40 characters'),
+    contract: Yup.string().required('通知方法を選択してください'),
+    is_student: Yup.bool(),
+    student_expired: Yup.date(),
+    question1: Yup.string().when('isMember', {
+      is: (isMember: boolean) => !isMember,
+      then: (value) =>
+        value
+          .required('question1 is required')
+          .min(20, '20文字以上入力してください。'),
+    }),
+    question2: Yup.string().when('isMember', {
+      is: (isMember: boolean) => !isMember,
+      then: (value) =>
+        value
+          .required('question2 is required')
+          .min(30, '30文字以上入力してください。'),
+    }),
+    question3: Yup.string().when('isMember', {
+      is: (isMember: boolean) => !isMember,
+      then: (value) =>
+        value
+          .required('question3 is required')
+          .min(20, '20文字以上入力してください。'),
+    }),
+    question4: Yup.string().when('isMember', {
+      is: (isMember: boolean) => !isMember,
+      then: (value) =>
+        value
+          .required('question4 is required')
+          .min(20, '20文字以上入力してください。'),
+    }),
   })
 
   const {
@@ -209,8 +225,9 @@ export default function GroupAdd() {
       }
     })
   }
-  const onError = (errors: any, e: any) => {
-    // console.log(errors, e)
+  const onError = (errors: any) => {
+    // eslint-disable-next-line no-console
+    console.log('error', errors)
     enqueueSnackbar('入力した内容を確認してください。', { variant: 'error' })
   }
 
@@ -271,9 +288,9 @@ export default function GroupAdd() {
                   </Typography>
                 }
               />
-              <Typography variant="inherit" color="textSecondary">
+              <FormHelperText error>
                 {errors.agree ? '(' + errors.agree.message + ')' : ''}
-              </Typography>
+              </FormHelperText>
               <br />
             </FormControl>
             <FormControl component="fieldset">
@@ -322,9 +339,9 @@ export default function GroupAdd() {
                     {...register('question1')}
                     error={!!errors.question1}
                   />
-                  <Typography variant="inherit" color="textSecondary">
+                  <FormHelperText error>
                     {errors.question1?.message}
-                  </Typography>
+                  </FormHelperText>
                 </FormControl>
                 <br />
                 <FormControl component="fieldset">
@@ -344,9 +361,9 @@ export default function GroupAdd() {
                     {...register('question2')}
                     error={!!errors.question2}
                   />
-                  <Typography variant="inherit" color="textSecondary">
+                  <FormHelperText error>
                     {errors.question2?.message}
-                  </Typography>
+                  </FormHelperText>
                 </FormControl>
                 <br />
                 <FormControl component="fieldset">
@@ -365,9 +382,9 @@ export default function GroupAdd() {
                     {...register('question3')}
                     error={!!errors.question3}
                   />
-                  <Typography variant="inherit" color="textSecondary">
+                  <FormHelperText error>
                     {errors.question3?.message}
-                  </Typography>
+                  </FormHelperText>
                 </FormControl>
                 <br />
                 <FormControl component="fieldset">
@@ -387,9 +404,9 @@ export default function GroupAdd() {
                     {...register('question4')}
                     error={!!errors.question4}
                   />
-                  <Typography variant="inherit" color="textSecondary">
+                  <FormHelperText error>
                     {errors.question4?.message}
-                  </Typography>
+                  </FormHelperText>
                 </FormControl>
               </div>
             )}{' '}
@@ -411,9 +428,9 @@ export default function GroupAdd() {
                   {...register('question1')}
                   error={!!errors.question1}
                 />
-                <Typography variant="inherit" color="textSecondary">
+                <FormHelperText error>
                   {errors.question1?.message}
-                </Typography>
+                </FormHelperText>
               </FormControl>
             )}
             <br />
@@ -434,9 +451,7 @@ export default function GroupAdd() {
                     {...register('org')}
                     error={!!errors.org}
                   />
-                  <Typography variant="inherit" color="textSecondary">
-                    {errors.org?.message}
-                  </Typography>
+                  <FormHelperText error>{errors.org?.message}</FormHelperText>
                   {/*</Grid>*/}
                   {/*<Grid item xs={6}>*/}
                   <StyledTextFieldShort
@@ -447,9 +462,9 @@ export default function GroupAdd() {
                     {...register('org_en')}
                     error={!!errors.org_en}
                   />
-                  <Typography variant="inherit" color="textSecondary">
+                  <FormHelperText error>
                     {errors.org_en?.message}
-                  </Typography>
+                  </FormHelperText>
                 </Grid>
               </Grid>
               <StyledTextFieldVeryShort1
@@ -460,9 +475,7 @@ export default function GroupAdd() {
                 {...register('postcode')}
                 error={!!errors.postcode}
               />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.postcode?.message}
-              </Typography>
+              <FormHelperText error>{errors.postcode?.message}</FormHelperText>
               <StyledTextFieldLong
                 id="address"
                 label="住所(日本語)"
@@ -471,9 +484,7 @@ export default function GroupAdd() {
                 {...register('address')}
                 error={!!errors.address}
               />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.address?.message}
-              </Typography>
+              <FormHelperText error>{errors.address?.message}</FormHelperText>
               <StyledTextFieldLong
                 id="address_en"
                 label="住所(英語)"
@@ -482,9 +493,9 @@ export default function GroupAdd() {
                 {...register('address_en')}
                 error={!!errors.address_en}
               />
-              <Typography variant="inherit" color="textSecondary">
+              <FormHelperText error>
                 {errors.address_en?.message}
-              </Typography>
+              </FormHelperText>
               <StyledTextFieldMedium
                 id="tel"
                 label="電話番号"
@@ -493,9 +504,7 @@ export default function GroupAdd() {
                 {...register('tel')}
                 error={!!errors.tel}
               />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.tel?.message}
-              </Typography>
+              <FormHelperText error>{errors.tel?.message}</FormHelperText>
               <StyledTextFieldMedium
                 id="country"
                 label="居住国"
@@ -504,9 +513,7 @@ export default function GroupAdd() {
                 {...register('country')}
                 error={!!errors.country}
               />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.country?.message}
-              </Typography>
+              <FormHelperText error>{errors.country?.message}</FormHelperText>
             </FormControl>
             <br />
             <FormControl component="fieldset">
@@ -516,13 +523,13 @@ export default function GroupAdd() {
                 第26条2（書面の交付義務）に基づき、
                 ご利用内容をお知らせいたしますので、ご希望の交付方法をお知らせください。
               </Typography>
-              <FormHelperText>
+              <FormHelperText error>
                 {errors?.contract && errors?.contract.message}
               </FormHelperText>
               <Controller
                 name="contract"
                 control={control}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <RadioGroup
                     aria-label="gender"
                     onChange={(e) => {
@@ -586,14 +593,11 @@ export default function GroupAdd() {
                           field: { onChange, value },
                           fieldState: { error, invalid },
                         }) => (
-                          <DesktopDatePicker
+                          <DatePicker
                             label="Date of Student Expired"
                             disablePast
                             value={value}
-                            onChange={(value) =>
-                              onChange(moment(value).format('YYYY-MM-DD'))
-                            }
-                            renderInput={(params) => <TextField {...params} />}
+                            onChange={(value) => onChange(value)}
                           />
                         )}
                       />
