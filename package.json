@@ -34,7 +34,6 @@
     "react-markdown": "^8.0.5",
     "react-redux": "^7.2.9",
     "react-router-dom": "^6.8.0",
-    "react-scripts": "^5.0.1",
     "react-swipeable-views": "^0.14.0",
     "react-use-websocket": "^3.0.0",
     "redux": "^4.2.1",
@@ -46,13 +45,16 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "REACT_APP_NODE_ENV=dev react-scripts start",
-    "start-prod": "REACT_APP_NODE_ENV=prod react-scripts start",
-    "build": "REACT_APP_NODE_ENV=dev react-scripts build",
-    "build-staging": "REACT_APP_NODE_ENV=staging react-scripts build",
-    "build-prod": "REACT_APP_NODE_ENV=prod react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite --mode development",
+    "start-prod": "vite --mode production",
+    "build": "vite build --mode development",
+    "build-staging": "vite build --mode staging",
+    "build-prod": "vite build",
+    "test": "jest",
+    "eject": "vite eject",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:conflict": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
   },
   "eslintConfig": {
     "extends": [
@@ -85,6 +87,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
@@ -92,6 +95,9 @@
     "prettier": "^2.8.3",
     "stylelint": "^14.16.1",
     "stylelint-config-prettier": "^9.0.4",
-    "stylelint-prettier": "^2.0.0"
+    "stylelint-prettier": "^2.0.0",
+    "vite": "^4.1.4",
+    "vite-plugin-pwa": "^0.14.4",
+    "vite-tsconfig-paths": "^4.0.5"
   }
 }
