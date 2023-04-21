@@ -11,7 +11,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material'
-import SwipeableViews from 'react-swipeable-views'
 import { useNavigate, useParams } from 'react-router-dom'
 import { UserData } from '../../../../interface'
 import { useSnackbar } from 'notistack'
@@ -218,116 +217,106 @@ export default function UserDetail() {
             <br />
             <br />
             <br />
-            <AppBar position="static" color="default">
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs
-                defaultValue={0}
                 value={value}
                 onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                aria-label="full width tabs example"
+                aria-label="basic tabs example"
               >
                 <Tab label="メールアドレスの変更" {...a11yProps(0)} />
                 <Tab label="パスワードの変更" {...a11yProps(1)} />
                 <Tab label="ユーザ情報の変更" {...a11yProps(2)} />
               </Tabs>
-            </AppBar>
-            <SwipeableViews
-              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-              index={value}
-              onChangeIndex={handleChangeIndex}
-            >
-              <TabPanel value={0} index={0} dir={theme.direction}>
-                <StyledTextFieldMedium
-                  name="email"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="E-Mail Address"
-                  value={email.email}
-                  onChange={(event) =>
-                    setEmail({ ...email, email: event.target.value })
-                  }
-                  autoFocus
-                />
-                <StyledTextFieldMedium
-                  name="email_verify"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email_verify"
-                  label="E-Mail Address(確認用)"
-                  value={email.email_verify}
-                  onChange={(event) =>
-                    setEmail({ ...email, email_verify: event.target.value })
-                  }
-                  autoFocus
-                />
-              </TabPanel>
-              <TabPanel value={1} index={1} dir={theme.direction}>
-                <StyledTextFieldMedium
-                  name="password"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="password"
-                  type={'password'}
-                  label="Password"
-                  value={password.password}
-                  onChange={(event) =>
-                    setPassword({ ...password, password: event.target.value })
-                  }
-                  autoFocus
-                />
-                <StyledTextFieldMedium
-                  name="password_verify"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="password_verify"
-                  type={'password'}
-                  label="Password(確認用)"
-                  value={password.password_verify}
-                  onChange={(event) =>
-                    setPassword({
-                      ...password,
-                      password_verify: event.target.value,
-                    })
-                  }
-                  autoFocus
-                />
-              </TabPanel>
-              <TabPanel value={2} index={2} dir={theme.direction}>
-                <StyledTextFieldShort
-                  name="name"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  value={name.name}
-                  onChange={(event) =>
-                    setName({ ...name, name: event.target.value })
-                  }
-                  autoFocus
-                />
-                <StyledTextFieldShort
-                  name="name_en"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="name_en"
-                  label="Name(English)"
-                  value={name.name_en}
-                  onChange={(event) =>
-                    setName({ ...name, name_en: event.target.value })
-                  }
-                  autoFocus
-                />
-              </TabPanel>
-            </SwipeableViews>
+            </Box>
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <StyledTextFieldMedium
+                name="email"
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="E-Mail Address"
+                value={email.email}
+                onChange={(event) =>
+                  setEmail({ ...email, email: event.target.value })
+                }
+                autoFocus
+              />
+              <StyledTextFieldMedium
+                name="email_verify"
+                variant="outlined"
+                required
+                fullWidth
+                id="email_verify"
+                label="E-Mail Address(確認用)"
+                value={email.email_verify}
+                onChange={(event) =>
+                  setEmail({ ...email, email_verify: event.target.value })
+                }
+                autoFocus
+              />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <StyledTextFieldMedium
+                name="password"
+                variant="outlined"
+                required
+                fullWidth
+                id="password"
+                type={'password'}
+                label="Password"
+                value={password.password}
+                onChange={(event) =>
+                  setPassword({ ...password, password: event.target.value })
+                }
+                autoFocus
+              />
+              <StyledTextFieldMedium
+                name="password_verify"
+                variant="outlined"
+                required
+                fullWidth
+                id="password_verify"
+                type={'password'}
+                label="Password(確認用)"
+                value={password.password_verify}
+                onChange={(event) =>
+                  setPassword({
+                    ...password,
+                    password_verify: event.target.value,
+                  })
+                }
+                autoFocus
+              />
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <StyledTextFieldShort
+                name="name"
+                variant="outlined"
+                required
+                fullWidth
+                id="name"
+                label="Name"
+                value={name.name}
+                onChange={(event) =>
+                  setName({ ...name, name: event.target.value })
+                }
+                autoFocus
+              />
+              <StyledTextFieldShort
+                name="name_en"
+                variant="outlined"
+                required
+                fullWidth
+                id="name_en"
+                label="Name(English)"
+                value={name.name_en}
+                onChange={(event) =>
+                  setName({ ...name, name_en: event.target.value })
+                }
+                autoFocus
+              />
+            </TabPanel>
           </CardContent>
           <CardActions>
             <Button size="small" variant="outlined" onClick={clickUpdateUser}>
@@ -354,6 +343,5 @@ function MailVerify(props: { mailVerify: boolean }): any {
   if (mailVerify) {
     return <Chip size="small" color="primary" label="メール確認済" />
   }
-    return <Chip size="small" color="secondary" label="メール未確認" />
-
+  return <Chip size="small" color="secondary" label="メール未確認" />
 }
