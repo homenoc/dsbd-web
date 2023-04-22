@@ -1,8 +1,3 @@
-export const memberTypeStandard = { id: 1, name: '一般会員' }
-export const memberTypeStudent = { id: 70, name: '学生会員' }
-export const memberTypeCommittee = { id: 90, name: '運営委員' }
-export const memberTypeDisable = { id: 99, name: '' }
-
 export interface InfoData {
   user?: UserData
   group?: GroupData
