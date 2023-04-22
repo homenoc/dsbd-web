@@ -43,10 +43,7 @@ import {
   StyledTextFieldVeryLong,
   StyledTextFieldVeryShort1,
 } from '../../../style'
-import {
-  LocalizationProvider,
-  DatePicker,
-} from '@mui/x-date-pickers'
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { phoneRegExp, v4NetworkNameRegExp, v6NetworkNameRegExp } from '../reg'
 import { Post } from '../../../api/Service'
@@ -203,6 +200,7 @@ export default function ServiceAdd() {
           .min(6, 'Address(English) must be at least 6 characters')
           .max(255, 'Address(English) must not exceed 255 characters'),
     }),
+    abuse: Yup.string().required('Abuse is required').email(),
     jpnic_admin: Yup.object().when('service_type', {
       is: (value: string) => isNeedJPNIC(value),
       then: () =>
@@ -386,6 +384,7 @@ export default function ServiceAdd() {
       postcode: '',
       address: '',
       address_en: '',
+      abuse: '',
       plan: [{ name: '', after: 0, half_year: 0, one_year: 0 }],
       jpnic_admin: {
         is_group: false,
@@ -683,6 +682,24 @@ export default function ServiceAdd() {
               />
             </FormControl>
             <br />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <FormLabel>1.1.0. Abuse情報</FormLabel>
+              <Typography variant="subtitle1" gutterBottom component="div">
+                Abuse通知用のメールアドレスを記入してください。
+              </Typography>
+              <FormHelperText error>
+                {errors?.abuse && errors.abuse?.message}
+              </FormHelperText>
+              <StyledTextFieldLong
+                id="abuse"
+                label="Abuse"
+                variant="outlined"
+                {...register('abuse')}
+                error={!!errors.abuse}
+              />
+            </FormControl>
           </Grid>
           {getBool(isNeedJPNIC(serviceType)) && (
             <Grid item xs={12}>
