@@ -212,16 +212,16 @@ export default function SignUp() {
               </Grid>
               <Grid container justifyContent="flex-start">
                 <Grid item>
-                  <Link href="https://www.homenoc.ad.jp/rules/" variant="body2">
-                    会則：https://www.homenoc.ad.jp/rules/
+                  <Link href="https://www.homenoc.ad.jp/about/rules/" variant="body2">
+                    会則：https://www.homenoc.ad.jp/about/rules/
                   </Link>
                 </Grid>
                 <Grid item>
                   <Link
-                    href="https://www.homenoc.ad.jp/rules/privacy/"
+                    href="https://www.homenoc.ad.jp/about/privacy/"
                     variant="body2"
                   >
-                    Privacy Policy：https://www.homenoc.ad.jp/rules/privacy/
+                    Privacy Policy：https://www.homenoc.ad.jp/about/privacy/
                   </Link>
                 </Grid>
               </Grid>
