@@ -4,7 +4,6 @@ import {
   CssBaseline,
   Divider,
   IconButton,
-  ListItem,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -27,6 +26,7 @@ import TocIcon from '@mui/icons-material/Toc'
 import AddIcon from '@mui/icons-material/Add'
 import AutorenewIcon from '@mui/icons-material/Autorenew'
 import ChatIcon from '@mui/icons-material/Chat'
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import PaymentIcon from '@mui/icons-material/Payment'
 import {
@@ -139,6 +139,9 @@ export default function Dashboard(props: any) {
   const ProcedurePage = () => {
     navigate('/dashboard/procedure')
   }
+  const FeedbackPage = () => {
+    navigate('/dashboard/feedback')
+  }
 
   return (
     <ThemeProvider theme={muiColorTheme}>
@@ -220,6 +223,12 @@ export default function Dashboard(props: any) {
                 <NoteAddOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="各種手続き" />
+            </ListItemButton>
+            <ListItemButton onClick={FeedbackPage}>
+              <ListItemIcon>
+                <FeedbackIcon />
+              </ListItemIcon>
+              <ListItemText primary="Feedback" />
             </ListItemButton>
             <Divider />
           </List>

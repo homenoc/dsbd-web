@@ -21,6 +21,7 @@ import GroupAdd from './pages/Add/GroupAdd/GroupAdd'
 import ServiceAdd from './pages/Add/ServiceAdd/ServiceAdd'
 import ConnectionAdd from './pages/Add/ConnectionAdd/ConnectionAdd'
 import NotFound from './pages/Etc/404'
+import Feedback from "./pages/Feedback/Feedback";
 
 function App() {
   return (
@@ -88,6 +89,10 @@ function App() {
         <Route
           path="/dashboard/procedure/connection"
           element={<PrivateRoute children={<ConnectionList />} />}
+        />
+        <Route
+          path="/dashboard/feedback"
+          element={<PrivateRoute children={<Feedback />} />}
         />
       </Routes>
     </BrowserRouter>
