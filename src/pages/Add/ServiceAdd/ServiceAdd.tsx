@@ -154,10 +154,7 @@ export default function ServiceAdd() {
     max_downstream: Yup.number()
       .required('最大下り利用帯域を入力してください')
       .moreThan(0, '正しい帯域幅を入力してください'),
-    max_bandwidth_as: Yup.number().moreThan(
-      -1,
-      '正しいAS番号を入力してください'
-    ),
+    max_bandwidth_as: Yup.string(),
     comment: Yup.string(),
 
     // L2, L3 Static, L3 BGP, CoLocation
@@ -430,7 +427,7 @@ export default function ServiceAdd() {
       max_upstream: 100,
       avg_downstream: 10,
       max_downstream: 100,
-      max_bandwidth_as: 0,
+      max_bandwidth_as: '',
       asn: 0,
       comment: '',
       bgp_comment: '',
@@ -1724,7 +1721,6 @@ export default function ServiceAdd() {
                       id="max_bandwidth_as"
                       label="AS番号"
                       multiline
-                      type="number"
                       variant="outlined"
                       {...register('max_bandwidth_as')}
                       error={!!errors.max_bandwidth_as}

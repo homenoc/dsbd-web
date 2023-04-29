@@ -176,7 +176,7 @@ export interface InfosData {
   avg_upstream: number
   max_downstream: number
   max_upstream: number
-  max_bandwidth_as: number
+  max_bandwidth_as: string
   bgp_route_v4: string
   bgp_route_v6: string
 }
