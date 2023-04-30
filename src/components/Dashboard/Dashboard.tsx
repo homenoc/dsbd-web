@@ -44,7 +44,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import { restfulApiConfig } from '../../api/Config'
 import { muiColorTheme } from '../Theme'
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@emotion/react'
 
 const drawerWidth = 240
 

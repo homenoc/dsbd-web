@@ -12,8 +12,6 @@ import Cookies from 'js-cookie'
 import { clearInfos, clearTemplates } from '../../../store/action/Actions'
 import { Get } from '../../../api/Info'
 import {
-  StyledDivContainer,
-  StyledPaper1,
   StyledPaperMessage,
 } from '../../../style'
 import DashboardComponent from '../../../components/Dashboard/Dashboard'
