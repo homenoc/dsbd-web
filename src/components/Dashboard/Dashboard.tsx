@@ -118,11 +118,11 @@ interface DashboardProps {
 export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
   // Menu Bar
-  // useMediaQuery("(min-width:600px)")でmobileかどうかを判定
-  const [open, setOpen] = React.useState(useMediaQuery("(min-width:600px)"))
+  // useMediaQuery("(min-width:800px)")でmobileかどうかを判定
+  const [open, setOpen] = React.useState(useMediaQuery("(min-width:800px)"))
 
   // 画面サイズが変わったときにopenを変更
-  const isMobile = !useMediaQuery("(min-width:600px)");
+  const isMobile = !useMediaQuery("(min-width:800px)");
   useEffect(() => {
     if(isMobile){
       setOpen(false)
