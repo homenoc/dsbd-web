@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Chip,
+  colors,
   Container,
   FormControl,
   InputBase,
@@ -14,6 +15,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { borderRadius } from '@mui/system'
 
 //search
 export const StyledSearchInput = styled(InputBase)(({ theme }) => ({
@@ -54,23 +56,25 @@ export const StyledPaper1 = styled(Paper)(() => ({
 export const StyledPaperMessage = styled(Paper)(() => ({
   width: "100%",
   //margin: 10,
-  backgroundColor: 'rgb(113, 147, 193)',
+  backgroundColor: '#000000',
   //overflowX: 'hidden',
   overflowY: 'scroll',
   height: "calc(100vh - 305px)",
+  borderRadius: '10px',
 }))
 
 export const StyledBlueMessage = styled('div')(() => ({
   position: 'relative',
-  marginLeft: '20px',
+  marginLeft: '8px',
   marginBottom: '10px',
   padding: '10px',
-  backgroundColor: '#d2d2cc',
-  // width: "40%",
+  backgroundColor: '#5c5c5c',
+  width: "75%",
   textAlign: 'left',
   font: "400 .9em 'Open Sans', sans-serif",
-  border: '1px solid #d2d2cc',
-  borderRadius: '10px',
+  //border: '1px solid #d2d2cc',
+  borderRadius: '15px',
+  /*
   '&:after': {
     content: "''",
     position: 'absolute',
@@ -93,25 +97,28 @@ export const StyledBlueMessage = styled('div')(() => ({
     top: '-1px',
     left: '-17px',
   },
+  */
 }))
 
+// right message box
 export const StyledOrangeMessage = styled('div')(() => ({
   position: 'relative',
-  marginRight: '20px',
+  marginRight: '10px',
   marginBottom: '10px',
   padding: '10px',
-  backgroundColor: '#85e249',
+  background: "linear-gradient(135deg, rgba(110,0,255,1) 7%, rgba(0,98,255,1) 91%)",
   width: '80%',
   textAlign: 'left',
   font: "400 .9em 'Open Sans', sans-serif",
-  border: '1px solid #85e249',
-  borderRadius: '10px',
+  //border: '1px solid #c4c4c4',
+  borderRadius: '15px',
+  /*
   '&:after': {
     content: "''",
     position: 'absolute',
     width: '0',
     height: '0',
-    borderTop: '15px solid #85e249',
+    borderTop: '15px solid rgb(0,83,255)',
     borderLeft: '15px solid transparent',
     borderRight: '15px solid transparent',
     top: '0',
@@ -122,12 +129,13 @@ export const StyledOrangeMessage = styled('div')(() => ({
     position: 'absolute',
     width: '0',
     height: '0',
-    borderTop: '17px solid #85e249',
+    borderTop: '17px solid #c4c4c4',
     borderLeft: '16px solid transparent',
     borderRight: '16px solid transparent',
     top: '-1px',
     right: '-17px',
   },
+  */
 }))
 
 // typography
@@ -155,6 +163,9 @@ export const StyledWrapForm = styled('form')(({ theme }) => ({
   width: "100%",
   margin: `${theme.spacing(0)} auto`,
   height: '150px',
+  backgroundColor: "#000000",
+  borderRadius: '10px',
+  borderTop: "1px solid #5c5c5c",
 }))
 
 // container

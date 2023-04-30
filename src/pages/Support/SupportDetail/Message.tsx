@@ -1,8 +1,9 @@
 import React, { useRef } from 'react'
 import remarkGfm from 'remark-gfm'
 import {
-  StyledMessageTimeStampRight,
-  StyledReactMarkdownMessageContent,
+  StyledMessageTimeStampLeft,
+  StyledReactMarkdownMessageContentRight,
+  StyledReactMarkdownMessageContentLeft,
 } from './styles'
 import { Avatar, Box } from '@mui/material'
 import { StyledBlueMessage, StyledOrangeMessage } from '../../../style'
@@ -19,23 +20,28 @@ export const MessageLeft = (props: {
   const divRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Avatar sx={{ bgcolor: deepOrange[500] }}>{displayName}</Avatar>
+    <Box sx={{ display: 'flex', paddingLeft: "6px" }}>
+      <Avatar sx={{ 
+        bgcolor: deepOrange[500],
+        fontSize: "medium",
+      }}>
+        {displayName}
+      </Avatar>
       <StyledBlueMessage>
         <div
           ref={divRef}
           style={{
             borderRadius: 15,
-            width: '50vw',
+            width: '55vw',
           }}
         >
-          <StyledReactMarkdownMessageContent
+          <StyledReactMarkdownMessageContentLeft
             children={message}
             skipHtml={true}
             remarkPlugins={[remarkGfm]}
           />
         </div>
-        <StyledMessageTimeStampRight>{timestamp}</StyledMessageTimeStampRight>
+        <StyledMessageTimeStampLeft>{timestamp}</StyledMessageTimeStampLeft>
       </StyledBlueMessage>
     </Box>
   )
@@ -58,19 +64,19 @@ export const MessageRight = (props: {
           ref={divRef}
           style={{
             borderRadius: 15,
-            width: '50vw',
+            width: '60vw',
           }}
         >
-          <StyledReactMarkdownMessageContent
+          <StyledReactMarkdownMessageContentRight
             children={message}
             skipHtml={true}
             remarkPlugins={[remarkGfm]}
             // escapeHtml={false}
           />
         </div>
-        <StyledMessageTimeStampRight>
-          ({displayName}) {timestamp}
-        </StyledMessageTimeStampRight>
+        <StyledMessageTimeStampLeft>
+          ({displayName}) <br/> {timestamp}
+        </StyledMessageTimeStampLeft>
       </StyledOrangeMessage>
     </Box>
   )

@@ -1,21 +1,35 @@
 import { Paper, styled } from '@mui/material'
 import ReactMarkdown from 'react-markdown'
 
-export const StyledMessageTimeStampRight = styled('div')(() => ({
-  color: 'black',
+export const StyledMessageTimeStampLeft = styled('div')(() => ({
+  color: "lightgrey",
   position: 'absolute',
   fontSize: '.85em',
   fontWeight: 300,
   marginTop: '10px',
-  bottom: '-3px',
-  right: '5px',
+  bottom: '2px',
+  //right: '5px',
+  left: '8px',
 }))
 
-export const StyledReactMarkdownMessageContent = styled(ReactMarkdown)(
+export const StyledReactMarkdownMessageContentLeft = styled(ReactMarkdown)(
   () => ({
     padding: 0,
+    paddingBottom: "0px",
     margin: 0,
-    color: 'black',
+    color: 'white',
+    // overflowWrap: "normal",
+    // overflowY: 'scroll',
+    overflowX: 'auto',
+  })
+)
+
+export const StyledReactMarkdownMessageContentRight = styled(ReactMarkdown)(
+  () => ({
+    padding: 0,
+    paddingBottom: "20px",
+    margin: 0,
+    color: 'white',
     // overflowWrap: "normal",
     // overflowY: 'scroll',
     overflowX: 'auto',
