@@ -14,7 +14,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { grey } from '@mui/material/colors'
 
 //search
 export const StyledSearchInput = styled(InputBase)(({ theme }) => ({
