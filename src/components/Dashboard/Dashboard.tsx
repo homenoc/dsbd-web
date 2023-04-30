@@ -113,6 +113,7 @@ const Drawer = styled(MuiDrawer, {
 interface DashboardProps {
   title?: string
   children?: React.ReactNode
+  sx?: CSSObject
 }
 export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
@@ -254,7 +255,7 @@ export default function Dashboard(props: DashboardProps) {
             <Divider />
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, ...props.sx}}>
           <StyledDivDashboardToolBarIcon />
 
           <StyledTypographyPageTitle
