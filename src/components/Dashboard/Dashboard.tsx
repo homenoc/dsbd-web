@@ -114,23 +114,28 @@ interface DashboardProps {
   title?: string
   children?: React.ReactNode
   sx?: CSSObject
+  forceDrawerClosed?: boolean
 }
 export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
   // Menu Bar
   // useMediaQuery("(min-width:800px)")でmobileかどうかを判定
-  const [open, setOpen] = React.useState(useMediaQuery("(min-width:800px)"))
+  const [open, setOpen] = React.useState(useMediaQuery("(min-width:600px)"))
 
   // 画面サイズが変わったときにopenを変更
-  const isMobile = !useMediaQuery("(min-width:800px)");
+  // closeが強制されているときは、openをfalseにする
+  const isMobile = !useMediaQuery("(min-width:600px)");
   useEffect(() => {
-    if(isMobile){
+    if(props.forceDrawerClosed){
+      setOpen(false)
+    }
+    else if(isMobile){
       setOpen(false)
     }
     else{
       setOpen(true)
     }
-  }, [isMobile])
+  }, [isMobile, props.forceDrawerClosed])
 
   const handleDrawerOpen = () => {
     setOpen(true)
