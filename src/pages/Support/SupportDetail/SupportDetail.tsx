@@ -164,7 +164,7 @@ export default function SupportDetail() {
       {id === undefined && <DashboardComponent><h2>IDの値が取得できません</h2></DashboardComponent>}
       {baseChatData === undefined && <DashboardComponent><h2>データがありません</h2></DashboardComponent>}
       {baseChatData != null && (
-        <DashboardComponent title={"ID: "+ tickets?.id + " " + tickets?.title} sx={{ padding: "7px" }}>
+        <DashboardComponent title={"ID: "+ tickets?.id + " " + tickets?.title} sx={{ padding: "7px" }} forceDrawerClosed={true}>
           <StyledPaperMessage id="style-1">
             <b>このチャットはMarkdownに準拠しております。</b>
             {baseChatData.map((chat, index) =>

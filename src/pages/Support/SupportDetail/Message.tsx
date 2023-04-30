@@ -33,7 +33,7 @@ export const MessageLeft = (props: {
           style={{
             borderRadius: 15,
             minWidth: "50vw",
-            maxWidth: "70vw"
+            maxWidth: "70vw",
           }}
         >
           <StyledReactMarkdownMessageContentLeft
@@ -66,7 +66,7 @@ export const MessageRight = (props: {
           style={{
             borderRadius: 15,
             minWidth: "50vw",
-            maxWidth: "70vw"
+            maxWidth: "70vw",
           }}
         >
           <StyledReactMarkdownMessageContentRight
