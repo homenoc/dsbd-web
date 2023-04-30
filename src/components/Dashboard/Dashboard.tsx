@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   ThemeProvider,
   CssBaseline,
@@ -43,6 +43,8 @@ import { clearInfos, clearTemplates } from '../../store/action/Actions'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import { restfulApiConfig } from '../../api/Config'
 import { muiColorTheme } from '../Theme'
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@emotion/react'
 
 const drawerWidth = 240
 
@@ -62,9 +64,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
-  },
+  // 大きい画面の時に、drawerを閉じた時に、アイコンが中心にならないため、コメントアウト
+  // width: `calc(${theme.spacing(7)} + 1px)`,
+  // [theme.breakpoints.up('sm')]: {
+  //  width: `calc(${theme.spacing(9)} + 1px)`,
+  // },
 })
 
 interface AppBarProps extends MuiAppBarProps {
@@ -106,10 +110,28 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
-export default function Dashboard(props: any) {
+
+interface DashboardProps {
+  title?: string
+  children?: React.ReactNode
+}
+export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
   // Menu Bar
-  const [open, setOpen] = React.useState(true)
+  // useMediaQuery("(min-width:600px)")でmobileかどうかを判定
+  const [open, setOpen] = React.useState(useMediaQuery("(min-width:600px)"))
+
+  // 画面サイズが変わったときにopenを変更
+  const isMobile = !useMediaQuery("(min-width:600px)");
+  useEffect(() => {
+    if(isMobile){
+      setOpen(false)
+    }
+    else{
+      setOpen(true)
+    }
+  }, [isMobile])
+
   const handleDrawerOpen = () => {
     setOpen(true)
   }
