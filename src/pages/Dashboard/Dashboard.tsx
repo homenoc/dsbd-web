@@ -110,7 +110,7 @@ export default function Dashboard() {
   return (
     <DashboardComponent title="Dashboard">
       <Grid container spacing={3}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           {restfulApiConfig.enableMoney &&
             data?.group?.is_expired &&
             !data?.info?.length && (
@@ -188,7 +188,7 @@ export default function Dashboard() {
             </StyledCardRoot3>
           ))}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           {restfulApiConfig.enableMoney && (
             <StyledCardRoot3 key={'student'}>
               <CardContent>
