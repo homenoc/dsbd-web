@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { grey } from '@mui/material/colors'
 
 //search
 export const StyledSearchInput = styled(InputBase)(({ theme }) => ({
@@ -52,12 +53,12 @@ export const StyledPaper1 = styled(Paper)(() => ({
 }))
 
 export const StyledPaperMessage = styled(Paper)(() => ({
-  width: 'calc( 100% - 20px )',
-  margin: 10,
+  width: "100%",
+  //margin: 10,
   backgroundColor: 'rgb(113, 147, 193)',
-  // overflowX: 'hidden',
+  //overflowX: 'hidden',
   overflowY: 'scroll',
-  height: 'calc( 100% - 80px )',
+  height: "calc(100vh - 305px)",
 }))
 
 export const StyledBlueMessage = styled('div')(() => ({
@@ -101,7 +102,7 @@ export const StyledOrangeMessage = styled('div')(() => ({
   marginBottom: '10px',
   padding: '10px',
   backgroundColor: '#85e249',
-  width: '60%',
+  width: '80%',
   textAlign: 'left',
   font: "400 .9em 'Open Sans', sans-serif",
   border: '1px solid #85e249',
@@ -152,7 +153,7 @@ export const StyledTable2 = styled(Table)(() => ({
 export const StyledWrapForm = styled('form')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
-  width: '95%',
+  width: "100%",
   margin: `${theme.spacing(0)} auto`,
   height: '150px',
 }))

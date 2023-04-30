@@ -16,6 +16,7 @@ import {
   StyledPaper1,
   StyledPaperMessage,
 } from '../../../style'
+import DashboardComponent from '../../../components/Dashboard/Dashboard'
 
 export default function SupportDetail() {
   let id: string | undefined
@@ -162,40 +163,38 @@ export default function SupportDetail() {
 
   return (
     <div>
-      {id === undefined && <h2>IDの値が取得できません</h2>}
-      {baseChatData === undefined && <h2>データがありません</h2>}
+      {id === undefined && <DashboardComponent><h2>IDの値が取得できません</h2></DashboardComponent>}
+      {baseChatData === undefined && <DashboardComponent><h2>データがありません</h2></DashboardComponent>}
       {baseChatData != null && (
-        <StyledDivContainer>
-          <StyledPaper1>
-            <StyledPaperMessage id="style-1">
-              <b>このチャットはMarkdownに準拠しております。</b>
-              {baseChatData.map((chat, index) =>
-                !chat.admin ? (
-                  <MessageRight
-                    key={index}
-                    message={chat.data}
-                    timestamp={chat.created_at}
-                    displayName={getUser(chat.user_id)}
-                  />
-                ) : (
-                  <MessageLeft
-                    key={index}
-                    message={chat.data}
-                    timestamp={chat.created_at}
-                    displayName={'運営'}
-                  />
-                )
-              )}
-              <div ref={ref} />
-            </StyledPaperMessage>
-            <TextInput
-              key={'textInput'}
-              inputChat={inputChatData}
-              setInputChat={setInputChatData}
-              setSendPush={setSendPush}
-            />
-          </StyledPaper1>
-        </StyledDivContainer>
+        <DashboardComponent title={"ID: "+ tickets?.id + " " + tickets?.title}>
+          <StyledPaperMessage id="style-1">
+            <b>このチャットはMarkdownに準拠しております。</b>
+            {baseChatData.map((chat, index) =>
+              !chat.admin ? (
+                <MessageRight
+                  key={index}
+                  message={chat.data}
+                  timestamp={chat.created_at}
+                  displayName={getUser(chat.user_id)}
+                />
+              ) : (
+                <MessageLeft
+                  key={index}
+                  message={chat.data}
+                  timestamp={chat.created_at}
+                  displayName={'運営'}
+                />
+              )
+            )}
+            <div ref={ref} />
+          </StyledPaperMessage>
+          <TextInput
+            key={'textInput'}
+            inputChat={inputChatData}
+            setInputChat={setInputChatData}
+            setSendPush={setSendPush}
+          />
+        </DashboardComponent>
       )}
     </div>
   )
