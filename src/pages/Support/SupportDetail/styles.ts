@@ -15,7 +15,7 @@ export const StyledMessageTimeStampLeft = styled('div')(() => ({
 export const StyledReactMarkdownMessageContentLeft = styled(ReactMarkdown)(
   () => ({
     padding: 0,
-    paddingBottom: "0px",
+    paddingBottom: "10px",
     margin: 0,
     color: 'white',
     // overflowWrap: "normal",
