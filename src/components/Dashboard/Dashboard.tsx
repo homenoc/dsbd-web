@@ -267,7 +267,6 @@ export default function Dashboard(props: DashboardProps) {
             // component="h2"
             variant="h5"
             color="inherit"
-            noWrap
           >
             {props.title}
           </StyledTypographyPageTitle>
