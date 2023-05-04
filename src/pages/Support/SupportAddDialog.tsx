@@ -10,6 +10,7 @@ import {
   Grid,
   Radio,
   RadioGroup,
+  Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { DefaultSupportAddData } from '../../interface'
@@ -94,6 +95,10 @@ export function SupportAddDialog(props: { groupEnable: boolean }) {
                   label="グループチャット"
                 />
               </RadioGroup>
+              <br />
+              <Typography variant="inherit">
+                このチャットはMarkdownに準拠しております。
+              </Typography>
               <br />
               <StyledTextFieldVeryLong
                 id="title"
