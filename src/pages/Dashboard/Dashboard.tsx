@@ -18,6 +18,8 @@ import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { restfulApiConfig } from '../../api/Config'
 import { StyledCardRoot3, StyledTypographyTitle } from '../../style'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export default function Dashboard() {
   const [data, setData] = React.useState<InfoData>()
@@ -110,7 +112,7 @@ export default function Dashboard() {
   return (
     <DashboardComponent title="Dashboard">
       <Grid container spacing={3}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           {restfulApiConfig.enableMoney &&
             data?.group?.is_expired &&
             !data?.info?.length && (
@@ -177,7 +179,12 @@ export default function Dashboard() {
                   {notice.fault && <Chip label="障害" color="secondary" />}
                 </StyledTypographyTitle>
                 <br />
-                {notice.data}
+                <ReactMarkdown
+                  skipHtml={true}
+                  remarkPlugins={[remarkGfm]}
+                >
+                  {notice.data}
+                </ReactMarkdown>
               </CardContent>
               <CardActions>
                 {/*<Button color="secondary" size="small" variant="outlined"*/}
@@ -188,7 +195,7 @@ export default function Dashboard() {
             </StyledCardRoot3>
           ))}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           {restfulApiConfig.enableMoney && (
             <StyledCardRoot3 key={'student'}>
               <CardContent>

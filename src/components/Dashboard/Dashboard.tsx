@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   ThemeProvider,
   CssBaseline,
@@ -43,6 +43,7 @@ import { clearInfos, clearTemplates } from '../../store/action/Actions'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import { restfulApiConfig } from '../../api/Config'
 import { muiColorTheme } from '../Theme'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const drawerWidth = 240
 
@@ -62,9 +63,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
-  },
+  // 大きい画面の時に、drawerを閉じた時に、アイコンが中心にならないため、コメントアウト
+  // width: `calc(${theme.spacing(7)} + 1px)`,
+  // [theme.breakpoints.up('sm')]: {
+  //  width: `calc(${theme.spacing(9)} + 1px)`,
+  // },
 })
 
 interface AppBarProps extends MuiAppBarProps {
@@ -106,10 +109,34 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
-export default function Dashboard(props: any) {
+
+interface DashboardProps {
+  title?: string
+  children?: React.ReactNode
+  sx?: CSSObject
+  forceDrawerClosed?: boolean
+}
+export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
   // Menu Bar
-  const [open, setOpen] = React.useState(true)
+  // useMediaQuery("(min-width:800px)")でmobileかどうかを判定
+  const [open, setOpen] = React.useState(useMediaQuery("(min-width:600px)"))
+
+  // 画面サイズが変わったときにopenを変更
+  // closeが強制されているときは、openをfalseにする
+  const isMobile = !useMediaQuery("(min-width:600px)");
+  useEffect(() => {
+    if(props.forceDrawerClosed){
+      setOpen(false)
+    }
+    else if(isMobile){
+      setOpen(false)
+    }
+    else{
+      setOpen(true)
+    }
+  }, [isMobile, props.forceDrawerClosed])
+
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -233,14 +260,13 @@ export default function Dashboard(props: any) {
             <Divider />
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, ...props.sx}}>
           <StyledDivDashboardToolBarIcon />
 
           <StyledTypographyPageTitle
             // component="h2"
             variant="h5"
             color="inherit"
-            noWrap
           >
             {props.title}
           </StyledTypographyPageTitle>
