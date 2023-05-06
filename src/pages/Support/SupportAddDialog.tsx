@@ -18,6 +18,8 @@ import { useSnackbar } from 'notistack'
 import { Post } from '../../api/Support'
 import { Get } from '../../api/Info'
 import { StyledTextFieldVeryLong } from '../../style'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export function SupportAddDialog(props: { groupEnable: boolean }) {
   const { groupEnable } = props
@@ -123,6 +125,16 @@ export function SupportAddDialog(props: { groupEnable: boolean }) {
                 }
                 variant="outlined"
               />
+            </Grid>
+            <Grid item xs={12}>
+              <h3>内容のプレビュー ↓</h3>
+              <ReactMarkdown
+                skipHtml={true}
+                remarkPlugins={[remarkGfm]}
+              >
+                {data.data}
+              </ReactMarkdown>
+              内容のプレビュー ↑
             </Grid>
           </Grid>
         </DialogContent>
