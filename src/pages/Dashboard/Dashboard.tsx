@@ -18,6 +18,8 @@ import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { restfulApiConfig } from '../../api/Config'
 import { StyledCardRoot3, StyledTypographyTitle } from '../../style'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export default function Dashboard() {
   const [data, setData] = React.useState<InfoData>()
@@ -177,7 +179,12 @@ export default function Dashboard() {
                   {notice.fault && <Chip label="障害" color="secondary" />}
                 </StyledTypographyTitle>
                 <br />
-                {notice.data}
+                <ReactMarkdown
+                  skipHtml={true}
+                  remarkPlugins={[remarkGfm]}
+                >
+                  {notice.data}
+                </ReactMarkdown>
               </CardContent>
               <CardActions>
                 {/*<Button color="secondary" size="small" variant="outlined"*/}
