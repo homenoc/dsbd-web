@@ -69,8 +69,7 @@ export default function UserDetail() {
   const [user, setUser] = useState<UserData>()
   const infos = useSelector((state: RootState) => state.infos)
   const navigate = useNavigate()
-  let id: string | undefined
-  ;({ id } = useParams())
+  const { id } = useParams()
   const { enqueueSnackbar } = useSnackbar()
   const [value, setValue] = React.useState(0)
   const [email, setEmail] = React.useState({ email: '', email_verify: '' })

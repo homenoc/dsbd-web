@@ -15,7 +15,8 @@ import {
   Theme,
   Box,
   Typography,
-  ListItemButton, List,
+  ListItemButton,
+  List,
 } from '@mui/material'
 import MuiDrawer from '@mui/material/Drawer'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
@@ -26,14 +27,10 @@ import TocIcon from '@mui/icons-material/Toc'
 import AddIcon from '@mui/icons-material/Add'
 import AutorenewIcon from '@mui/icons-material/Autorenew'
 import ChatIcon from '@mui/icons-material/Chat'
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import FeedbackIcon from '@mui/icons-material/Feedback'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import PaymentIcon from '@mui/icons-material/Payment'
-import {
-  StyledDivDashboardRoot,
-  StyledDivDashboardToolBarIcon,
-  StyledTypographyPageTitle,
-} from './styles'
+import { StyledDivDashboardRoot, StyledDivDashboardToolBarIcon } from './styles'
 import { useNavigate } from 'react-router-dom'
 import { Logout } from '../../api/Auth'
 import { Get } from '../../api/Info'
@@ -43,7 +40,7 @@ import { clearInfos, clearTemplates } from '../../store/action/Actions'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import { restfulApiConfig } from '../../api/Config'
 import { muiColorTheme } from '../Theme'
-import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const drawerWidth = 240
 
@@ -109,30 +106,28 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
-
 interface DashboardProps {
   title?: string
   children?: React.ReactNode
   sx?: CSSObject
   forceDrawerClosed?: boolean
 }
+
 export default function Dashboard(props: DashboardProps) {
   const navigate = useNavigate()
   // Menu Bar
   // useMediaQuery("(min-width:800px)")でmobileかどうかを判定
-  const [open, setOpen] = React.useState(useMediaQuery("(min-width:600px)"))
+  const [open, setOpen] = React.useState(useMediaQuery('(min-width:600px)'))
 
   // 画面サイズが変わったときにopenを変更
   // closeが強制されているときは、openをfalseにする
-  const isMobile = !useMediaQuery("(min-width:600px)");
+  const isMobile = !useMediaQuery('(min-width:600px)')
   useEffect(() => {
-    if(props.forceDrawerClosed){
+    if (props.forceDrawerClosed) {
       setOpen(false)
-    }
-    else if(isMobile){
+    } else if (isMobile) {
       setOpen(false)
-    }
-    else{
+    } else {
       setOpen(true)
     }
   }, [isMobile, props.forceDrawerClosed])
@@ -260,16 +255,11 @@ export default function Dashboard(props: DashboardProps) {
             <Divider />
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, ...props.sx}}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, ...props.sx }}>
           <StyledDivDashboardToolBarIcon />
-
-          <StyledTypographyPageTitle
-            // component="h2"
-            variant="h5"
-            color="inherit"
-          >
+          <Typography sx={{ m: 1 }} variant="h5" color="inherit">
             {props.title}
-          </StyledTypographyPageTitle>
+          </Typography>
           {props.children}
         </Box>
       </Box>

@@ -53,91 +53,6 @@ export const StyledPaper1 = styled(Paper)(() => ({
   position: 'relative',
 }))
 
-export const StyledPaperMessage = styled(Paper)(() => ({
-  width: "100%",
-  //margin: 10,
-  backgroundColor: '#000000',
-  //overflowX: 'hidden',
-  overflowY: 'scroll',
-  height: "calc(100vh - 305px)",
-  borderRadius: '10px',
-}))
-
-export const StyledBlueMessage = styled('div')(() => ({
-  position: 'relative',
-  marginLeft: '8px',
-  marginBottom: '10px',
-  padding: '10px',
-  backgroundColor: '#343a40',
-  width: "75%",
-  textAlign: 'left',
-  font: "400 .9em 'Open Sans', sans-serif",
-  //border: '1px solid #d2d2cc',
-  borderRadius: '15px',
-  /*
-  '&:after': {
-    content: "''",
-    position: 'absolute',
-    width: '0',
-    height: '0',
-    borderTop: '15px solid #d2d2cc',
-    borderLeft: '15px solid transparent',
-    borderRight: '15px solid transparent',
-    top: '0',
-    left: '-15px',
-  },
-  '&:before': {
-    content: "''",
-    position: 'absolute',
-    width: '0',
-    height: '0',
-    borderTop: '17px solid #d2d2cc',
-    borderLeft: '16px solid transparent',
-    borderRight: '16px solid transparent',
-    top: '-1px',
-    left: '-17px',
-  },
-  */
-}))
-
-// right message box
-export const StyledOrangeMessage = styled('div')(() => ({
-  position: 'relative',
-  marginRight: '10px',
-  marginBottom: '10px',
-  padding: '10px',
-  background: "#6c757d",
-  width: '80%',
-  textAlign: 'left',
-  font: "400 .9em 'Open Sans', sans-serif",
-  //border: '1px solid #c4c4c4',
-  borderRadius: '15px',
-  /*
-  '&:after': {
-    content: "''",
-    position: 'absolute',
-    width: '0',
-    height: '0',
-    borderTop: '15px solid rgb(0,83,255)',
-    borderLeft: '15px solid transparent',
-    borderRight: '15px solid transparent',
-    top: '0',
-    right: '-15px',
-  },
-  '&:before': {
-    content: "''",
-    position: 'absolute',
-    width: '0',
-    height: '0',
-    borderTop: '17px solid #c4c4c4',
-    borderLeft: '16px solid transparent',
-    borderRight: '16px solid transparent',
-    top: '-1px',
-    right: '-17px',
-  },
-  */
-}))
-
 // typography
 export const StyledTypographyHeading = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(15),
@@ -156,18 +71,6 @@ export const StyledTable2 = styled(Table)(() => ({
   minWidth: 500,
 }))
 
-// form
-export const StyledWrapForm = styled('form')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  width: "100%",
-  margin: `${theme.spacing(0)} auto`,
-  height: '150px',
-  backgroundColor: "#000000",
-  borderRadius: '10px',
-  borderTop: "1px solid #5c5c5c",
-}))
-
 // container
 export const StyledDivContainer = styled('div')(() => ({
   width: '100vw',
@@ -179,11 +82,6 @@ export const StyledDivContainer = styled('div')(() => ({
 
 export const StyledContainer1 = styled(Container)(({ theme }) => ({
   padding: theme.spacing(8, 0, 6),
-}))
-
-// TextField
-export const StyledWrapText = styled(TextField)(() => ({
-  width: '100%',
 }))
 
 export const StyledButton1 = styled(Button)(() => ({
