@@ -145,7 +145,7 @@ export default function Support() {
         tickets
           .filter((ticket) => ticket.solved === value)
           .map((ticket: TicketData, index) => (
-            <StyledCardRoot3 key={'tikect_' + index}>
+            <StyledCardRoot3 key={'ticket_' + index}>
               <CardContent>
                 <StyledTypographyTitle color="textSecondary" gutterBottom>
                   ID: {ticket.id}
@@ -167,7 +167,6 @@ export default function Support() {
                   <Chip size="small" color="primary" label="管理者作成" />
                 )}
                 <br />
-                {/*作成者: {ticket.user?.name}*/}
               </CardContent>
               <CardActions>
                 <Button size="small" onClick={() => clickDetailPage(ticket.id)}>

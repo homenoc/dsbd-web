@@ -20,10 +20,6 @@ export const StyledDivDashboardToolBarIcon = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }))
 
-export const StyledTypographyPageTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-}))
-
 export const StyledMainContent = styled('main')(({ theme }) => ({
   flexGrow: 1,
   height: '100vh',
