@@ -4,9 +4,10 @@ import {
   StyledMessageTimeStampLeft,
   StyledReactMarkdownMessageContentRight,
   StyledReactMarkdownMessageContentLeft,
-} from './styles'
+  StyledLeftMessage,
+  StyledRightMessage,
+} from '../styles'
 import { Avatar, Box } from '@mui/material'
-import { StyledBlueMessage, StyledOrangeMessage } from '../../../style'
 import { deepOrange } from '@mui/material/colors'
 
 export const MessageLeft = (props: {
@@ -20,20 +21,22 @@ export const MessageLeft = (props: {
   const divRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Box sx={{ display: 'flex', paddingLeft: "6px" }}>
-      <Avatar sx={{ 
-        bgcolor: deepOrange[500],
-        fontSize: "medium",
-      }}>
+    <Box sx={{ display: 'flex', paddingLeft: '6px' }}>
+      <Avatar
+        sx={{
+          bgcolor: deepOrange[500],
+          fontSize: 'medium',
+        }}
+      >
         {displayName}
       </Avatar>
-      <StyledBlueMessage>
+      <StyledLeftMessage>
         <div
           ref={divRef}
           style={{
             borderRadius: 15,
-            minWidth: "50vw",
-            maxWidth: "70vw",
+            minWidth: '50vw',
+            maxWidth: '70vw',
           }}
         >
           <StyledReactMarkdownMessageContentLeft
@@ -43,7 +46,7 @@ export const MessageLeft = (props: {
           />
         </div>
         <StyledMessageTimeStampLeft>{timestamp}</StyledMessageTimeStampLeft>
-      </StyledBlueMessage>
+      </StyledLeftMessage>
     </Box>
   )
 }
@@ -60,13 +63,13 @@ export const MessageRight = (props: {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <StyledOrangeMessage>
+      <StyledRightMessage>
         <div
           ref={divRef}
           style={{
             borderRadius: 15,
-            minWidth: "50vw",
-            maxWidth: "70vw",
+            minWidth: '50vw',
+            maxWidth: '70vw',
           }}
         >
           <StyledReactMarkdownMessageContentRight
@@ -77,9 +80,9 @@ export const MessageRight = (props: {
           />
         </div>
         <StyledMessageTimeStampLeft>
-          ({displayName}) <br/> {timestamp}
+          ({displayName}) <br /> {timestamp}
         </StyledMessageTimeStampLeft>
-      </StyledOrangeMessage>
+      </StyledRightMessage>
     </Box>
   )
 }
