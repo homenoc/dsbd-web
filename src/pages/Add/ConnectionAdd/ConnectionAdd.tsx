@@ -309,6 +309,7 @@ export default function ConnectionAdd() {
           </Grid>
           {serviceID !== 0 &&
             isNeedBGP() &&
+            !isGlobalAS() &&
             infos[infos.length - 1]?.data?.service?.find(
               (service) => service.id === serviceID
             )?.ip == null && (
