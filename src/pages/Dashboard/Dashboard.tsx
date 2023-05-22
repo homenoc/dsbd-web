@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import DashboardComponent from '../../components/Dashboard/Dashboard'
 import {
+  Box,
   Button,
   CardActions,
   CardContent,
@@ -113,7 +114,26 @@ export default function Dashboard() {
     <DashboardComponent title="Dashboard">
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          {restfulApiConfig.enableMoney &&
+          {data?.group?.expired_status !== 0 && (
+            <StyledCardRoot3 key={'payment_notice'}>
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                  非アクティブ状態
+                </Typography>
+                <Chip size={'small'} label="重要" color="secondary" />
+                <br />
+                <br />
+                <Typography component={'span'} variant={'subtitle1'}>
+                  アカウントが非アクティブ状態です。
+                </Typography>
+                <Typography component={'span'} variant={'subtitle1'}>
+                  アカウントを再度、アクティブにしたい方はチャットよりお問い合わせのほどお願いします。
+                </Typography>
+              </CardContent>
+            </StyledCardRoot3>
+          )}
+          {data?.group?.expired_status === 0 &&
+            restfulApiConfig.enableMoney &&
             data?.group?.is_expired &&
             !data?.info?.length && (
               <StyledCardRoot3 key={'payment_notice'}>
@@ -121,15 +141,15 @@ export default function Dashboard() {
                   <Typography variant="h5" component="h2">
                     会費のお支払いについて
                   </Typography>
-                  <StyledTypographyTitle color="textSecondary" gutterBottom>
-                    <Chip label="重要" color="secondary" />
-                  </StyledTypographyTitle>
-                  <h3>
+                  <Chip size={'small'} label="重要" color="secondary" />
+                  <br />
+                  <br />
+                  <Typography component={'span'} variant={'subtitle1'}>
                     開通処理が完了致しましたので、会費のお支払いをお願いいたします。
-                  </h3>
-                  <h3>
+                  </Typography>
+                  <Typography component={'span'} variant={'subtitle1'}>
                     （開通処理後に1週間以内に支払いが行われない場合は、未開通処理を行います。）
-                  </h3>
+                  </Typography>
                   <br />
                   以下の「会費のお支払いはこちらから」ボタンより手続きを進めてください
                 </CardContent>
@@ -144,15 +164,18 @@ export default function Dashboard() {
                 </CardActions>
               </StyledCardRoot3>
             )}
-          {status !== 3 && (
+          {data?.group?.expired_status === 0 && status !== 3 && (
             <StyledCardRoot3 key={'add_notice'}>
               <CardContent>
                 <Typography variant="h5" component="h2">
                   申請手続きのお知らせ
                 </Typography>
-                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                  <Chip label="重要" color="secondary" />
-                </StyledTypographyTitle>
+                <Chip
+                  size={'small'}
+                  label="重要"
+                  color="secondary"
+                  sx={{ marginRight: 1 }}
+                />
                 <br />
                 以下の「申請ページはこちら」ボタンより手続きを進めてください
               </CardContent>
@@ -163,37 +186,48 @@ export default function Dashboard() {
               </CardActions>
             </StyledCardRoot3>
           )}
-          {data?.notice?.map((notice, index) => (
-            <StyledCardRoot3 key={index}>
-              <CardContent>
-                <Typography variant="h5" component="h2">
-                  {notice.title}
-                </Typography>
-                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                  ({getStringFromDate(notice.start_time)} -{' '}
-                  {getStringFromDate(notice.end_time)})
-                </StyledTypographyTitle>
-                <StyledTypographyTitle color="textSecondary" gutterBottom>
-                  {notice.info && <Chip label="情報" color="primary" />}
-                  {notice.important && <Chip label="重要" color="secondary" />}
-                  {notice.fault && <Chip label="障害" color="secondary" />}
-                </StyledTypographyTitle>
-                <br />
-                <ReactMarkdown
-                  skipHtml={true}
-                  remarkPlugins={[remarkGfm]}
-                >
-                  {notice.data}
-                </ReactMarkdown>
-              </CardContent>
-              <CardActions>
-                {/*<Button color="secondary" size="small" variant="outlined"*/}
-                {/*        onClick={() => noticeDelete(notice.ID)}>*/}
-                {/*    Delete*/}
-                {/*</Button>*/}
-              </CardActions>
-            </StyledCardRoot3>
-          ))}
+          {data?.group?.expired_status === 0 &&
+            data?.notice?.map((notice, index) => (
+              <StyledCardRoot3 key={index}>
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    {notice.title}
+                  </Typography>
+                  <StyledTypographyTitle color="textSecondary" gutterBottom>
+                    ({getStringFromDate(notice.start_time)} -{' '}
+                    {getStringFromDate(notice.end_time)})
+                  </StyledTypographyTitle>
+                  {notice.info && (
+                    <Chip
+                      size={'small'}
+                      label="情報"
+                      color="primary"
+                      sx={{ marginRight: 1 }}
+                    />
+                  )}
+                  {notice.important && (
+                    <Chip
+                      size={'small'}
+                      label="重要"
+                      color="secondary"
+                      sx={{ marginRight: 1 }}
+                    />
+                  )}
+                  {notice.fault && (
+                    <Chip
+                      size={'small'}
+                      label="障害"
+                      color="secondary"
+                      sx={{ marginRight: 1 }}
+                    />
+                  )}
+                  <br />
+                  <ReactMarkdown skipHtml={true} remarkPlugins={[remarkGfm]}>
+                    {notice.data}
+                  </ReactMarkdown>
+                </CardContent>
+              </StyledCardRoot3>
+            ))}
         </Grid>
         <Grid item xs={12} md={4}>
           {restfulApiConfig.enableMoney && (
@@ -203,12 +237,15 @@ export default function Dashboard() {
                   会員情報
                 </Typography>
                 <StyledTypographyTitle color="textSecondary" gutterBottom>
-                  <h3>会員種別: {data?.group?.member_type}</h3>
+                  <Typography component={'span'} variant={'subtitle1'}>
+                    会員種別: {data?.group?.member_type}
+                  </Typography>
+                  <br />
                   {data?.group?.member_expired != null && (
-                    <h3>
+                    <Typography component={'span'} variant={'subtitle1'}>
                       失効期限:{' '}
                       {data?.group?.member_expired.split('T')[0] ?? '---'}
-                    </h3>
+                    </Typography>
                   )}
                   {data?.group?.is_expired && (
                     <h2 color={'secondary'}>期限切れ</h2>
@@ -216,22 +253,24 @@ export default function Dashboard() {
                 </StyledTypographyTitle>
                 <br />
                 {data?.group?.is_expired && data?.info?.length == null && (
-                  <div>
-                    <h3>開通処理後に、会費の支払いをお願いいたします。</h3>
+                  <Box>
+                    <Typography component={'span'} variant={'subtitle1'}>
+                      開通処理後に、会費の支払いをお願いいたします。
+                    </Typography>
                     <Chip size="small" color={'secondary'} label="未払い" />
-                  </div>
+                  </Box>
                 )}
                 {data?.group?.is_expired && data?.info?.length != null && (
-                  <div>
-                    <h3>支払い手続きを行ってください。</h3>
+                  <Box>
+                    <Typography component={'span'} variant={'subtitle1'}>
+                      支払い手続きを行ってください。
+                    </Typography>
                     <Chip size="small" color={'secondary'} label="未払い" />
-                  </div>
+                  </Box>
                 )}
               </CardContent>
             </StyledCardRoot3>
           )}
-          {/*<Button onClick={() => test1()}>Test1</Button>*/}
-          {/*<Button onClick={() => test2()}>Test2</Button>*/}
         </Grid>
       </Grid>
     </DashboardComponent>

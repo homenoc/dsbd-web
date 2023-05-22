@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 import { clearInfos, clearTemplates } from '../../store/action/Actions'
 import { Get } from '../../api/Info'
 import { InfosData } from '../../interface'
-import { CardContent, Typography } from '@mui/material'
+import {Box, CardContent, Typography} from '@mui/material'
 import classesCSS from './style.module.scss'
 import {
   StyledCardRoot3,
@@ -91,105 +91,103 @@ export default function Info() {
               <StyledTypographyTitle color="textSecondary" gutterBottom>
                 {info.asn}
               </StyledTypographyTitle>
-              <Typography variant="body2" component="p">
-                <div className={classesCSS.contract}>
-                  <br />
-                  <table aria-colspan={2}>
-                    <thead>
-                      <tr>
-                        <th colSpan={2}>IP</th>
+              <Box className={classesCSS.contract}>
+                <br />
+                <table aria-colspan={2}>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>IP</th>
+                    </tr>
+                    <tr>
+                      <th>IP Version</th>
+                      <th>Address</th>
+                    </tr>
+                    {info.v4?.map((v4, index) => (
+                      <tr key={'v4_' + index}>
+                        <td>IPv4</td>
+                        <td>{v4}</td>
                       </tr>
-                      <tr>
-                        <th>IP Version</th>
-                        <th>Address</th>
+                    ))}
+                    {info.v6?.map((v6, index) => (
+                      <tr key={'v6_' + index}>
+                        <td>IPv6</td>
+                        <td>{v6}</td>
                       </tr>
-                      {info.v4?.map((v4, index) => (
-                        <tr key={'v4_' + index}>
-                          <td>IPv4</td>
-                          <td>{v4}</td>
-                        </tr>
-                      ))}
-                      {info.v6?.map((v6, index) => (
-                        <tr key={'v6_' + index}>
-                          <td>IPv6</td>
-                          <td>{v6}</td>
-                        </tr>
-                      ))}
-                    </thead>
-                  </table>
-                  <br />
-                  <table aria-colspan={2}>
-                    <thead>
-                      <tr>
-                        <th colSpan={2}>内容</th>
-                      </tr>
-                      <tr>
-                        <th>サービス種別</th>
-                        <td>{info.service}</td>
-                      </tr>
-                      <tr>
-                        <th>利用料金</th>
-                        <td>{info.fee}</td>
-                      </tr>
-                      <tr>
-                        <th>当団体からのIPアドレスの割当</th>
-                        {info.assign && <td>当団体から割当</td>}
-                        {!info.assign && <td>貴団体から割当</td>}
-                      </tr>
-                    </thead>
-                  </table>
-                  <br />
-                  <table className={classesCSS.contract}>
-                    <thead>
-                      <tr>
-                        <th colSpan={3}>接続情報</th>
-                      </tr>
-                      <tr>
-                        <th>接続方式</th>
-                        <td colSpan={2}>{info.service}</td>
-                      </tr>
-                      <tr>
-                        <th>接続NOC</th>
-                        <td colSpan={2}>{info.noc}</td>
-                      </tr>
-                      <tr>
-                        <th>トンネル終端アドレス（貴団体側）</th>
-                        <td colSpan={2}>{info.term_ip}</td>
-                      </tr>
-                      <tr>
-                        <th>トンネル終端アドレス（HomeNOC側）</th>
-                        <td colSpan={2}>{info.noc_ip}</td>
-                      </tr>
-                      <tr>
-                        <th colSpan={3}>当団体との間の境界アドレス</th>
-                      </tr>
-                      <tr>
-                        <th />
-                        <th>IPv4アドレス</th>
-                        <th>IPv6アドレス</th>
-                      </tr>
-                      <tr>
-                        <th>HomeNOC側</th>
-                        <td>{info.link_v4_our}</td>
-                        <td>{info.link_v6_our}</td>
-                      </tr>
-                      <tr>
-                        <th>貴団体側</th>
-                        <td>{info.link_v4_your}</td>
-                        <td>{info.link_v6_your}</td>
-                      </tr>
-                    </thead>
-                  </table>
-                  <br />
-                  <div>
-                    本ページは電気通信事業法
-                    第26条2（書面の交付義務）に基づく書面となります。
-                  </div>
-                  <div>
-                    なお、郵送での書面交付をご希望頂いた方は、お送りします書面が正式書面となり、本画面の表示は参考情報となります。
-                  </div>
-                </div>
-              </Typography>
+                    ))}
+                  </thead>
+                </table>
+                <br />
+                <table aria-colspan={2}>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>内容</th>
+                    </tr>
+                    <tr>
+                      <th>サービス種別</th>
+                      <td>{info.service}</td>
+                    </tr>
+                    <tr>
+                      <th>利用料金</th>
+                      <td>{info.fee}</td>
+                    </tr>
+                    <tr>
+                      <th>当団体からのIPアドレスの割当</th>
+                      {info.assign && <td>当団体から割当</td>}
+                      {!info.assign && <td>貴団体から割当</td>}
+                    </tr>
+                  </thead>
+                </table>
+                <br />
+                <table className={classesCSS.contract}>
+                  <thead>
+                    <tr>
+                      <th colSpan={3}>接続情報</th>
+                    </tr>
+                    <tr>
+                      <th>接続方式</th>
+                      <td colSpan={2}>{info.service}</td>
+                    </tr>
+                    <tr>
+                      <th>接続NOC</th>
+                      <td colSpan={2}>{info.noc}</td>
+                    </tr>
+                    <tr>
+                      <th>トンネル終端アドレス（貴団体側）</th>
+                      <td colSpan={2}>{info.term_ip}</td>
+                    </tr>
+                    <tr>
+                      <th>トンネル終端アドレス（HomeNOC側）</th>
+                      <td colSpan={2}>{info.noc_ip}</td>
+                    </tr>
+                    <tr>
+                      <th colSpan={3}>当団体との間の境界アドレス</th>
+                    </tr>
+                    <tr>
+                      <th />
+                      <th>IPv4アドレス</th>
+                      <th>IPv6アドレス</th>
+                    </tr>
+                    <tr>
+                      <th>HomeNOC側</th>
+                      <td>{info.link_v4_our}</td>
+                      <td>{info.link_v6_our}</td>
+                    </tr>
+                    <tr>
+                      <th>貴団体側</th>
+                      <td>{info.link_v4_your}</td>
+                      <td>{info.link_v6_your}</td>
+                    </tr>
+                  </thead>
+                </table>
+                <br />
+                <Typography component={'span'} variant={'subtitle1'}>
+                  本ページは電気通信事業法
+                  第26条2（書面の交付義務）に基づく書面となります。
+                </Typography>
+                <Typography component={'span'} variant={'subtitle1'}>
+                  なお、郵送での書面交付をご希望頂いた方は、お送りします書面が正式書面となり、本画面の表示は参考情報となります。
+                </Typography>
+              </Box>
             </CardContent>
             {/*<CardActions>*/}
             {/*    <Button size="small">Learn More</Button>*/}
