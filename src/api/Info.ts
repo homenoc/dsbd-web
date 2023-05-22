@@ -15,7 +15,6 @@ export function Get(): Promise<Object | string> {
       },
     })
     .then((res) => {
-      // console.log(res.data);
       store.dispatch(getInfosSuccess(res.data))
 
       return res.data

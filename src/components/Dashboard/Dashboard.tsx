@@ -35,12 +35,13 @@ import { useNavigate } from 'react-router-dom'
 import { Logout } from '../../api/Auth'
 import { Get } from '../../api/Info'
 import Cookies from 'js-cookie'
-import store from '../../store'
+import store, { RootState } from '../../store'
 import { clearInfos, clearTemplates } from '../../store/action/Actions'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import { restfulApiConfig } from '../../api/Config'
 import { muiColorTheme } from '../Theme'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { useSelector } from 'react-redux'
 
 const drawerWidth = 240
 
@@ -132,38 +133,16 @@ export default function Dashboard(props: DashboardProps) {
     }
   }, [isMobile, props.forceDrawerClosed])
 
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
-
-  const reloadClick = () => {
-    Get().then()
-  }
-
-  const DashboardPage = () => {
-    navigate('/dashboard')
-  }
-  const InfoPage = () => {
-    navigate('/dashboard/info')
-  }
-  const AddPage = () => {
-    navigate('/dashboard/add')
-  }
-  const PaymentPage = () => {
-    navigate('/dashboard/payment')
-  }
-  const SupportPage = () => {
-    navigate('/dashboard/support')
-  }
-  const ProcedurePage = () => {
-    navigate('/dashboard/procedure')
-  }
-  const FeedbackPage = () => {
-    navigate('/dashboard/feedback')
-  }
+  const handleDrawerOpen = () => setOpen(true)
+  const handleDrawerClose = () => setOpen(false)
+  const reloadClick = () => Get().then()
+  const DashboardPage = () => navigate('/dashboard')
+  const InfoPage = () => navigate('/dashboard/info')
+  const AddPage = () => navigate('/dashboard/add')
+  const PaymentPage = () => navigate('/dashboard/payment')
+  const SupportPage = () => navigate('/dashboard/support')
+  const ProcedurePage = () => navigate('/dashboard/procedure')
+  const FeedbackPage = () => navigate('/dashboard/feedback')
 
   return (
     <ThemeProvider theme={muiColorTheme}>

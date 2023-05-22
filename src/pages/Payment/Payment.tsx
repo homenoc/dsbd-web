@@ -50,6 +50,9 @@ export default function Payment() {
           enqueueSnackbar(tmpData.error, { variant: 'error' })
         }
       } else if (tmpData.data != null) {
+        if (tmpData.data?.group?.expired_status !== 0) {
+          navigate('/dashboard')
+        }
         setData(tmpData.data)
 
         if (tmpData.data.user?.group_id == null) {
