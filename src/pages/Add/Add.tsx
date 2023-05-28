@@ -71,7 +71,10 @@ export default function Add() {
           enqueueSnackbar(tmpData.error, { variant: 'error' })
         }
       } else if (tmpData.data != null) {
-        if (tmpData.data?.group?.expired_status !== 0) {
+        if (
+          tmpData.data.user?.group_id !== 0 &&
+          tmpData.data?.group?.expired_status !== 0
+        ) {
           navigate('/dashboard')
         }
         setData(tmpData.data)
