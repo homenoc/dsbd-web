@@ -319,63 +319,74 @@ export default function ConnectionAdd() {
             )}
           {serviceID !== 0 &&
             isNeedBGP() &&
-            infos[infos.length - 1]?.data?.service?.find(
+            (infos[infos.length - 1]?.data?.service?.find(
               (service) => service.id === serviceID
-            )?.ip != null && (
+            )?.ip != null ||
+              isGlobalAS()) && (
               <Grid item xs={12}>
                 <FormLabel component="legend">
                   1.1. BGPで当団体から広報する経路種類を選択してください。
                 </FormLabel>
-                <StyledFormControlFormSelect>
-                  <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
-                  <FormHelperText error>
-                    {errors?.ipv4_route && errors.ipv4_route?.message}
-                  </FormHelperText>
-                  <Controller
-                    name="ipv4_route"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        aria-label="gender"
-                        onChange={(e) => {
-                          field.onChange(e.target.value)
-                        }}
-                        value={field.value}
-                      >
-                        {template.ipv4_route?.map((v4Route, index) => (
-                          <MenuItem key={'ipv4_route_' + index} value={v4Route}>
-                            {v4Route}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
-                </StyledFormControlFormSelect>
-                <StyledFormControlFormSelect>
-                  <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
-                  <FormHelperText error>
-                    {errors?.ipv6_route && errors.ipv6_route?.message}
-                  </FormHelperText>
-                  <Controller
-                    name="ipv6_route"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        aria-label="gender"
-                        onChange={(e) => {
-                          field.onChange(e.target.value)
-                        }}
-                        value={field.value}
-                      >
-                        {template.ipv6_route?.map((v6Route, index) => (
-                          <MenuItem key={'ipv6_route_' + index} value={v6Route}>
-                            {v6Route}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
-                </StyledFormControlFormSelect>
+                {(isIPv4Route() || isGlobalAS()) && (
+                  <StyledFormControlFormSelect>
+                    <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
+                    <FormHelperText error>
+                      {errors?.ipv4_route && errors.ipv4_route?.message}
+                    </FormHelperText>
+                    <Controller
+                      name="ipv4_route"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          aria-label="gender"
+                          onChange={(e) => {
+                            field.onChange(e.target.value)
+                          }}
+                          value={field.value}
+                        >
+                          {template.ipv4_route?.map((v4Route, index) => (
+                            <MenuItem
+                              key={'ipv4_route_' + index}
+                              value={v4Route}
+                            >
+                              {v4Route}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      )}
+                    />
+                  </StyledFormControlFormSelect>
+                )}
+                {(isIPv6Route() || isGlobalAS()) && (
+                  <StyledFormControlFormSelect>
+                    <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
+                    <FormHelperText error>
+                      {errors?.ipv6_route && errors.ipv6_route?.message}
+                    </FormHelperText>
+                    <Controller
+                      name="ipv6_route"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          aria-label="gender"
+                          onChange={(e) => {
+                            field.onChange(e.target.value)
+                          }}
+                          value={field.value}
+                        >
+                          {template.ipv6_route?.map((v6Route, index) => (
+                            <MenuItem
+                              key={'ipv6_route_' + index}
+                              value={v6Route}
+                            >
+                              {v6Route}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      )}
+                    />
+                  </StyledFormControlFormSelect>
+                )}
               </Grid>
             )}
           {ipv4Route === 'etc' && (
