@@ -161,6 +161,9 @@ export interface InfosData {
   noc: string
   noc_ip: string
   term_ip: string
+  ix?: string
+  ix_peer_type?: string
+  ix_vlan_id?: string
   link_v4_our: string
   link_v4_your: string
   link_v6_our: string
