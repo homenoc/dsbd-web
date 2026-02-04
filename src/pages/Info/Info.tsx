@@ -147,18 +147,40 @@ export default function Info() {
                       <th>接続方式</th>
                       <td colSpan={2}>{info.service}</td>
                     </tr>
-                    <tr>
-                      <th>接続NOC</th>
-                      <td colSpan={2}>{info.noc}</td>
-                    </tr>
-                    <tr>
-                      <th>トンネル終端アドレス（貴団体側）</th>
-                      <td colSpan={2}>{info.term_ip}</td>
-                    </tr>
-                    <tr>
-                      <th>トンネル終端アドレス（HomeNOC側）</th>
-                      <td colSpan={2}>{info.noc_ip}</td>
-                    </tr>
+                    {!info.ix && (
+                      <>
+                        <tr>
+                          <th>接続NOC</th>
+                          <td colSpan={2}>{info.noc}</td>
+                        </tr>
+                        <tr>
+                          <th>トンネル終端アドレス（貴団体側）</th>
+                          <td colSpan={2}>{info.term_ip}</td>
+                        </tr>
+                        <tr>
+                          <th>トンネル終端アドレス（HomeNOC側）</th>
+                          <td colSpan={2}>{info.noc_ip}</td>
+                        </tr>
+                      </>
+                    )}
+                    {info.ix && (
+                      <>
+                        <tr>
+                          <th>IX</th>
+                          <td colSpan={2}>{info.ix}</td>
+                        </tr>
+                        <tr>
+                          <th>ピアリングタイプ</th>
+                          <td colSpan={2}>{info.ix_peer_type}</td>
+                        </tr>
+                        {info.ix_peer_type === 'PI/CUG' && info.ix_vlan_id && (
+                          <tr>
+                            <th>VLAN-ID</th>
+                            <td colSpan={2}>{info.ix_vlan_id}</td>
+                          </tr>
+                        )}
+                      </>
+                    )}
                     <tr>
                       <th colSpan={3}>当団体との間の境界アドレス</th>
                     </tr>
